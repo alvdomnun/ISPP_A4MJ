@@ -8,3 +8,8 @@ def index(request):
 	template = loader.get_template('web/index.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
+
+def sample_dashboard(request):
+	template = loader.get_template('samples/sampleDashboard.html')
+	context = {}
+	return HttpResponse(template.render(context,request))

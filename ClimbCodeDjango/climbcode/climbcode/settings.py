@@ -87,8 +87,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': CLIMBCODE_DB_USER,
-        'PASSWORD': CLIMBCODE_DB_PASS,
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

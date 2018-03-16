@@ -86,9 +86,9 @@ CLIMBCODE_DB_PASS = os.environ.get("CLIMBCODE_DB_PASS")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': CLIMBCODE_DB_USER,
-        'USER': CLIMBCODE_DB_PASS,
-        'PASSWORD': 'admin',
+        'NAME': 'climbcode',
+        'USER': CLIMBCODE_DB_USER,
+        'PASSWORD': CLIMBCODE_DB_PASS,
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'es-ES'
+LANGUAGE_CODE = 'en-EN'
 
 TIME_ZONE = 'Europe/Madrid'
 

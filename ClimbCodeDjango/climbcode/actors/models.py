@@ -29,12 +29,10 @@ class Actor(models.Model):
 
 class ActorAdminPanel(admin.ModelAdmin):
     """
-    Clase que define las propiedades del Actor que se mostrarán en el panel de administración.
+    Clase que oculta el modelo en el panel de administración.
     """
-    list_display = ('userAccount', 'get_full_name', 'identificationCode')
-
-    def get_full_name(self, obj):
-        return obj.userAccount.get_full_name()
+    def get_model_perms(self, request):
+        return {}
 
 
 class Administrator(Actor):
@@ -48,8 +46,14 @@ class Administrator(Actor):
         verbose_name_plural = "Administrators"
 
 
-class AdministratorAdminPanel(ActorAdminPanel):
-    pass
+class AdministratorAdminPanel(admin.ModelAdmin):
+    """
+    Clase que define las propiedades del Administrador que se mostrarán en el panel de administración.
+    """
+    list_display = ('userAccount', 'get_full_name', 'identificationCode')
+
+    def get_full_name(self, obj):
+        return obj.userAccount.get_full_name()
 
 
 class Programmer(Actor):
@@ -67,8 +71,14 @@ class Programmer(Actor):
         verbose_name_plural = "Programmers"
 
 
-class ProgrammerAdminPanel(ActorAdminPanel):
-    pass
+class ProgrammerAdminPanel(admin.ModelAdmin):
+    """
+    Clase que define las propiedades del Programador que se mostrarán en el panel de administración.
+    """
+    list_display = ('userAccount', 'get_full_name', 'identificationCode')
+
+    def get_full_name(self, obj):
+        return obj.userAccount.get_full_name()
 
 
 class School(Actor):
@@ -134,8 +144,14 @@ class Teacher(Actor):
         verbose_name_plural = "Teachers"
 
 
-class TeacherAdminPanel(ActorAdminPanel):
-    pass
+class TeacherAdminPanel(admin.ModelAdmin):
+    """
+    Clase que define las propiedades del Teacher que se mostrarán en el panel de administración.
+    """
+    list_display = ('userAccount', 'get_full_name', 'identificationCode')
+
+    def get_full_name(self, obj):
+        return obj.userAccount.get_full_name()
 
 
 class Student(Actor):
@@ -154,6 +170,12 @@ class Student(Actor):
     class Meta:
         verbose_name_plural = "Students"
 
-class StudentAdminPanel(ActorAdminPanel):
-    pass
+class StudentAdminPanel(admin.ModelAdmin):
+    """
+    Clase que define las propiedades del Alumno que se mostrarán en el panel de administración.
+    """
+    list_display = ('userAccount', 'get_full_name', 'identificationCode')
+
+    def get_full_name(self, obj):
+        return obj.userAccount.get_full_name()
 

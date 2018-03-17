@@ -43,7 +43,15 @@ INSTALLED_APPS = [
     # Custom apps
     'web.apps.WebConfig',
     'actors.apps.ActorsConfig',
-    'subjects.apps.SubjectsConfig'
+    'subjects.apps.SubjectsConfig',
+	'elementPrices.apps.ElementPricesConfig',
+    'provinces.apps.ProvincesConfig',
+    'defaultSubjects.apps.DefaultSubjectsConfig',
+    'exercises.apps.ExercisesConfig',
+    'licenses.apps.LicensesConfig',
+    'licenseTypes.apps.LicenseTypesConfig',
+    'boxes.apps.BoxesConfig',
+    'parameters.apps.ParametersConfig'
 ]
 
 MIDDLEWARE = [

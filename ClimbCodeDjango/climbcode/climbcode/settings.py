@@ -49,9 +49,7 @@ INSTALLED_APPS = [
     'defaultSubjects.apps.DefaultSubjectsConfig',
     'exercises.apps.ExercisesConfig',
     'licenses.apps.LicensesConfig',
-    'licenseTypes.apps.LicenseTypesConfig',
     'boxes.apps.BoxesConfig',
-    'parameters.apps.ParametersConfig'
 ]
 
 MIDDLEWARE = [

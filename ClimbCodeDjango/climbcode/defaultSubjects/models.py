@@ -9,13 +9,13 @@ class DefaultSubject(models.Model):
     name = models.CharField(max_length = 50, unique=True, help_text="Requerido. 50 carácteres como máximo")
     course = models.CharField(max_length = 50, unique=True, help_text="Requerido. 50 carácteres como máximo")
     code = models.CharField(max_length = 5, unique=True, help_text="Requerido. 5 carácteres como máximo")
-    #Sin relaciones
 
     def __str__(self):
         return self.name + ' - ' + self.course
 
     class Meta:
-        verbose_name_plural = "DefaultSubjects"
+        verbose_name_plural = "Default Subjects"
+        
 
 class DefaultSubjectAdminPanel(admin.ModelAdmin):
     #Panel de admin

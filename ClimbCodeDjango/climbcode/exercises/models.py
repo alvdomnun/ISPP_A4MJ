@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
-
-# Create your models here.
 from defaultSubjects.models import DefaultSubject
 
 
@@ -27,8 +25,11 @@ class Exercise(models.Model):
     startPromotionDate = models.DateField(null=True, blank=True)
     endPromotionDate = models.DateField(null=True, blank=True)
     draft = models.BooleanField(default=True)
-    #subjectCategory
-    #subjectCategory = models.ForeignKey(DefaultSubject,on_delete=models.CASCADE, null=True)
+
+    # Relación con DefaultSubject = Categoría (las asignaturas que incluye el sistema por defecto)
+    category = models.ForeignKey(DefaultSubject, on_delete=models.CASCADE, null=True)
+    # Relación con Programador
+    programmer = models.ForeignKey('actors.Programmer', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.title + ' - ' + self.description + ' - ' + self.sales  + ' - ' \
@@ -40,6 +41,4 @@ class Exercise(models.Model):
 
 class ExerciseAdminPanel(admin.ModelAdmin):
     # Panel de admin
-    list_display = ('title', 'description', 'sales', 'level', 'promoted', 'startPromotionDate', 'endPromotionDate', 'draft')
-
-
+    list_display = ('title', 'level', 'promoted', 'sales', 'draft')

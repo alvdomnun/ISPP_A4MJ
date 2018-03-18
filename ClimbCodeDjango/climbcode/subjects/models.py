@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
+from exercises.models import Exercise
 
 # Create your models here.
 
@@ -14,8 +15,8 @@ class Subject(models.Model):
 
     # Relación con la escuela a la que pertenece la asignatura
     school = models.ForeignKey('actors.School', on_delete = models.CASCADE)
-    # TODO: Aclarar conceptualmente. Relación con los ejercicios categorizados por la asignatura
-    # exercises = models.ManyToManyField(Exercise)
+    # Relación con los ejercicios categorizados por la asignatura
+    exercises = models.ManyToManyField(Exercise, blank = True)
 
     def __str__(self):
         return self.name + ' - ' + self.course + ' (' + self.code + ')'

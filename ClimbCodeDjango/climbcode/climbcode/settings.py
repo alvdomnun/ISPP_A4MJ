@@ -39,19 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+  
     # Custom apps
     'web.apps.WebConfig',
     'actors.apps.ActorsConfig',
     'subjects.apps.SubjectsConfig',
-	'elementPrices.apps.ElementPricesConfig',
+    'elementPrices.apps.ElementPricesConfig',
     'provinces.apps.ProvincesConfig',
     'defaultSubjects.apps.DefaultSubjectsConfig',
     'exercises.apps.ExercisesConfig',
     'licenses.apps.LicensesConfig',
-    'licenseTypes.apps.LicenseTypesConfig',
     'boxes.apps.BoxesConfig',
-    'parameters.apps.ParametersConfig'
 ]
 
 MIDDLEWARE = [
@@ -95,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': CLIMBCODE_DB_USER,
-        'PASSWORD': CLIMBCODE_DB_PASS,
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

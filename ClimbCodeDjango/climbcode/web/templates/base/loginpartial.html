@@ -1,0 +1,27 @@
+<!-- USUARIOS AUTENTICADOS -->
+{% if user.is_authenticated %}
+
+<form id="logoutForm" action="/logout" method="post" class="navbar-right">
+    {% csrf_token %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" class="navbar-brand dropdown-toggle" data-toggle="dropdown">&#161; Hola, {{ user.first_name }} ! &nbsp;<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% if user.is_staff %}
+                <li><a href="/admin/">Panel Administraci&#243;n</a></li>
+                {% endif %}
+                <li class="divider"></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesi&#243;n</a></li>
+            </ul>
+        
+        </li>        
+    </ul>
+</form>
+
+{% else %}
+
+<!-- USUARIOS NO AUTENTICADOS -->
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'login' %}">Iniciar Sesi&#243;n</a></li>
+</ul>
+
+{% endif %}

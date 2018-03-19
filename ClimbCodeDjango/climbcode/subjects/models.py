@@ -11,7 +11,6 @@ class Subject(models.Model):
     """
     name = models.CharField(max_length = 50, unique = True, help_text = 'Requerido. 50 carácteres como máximo.')
     course = models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.')
-    code = models.CharField(max_length = 50, help_text = 'Requerido.')
 
     # Relación con la escuela a la que pertenece la asignatura
     school = models.ForeignKey('actors.School', on_delete = models.CASCADE)
@@ -19,7 +18,7 @@ class Subject(models.Model):
     exercises = models.ManyToManyField(Exercise, blank = True)
 
     def __str__(self):
-        return self.name + ' - ' + self.course + ' (' + self.code + ')'
+        return self.name + ' (' + self.course + ')'
 
     class Meta:
         verbose_name_plural = "Subjects"
@@ -29,4 +28,4 @@ class SubjectAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades de la asignatura que se mostrarán en el panel de administración.
     """
-    list_display = ('name', 'course', 'code')
+    list_display = ('name', 'course')

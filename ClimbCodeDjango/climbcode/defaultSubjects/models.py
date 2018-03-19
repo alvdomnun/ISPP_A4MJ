@@ -7,8 +7,7 @@ from django.contrib.admin.options import ModelAdmin
 class DefaultSubject(models.Model):
     #Atributos de la clase DefaultSubject: name, course
     name = models.CharField(max_length = 50, unique=True, help_text="Requerido. 50 carácteres como máximo")
-    course = models.CharField(max_length = 50, unique=True, help_text="Requerido. 50 carácteres como máximo")
-    code = models.CharField(max_length = 5, unique=True, help_text="Requerido. 5 carácteres como máximo")
+    course = models.CharField(max_length = 50, help_text="Requerido. 50 carácteres como máximo")
 
     def __str__(self):
         return self.name + ' - ' + self.course

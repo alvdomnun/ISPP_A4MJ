@@ -35,54 +35,15 @@
 Notebookv1
 {% endblock %}
 {% block content %}
-
-{% for caja in cajas %}
-    {% if caja.tipo == "Texto" %}
-        <div style="height:200px; width:200px; background-color:blue;">
-            {{ caja.content }}
-        </div>
-    {% elif caja.tipo == "Codigo" %}
-        <div class="row">
+    
+    <div class="row">
         <div class="col-md-6">
-            <div id="editor">{{ caja.content }}
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-            </div>
+            <div id="editor">function foo(items) {
+  var x = "All this is syntax highlighted";
+  return x;
+}
+foo();
+</div>
         </div>
         <div class="col-md-4" style="margin-top:15px">
             <button type="submit" class="btn btn-primary" onclick="evalUserCodeAce();">
@@ -93,23 +54,16 @@ var myChart = new Chart(ctx, {
             <p> Resultado caja sintaxis: </p>
             <input name="resultado_ace" class="form-control"  id="resultado_ace" type="text" disabled="disabled">
         </div>
-
-        <div class='row'>
-            <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
-                <div class='col-sm-6'>
-                    <canvas id="myChart" width="400" height="400"></canvas>
-                </div>
-
-            </div>
-        </div>
     </div>
-    {% elif caja.tipo == "Ilustracion" %}
-        <div style="height:200px; width:200px; background-color:green;">
-            {{ caja.content }}
-        </div>
-    {% endif %}
-{% endfor %}
 
+<div class='row'>
+    <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
+        <div class='col-sm-6'>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+
+    </div>
+</div>
 <script>
 {% block jquery %}
 var endpoint = '/api/data/'

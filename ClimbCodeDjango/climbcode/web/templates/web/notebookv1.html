@@ -13,6 +13,7 @@
         </style>
         <script src="/static/js/jquery.min.js"></script>
         <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
         <script>
             $( document ).ready(function() {
                 var editor = ace.edit("editor");
@@ -55,4 +56,32 @@ foo();
         </div>
     </div>
 
+<div class='row'>
+    <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
+        <div class='col-sm-6'>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+
+    </div>
+</div>
+<script>
+{% block jquery %}
+var endpoint = '/api/data/'
+
+$.ajax({
+    method: "GET",
+    url:endpoint,
+    success: function(data){
+        console.log(data)
+        console.log(customers)
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
 {% endblock %}
+
+</script>
+{% endblock %}
+

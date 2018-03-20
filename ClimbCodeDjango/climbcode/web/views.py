@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
-from web.forms import RegisterProgrammerForm, RegisterSchoolForm
+from web.forms import RegisterProgrammerForm
 from django.contrib.auth.models import User
 from actors.models import Programmer
 from datetime import datetime

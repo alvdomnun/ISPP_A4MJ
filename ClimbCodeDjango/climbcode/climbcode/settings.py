@@ -93,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'USER': CLIMBCODE_DB_USER,
+        'PASSWORD': CLIMBCODE_DB_PASS,
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -126,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-EN'
+LANGUAGE_CODE = 'es-ES'
 
 TIME_ZONE = 'Europe/Madrid'
 

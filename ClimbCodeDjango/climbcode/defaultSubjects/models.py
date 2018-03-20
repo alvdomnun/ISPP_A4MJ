@@ -13,7 +13,8 @@ class DefaultSubject(models.Model):
         return self.name + ' - ' + self.course
 
     class Meta:
-        verbose_name_plural = "Default Subjects"
+        verbose_name = "Asignatura Genérica"
+        verbose_name_plural = "Asignaturas Genéricas"
         
 
 class DefaultSubjectAdminPanel(admin.ModelAdmin):

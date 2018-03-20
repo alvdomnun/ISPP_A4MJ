@@ -25,7 +25,8 @@ class Actor(models.Model):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Actors"
+        verbose_name = "Actor"
+        verbose_name_plural = "Actores"
 
 
 class ActorAdminPanel(admin.ModelAdmin):
@@ -47,7 +48,8 @@ class Administrator(Actor):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Administrators"
+        verbose_name = "Administrador"
+        verbose_name_plural = "Administradores"
 
 
 class AdministratorAdminPanel(admin.ModelAdmin):
@@ -72,7 +74,8 @@ class Programmer(Actor):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Programmers"
+        verbose_name = "Programador"
+        verbose_name_plural = "Programadores"
 
 
 class ProgrammerAdminPanel(admin.ModelAdmin):
@@ -132,7 +135,8 @@ class School(Actor):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Schools"
+        verbose_name = "Escuela"
+        verbose_name_plural = "Escuelas"
 
 
 class SchoolAdminPanel(admin.ModelAdmin):
@@ -161,7 +165,8 @@ class Teacher(Actor):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Teachers"
+        verbose_name = "Profesor"
+        verbose_name_plural = "Profesores"
 
 
 class TeacherAdminPanel(admin.ModelAdmin):
@@ -190,7 +195,8 @@ class Student(Actor):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
-        verbose_name_plural = "Students"
+        verbose_name = "Alumno"
+        verbose_name_plural = "Alumnos"
 
 class StudentAdminPanel(admin.ModelAdmin):
     """

@@ -14,7 +14,8 @@ class ElementPrice(models.Model):
         return self.buyExerciseValue + ' - ' + self.promoteExerciseValue
 
     class Meta:
-        verbose_name_plural = "Element Prices"
+        verbose_name = "Precios"
+        verbose_name_plural = "Precios"
 
 class ElementPriceAdminPanel(admin.ModelAdmin):
     #Panel de admin

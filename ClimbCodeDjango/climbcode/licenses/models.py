@@ -24,7 +24,8 @@ class License(models.Model):
         return self.numUsers + ' - ' + self.numFreeExercises + ' - ' + self.price + ' ( ' + self.startDate + ' -- ' + self.endDate + ' ) '
 
     class Meta:
-        verbose_name_plural = "Licenses"
+        verbose_name = "Licencia"
+        verbose_name_plural = "Licencias"
 
 
 class LicenseAdminPanel(admin.ModelAdmin):
@@ -50,7 +51,8 @@ class LicenseType(models.Model):
         return self.name + ' - ' + self.numUsers + ' - ' + self.numFreeExercises + ' -- ' + self.price
 
     class Meta:
-        verbose_name_plural = "License Types"
+        verbose_name = "Licencia Tipo"
+        verbose_name_plural = "Licencias Tipo"
 
 
 class LicenseTypeAdminPanel(admin.ModelAdmin):

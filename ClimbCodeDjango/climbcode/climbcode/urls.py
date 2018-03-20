@@ -18,6 +18,7 @@ import django.contrib.auth.views
 from django.contrib import admin
 from datetime import datetime
 import web.forms
+import web.views
 from django.conf.urls import url
 
 
@@ -44,6 +45,7 @@ urlpatterns = [
             'next_page': '/',
         },
         name='logout'),
+    url(r'^register/programmer$', web.views.register_programmer, name='registerProgrammer'),
 
     # Administrador
     path('admin/', admin.site.urls),

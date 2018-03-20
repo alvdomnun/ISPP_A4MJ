@@ -37,7 +37,8 @@ class Text(Box):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
     class Meta:
-        verbose_name_plural = "Texts"
+        verbose_name = "Texto"
+        verbose_name_plural = "Textos"
 
 
 class TextAdminPanel(BoxAdminPanel):
@@ -50,7 +51,8 @@ class Code(Box):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
     class Meta:
-        verbose_name_plural = "Codes"
+        verbose_name = "Código"
+        verbose_name_plural = "Códigos"
 
 
 class CodeAdminPanel(BoxAdminPanel):
@@ -63,8 +65,8 @@ class Picture(Box):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
     class Meta:
-        verbose_name_plural = "Pictures"
-
+        verbose_name = "Gráfica"
+        verbose_name_plural = "Gráficas"
 
 class PictureAdminPanel(BoxAdminPanel):
     pass
@@ -81,7 +83,8 @@ class Parameter(models.Model):
         return self.id
 
     class Meta:
-        verbose_name_plural = "Parameters"
+        verbose_name = "Parámetro"
+        verbose_name_plural = "Parámetros"
 
 
 class ParameterAdminPanel(admin.ModelAdmin):

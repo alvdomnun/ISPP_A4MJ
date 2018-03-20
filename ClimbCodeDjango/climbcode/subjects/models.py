@@ -21,7 +21,8 @@ class Subject(models.Model):
         return self.name + ' (' + self.course + ')'
 
     class Meta:
-        verbose_name_plural = "Subjects"
+        verbose_name = "Asignatura"
+        verbose_name_plural = "Asignaturas"
 
 
 class SubjectAdminPanel(admin.ModelAdmin):

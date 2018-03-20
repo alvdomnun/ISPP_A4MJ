@@ -36,7 +36,8 @@ class Exercise(models.Model):
                + self.level + ' ( ' + self.promoted + ' : ' + self.startPromotionDate + ' -- '+ self.endPromotionDate + ' )  ' + self.draft
 
     class Meta:
-        verbose_name_plural = "Exercises"
+        verbose_name = "Ejercicio"
+        verbose_name_plural = "Ejercicios"
 
 
 class ExerciseAdminPanel(admin.ModelAdmin):

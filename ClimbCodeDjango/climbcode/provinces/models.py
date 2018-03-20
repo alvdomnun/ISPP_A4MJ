@@ -12,7 +12,8 @@ class Province(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Provinces"
+        verbose_name = "Provincia"
+        verbose_name_plural = "Provincias"
 
 class ProvinceAdminPanel(admin.ModelAdmin):
     # Panel de admin

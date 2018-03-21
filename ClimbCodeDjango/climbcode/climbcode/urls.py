@@ -46,6 +46,7 @@ urlpatterns = [
         },
         name='logout'),
     url(r'^register/programmer$', web.views.register_programmer, name='registerProgrammer'),
+    url(r'^register/school$', web.views.register_school, name='registerSchool'),
 
     # Administrador
     path('admin/', admin.site.urls),

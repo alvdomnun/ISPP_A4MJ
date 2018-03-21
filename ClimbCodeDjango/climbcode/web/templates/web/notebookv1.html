@@ -7,50 +7,16 @@
             #editor {
               margin-top: 15px;
               width: auto;
-              height: 200px;
+              height: 250px;
             }
         </style>
         <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/autoresize-input-text.js"></script>
         <script src="/static/js/notebook.js"></script>
         
         
         <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-        <script>
-            $( document ).ready(function() {
-                var editor = ace.edit("editor");
-                editor.getSession().setMode("ace/mode/javascript");
-                editor.getSession().setTabSize(4);
-                editor.getSession().setUseWrapMode(true);
-                editor.setShowPrintMargin(false);
-                var heightUpdateFunction = function() {                    
-                    $('#editor').height("200px");
-                    $('#editor-section').height("200px");
-                    // This call is required for the editor to fix all of
-                    // its inner structure for adapting to a change in size
-                    editor.resize();
-                    };
-                // Set initial size to match initial content
-                heightUpdateFunction();
-                // Whenever a change happens inside the ACE editor, update
-                // the size again
-                editor.getSession().on('change', heightUpdateFunction);
-            });
-            
-            
 
-            function addParameter(idParameterDiv,idButtonParameter,idNextParam){
-                $('#'+idButtonParameter).remove();
-                var idNextParameter = 'param'+idNextParam;
-                $('#'+idParameterDiv).append('<div class="col-md-2" style="margin-top: 20px;"><p>id: '+idNextParameter+'</p><input name="'+idNextParameter+'" class="form-control" id="'+idNextParameter+'" type="text"></div>');
-                var idParameterDivBox = "'parameters_box_3'";
-                var idParameterButton = "'add_parameter_button_box_3'";
-                $('#'+idParameterDiv).append('<div id="add_parameter_button_box_3" class="col-md-2" style="margin-top: 20px;"> <p>Add Parameter</p> <button type="submit" class="btn btn-primary" onclick="addParameter('+idParameterDivBox+','+idParameterButton+','+(parseInt(idNextParam)+1)+');"> Add Parameter  </button> </div>');
-            }
-
-
-        </script>
 {% endblock %}
 
 {% block title %}
@@ -58,8 +24,8 @@ Notebookv1
 {% endblock %}
 {% block content %}
 
-    <div class="row" style="background-color: #bbbabb;height: 2200px">
-        <div class="col-md-12">
+    <div class="row" style="background-color: #bbbabb">
+        <div class="col-md-12" style="height: auto">
             <div class="row">
                 <!-- CABECERA CON TITULO Y SUBTITULO -->
                 <div class="col-md-12 custom-mt-1" >
@@ -71,41 +37,37 @@ Notebookv1
                     </div>
                 </div>
                 <!-- CAJA CONTENIDO NOTEBOOK -->
-                <div class="col-md-12 custom-mt-1" >
-                    <div id="notebook_content" style="background-color: white;width: auto;height: 2000px">
+                <div class="col-md-12 custom-mt-1">
+                    <div id="notebook_content" style="background-color: white;width: auto;height: 4000px">
                         <div class="col-md-12" style="margin-top: 20px;text-align:center">
                             
                             <div class="row">
                                 <div class="col-md-12" style="background-color:#bbbabb">
-                                    <h4>Add Box</h4>
+                                    <h2 style="text-align: center">Add Box</h2>
                                     <div class="row">
-                                        <div class="col-md-2 col-md-offset-3" id="add_parameter_button_box_3"  style="margin-top: 20px;">
+                                        <div class="col-md-2 col-md-offset-3" id="add_parameter_button_box_3"  style="margin-top: 20px;margin-bottom: 20px">
                                             <button type="submit" class="btn btn-primary" onclick="addTextBox('notebook_content');">
                                                Text Box
                                             </button>
                                         </div>
-                                        <div class="col-md-2" id="add_parameter_button_box_3"  style="margin-top: 20px;">
+                                        <div class="col-md-2" id="add_parameter_button_box_3"  style="margin-top: 20px;margin-bottom: 20px">
                                             <button type="submit" class="btn btn-primary" onclick="addCodeBox('notebook_content');">
                                                Code Box
                                             </button>
                                         </div>
-                                        <div class="col-md-2" id="add_parameter_button_box_3"  style="margin-top: 20px;">
+                                        <div class="col-md-2" id="add_parameter_button_box_3"  style="margin-top: 20px;margin-bottom: 20px">
                                             <button type="submit" class="btn btn-primary" onclick="addImageBox('notebook_content');">
                                                Ilustration Box
                                             </button>
                                         </div>        
                                     </div>
-                                </div>
-                                    
-                                </div>                                                 
-                            </div>
-                                </div>
-                            </div>                                        
+                                </div>                                    
+                            </div>                                                 
                         </div>
-                     </div>
-                 </div>
+                    </div>
+                </div>                                        
             </div>
-        </div>                
+        </div>
     </div>
 
 

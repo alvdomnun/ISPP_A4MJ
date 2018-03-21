@@ -25,3 +25,22 @@
 	-moz-transition: height 0.2s;
 	transition: height 0.2s;
 }
+
+.notebook_content{
+	display:block;
+	overflow:auto;
+}
+
+
+.div-notebook-parameter{
+	border: 2px solid;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    border-color: #928a8a;
+}
+
+.text-box-textarea{
+	resize: none;
+    overflow: hidden;
+    min-height: 50px;
+}

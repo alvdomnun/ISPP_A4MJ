@@ -18,3 +18,8 @@ def sample_dashboard(request):
 	template = loader.get_template('samples/sampleDashboard.html')
 	context = {}
 	return HttpResponse(template.render(context,request))
+
+def notebook(request):
+	template = loader.get_template('notebook/notebookv1.html')
+	context = {}
+	return HttpResponse(template.render(context,request))

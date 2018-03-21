@@ -11,34 +11,35 @@
 
     <div class="table">
         <table class="table table-striped">
-             {% if teacher_list %}
+            {% if teacher_list %}
                 {% for teacher in teacher_list %}
-            <thead>
-            <tr>
-                <td>Nombre</td>
-                <td>Apellidos</td>
-                <td>Email</td>
-                <td>DNI</td>
-                <td>Foto</td>
-                <td>Teléfono</td>
-                <td></td>
-            </tr>
-            </thead>
-            <tbody>
+                    <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Apellidos</td>
+                        <td>Email</td>
+                        <td>DNI</td>
+                        <td>Foto</td>
+                        <td>Teléfono</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
 
                     <tr>
                         <td>{{ teacher.userAccount.first_name }}</td>
                         <td>{{ teacher.userAccount.last_name }}</td>
                         <td>{{ teacher.userAccount.email }}</td>
                         <td>{{ teacher.dni }}</td>
-                        <td>{{ teacher.photo}}</td>
+                        <td>{{ teacher.photo }}</td>
                         <td>{{ teacher.phone }}</td>
-                        <td><a  class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
+                        <td><a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
                             <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
                         </td>
+                        <td><a href="/actors/teachers/add/subjects/{{ teacher.pk }}">Asignar asignaturas</a></td>
                     </tr>
                 {% endfor %}
-                </tbody>
+            </tbody>
                 </table>
                 </div>
             {% else %}

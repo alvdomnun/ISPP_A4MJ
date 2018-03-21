@@ -16,29 +16,10 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
-                            <label for="username" class="control-label">Nombre de usuario</label>
-                            <input class="form-control" id="username" name="username" placeholder="Nombre de usuario"
-                                   type="text" value="{{ teacher.userAccount.username|default:"" }}" required
-                                   autofocus/>
-                        </div>
-                        <div class="col-xs-6 col-md-6 form-group">
                             <label for="email" class="control-label">Email</label>
                             <input class="form-control" id="email" name="email"
                                    placeholder="Direcci&#243;n de correo electr&#243;nico" type="email"
                                    value="{{ teacher.userAccount.email|default:"" }}" required/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 col-md-6 form-group">
-                            <label for="password" class="control-label">Contrase&#241;a</label>
-                            <input class="form-control" name="password" id="password" type="password"
-                                   value="{{ teacher.userAccount.password|default:"" }}" placeholder="Contrase&#241;a"
-                                   required/>
-                        </div>
-                        <div class="col-xs-6 col-md-6 form-group">
-                            <label for="confirm_password" class="control-label">Confirmar contrase&#241;a</label>
-                            <input class="form-control" name="confirm_password" id="confirm_password" type="password"
-                                   placeholder="Confirmar contrase&#241;a" required/>
                         </div>
                     </div>
                     <hr/>
@@ -93,11 +74,12 @@
                     <!-- Botones -->
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
-                            <input type="submit" value="Actualizar" class="btn btn-primary btn-block"/>
-                            <input type="button" class="btn btn-default btn-block"
+                            <input type="submit" value="Actualizar" class="btn btn-primary"/>
+                            <input type="button" class="btn btn-default"
                                    onclick="location.href='/actors/teachers/list';" value="Cancelar"/>
-                            <input type="button" class="btn btn-default btn-block"
+                            <input type="button" class="btn btn-danger"
                                    onclick="location.href='/actors/teachers/edit/delete/{{ teacher.pk }}';"
+                                   onclick="return confirm('Are you sure you want to delete this?')"
                                    value="Borrar"/>
                         </div>
                     </div>

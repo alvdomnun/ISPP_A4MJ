@@ -11,6 +11,8 @@
 
     <div class="table">
         <table class="table table-striped">
+             {% if teacher_list %}
+                {% for teacher in teacher_list %}
             <thead>
             <tr>
                 <td>Nombre</td>
@@ -23,8 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            {% if teacher_list %}
-                {% for teacher in teacher_list %}
+
                     <tr>
                         <td>{{ teacher.userAccount.first_name }}</td>
                         <td>{{ teacher.userAccount.last_name }}</td>
@@ -32,7 +33,9 @@
                         <td>{{ teacher.dni }}</td>
                         <td>{{ teacher.photo}}</td>
                         <td>{{ teacher.phone }}</td>
-                        <td><a href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a></td>
+                        <td><a  class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
+                            <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -42,7 +45,11 @@
                 <p></p>
                 <p>No existen profesores.</p>
             {% endif %}
-
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/actors/teachers/register';"
+               value="Crear profesor"/>
+    </div>
 
     {% if teacher_list.has_other_pages %}
         <ul class="pagination">
@@ -66,9 +73,5 @@
         </ul>
     {% endif %}
 
-    <div class="create">
-        <input type="button" class="btn btn-default btn-block"
-               onclick="location.href='/actors/teachers/register';"
-               value="Crear profesor"/>
-    </div>
+
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+    <h2>{{ titulo }}</h2>
+    {{ form.userAccount.first_name }}
+    <div class="row">
+
+        <div class="container-fluid">
+            <br/>
+            <div class="col-md-12">
+
+                <!-- Formulario Edición -->
+                <form id="editar" enctype="multipart/form-data" method="post" action="" class="form" role="form">
+                    {% csrf_token %}
+                    <h3>¿Está seguro que desea eliminarlo?</h3>
+                    <button class="btn btn-danger" type="submit">Sí,eliminar</button>
+                    <a class="btn btn-default" href="{% url 'list_teachers' %}">Cancelar</a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

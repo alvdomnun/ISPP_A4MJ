@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import posixpath
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,8 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+  
     # Custom apps
     'web.apps.WebConfig',
+    'actors.apps.ActorsConfig',
+    'subjects.apps.SubjectsConfig',
+    'elementPrices.apps.ElementPricesConfig',
+    'provinces.apps.ProvincesConfig',
+    'defaultSubjects.apps.DefaultSubjectsConfig',
+    'exercises.apps.ExercisesConfig',
+    'licenses.apps.LicensesConfig',
+    'boxes.apps.BoxesConfig',
 ]
 
 MIDDLEWARE = [
@@ -82,15 +93,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': CLIMBCODE_DB_USER,
-        'PASSWORD': CLIMBCODE_DB_PASS,
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-
-
-
 
 
 # Password validation
@@ -131,3 +139,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['media']))

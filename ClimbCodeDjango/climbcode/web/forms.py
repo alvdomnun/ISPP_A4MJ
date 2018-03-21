@@ -1,0 +1,109 @@
+"""
+Definition of forms.
+"""
+#encoding:utf-8
+
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from django.core import validators
+from django.core.validators import RegexValidator
+from provinces.models import Province
+from actors.models import School
+from licenses.models import LicenseType
+import re
+
+
+class LoginForm(AuthenticationForm):
+    """Formulario de inicio de sesión"""
+    username = forms.CharField(max_length=254, widget=forms.TextInput({'class': 'form-control', 'required': True, 'autofocus': True, 'placeholder': 'Nombre de usuario'}))
+    password = forms.CharField(label=_("Contraseña"), widget=forms.PasswordInput({'class': 'form-control', 'required': True, 'placeholder':'Contraseña'}))
+
+
+class RegisterProgrammerForm(forms.Form):
+    """Formulario registro como Programador"""
+
+    # Campos requeridos por el User model
+    username = forms.CharField(min_length = 5, max_length = 32, label = 'Nombre de usuario')
+    password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Contraseña')
+    confirm_password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Confirmar contraseña')
+    email = forms.EmailField()
+    first_name = forms.CharField(min_length = 2, max_length = 32, label = 'Nombre')
+    last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
+
+    # Campos requeridos por el modelo Actor-Programador
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    photo = forms.ImageField(required = False)
+    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
+        label = 'D.N.I.')
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el username no sea repetido
+            username = self.cleaned_data["username"]
+            num_usuarios = User.objects.filter(username = username).count()
+            if (num_usuarios > 0):
+                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+
+            # Valida que la contraseña se haya confirmado correctamente
+            password = self.cleaned_data["password"]
+            confirm_password = self.cleaned_data["confirm_password"]
+            if (password != confirm_password):
+                    raise forms.ValidationError("Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
+
+      
+class RegisterSchoolForm(forms.Form):
+    """Formulario registro como Escuela"""
+
+    # Campos requeridos por el User model
+    username = forms.CharField(min_length = 5, max_length = 32, label = 'Nombre de usuario')
+    password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Contraseña')
+    confirm_password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Confirmar contraseña')
+    email = forms.EmailField()
+    first_name = forms.CharField(min_length = 2, max_length = 32, label = 'Nombre')
+    last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
+
+    # Campos requeridos por el modelo Actor-Escuela
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    photo = forms.ImageField(required = False, label = 'Foto de perfil')
+    centerName = forms.CharField(max_length = 50, label = 'Nombre del Centro')
+    address = forms.CharField(max_length = 50, label = 'Dirección')
+    postalCode = forms.CharField(max_length = 5, validators = [RegexValidator(regex = r'^(\d{5})$')], label = 'Código Postal')
+    province = forms.ModelChoiceField(queryset = Province.objects.all(), empty_label = None, label = 'Provincia')
+    type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
+    teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
+    identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
+    # TODO : Funcionalidad completa: extras a las licencias.
+    licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el username no sea repetido
+            username = self.cleaned_data["username"]
+            num_usuarios = User.objects.filter(username = username).count()
+            if (num_usuarios > 0):
+                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+
+            # Valida que la contraseña se haya confirmado correctamente
+            password = self.cleaned_data["password"]
+            confirm_password = self.cleaned_data["confirm_password"]
+            if (password != confirm_password):
+                    raise forms.ValidationError("Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
+
+            # Valida los patrones para cuando sea escuela o academia
+            type = self.cleaned_data["type"]
+            print(type)
+            idCode = self.cleaned_data["identificationCode"]
+            if idCode is not None and type == 'High School':
+                if re.match(r'^(\d{8})$', idCode) is None:
+                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
+            elif idCode is not None and type == 'Academy':
+                if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
+                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')

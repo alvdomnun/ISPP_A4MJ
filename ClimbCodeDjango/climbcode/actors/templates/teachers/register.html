@@ -1,0 +1,103 @@
+{% extends "base/base.html" %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+<h2>{{ titulo }}</h2>
+
+<div class="row">
+    
+    <div class="container-fluid">
+        <br/>
+        <div class="col-md-12">
+
+            <!-- Formulario Registro -->
+            <form id="registro" enctype="multipart/form-data" method="post" action="{% url 'register_teacher' %}" class="form" role="form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="username" class="control-label">Nombre de usuario</label>
+                        <input class="form-control" id="username" name="username" placeholder="Nombre de usuario" type="text" value="{{ form.username.value|default:"" }}" required autofocus/>
+                    </div>
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="email" class="control-label">Email</label>
+                        <input class="form-control" id="email" name="email" placeholder="Direcci&#243;n de correo electr&#243;nico" type="email" value="{{ form.email.value|default:"" }}" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="password" class="control-label">Contrase&#241;a</label>
+                        <input class="form-control" name="password" id="password" type="password" placeholder="Contrase&#241;a" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="confirm_password" class="control-label">Confirmar contrase&#241;a</label>
+                        <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Confirmar contrase&#241;a" required/>
+                    </div>
+                </div>
+
+                <hr/>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="first_name" class="control-label">Nombre</label>
+                        <input class="form-control" name="first_name" id="first_name" type="text" placeholder="Nombre" value="{{ form.first_name.value|default:"" }}" required/>
+                    </div>
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="last_name" class="control-label">Apellidos</label>
+                        <input class="form-control" name="last_name" id="last_name" type="text" placeholder="Apellidos" value="{{ form.last_name.value|default:"" }}" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="dni" class="control-label">D.N.I.</label>
+                        <input type="text" maxlength="9" class="form-control" name="dni" id="dni" placeholder="D.N.I." value="{{ form.dni.value|default:"" }}" required/>
+                    </div>
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="phone" class="control-label">Tel&#233;fono</label>
+                        <input type="text" maxlength="11" class="form-control" name="phone" id="phone" placeholder="Tel&#233;fono" value="{{ form.phone.value|default:"" }}" required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <label for="photo" class="control-label">Foto de perfil</label>
+                        <input class="form-control" name="photo" id="photo" type="file" placeholder="Foto de perfil del usuario" value="{{ form.photo.value|default:"" }}"/>
+                    </div>
+                </div>
+                
+                <!-- Tratamiento de Errores -->
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ field.label }}: {{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <!-- Botones -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <input type="hidden" name="next" value="/" />
+                        <input type="submit" value="Registrar" class="btn btn-primary " />
+                        <input type="button" class="btn btn-default" onclick="location.href='/actors/teachers/list';" value="Cancelar" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

@@ -1,0 +1,1040 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1e14ba5e-5c63-499b-9b09-012ede61677c" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/ClimbCode.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/Scripts/LicenciasGenericas.sql" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/.idea/climbcode.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/.idea/misc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/.idea/modules.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/.idea/workspace.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/forms.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0002_auto_20180318_1440.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0003_auto_20180318_1609.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0004_auto_20180318_1611.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0005_auto_20180318_1616.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0006_auto_20180318_1616.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0007_auto_20180318_1622.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0008_auto_20180318_1628.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0009_auto_20180318_1634.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0010_auto_20180318_1638.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0011_auto_20180318_1658.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0012_auto_20180318_1702.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0013_auto_20180318_1705.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0014_auto_20180320_1628.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0015_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/0016_school_centername.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/base/base.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/base/header.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/students/delete.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/students/edit.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/students/list.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/students/register.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/teachers/delete.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/teachers/edit.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/teachers/list.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/templates/teachers/register.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/urls.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/actors/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/migrations/0002_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/boxes/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/0002_auto_20180318_1705.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/0003_auto_20180318_1942.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/0004_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/0005_auto_20180320_1641.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/defaultSubjects/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/migrations/0002_auto_20180318_1706.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/migrations/0003_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/elementPrices/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/migrations/0002_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/exercises/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/migrations/0002_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/licenses/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces.json" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/migrations/0002_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/provinces/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/static/js/jquery.min.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/admin.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/apps.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/migrations/0001_initial.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/migrations/0002_auto_20180318_1702.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/migrations/0003_remove_subject_code.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/migrations/0004_auto_20180320_1636.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/migrations/__init__.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/models.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/tests.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/subjects/views.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/forms.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/migrations/0002_auto_20180319_1952.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ace.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-beautify.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-elastic_tabstops_lite.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-emmet.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-error_marker.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-keybinding_menu.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-language_tools.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-linking.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-modelist.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-options.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-searchbox.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-settings_menu.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-spellcheck.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-split.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-static_highlight.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-statusbar.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-textarea.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-themelist.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/ext-whitespace.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/keybinding-emacs.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/keybinding-vim.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-abap.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-abc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-actionscript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ada.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-apache_conf.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-applescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-asciidoc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-assembly_x86.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-autohotkey.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-batchfile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-bro.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-c9search.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-c_cpp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-cirru.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-clojure.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-cobol.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-coffee.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-coldfusion.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-csharp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-csound_document.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-csound_orchestra.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-csound_score.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-csp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-css.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-curly.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-d.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-dart.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-diff.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-django.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-dockerfile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-dot.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-drools.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-edifact.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-eiffel.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ejs.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-elixir.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-elm.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-erlang.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-forth.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-fortran.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ftl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-gcode.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-gherkin.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-gitignore.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-glsl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-gobstones.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-golang.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-graphqlschema.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-groovy.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-haml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-handlebars.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-haskell.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-haskell_cabal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-haxe.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-hjson.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-html.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-html_elixir.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-html_ruby.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ini.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-io.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jack.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jade.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-java.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-javascript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-json.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jsoniq.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jsp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jssm.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-jsx.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-julia.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-kotlin.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-latex.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-less.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-liquid.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-lisp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-livescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-logiql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-lsl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-lua.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-luapage.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-lucene.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-makefile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-markdown.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-mask.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-matlab.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-maze.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-mel.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-mixal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-mushcode.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-mysql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-nix.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-nsis.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-objectivec.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ocaml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-pascal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-perl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-pgsql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-php.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-pig.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-plain_text.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-powershell.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-praat.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-prolog.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-properties.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-protobuf.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-python.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-r.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-razor.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-rdoc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-red.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-redshift.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-rhtml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-rst.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-ruby.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-rust.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sass.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-scad.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-scala.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-scheme.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-scss.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sh.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sjs.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-smarty.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-snippets.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-soy_template.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-space.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sparql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-sqlserver.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-stylus.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-svg.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-swift.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-tcl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-tex.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-text.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-textile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-toml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-tsx.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-turtle.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-twig.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-typescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-vala.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-vbscript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-velocity.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-verilog.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-vhdl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-wollok.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-xml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-xquery.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/mode-yaml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/abap.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/abc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/actionscript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ada.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/apache_conf.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/applescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/asciidoc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/assembly_x86.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/autohotkey.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/batchfile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/bro.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/c9search.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/c_cpp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/cirru.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/clojure.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/cobol.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/coffee.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/coldfusion.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/csharp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/csound_document.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/csound_orchestra.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/csound_score.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/csp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/css.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/curly.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/d.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/dart.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/diff.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/django.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/dockerfile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/dot.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/drools.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/edifact.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/eiffel.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ejs.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/elixir.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/elm.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/erlang.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/forth.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/fortran.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ftl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/gcode.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/gherkin.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/gitignore.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/glsl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/gobstones.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/golang.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/graphqlschema.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/groovy.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/haml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/handlebars.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/haskell.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/haskell_cabal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/haxe.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/hjson.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/html.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/html_elixir.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/html_ruby.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ini.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/io.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jack.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jade.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/java.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/javascript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/json.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jsoniq.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jsp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jssm.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/jsx.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/julia.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/kotlin.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/latex.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/less.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/liquid.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/lisp.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/livescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/logiql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/lsl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/lua.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/luapage.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/lucene.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/makefile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/markdown.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/mask.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/matlab.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/maze.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/mel.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/mixal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/mushcode.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/mysql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/nix.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/nsis.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/objectivec.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ocaml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/pascal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/perl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/pgsql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/php.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/pig.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/plain_text.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/powershell.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/praat.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/prolog.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/properties.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/protobuf.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/python.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/r.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/razor.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/rdoc.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/red.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/redshift.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/rhtml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/rst.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/ruby.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/rust.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sass.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/scad.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/scala.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/scheme.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/scss.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sh.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sjs.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/smarty.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/snippets.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/soy_template.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/space.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sparql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sql.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/sqlserver.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/stylus.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/svg.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/swift.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/tcl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/tex.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/text.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/textile.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/toml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/tsx.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/turtle.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/twig.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/typescript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/vala.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/vbscript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/velocity.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/verilog.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/vhdl.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/wollok.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/xml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/xquery.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/snippets/yaml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-ambiance.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-chaos.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-chrome.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-clouds.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-clouds_midnight.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-cobalt.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-crimson_editor.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-dawn.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-dracula.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-dreamweaver.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-eclipse.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-github.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-gob.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-gruvbox.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-idle_fingers.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-iplastic.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-katzenmilch.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-kr_theme.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-kuroir.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-merbivore.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-merbivore_soft.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-mono_industrial.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-monokai.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-pastel_on_dark.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-solarized_dark.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-solarized_light.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-sqlserver.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-terminal.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-textmate.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-tomorrow.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-tomorrow_night.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-tomorrow_night_blue.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-tomorrow_night_bright.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-tomorrow_night_eighties.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-twilight.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-vibrant_ink.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/theme-xcode.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-coffee.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-css.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-html.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-javascript.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-json.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-lua.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-php.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-xml.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/ace-editor/src-min/worker-xquery.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/js/jquery.min.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/login.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/loginpartial.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook/notebookVistaV1.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/web/notebookv1.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/web/registerProgrammer.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/web/registerSchool.html" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Metodología/Gestión_Código_Git_v1.0.pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Definición de requisitos v3.3.docx" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Definición de requisitos v3.3.pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Sprint 1/Requisitos v3.2 - Sprint 1.pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Sprint 1/Tareas v1.0.docx" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Sprint 1/Tareas v1.0.pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Domain Model v1.8 (sin atributos).asta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Domain Model v1.8 (sin atributos).pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Domain Model v1.8.asta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Domain Model v1.8.pdf" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/UML antiguos/Conceptual Model v1.7.asta" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/Notas de Clase/Notas clase 16-03-18.pdf" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/settings.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/settings.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/urls.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/urls.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/admin.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/admin.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/apps.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/apps.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/migrations/0001_initial.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/migrations/0001_initial.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/models.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/models.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook/notebookv1.html" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/index.html" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/index.html" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py" afterPath="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py" />
+      <change beforePath="$PROJECT_DIR$/ClimbCodeDjango/requirements.txt" afterPath="$PROJECT_DIR$/ClimbCodeDjango/requirements.txt" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Metodología/Calculadora (version 1).xlsx" afterPath="$PROJECT_DIR$/Conocimiento/Metodología/Calculadora (version 1).xlsx" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Metodología/Gestión_Código_Git_v1.0.docx" afterPath="$PROJECT_DIR$/Conocimiento/Metodología/Gestión_Código_Git_v1.0.docx" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Presentaciones/16-03-18/Informe_Mejoras_16-03-18_v1.0.docx" afterPath="$PROJECT_DIR$/Conocimiento/Presentaciones/16-03-18/Informe_Mejoras_16-03-18_v1.0.docx" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Presentaciones/16-03-18/Presentación_16-03-18_v1.0.pptx" afterPath="$PROJECT_DIR$/Conocimiento/Presentaciones/16-03-18/Presentación_16-03-18_v1.0.pptx" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Definición de requisitos v3.2.docx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Definición de requisitos v3.2.pdf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Sprint 1/Requisitos - Sprint 1.docx" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/Sprint 1/Requisitos - Sprint 1.pdf" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Conceptual Model v1.7.asta" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/Conocimiento/Sprints y Requisitos/UML/Domain Model v1.7.asta" afterPath="" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-493">
+              <caret line="20" column="6" lean-forward="false" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="welcome.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/welcome.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="28" column="44" lean-forward="false" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sampleDashboard.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples/sampleDashboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="30" lean-forward="false" selection-start-line="13" selection-start-column="24" selection-end-line="16" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="welcome-base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/welcome-base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-255">
+              <caret line="26" column="47" lean-forward="false" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
+              <folding>
+                <element signature="n#style#0;n#i#0;n#a#0;n#li#0;n#ul#1;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="7" column="71" lean-forward="false" selection-start-line="7" selection-start-column="71" selection-end-line="7" selection-end-column="71" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="37" column="38" lean-forward="false" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
+              <folding>
+                <element signature="e#2234#2259#0#HTML" expanded="true" />
+                <element signature="e#3490#3515#0#HTML" expanded="true" />
+                <element signature="e#4718#4743#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="notebookVistaV1.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook/notebookVistaV1.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3468">
+              <caret line="248" column="6" lean-forward="false" selection-start-line="248" selection-start-column="6" selection-end-line="248" selection-end-column="6" />
+              <folding>
+                <element signature="e#84#263#0#HTML" expanded="false" />
+                <element signature="e#536#2756#0#HTML" expanded="false" />
+                <element signature="e#9112#9137#0#HTML" expanded="true" />
+                <element signature="e#9913#9939#0#HTML" expanded="true" />
+                <element signature="e#9997#10092#0#HTML" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="custom.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/custom.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>nombre de usuario</find>
+      <find>css</find>
+      <find>staticfiles</find>
+      <find>form-control-sm</find>
+      <find>s</find>
+      <find>navbar-item</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/base/base.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/web/index.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/index.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/index.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/settings.py" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/static/css/custom.css" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/web/index.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples/sampleDashboard.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/welcome-base.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/welcome.css" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/welcome-base.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/custom.css" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook/notebookv1.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/index.html" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py" />
+        <option value="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-4" />
+    <option name="width" value="1374" />
+    <option name="height" value="772" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ClimbCode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ClimbCode" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ClimbCode" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ClimbCode" type="462c0819:PsiDirectoryNode" />
+              <item name="ClimbCodeDjango" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook" />
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/img" />
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome" />
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/static/css" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome" />
+      <recent name="$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1e14ba5e-5c63-499b-9b09-012ede61677c" name="Default" comment="" />
+      <created>1521039032660</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1521039032660</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-4" y="0" width="1366" height="768" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="14" lean-forward="false" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#a#0;n#li#0;n#ul#1;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="55" lean-forward="false" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="75" lean-forward="false" selection-start-line="6" selection-start-column="75" selection-end-line="6" selection-end-column="75" />
+          <folding>
+            <element signature="e#0#28#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples/sampleDashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="13" column="38" lean-forward="false" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/web/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="17" lean-forward="true" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/static/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/base/header.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/templates/base/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="51" column="37" lean-forward="true" selection-start-line="42" selection-start-column="32" selection-end-line="51" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/static/css/custom.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/web/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="45" column="18" lean-forward="true" selection-start-line="25" selection-start-column="12" selection-end-line="45" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/climbcode/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="132" column="46" lean-forward="false" selection-start-line="132" selection-start-column="46" selection-end-line="132" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Descargas/notebookv1_Migue.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/custom.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/samples/sampleDashboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="30" lean-forward="false" selection-start-line="13" selection-start-column="24" selection-end-line="16" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/base/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-493">
+          <caret line="20" column="6" lean-forward="false" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/static/css/welcome.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/welcome-base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="26" column="47" lean-forward="false" selection-start-line="26" selection-start-column="47" selection-end-line="26" selection-end-column="47" />
+          <folding>
+            <element signature="n#style#0;n#i#0;n#a#0;n#li#0;n#ul#1;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/welcome/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="37" column="38" lean-forward="false" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="38" />
+          <folding>
+            <element signature="e#2234#2259#0#HTML" expanded="true" />
+            <element signature="e#3490#3515#0#HTML" expanded="true" />
+            <element signature="e#4718#4743#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/templates/notebook/notebookVistaV1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3468">
+          <caret line="248" column="6" lean-forward="false" selection-start-line="248" selection-start-column="6" selection-end-line="248" selection-end-column="6" />
+          <folding>
+            <element signature="e#84#263#0#HTML" expanded="false" />
+            <element signature="e#536#2756#0#HTML" expanded="false" />
+            <element signature="e#9112#9137#0#HTML" expanded="true" />
+            <element signature="e#9913#9939#0#HTML" expanded="true" />
+            <element signature="e#9997#10092#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="71" lean-forward="false" selection-start-line="7" selection-start-column="71" selection-end-line="7" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ClimbCodeDjango/climbcode/web/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="28" column="44" lean-forward="false" selection-start-line="28" selection-start-column="44" selection-end-line="28" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

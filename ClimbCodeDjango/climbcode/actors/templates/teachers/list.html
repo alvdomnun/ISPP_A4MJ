@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <style>
+        table td {
+            align-content: center
+        }
+    </style>
+
+    <h1>Lista de profesores</h1>
+
+    <div class="table">
+        <table class="table table-striped">
+             {% if teacher_list %}
+                {% for teacher in teacher_list %}
+            <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Apellidos</td>
+                <td>Email</td>
+                <td>DNI</td>
+                <td>Foto</td>
+                <td>Teléfono</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+
+                    <tr>
+                        <td>{{ teacher.userAccount.first_name }}</td>
+                        <td>{{ teacher.userAccount.last_name }}</td>
+                        <td>{{ teacher.userAccount.email }}</td>
+                        <td>{{ teacher.dni }}</td>
+                        <td>{{ teacher.photo}}</td>
+                        <td>{{ teacher.phone }}</td>
+                        <td><a  class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
+                            <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                </div>
+            {% else %}
+                <p></p>
+                <p>No existen profesores.</p>
+            {% endif %}
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/actors/teachers/register';"
+               value="Crear profesor"/>
+    </div>
+
+    {% if teacher_list.has_other_pages %}
+        <ul class="pagination">
+            {% if teacher_list.has_previous %}
+                <li><a href="?page={{ teacher_list.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in teacher_list.paginator.page_range %}
+                {% if teacher_list.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if teacher_list.has_next %}
+                <li><a href="?page={{ teacher_list.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+
+{% endblock %}

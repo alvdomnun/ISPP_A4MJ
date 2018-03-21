@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+<!-- Si es usuario registrado, redirect al Inicio -->
+{% if user.is_authenticated %}
+    <meta http-equiv="refresh" content="0;url=/">
+
+<!-- Si no, permite login -->
+{% else %}
+
+<h2>{{ titulo }}</h2>
+<hr />
+<h4>Use sus credenciales para iniciar sesi&#243;n en el sistema</h4>
+
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-8 col-md-offset-2">
+
+            <!-- Formulario Login -->
+            <form action="." method="post" class="form-horizontal">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-16 form-group">
+                        <label for="id_username" class="control-label">Nombre de usuario</label>
+                        <div>
+                            {{ form.username }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-16 form-group">
+                        <label for="id_password" class="control-label">Contrase&#241;a</label>
+                        <div>
+                            {{ form.password }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tratamiento de Errores -->
+                {% if form.errors %}
+                <div class="row">
+                    <div class="col-xs-16 col-md-16 form-group">
+                        <div class="alert alert-danger">
+                            <strong>Por favor, introduzca un nombre de usuario y contrase&#241;a v&#225;lidos.</strong>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Botones -->
+                <div class="row">
+                    <div class="col-xs-16 col-md-16 form-group">
+                        <input type="hidden" name="next" value="/" />
+                        <input type="submit" value="Iniciar Sesi&#243;n" class="btn btn-primary btn-block" />
+                        <input type="button" class="btn btn-default btn-block" onclick="location.href='/';" value="Cancelar" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+<!-- FIN CONTENIDO -->
+
+{% block scripts %}
+
+{% endblock %}

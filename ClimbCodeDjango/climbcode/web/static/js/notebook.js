@@ -14,17 +14,17 @@ function addTextBox(idNotebookContent){
 	var idBoxParameter = "'idBox"+numBox+"'";
 
 	//HTML DE LA CAJA DE TEXTO
-	var htmlTextBox = 	'<div class="col-md-12 custom-mt-1" id="'+idBox+'">'+
-							'<div class="row">'+
-								'<div class="col-md-12 custom-mt-1" >'+
-									'<div class="form-group" style="padding:12px;">'+
-		                            	'<textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Write here"></textarea>'+
-		                         		/*'<button class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+*/
-		                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
-		                        	'</div>'+
+		var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
+								'<div class="row">'+
+									'<div class="col-md-12 custom-mt-1" >'+
+										'<div class="form-group" style="padding:12px;">'+
+			                            	'<textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Write here"></textarea>'+
+			                         		/*'<button class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+*/
+			                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
+			                        	'</div>'+
+									'</div>'+
 								'</div>'+
-							'</div>'+
-						'</div>';
+							'</div>';
 
     $('#'+idNotebookContent).append(htmlTextBox);
 
@@ -62,46 +62,49 @@ function addCodeBox(idNotebookContent){
 
 	//HTML DE LA CAJA DE CÓDIGO
 
-	var htmlCodeBox = 	'<div class="row" id="'+idBox+'">'+
-                            '<div class="col-md-12 custom-mt-1" >'+
-                                '<h2 style="text-align: center">CODE BOX</h2>'+
-                                '<div style="background-color: white;margin-left: 30px; margin-right: 30px;width: auto;height: 800px">'+
-                                    '<div class="row" id="'+idRowPrincipal+'">'+
-                                        '<div class="col-md-12">'+
-                                            '<div id="'+idEditor+'">'+
-                                            '</div>'+
-                                        '</div>'+
-                                        '<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
-                                        '<div class="col-md-12" style="margin-top: 20px;">'+                                            
-                                                '<div class="row">'+                                                	
-                                                    '<div class="col-md-12 div-notebook-parameter" style="margin-top: 20px;">'+
-                                                    '<h3 style="text-align:center">Parameters</h3>'+
-                                                        '<div class="row" id="'+idDivParam+'">'+                                                          
-                                                            '<div id="'+idDivParamButton+'" class="col-md-2" style="margin-top: 20px;">'+
-                                                            	'<p>Add Parameter</p>'+
-                                                                '<button type="submit" class="btn btn-primary" onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');">'+
-                                                                   'Add'+
-                                                                '</button>'+                                                                
-                                                            '</div>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                '</div>'+
-                                        '</div>'+
-                                        '<div id="'+idColChartButtons+'" class="col-md-4" style="margin-top: 20px;">'+
-                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
-                                               'Run >>'+
-                                            '</button>'+
-                                            '<br><br>'+
-                                            '<h4>Code Result</h4>'+
-                                            '<input name="resultado_'+idEditor+'" class="form-control"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
-                                            '<br><br>'+
-                                            '<button type="submit" class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
-                                               'Add Chart'+
-                                            '</button>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
+	var htmlCodeBox = 	'<div class="col-md-12 custom-mt-1" >'+
+							'<div class="row" id="'+idBox+'">'+
+	                            '<div class="col-md-10 custom-mt-1 offset-md-1" >'+
+	                                '<h2 style="text-align: center">CODE BOX</h2>'+
+	                                '<div style="background-color: #ebebeb;margin-left: 30px; margin-right: 30px;width: auto;height: auto">'+
+	                                    '<div class="row" id="'+idRowPrincipal+'">'+
+	                                        '<div class="col-md-12">'+
+	                                            '<div id="'+idEditor+'">'+
+	                                            '</div>'+
+	                                        '</div>'+
+	                                        
+	                                        '<div class="col-md-12" style="margin-top: 20px;">'+
+	                                        '<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
+	                                                '<div class="row">'+                                                	
+	                                                    '<div class="col-md-12 div-notebook-parameter" style="margin-top: 20px;background-color: white">'+
+	                                                    '<h3 style="text-align:center">Parameters</h3>'+
+	                                                        '<div class="row" id="'+idDivParam+'">'+                                                          
+	                                                            '<div id="'+idDivParamButton+'" class="col-md-2" style="margin-top: 20px;">'+
+	                                                            	'<p>Add Parameter</p>'+
+	                                                                '<button type="submit" class="btn btn-primary" onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');">'+
+	                                                                   'Add'+
+	                                                                '</button>'+                                                                
+	                                                            '</div>'+
+	                                                        '</div>'+
+	                                                    '</div>'+
+	                                                '</div>'+
+	                                        '</div>'+
+	                                        '<div id="'+idColChartButtons+'" class="col-md-4" style="margin-top: 20px;">'+
+	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
+	                                               'Run >>'+
+	                                            '</button>'+
+	                                            '<br><br>'+
+	                                            '<h4>Code Result</h4>'+
+	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
+	                                            '<br><br>'+
+	                                            '<button type="submit" class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
+	                                               'Add Chart'+
+	                                            '</button>'+
+	                                        '</div>'+
+	                                    '</div>'+
+	                                '</div>'+
+	                            '</div>'+
+	                        '</div>'+
                         '</div>';
 
 	$('#'+idNotebookContent).append(htmlCodeBox);
@@ -149,10 +152,10 @@ function addImageBox(idNotebookContent){
 		                            	'<img class="notebook-img" id="'+idImg+'" src="" height="256px" width="256px" />'+		                         		
 		                        	'</div>'+
 		                        '</div>'+
-		                        '<div class="col-md-6 col-md-offset-3" >'+
+		                        '<div class="col-md-6 offset-md-3" >'+
 		                        		'<input class="form-control" id="'+idUrlInput+'" type="text" placeholder="Set URL">'+
 								'</div>'+
-								'<div class="col-md-12" >'+
+								'<div class="col-md-12 offset-md-3" >'+
 		                         		'<button class="btn btn-info pull-right" style="margin-top:10px" onclick="updateImg('+idImgParameter+','+idUrlInputParameter+')" type="button">Update URL</button>'+
 		                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
 								'</div>'+
@@ -220,13 +223,15 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 		$('#'+idChartRow).remove();
 	}
 
-	var htmlChart = '<div class="row" id="'+idChartRow+'">'+
-						'<div class="col-sm-6 col-md-12">'+
-							'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
-						'</div>'+	                    
-	                    '<div class="col-sm-6 col-md-12">'+
-	                        '<canvas id="'+idChart+'" height="300"></canvas>'+
-	                    '</div>'+
+	var htmlChart = '<div class="col-md-12" id="'+idChartRow+'" style="height="300">'+
+						'<div class="row">'+
+							'<div class="col-md-12">'+
+								'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
+							'</div>'+	                    
+		                    '<div class="col-md-12">'+
+		                        '<canvas id="'+idChart+'" width="auto" height="300"></canvas>'+
+		                    '</div>'+
+		                '</div>'+
 	                '</div>';
 
 	$('#'+idRowPrincipalParameter).append(htmlChart);

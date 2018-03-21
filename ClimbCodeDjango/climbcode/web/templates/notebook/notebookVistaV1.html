@@ -1,0 +1,261 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 200px;
+            }
+        </style>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+        <script>
+            $( document ).ready(function() {
+                var editor = ace.edit("editor");
+                editor.getSession().setMode("ace/mode/javascript");
+                editor.getSession().setTabSize(4);
+                editor.getSession().setUseWrapMode(true);
+                editor.setShowPrintMargin(false);
+                var heightUpdateFunction = function() {                    
+                    $('#editor').height("200px");
+                    $('#editor-section').height("200px");
+                    // This call is required for the editor to fix all of
+                    // its inner structure for adapting to a change in size
+                    editor.resize();
+                    };
+                // Set initial size to match initial content
+                heightUpdateFunction();
+                // Whenever a change happens inside the ACE editor, update
+                // the size again
+                editor.getSession().on('change', heightUpdateFunction);
+            });
+            
+            function evalUserCodeAce(){
+                var editor = ace.edit("editor");
+                var s = editor.getValue();
+                var resultado = eval(s);
+                document.getElementById("resultado_ace").value = String(resultado);
+            }
+
+            function addParameter(idParameterDiv,idButtonParameter,idNextParam){
+                $('#'+idButtonParameter).remove();
+                var idNextParameter = 'param'+idNextParam;
+                $('#'+idParameterDiv).append('<div class="col-md-2" style="margin-top: 20px;"><p>id: '+idNextParameter+'</p><input name="'+idNextParameter+'" class="form-control" id="'+idNextParameter+'" type="text"></div>');
+                var idParameterDivBox = "'parameters_box_3'";
+                var idParameterButton = "'add_parameter_button_box_3'";
+                $('#'+idParameterDiv).append('<div id="add_parameter_button_box_3" class="col-md-2" style="margin-top: 20px;"> <p>Add Parameter</p> <button type="submit" class="btn btn-primary" onclick="addParameter('+idParameterDivBox+','+idParameterButton+','+(parseInt(idNextParam)+1)+');"> Add Parameter  </button> </div>');
+            }
+
+
+        </script>
+{% endblock %}
+
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+    <div class="container">
+                <!-- CABECERA CON TITULO Y SUBTITULO -->
+                <h1>EJERCICIO DE TIRO PARABÓLICO</h1>
+                <br/>
+
+
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+
+                         <!-- CAJA ILUSTRACIÓN -->
+{#                        <div class="row">#}
+{#                            <div class="col-md-12" >#}
+{#                                <div>#}
+{#                                       <!-- <img class="notebook-img" src="https://media1.tenor.com/images/039ef9592d0eb63596f695c1f65c2502/tenor.gif?itemid=9989174" height="256px" width="256px" />  -->#}
+{#                                       <!-- <img class="notebook-img" src="pelota.jpg" height="256px" width="256px" />  -->#}
+{#                                       <img class="notebook-img" src="http://drawingfit.com/wp-content/uploads/2018/01/drawing-of-a-soccer-ball-soccer-ball-drawing-pencil-art-drawing.png" height="256px" width="256px" />#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+
+
+                        <!-- CAJA TEXTO -->
+
+                    <div class="container notebook-box">
+                        <h4>Enunciado</h4>
+                        <p>
+                            Desde una ventana de un edificio situado a 20m del suelo se lanza una pelota con una velocidad de
+                            15m/s formando un ángulo de 60º con la horizontal. Determinar:
+                        </p>
+                        <ol>
+                            <li>-	Altura máxima de la pelota</li>
+                            <li>-	Alcance de la pelota</li>
+                            <li>-	Tiempo que tarda la pelota en llegar al suelo</li>
+                        </ol>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>En primer lugar, descomponemos la velocidad inicial en sus componentes. La componente horizontal de la velocidad será: </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-1">
+                            <div class="form-group">
+                                <label for="param-input-1">
+                                    V0x:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-1"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>
+                            La componente vertical de la velocidad inicial será:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-2">
+                            <div class="form-group">
+                                <label for="param-input-2">
+                                    V0y:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-2"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>
+                            Obteniendo las ecuaciones del movimiento en los ejes x e y para la posición y la velocidad, el momento en el que alcanza la altura máxima será:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-3">
+                            <div class="form-group">
+                                <label for="param-input-3">
+                                    t:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-3"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>
+                            Y la altura máxima, por tanto, es:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-4">
+                            <div class="form-group">
+                                <label for="param-input-4">
+                                    Ymax:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-4"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>
+                            Calcularemos el tiempo que tarda la pelota en llegar al suelo a partir de la ecuación de la velocidad en el eje Y, resultando:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-5">
+                            <div class="form-group">
+                                <label for="param-input-5">
+                                    tmax:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-5"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container notebook-box">
+                        <p>
+                            La distancia recorrida por la pelota será:
+                        </p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col" id="param-box-6">
+                            <div class="form-group">
+                                <label for="param-input-6">
+                                    Xmax:
+                                </label>
+                                <input class="form-control form-control-sm" id="param-input-6"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary" onclick="evalUserCodeAce();">
+                           Run >>
+                        </button>
+                        <br><br>
+
+                        <p> Resultado caja sintaxis: </p>
+                        <input name="resultado_ace" class="form-control"  id="resultado_ace" type="text" disabled="disabled">
+                    </div>
+                    <div class="row">
+                        <div class='col-sm-6 col-md-12'>
+                            <canvas id="myChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+    <div class="row">
+                            <div class="col-md-12 custom-mt-1" >
+                                <h3 style="text-align: center">CAJA DE CÓDIGO</h3>
+                                <div style="background-color: white;margin-left: 30px; margin-right: 30px;width: auto;height: 800px">
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="editor">
+                                            <pre>
+var xMax = parseInt(document.getElementById("param6").value);
+var yMax = parseInt(document.getElementById("param4").value);
+var xYMax = 7.5*parseInt(document.getElementById("param3").value);
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [0, xYMax, xMax],
+        datasets: [{
+            label: 'Trayectoria de la pelota',
+            data: [20, yMax, 0],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</pre>
+
+                                        </div>
+                                    </div>
+
+    </div>
+                                </div>
+                                </div>
+                            </div>
+            </div>
+
+
+{% endblock %}

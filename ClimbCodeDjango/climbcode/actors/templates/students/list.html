@@ -1,0 +1,77 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <style>
+        table td {
+            align-content: center
+        }
+    </style>
+
+    <h1>Lista de estudiantes</h1>
+
+    <div class="table">
+        <table class="table table-striped">
+            {% if student_list %}
+                {% for student in student_list %}
+            <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Apellidos</td>
+                <td>Email</td>
+                <td>DNI</td>
+                <td>Foto</td>
+                <td>Teléfono</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+
+                    <tr>
+                        <td>{{ student.userAccount.first_name }}</td>
+                        <td>{{ student.userAccount.last_name }}</td>
+                        <td>{{ student.userAccount.email }}</td>
+                        <td>{{ student.dni }}</td>
+                        <td>{{ student.photo}}</td>
+                        <td>{{ student.phone }}</td>
+                        <td><a class="btn btn-default" href="/actors/students/edit/{{ student.pk }}">Editar</a>
+                            <a class="btn btn-danger" href="/actors/students/edit/delete/{{ student.pk }}">Borrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                </div>
+            {% else %}
+                <p></p>
+                <p>No existen estudiantes.</p>
+            {% endif %}
+
+
+    {% if student_list.has_other_pages %}
+        <ul class="pagination">
+            {% if student_list.has_previous %}
+                <li><a href="?page={{ student_list.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in student_list.paginator.page_range %}
+                {% if student_list.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if student_list.has_next %}
+                <li><a href="?page={{ student_list.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/actors/student/register';"
+               value="Crear estudiante"/>
+    </div>
+{% endblock %}

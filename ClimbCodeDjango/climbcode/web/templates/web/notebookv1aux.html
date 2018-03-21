@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 200px;
+            }
+    </style>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/notebook.js"></script>
+        <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+        <script>
+            $( document ).ready(function() {
+                var editor = ace.edit("editor");
+                editor.getSession().setMode("ace/mode/javascript");
+                editor.getSession().setTabSize(4);
+                editor.getSession().setUseWrapMode(true);
+                editor.setShowPrintMargin(false);
+                var heightUpdateFunction = function() {                    
+                    $('#editor').height("200px");
+                    $('#editor-section').height("200px");
+                    // This call is required for the editor to fix all of
+                    // its inner structure for adapting to a change in size
+                    editor.resize();
+                    };
+                // Set initial size to match initial content
+                heightUpdateFunction();
+                // Whenever a change happens inside the ACE editor, update
+                // the size again
+                editor.getSession().on('change', heightUpdateFunction);
+            });
+            
+            function evalUserCodeAce(){
+                var editor = ace.edit("editor");
+                var s = editor.getValue();
+                var resultado = eval(s);
+                document.getElementById("resultado_ace").value = String(resultado);
+            }
+
+            function addParameter(idParameterDiv,idButtonParameter,idNextParam){
+                $('#'+idButtonParameter).remove();
+                var idNextParameter = 'param'+idNextParam;
+                $('#'+idParameterDiv).append('<div class="col-md-2" style="margin-top: 20px;"><p>id: '+idNextParameter+'</p><input name="'+idNextParameter+'" class="form-control" id="'+idNextParameter+'" type="text"></div>');
+                var idParameterDivBox = "'parameters_box_3'";
+                var idParameterButton = "'add_parameter_button_box_3'";
+                $('#'+idParameterDiv).append('<div id="add_parameter_button_box_3" class="col-md-2" style="margin-top: 20px;"> <p>Add Parameter</p> <button type="submit" class="btn btn-primary" onclick="addParameter('+idParameterDivBox+','+idParameterButton+','+(parseInt(idNextParam)+1)+');"> Add Parameter  </button> </div>');
+            }
+
+
+        </script>
+{% endblock %}
+
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+
+    <div class="row" style="background-color: #bbbabb;height: 2200px">
+        <div class="col-md-12">
+            <div class="row">
+                <!-- CABECERA CON TITULO Y SUBTITULO -->
+                <div class="col-md-12 custom-mt-1" >
+                    <div style="background-color: white;width: auto;height: 200px">
+                        <div style="width: auto;margin-left: 30px">
+                            <h1>TÍTULO</h1>
+                            <h3>Subtítulo</h3>
+                        </div>
+                    </div>
+                </div>
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+                <div class="col-md-12 custom-mt-1" >
+                    <div style="background-color: white;width: auto;height: 2000px">
+                        <!-- CAJA TEXTO -->
+                        <div class="row">
+                            <div class="col-md-12 custom-mt-1" >
+                                <h3 style="text-align: center">CAJA DE TEXTO</h3>
+                                <div style="background-color: #bbbabb;margin-left: 30px; margin-right: 30px;width: auto;height: 200px">
+                                        hola
+                                </div>
+                            </div>
+                        </div>
+                        <!-- CAJA ILUSTRACIÓN -->
+                        <div class="row">
+                            <div class="col-md-12 custom-mt-1" >
+                                <h3 style="text-align: center">CAJA DE ILUSTRACIÓN</h3>
+                                <div style="background-color: white;margin-left: 30px; margin-right: 30px;width: auto;height: 200px">
+                                       <!-- <img class="notebook-img" src="https://media1.tenor.com/images/039ef9592d0eb63596f695c1f65c2502/tenor.gif?itemid=9989174" height="256px" width="256px" />  -->
+                                       <img class="notebook-img" src="jojo" height="256px" width="256px" />
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- CAJA CÓDIGO -->
+                        <div class="row">
+                            <div class="col-md-12 custom-mt-1" >
+                                <h3 style="text-align: center">CAJA DE CÓDIGO</h3>
+                                <div style="background-color: white;margin-left: 30px; margin-right: 30px;width: auto;height: 800px">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="editor">function foo(items) {
+  var x = parseInt(document.getElementById("param1").value);
+  return x;
+}
+foo();
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12" style="margin-top: 20px;">
+                                            <h4>Parámetros</h4>
+                                                <div class="row">
+                                                    <div class="col-md-10" style="margin-top: 20px;">
+                                                        <div class="row" id="parameters_box_3">
+                                                            <div class="col-md-2" style="margin-top: 20px;">
+                                                                <p>id: param1</p>
+                                                                <input name="param1" class="form-control"  id="param1" type="text" value="8">
+                                                            </div>
+                                                            <div class="col-md-2" style="margin-top: 20px;">
+                                                                <p>id: param2</p>
+                                                                <input name="param2" class="form-control"  id="param2" type="text">
+                                                            </div>
+                                                            <div class="col-md-2" style="margin-top: 20px;">
+                                                                <p>id: param3</p>
+                                                                <input name="param3" class="form-control"  id="param3" type="text">
+                                                            </div>
+                                                            <div class="col-md-2" style="margin-top: 20px;">
+                                                                <p>id: param4</p>
+                                                                <input name="param4" class="form-control"  id="param4" type="text">
+                                                            </div>
+                                                            <div class="col-md-2" style="margin-top: 20px;">
+                                                                <p>id: param5</p>
+                                                                <input name="param5" class="form-control"  id="param5" type="text">
+                                                            </div>
+                                                            <div id="add_parameter_button_box_3" class="col-md-2" style="margin-top: 20px;">
+                                                                <p>Add Parameter</p>
+                                                                <button type="submit" class="btn btn-primary" onclick="addParameter('parameters_box_3','add_parameter_button_box_3',6);">
+                                                                   Add Parameter
+                                                                </button>
+                                                            </div>                                                     
+                                                        </div>
+                                                    </div>
+                                                         
+                                                </div>                                        
+                                        </div>
+                                   
+                                        <div class="col-md-4" style="margin-top: 20px;">
+                                            <button type="submit" class="btn btn-primary" onclick="evalUserCodeAce();">
+                                               Run >>
+                                            </button>
+                                            <br><br>
+
+                                            <p> Resultado caja sintaxis: </p>
+                                            <input name="resultado_ace" class="form-control"  id="resultado_ace" type="text" disabled="disabled">
+                                        </div>
+                                        <div class="row">
+                                            <div class='col-sm-6 col-md-12'>
+                                                <canvas id="myChart" width="400" height="200"></canvas>
+                                            </div>
+                                        </div>
+
+    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+{% endblock %}

@@ -14,3 +14,14 @@
     border-radius: 5px;
     border-color: #928a8a;
 }
+
+.inputfield{
+	height:50px
+}
+
+/*Estilo para el input text que aumenta de tamaño solo al hacer enter*/
+.animated {
+	-webkit-transition: height 0.2s;
+	-moz-transition: height 0.2s;
+	transition: height 0.2s;
+}

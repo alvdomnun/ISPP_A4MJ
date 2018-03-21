@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- {{ STATIC_URL }} no resuelve (vacio) -->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/custom.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/static/css/welcome.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
@@ -19,57 +20,11 @@
 	<title>{% block title %}Document {% endblock %}</title>
 </head>
 <body>
-	{% block navbar %}
-<<<<<<< HEAD
-		<div class="bs-docs-section clearfix">
-		    <div class="row">
-		        <div class="col-lg-12">
-		            <div class="bs-component">
-		            	<nav class="navbar navbar-default">
-		                	<div class="container-fluid">
-		                  		<div class="navbar-header">
-		                    		<a class="navbar-brand" href="#">Home</a>
-		                  		</div>
-		                  	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		                    	<ul class="nav navbar-nav">
-		                      		<li class="dropdown">
-		                        		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown1<span class="caret"></span></a>
-				                        <ul class="dropdown-menu" role="menu">
-				                        	<li><a href="">Option1</a></li>
-				                        	<li><a href="">Option2</a></li>
-				                        </ul>
-		                      		</li>
-			                        <li class="dropdown">
-			                        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown2<span class="caret"></span></a>
-			                        	<ul class="dropdown-menu" role="menu">
-				                          	<li><a href="">Option1</a></li>
-				                          	<li><a href="">Option2</a></li>
-			                        	</ul>
-			                        </li>
-		                    	</ul>
-		                    	<ul class="nav navbar-nav navbar-right">
-		                        	<li class="dropdown"><a href="" onclick="pageTracker._link(this.href); return false;">ClimbCode</a>
-		                        	</li>
-		                        	<li class="dropdown">
-		                        		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Opciones<span class="caret"></span></a>
-		                        		<ul class="dropdown-menu" role="menu">
-		                          			<li><a href="">Salir</a></li>
-		                        		</ul>
-		                      		</li>
-								</ul>
-								<!-- Inicio/Cierre de sesión -->
-								{% include 'base/loginpartial.html' %}
-		                    </div>
-		                </div>
-		            </nav>
-		        </div>
-           	</div>
-        </div>
-    </div>    
 
-=======
+
+	{% block navbar %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/web/">
+            <a class="navbar-brand" href="#home">
                 ClimbCode
             </a>
             <!--Botón de "colapso", se mostrará si la ventana es demasiado pequeña-->
@@ -80,6 +35,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <!-- Elementos principales -->
                 <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#info">Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ejercicios">Ejercicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#programadores">Programadores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#escuelas">Escuelas</a>
+                    </li>
+
                     <!-- Dropdown menu -->
                     <li class="dropdown">
                         <!-- Título del dropdown -->
@@ -105,7 +73,6 @@
                 </ul>
             </div>
         </nav>
->>>>>>> alegarres
 	{% endblock %}
 
 

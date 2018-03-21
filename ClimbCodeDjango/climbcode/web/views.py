@@ -16,9 +16,24 @@ from provinces.models import Province
 # Create your views here.
 
 def index(request):
+	template = loader.get_template('welcome/index.html')
+	context = {}
+	return HttpResponse(template.render(context, request))
+
+def web_index(request):
 	template = loader.get_template('web/index.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
+
+def sample_dashboard(request):
+	template = loader.get_template('samples/sampleDashboard.html')
+	context = {}
+	return HttpResponse(template.render(context,request))
+
+def notebookVistaV1(request):
+	template = loader.get_template('notebook/notebookVistaV1.html')
+	context = {}
+	return HttpResponse(template.render(context,request))
 
 def notebookv1(request):
 	template = loader.get_template('web/notebookv1.html')
@@ -150,5 +165,5 @@ def register_school(request):
         'licenseTitle': 'Licencias Ofertadas',
         'year': datetime.now().year,
     }
-        
+
     return render(request, 'web/registerSchool.html', data)

@@ -52,4 +52,7 @@ urlpatterns = [
 
     # Web
     path('web/', include('web.urls')),
+
+    # Profesores
+    path('actors/', include('actors.urls'))
 ]

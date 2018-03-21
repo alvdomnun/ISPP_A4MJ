@@ -5,6 +5,11 @@ from django.template import loader
 # Create your views here.
 
 def index(request):
+	template = loader.get_template('welcome/index.html')
+	context = {}
+	return HttpResponse(template.render(context, request))
+
+def web_index(request):
 	template = loader.get_template('web/index.html')
 	context = {}
 	return HttpResponse(template.render(context, request))

@@ -5,48 +5,122 @@ Sample dashboard
 {% endblock %}
 
 {% block content %}
-    <h3>Form normal</h3>
-    <form>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="input">Input:</label>
-                        <input type="text" class="form-control" id="input">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="textarea">Textarea:</label>
-                        <textarea rows="2" class="form-control" id="textarea"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    <div class="container-fluid mt-4">
+        <h3>Formulario normal</h3>
+        <form>
+                <div class="row">
 
-    <h3>Form horizontal</h3>
-    <!-- He tratado de incluir la regla "form-control-sm" que crearia un input mas pequeño
-     pero no lo carga. Imagino que el boostrap incluido no lo trae -->
-    <div class="container">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <!-- Le aplicamos la clase col-*-* para que cree una columna -->
-                <label class="control-label col-sm-2" for="name">Name:</label>
-                <!-- Lo introducimos en un div col-*-* para que cree una columna -->
-                <!-- Tener en cuenta que el numero indicado (Segundo *) debe sumar 12
-                    El primer asterisco indica a que pantallas se aplica.
-                    Escala hacia arriba, es decir, que si ponemos la opcion mas pequeña,
-                    las pantallas mas grandes usaran esa regla(Si no se ha definido una mas grande)-->
-                <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-sm" id="name">
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label for="inputSm">Texto pequeño:</label>
+                            <input class="form-control form-control-sm" id="inputSm"></input>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label for="input">Texto medio (por defecto):</label>
+                            <input type="text" class="form-control" id="input">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label for="inputLg">Texto grande:</label>
+                            <input class="form-control form-control-lg" id="inputLg"></input>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label for="textarea">Caja texto:</label>
+                            <textarea rows="2" class="form-control" id="textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label for="inputSm">Etiqueta:</label>
+                            <div class="input-group">
+                              <input id="inputGroup" type="text" class="form-control" placeholder="Recipient's username" aria-label="Nombre de usuario" aria-describedby="basic-addon2">
+                              <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">@acme.com</span>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="form-group">
+                            <label>Checkbox:</label>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Opción 1
+                              </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="">Opción 2
+                                </label>
+                            </div>
+                            <div class="form-check disabled">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" value="" disabled>Opción 3
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <label>Radio:</label>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">Opción 1</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">Opción 2</label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="optradio" disabled>Opción 3</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                         <div class="form-group">
+                          <label for="sel1">Combo:</label>
+                             <div class="inputSelect">
+                                 <select class="form-control dropdown dropdown-toggle" id="sel1">
+                                      <option>1</option>
+                                      <option>2</option>
+                                      <option>3</option>
+                                      <option>4</option>
+                                  </select>
+                             </div>
+
+                        </div>
+                    </div>
+
+
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="email">Email:</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control form-control-sm" id="email">
+            <div class="row">
+                <div class="col-md-3 ml-auto">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="btn btn-primary" type="submit" value="Aceptar">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input class="btn btn-danger" type="submit" value="Cancelar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
+
             </div>
         </form>
     </div>

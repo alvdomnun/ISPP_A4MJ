@@ -9,6 +9,51 @@ from actors.models import Teacher, School, Student
 # Create your views here.
 from subjects.models import Subject
 
+def add_subject_aux(request):
+    pk1 = request.GET.get('pk1')
+    pk2 = request.GET.get('pk2')
+    teacher = get_object_or_404(Teacher, pk=pk1)
+    subject = Subject.objects.filter(pk=pk2)
+    t_subjects = Subject.objects.filter(teacher__userAccount_id=teacher.userAccount_id)
+
+    new_subjects = subject | t_subjects
+    teacher.subjects.set(new_subjects)
+
+    teacher.save()
+
+    return HttpResponseRedirect('/actors/teachers/list')
+
+def add_subject_teacher(request, pk):
+    teacher = Teacher.objects.get(pk=pk)
+    teachers = Teacher.objects.filter(pk=pk)
+
+    user = request.user
+
+    try:
+        school = School.objects.get(userAccount_id=user.id)
+        school_subjects_aux = Subject.objects.filter(school_id=school.id)\
+        .exclude(teacher__in=teachers)
+    except Exception as e:
+        school_subjects_aux = Subject.objects.none()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(school_subjects_aux, 6)
+
+    try:
+        school_subjects = paginator.page(page)
+    except PageNotAnInteger:
+        school_subjects = paginator.page(1)
+    except EmptyPage:
+        school_subjects = paginator.page(paginator.num_pages)
+
+    data = {
+        'school_subjects': school_subjects,
+        'teacher': teacher,
+        'title': 'Asignar asignaturas',
+    }
+
+    return render(request, 'teachers/add_subjects.html', data)
+
 
 def list_teachers(request):
     user = request.user

@@ -34,9 +34,9 @@
                         <td>{{ teacher.photo }}</td>
                         <td>{{ teacher.phone }}</td>
                         <td><a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
+                            <a class="btn btn-default" href="/actors/teachers/add/subjects/{{ teacher.pk }}">Asignar asignaturas</a>
                             <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
                         </td>
-                        <td><a href="/actors/teachers/add/subjects/{{ teacher.pk }}">Asignar asignaturas</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

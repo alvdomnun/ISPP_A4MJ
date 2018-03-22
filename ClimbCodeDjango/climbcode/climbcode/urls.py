@@ -37,7 +37,7 @@ urlpatterns = [
             {
                 'titulo': 'Inicio de sesión',
                 'year': datetime.now().year,
-            }
+            },
         },
         name='login'),
     url(r'^logout$', django.contrib.auth.views.logout,

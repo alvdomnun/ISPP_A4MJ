@@ -2,11 +2,8 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, get_object_or_404
-
 from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm
 from actors.models import Teacher, School, Student
-
-# Create your views here.
 from subjects.models import Subject
 
 def add_subject_aux(request):
@@ -54,7 +51,6 @@ def add_subject_teacher(request, pk):
 
     return render(request, 'teachers/add_subjects.html', data)
 
-
 def list_teachers(request):
     user = request.user
     try:
@@ -79,15 +75,12 @@ def list_teachers(request):
     }
     return render(request, 'teachers/list.html', data)
 
-
-
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
     if request.method == 'POST':
         teacher.delete()
         return HttpResponseRedirect('/actors/teachers/list')
     return render(request, 'teachers/delete.html', {'teacher':teacher})
-
 
 def edit_teacher(request, pk):
     assert isinstance(request, HttpRequest)
@@ -241,7 +234,6 @@ def register_student(request):
     }
 
     return render(request, 'students/register.html', data)
-
 
 def edit_student(request, pk):
     assert isinstance(request, HttpRequest)

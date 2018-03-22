@@ -75,7 +75,7 @@ function addCodeBox(idNotebookContent){
 	                                        
 	                                        '<div class="col-md-12" style="margin-top: 20px;">'+
 	                                        '<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Delete</button>'+
-	                                                '<div class="row">'+                                                	
+	                                                '<div class="row" style="padding: 15px;">'+                                                	
 	                                                    '<div class="col-md-12 div-notebook-parameter" style="margin-top: 20px;background-color: white">'+
 	                                                    '<h3 style="text-align:center">Parameters</h3>'+
 	                                                        '<div class="row" id="'+idDivParam+'">'+                                                          
@@ -229,7 +229,7 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 								'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
 							'</div>'+	                    
 		                    '<div class="col-md-12">'+
-		                        '<canvas id="'+idChart+'" width="auto" height="300"></canvas>'+
+		                        '<canvas class="notebook-chart" id="'+idChart+'" width="auto" height="300"></canvas>'+
 		                    '</div>'+
 		                '</div>'+
 	                '</div>';
@@ -279,6 +279,9 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 	        }]
 	    },
 	    options: {
+	    	chartArea: {
+		        backgroundColor: 'rgba(251, 255, 255, 0.4)',
+		    },
 	        maintainAspectRatio: false,
 	        scales: {
 	            yAxes: [{

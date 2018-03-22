@@ -66,3 +66,63 @@ body {
     padding-top: 8px;
     margin-bottom: 15px;
 }
+
+.custom-mt-1 {
+	margin-top: 2em;
+}
+.notebook-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ace_editor{
+	margin-left: 0px;
+	border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    border-color: #928a8a;
+}
+
+.inputfield{
+	height:50px
+}
+
+/*Estilo para el input text que aumenta de tamaño solo al hacer enter*/
+.animated {
+	-webkit-transition: height 0.2s;
+	-moz-transition: height 0.2s;
+	transition: height 0.2s;
+}
+
+.notebook_content{
+	display:block;
+	overflow:auto;
+}
+
+
+.div-notebook-parameter{
+	border: 2px solid;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    border-color: #928a8a;
+}
+
+.text-box-textarea{
+	resize: none;
+    overflow: hidden;
+    min-height: 50px;
+}
+
+.resultado_code_editor{
+	background-color: white !important;
+    opacity: 1;
+}
+
+.notebook-chart{
+	border: 2px solid;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    border-color: #928a8a;
+    background-color: white
+}

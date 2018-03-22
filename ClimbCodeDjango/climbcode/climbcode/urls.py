@@ -26,7 +26,7 @@ admin.autodiscover()
 
 urlpatterns = [
     # Página de bienvenida
-    # url(r'^$', ruta, name='home'),
+    url(r'^$', web.views.index, name='home'),
 
     # Sesión
     url(r'^login/$', django.contrib.auth.views.login,

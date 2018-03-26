@@ -11,6 +11,8 @@ from actors.models import School, Programmer
 from datetime import datetime
 from licenses.models import LicenseType
 from provinces.models import Province
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -177,3 +179,17 @@ def register_school(request):
     }
 
     return render(request, 'web/registerSchool.html', data)
+
+@csrf_exempt
+def pruebaAjaxNotebook(request):
+    print("hemos llegado")
+    if request.method == 'POST':
+        print("metodo post")
+        title = request.POST.get('title')
+        subtitle = request.POST.get('subtitle')
+
+        print(title)
+        data = {
+            'respuesta': "Recibido en servidor el título: "+title+" y subtítulo: "+subtitle
+        }
+        return JsonResponse(data)

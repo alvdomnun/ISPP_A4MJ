@@ -28,9 +28,6 @@ function addTextBox(idNotebookContent){
 
     $('#'+idNotebookContent).append(htmlTextBox);
 
-	$('.animated').autosize({append: "\n"});
-
-
 }
 
 function auto_grow(element) {
@@ -310,6 +307,16 @@ function deleteChart(idChartRow,idRowPrincipalParameter,idBoxParameter,idColChar
 
     $('#'+idColChartButtons).append(htmlAddChartButton);
 
-
-
 }
+
+
+
+/*GESTION DE FORMULARIOS*/
+
+
+// AJAX for posting
+function create_notebook() {
+    console.log("create notebook is working!") // sanity check
+    console.log($('#post-text').val())
+};
+

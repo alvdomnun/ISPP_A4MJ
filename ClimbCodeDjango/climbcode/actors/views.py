@@ -212,12 +212,13 @@ def register_student(request):
             phone = form.cleaned_data["phone"]
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
+            subjects = form.cleaned_data["subjects"]
 
             userAccount = user
 
             try:
                 school = School.objects.get(userAccount_id=current_school.id)
-                student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_s=school)
+                student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_s=school, subjects=subjects)
             except Exception as e:
                 student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount)
 
@@ -227,10 +228,12 @@ def register_student(request):
 
     else:
         form = RegisterStudentForm()
+        subjects = form.fields['subjects'].choices
 
     data = {
         'form': form,
-        'title': 'Registrar estudiante'
+        'title': 'Registrar estudiante',
+        'subjects': subjects
     }
 
     return render(request, 'students/register.html', data)

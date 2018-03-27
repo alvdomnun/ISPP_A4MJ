@@ -22,6 +22,7 @@ class EditTeacherForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
+
     # Validaciones adicionales
     #def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
@@ -41,6 +42,8 @@ class EditStudentForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
+    subjects = forms.ModelMultipleChoiceField(queryset = Subject.objects.all(), label = 'Asignaturas')
+
     # Validaciones adicionales
     #def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
@@ -100,6 +103,7 @@ class RegisterStudentForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
+    subjects = forms.ModelMultipleChoiceField(queryset = Subject.objects.all(), label = 'Asignaturas')
 
     # Validaciones adicionales
     def clean(self):

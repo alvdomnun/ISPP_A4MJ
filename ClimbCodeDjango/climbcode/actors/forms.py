@@ -86,7 +86,6 @@ class RegisterTeacherForm(forms.Form):
                 raise forms.ValidationError(
                     "Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
 
-
 class RegisterStudentForm(forms.Form):
     # Atributos de información personal
     username = forms.CharField(min_length=5, max_length=32, label='Nombre de usuario')
@@ -103,7 +102,14 @@ class RegisterStudentForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
-    subjects = forms.ModelMultipleChoiceField(queryset = Subject.objects.all(), label = 'Asignaturas')
+
+    subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(RegisterStudentForm, self).__init__(*args, **kwargs)
+        self.fields['subjects'] = forms.ModelMultipleChoiceField(queryset = Subject.objects.filter(school__userAccount_id=self.user.id), label = 'Asignaturas')
+
 
     # Validaciones adicionales
     def clean(self):

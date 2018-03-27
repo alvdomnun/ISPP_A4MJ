@@ -193,8 +193,11 @@ def list_students(request):
 def register_student(request):
     current_school = request.user
 
+    form = RegisterStudentForm(user=request.user)# Si se pone debajo con el else da error
+    subjects = form.fields['subjects'].choices
+
     if (request.method == 'POST'):
-        form = RegisterStudentForm(request.POST, request.FILES)
+        form = RegisterStudentForm(request.POST, request.FILES, user=request.user)
         if (form.is_valid()):
 
             username = form.cleaned_data["username"]
@@ -226,14 +229,10 @@ def register_student(request):
 
             return HttpResponseRedirect('/actors/students/list')
 
-    else:
-        form = RegisterStudentForm()
-        subjects = form.fields['subjects'].choices
-
     data = {
         'form': form,
         'title': 'Registrar estudiante',
-        'subjects': subjects
+        'subjects': subjects,
     }
 
     return render(request, 'students/register.html', data)

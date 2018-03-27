@@ -70,7 +70,7 @@
                             <select class="form-control" id="subjects" name="subjects" >
                                 <option value="" selected="selected">Seleccione asignaturas</option>
                                 {% for subject in subjects %}
-                                    <option value="{{ subject.1 }}">{{ subject.1 }}</option>
+                                    <option value="{{ subject.0 }}">{{ subject.1 }}</option>
                                 {% endfor %}
                             </select>
                         </div>

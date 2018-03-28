@@ -55,5 +55,8 @@ urlpatterns = [
     path('web/', include('web.urls')),
 
     # Profesores
-    path('actors/', include('actors.urls'))
+    path('actors/', include('actors.urls')),
+
+    # Asignturas
+    path('subjects/', include('subjects.urls')),
 ]

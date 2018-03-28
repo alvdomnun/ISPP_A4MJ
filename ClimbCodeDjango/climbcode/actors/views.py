@@ -6,12 +6,89 @@ from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, 
 from actors.models import Teacher, School, Student
 from subjects.models import Subject
 
+
+#Para profesores
+def remove_subject_aux(request):
+
+    try:
+        School.objects.get(userAccount_id=request.user.id)
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    pk1 = request.GET.get('pk1')
+    pk2 = request.GET.get('pk2')
+    teacher = get_object_or_404(Teacher, pk=pk1)
+
+    try:
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if teacher.school_t_id != school.pk:
+            raise Exception("El profesor no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    new_subjects = Subject.objects.filter(teacher__userAccount_id=teacher.userAccount_id) \
+        .exclude(pk=pk2)
+
+    teacher.subjects.set(new_subjects)
+
+    teacher.save()
+
+    return HttpResponseRedirect('/actors/teachers/list')
+
+#Para estudiantes
+def remove_subject_aux2(request):
+
+    try:
+        School.objects.get(userAccount_id=request.user.id)
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    pk1 = request.GET.get('pk1')
+    pk2 = request.GET.get('pk2')
+    student = get_object_or_404(Student, pk=pk1)
+
+    try:
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if student.school_s_id != school.pk:
+            raise Exception("El profesor no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    new_subjects = Subject.objects.filter(teacher__userAccount_id=student.userAccount_id) \
+        .exclude(pk=pk2)
+
+    student.subjects.set(new_subjects)
+
+    student.save()
+
+    return HttpResponseRedirect('/actors/students/list')
+
 #Para profesores
 def add_subject_aux(request):
+
+    try:
+        School.objects.get(userAccount_id=request.user.id)
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
     pk1 = request.GET.get('pk1')
     pk2 = request.GET.get('pk2')
     teacher = get_object_or_404(Teacher, pk=pk1)
     subject = Subject.objects.filter(pk=pk2)
+
+    try:
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if teacher.school_t_id != school.pk:
+            raise Exception("El profesor no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
     t_subjects = Subject.objects.filter(teacher__userAccount_id=teacher.userAccount_id)
 
     new_subjects = subject | t_subjects
@@ -23,10 +100,22 @@ def add_subject_aux(request):
 
 #Para estudiantes
 def add_subject_aux2(request):
+
     pk1 = request.GET.get('pk1')
     pk2 = request.GET.get('pk2')
+
     student = get_object_or_404(Student, pk=pk1)
     subject = Subject.objects.filter(pk=pk2)
+
+    try:
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if student.school_s_id != school.pk:
+            raise Exception("El estudiante no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
     s_subjects = Subject.objects.filter(student__userAccount_id=student.userAccount_id)
 
     new_subjects = subject | s_subjects
@@ -44,26 +133,33 @@ def add_subject_teacher(request, pk):
 
     try:
         school = School.objects.get(userAccount_id=user.id)
-        school_subjects_aux = Subject.objects.filter(school=school)\
-        .exclude(teacher__in=teachers)
+        subjects_aux = Subject.objects.filter(school_id=school.userAccount_id)
+        school_subjects_aux = Subject.objects.filter(school_id=school.userAccount_id) \
+            .exclude(teacher__in=teachers)
+
+        if teacher.school_t_id != school.userAccount_id:
+            raise Exception("El profesor no pertenece a tu escuela")
+
     except Exception as e:
-        school_subjects_aux = Subject.objects.none()
+        print(e)
+        return HttpResponseRedirect('/')
 
 
     page = request.GET.get('page', 1)
     paginator = Paginator(school_subjects_aux, 6)
 
     try:
-        school_subjects_aux = paginator.page(page)
+        school_subjects = paginator.page(page)
     except PageNotAnInteger:
-        school_subjects_aux = paginator.page(1)
+        school_subjects = paginator.page(1)
     except EmptyPage:
-        school_subjects_aux = paginator.page(paginator.num_pages)
+        school_subjects = paginator.page(paginator.num_pages)
 
     data = {
-        'school_subjects': school_subjects_aux,
+        'school_subjects': school_subjects,
         'teacher': teacher,
         'title': 'Asignar asignaturas',
+        'subjects_aux': subjects_aux,
     }
 
     return render(request, 'teachers/add_subjects.html', data)
@@ -78,9 +174,14 @@ def add_subject_student(request, pk):
     try:
         school = School.objects.get(userAccount_id=user.id)
         school_subjects_aux = Subject.objects.filter(school=school)\
-        .exclude(student__in=students)
+            .exclude(student__in=students)
+        subjects_aux = Subject.objects.filter(school=school)
+
+        if student.school_s_id != school.pk:
+            raise Exception("El estudiante no pertenece a tu escuela")
+
     except Exception as e:
-        school_subjects_aux = Subject.objects.none()
+        return HttpResponseRedirect('/')
 
 
     page = request.GET.get('page', 1)
@@ -97,44 +198,69 @@ def add_subject_student(request, pk):
         'school_subjects': school_subjects_aux,
         'student': student,
         'title': 'Asignar asignaturas',
+        'subjects_aux': subjects_aux,
     }
 
     return render(request, 'students/add_subjects.html', data)
 
 def list_teachers(request):
     user = request.user
+
     try:
         school = School.objects.get(userAccount_id=user.id)
         teacher_list_aux = Teacher.objects.filter(school_t=school)
     except Exception as e:
-        teacher_list_aux = School.objects.none()
+        return HttpResponseRedirect('/')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(teacher_list_aux, 6)
 
     try:
-        teacher_list_aux = paginator.page(page)
+        teacher_list = paginator.page(page)
     except PageNotAnInteger:
-        teacher_list_aux = paginator.page(1)
+        teacher_list = paginator.page(1)
     except EmptyPage:
-        teacher_list_aux = paginator.page(paginator.num_pages)
+        teacher_list = paginator.page(paginator.num_pages)
 
     data = {
-        'teacher_list': teacher_list_aux,
+        'teacher_list': teacher_list,
         'title': 'Listado de profesores'
     }
     return render(request, 'teachers/list.html', data)
 
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
+
+    try:
+
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if teacher.school_t_id != school.pk:
+            raise Exception("El profesor no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+
     if request.method == 'POST':
         teacher.delete()
         return HttpResponseRedirect('/actors/teachers/list')
+
     return render(request, 'teachers/delete.html', {'teacher':teacher})
 
 def edit_teacher(request, pk):
-    assert isinstance(request, HttpRequest)
     teacher = get_object_or_404(Teacher, pk=pk)
+
+    try:
+
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if teacher.school_t_id != school.pk:
+            raise Exception("El profesor no pertenece a tu escuela")
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    assert isinstance(request, HttpRequest)
     userAccount = get_object_or_404(User, pk=teacher.userAccount_id)
 
     if (request.method == 'POST'):
@@ -173,6 +299,13 @@ def edit_teacher(request, pk):
 
 def register_teacher(request):
     current_school = request.user
+
+    try:
+
+        School.objects.get(userAccount_id=current_school.id)
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
 
     form = RegisterStudentForm(user=request.user)  # Si se pone debajo con el else da error
     subjects = form.fields['subjects'].choices
@@ -213,22 +346,24 @@ def register_teacher(request):
             return HttpResponseRedirect('/actors/teachers/list')
 
     else:
-        form = RegisterTeacherForm()
+        form = RegisterTeacherForm(user=current_school)
 
     data = {
         'form': form,
-        'title': 'Registrar profesor'
+        'title': 'Registrar profesor',
+        'subjects': subjects,
     }
 
     return render(request, 'teachers/register.html', data)
 
 def list_students(request):
     user = request.user
+
     try:
         school = School.objects.get(userAccount_id=user.id)
         student_list_aux = Student.objects.filter(school_s=school)
     except Exception as e:
-        student_list_aux = School.objects.none()
+        return HttpResponseRedirect('/')
 
     page = request.GET.get('page', 1)
     paginator = Paginator(student_list_aux, 6)
@@ -248,6 +383,13 @@ def list_students(request):
 
 def register_student(request):
     current_school = request.user
+
+    try:
+
+        School.objects.get(userAccount_id=request.user.id)
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
 
     form = RegisterStudentForm(user=request.user)# Si se pone debajo con el else da error
     subjects = form.fields['subjects'].choices
@@ -297,8 +439,19 @@ def register_student(request):
     return render(request, 'students/register.html', data)
 
 def edit_student(request, pk):
-    assert isinstance(request, HttpRequest)
+
     student = get_object_or_404(Student, pk=pk)
+
+    try:
+
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if student.school_s_id != school.pk:
+            raise Exception("El estudiante no pertenece a tu escuela")
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    assert isinstance(request, HttpRequest)
     userAccount = get_object_or_404(User, pk=student.userAccount_id)
 
     if (request.method == 'POST'):
@@ -337,6 +490,17 @@ def edit_student(request, pk):
 
 def delete_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
+
+    try:
+
+        school = School.objects.get(userAccount_id=request.user.id)
+
+        if student.school_s_id != school.pk:
+            raise Exception("El estudiante no pertenece a tu escuela")
+
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
     if request.method == 'POST':
         student.delete()
         return HttpResponseRedirect('/actors/students/list')

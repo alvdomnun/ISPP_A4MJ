@@ -6,6 +6,7 @@ from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, 
 from actors.models import Teacher, School, Student
 from subjects.models import Subject
 
+#Para profesores
 def add_subject_aux(request):
     pk1 = request.GET.get('pk1')
     pk2 = request.GET.get('pk2')
@@ -20,6 +21,21 @@ def add_subject_aux(request):
 
     return HttpResponseRedirect('/actors/teachers/list')
 
+#Para estudiantes
+def add_subject_aux2(request):
+    pk1 = request.GET.get('pk1')
+    pk2 = request.GET.get('pk2')
+    student = get_object_or_404(Student, pk=pk1)
+    subject = Subject.objects.filter(pk=pk2)
+    s_subjects = Subject.objects.filter(student__userAccount_id=student.userAccount_id)
+
+    new_subjects = subject | s_subjects
+    student.subjects.set(new_subjects)
+
+    student.save()
+
+    return HttpResponseRedirect('/actors/students/list')
+
 def add_subject_teacher(request, pk):
     teacher = Teacher.objects.get(pk=pk)
     teachers = Teacher.objects.filter(pk=pk)
@@ -28,28 +44,62 @@ def add_subject_teacher(request, pk):
 
     try:
         school = School.objects.get(userAccount_id=user.id)
-        school_subjects_aux = Subject.objects.filter(school_id=school.id)\
+        school_subjects_aux = Subject.objects.filter(school=school)\
         .exclude(teacher__in=teachers)
     except Exception as e:
         school_subjects_aux = Subject.objects.none()
+
 
     page = request.GET.get('page', 1)
     paginator = Paginator(school_subjects_aux, 6)
 
     try:
-        school_subjects = paginator.page(page)
+        school_subjects_aux = paginator.page(page)
     except PageNotAnInteger:
-        school_subjects = paginator.page(1)
+        school_subjects_aux = paginator.page(1)
     except EmptyPage:
-        school_subjects = paginator.page(paginator.num_pages)
+        school_subjects_aux = paginator.page(paginator.num_pages)
 
     data = {
-        'school_subjects': school_subjects,
+        'school_subjects': school_subjects_aux,
         'teacher': teacher,
         'title': 'Asignar asignaturas',
     }
 
     return render(request, 'teachers/add_subjects.html', data)
+
+
+def add_subject_student(request, pk):
+    student = Student.objects.get(pk=pk)
+    students = Student.objects.filter(pk=pk)
+
+    user = request.user
+
+    try:
+        school = School.objects.get(userAccount_id=user.id)
+        school_subjects_aux = Subject.objects.filter(school=school)\
+        .exclude(student__in=students)
+    except Exception as e:
+        school_subjects_aux = Subject.objects.none()
+
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(school_subjects_aux, 6)
+
+    try:
+        school_subjects_aux = paginator.page(page)
+    except PageNotAnInteger:
+        school_subjects_aux = paginator.page(1)
+    except EmptyPage:
+        school_subjects_aux = paginator.page(paginator.num_pages)
+
+    data = {
+        'school_subjects': school_subjects_aux,
+        'student': student,
+        'title': 'Asignar asignaturas',
+    }
+
+    return render(request, 'students/add_subjects.html', data)
 
 def list_teachers(request):
     user = request.user
@@ -124,8 +174,11 @@ def edit_teacher(request, pk):
 def register_teacher(request):
     current_school = request.user
 
+    form = RegisterStudentForm(user=request.user)  # Si se pone debajo con el else da error
+    subjects = form.fields['subjects'].choices
+
     if (request.method == 'POST'):
-        form = RegisterTeacherForm(request.POST, request.FILES)
+        form = RegisterTeacherForm(request.POST, request.FILES, user=request.user)
         if (form.is_valid()):
 
             username = form.cleaned_data["username"]
@@ -143,12 +196,15 @@ def register_teacher(request):
             phone = form.cleaned_data["phone"]
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
+            subjects = form.cleaned_data["subjects"]
 
             userAccount = user
 
             try:
                 school = School.objects.get(userAccount_id=current_school.id)
                 teacher = Teacher.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_t=school)
+                # Asignación de las asignaturas
+                teacher.subjects.set(subjects)
             except Exception as e:
                 teacher = Teacher.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount)
 
@@ -221,7 +277,10 @@ def register_student(request):
 
             try:
                 school = School.objects.get(userAccount_id=current_school.id)
-                student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_s=school, subjects=subjects)
+                student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_s=school)
+
+                # Asignación de las asignaturas
+                student.subjects.set(subjects)
             except Exception as e:
                 student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount)
 

@@ -67,14 +67,13 @@
                 <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="subjects" class="control-label">Seleccione asignaturas</label>
-                            <select class="form-control" id="subjects" name="subjects" >
-                                <option value="" selected="selected">Seleccione asignaturas</option>
+                            <select multiple class="form-control" id="subjects" name="subjects" >
                                 {% for subject in subjects %}
                                     <option value="{{ subject.0 }}">{{ subject.1 }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                
+                </div>
                 <!-- Tratamiento de Errores -->
                 {% if form.errors %}
                     {% for field in form %}

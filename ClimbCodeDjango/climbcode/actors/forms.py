@@ -42,9 +42,9 @@ class EditStudentForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
-    subjects = forms.ModelMultipleChoiceField(queryset = Subject.objects.all(), label = 'Asignaturas')
+    #subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
 
-    # Validaciones adicionales
+# Validaciones adicionales
     #def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
 
@@ -66,6 +66,14 @@ class RegisterTeacherForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
+
+    subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(RegisterTeacherForm, self).__init__(*args, **kwargs)
+        self.fields['subjects'] = forms.ModelMultipleChoiceField(
+            queryset=Subject.objects.filter(school__userAccount_id=self.user.id), label='Asignaturas')
 
     # Validaciones adicionales
     def clean(self):

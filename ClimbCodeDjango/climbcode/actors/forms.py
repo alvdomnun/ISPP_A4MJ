@@ -2,10 +2,73 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.forms.utils import ErrorList
 
 from actors.models import Teacher
 from subjects.models import Subject
+from hashlib import sha1
 
+class EditSelfTeacherForm(forms.Form):
+    # Atributos de información personal
+    username = forms.HiddenInput
+    password = forms.HiddenInput
+    confirm_password = forms.HiddenInput
+    email = forms.EmailField()
+    first_name = forms.CharField(min_length=2, max_length=32, label='Nombre')
+    last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
+
+    # Atributos propios de la clase
+    phone = forms.CharField(max_length=11, validators=[RegexValidator(regex=r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')],
+                            label='Teléfono')
+    photo = forms.ImageField(required=False)
+    dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
+                          label='D.N.I.')
+
+
+class EditSelfTeacherPassForm(forms.Form):
+    # Atributos de información personal
+    username = forms.HiddenInput
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        self.password = kwargs.pop('password')
+        super(EditSelfTeacherPassForm, self).__init__(*args, **kwargs)
+        self.fields['password'] = forms.CharField(required=False, initial=self.password)
+
+
+    actual_password = forms.CharField(min_length=5, max_length=32, widget=forms.PasswordInput, label='Contraseña actual')
+    new_password = forms.CharField(min_length=5, max_length=32, widget=forms.PasswordInput,
+                                       label='Nueva contraseña')
+    confirm_new_password = forms.CharField(min_length=5, max_length=32, widget=forms.PasswordInput,
+                                       label='Confirmar nueva contraseña')
+    email = forms.HiddenInput
+    first_name = forms.HiddenInput
+    last_name = forms.HiddenInput
+
+    # Atributos propios de la clase
+    phone = forms.HiddenInput
+    photo = forms.HiddenInput
+    dni = forms.HiddenInput
+
+    # Validaciones adicionales
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            actual_password = self.cleaned_data['actual_password']
+            if not self.user.check_password(actual_password):
+                raise forms.ValidationError(
+                    "La contraseña actual no es correcta. Por favor, asegúrese de confirmarla correctamente.")
+
+            new_password = self.cleaned_data['new_password']
+            confirm_new_password = self.cleaned_data['confirm_new_password']
+            if new_password != confirm_new_password:
+                raise forms.ValidationError(
+                    "La nuevas contraseñas no coinciden. Por favor, asegúrese de confirmarlas correctamente.")
+
+            if new_password == actual_password:
+                raise forms.ValidationError(
+                    "No puede cambiar la contraseña a una igual, elija otra nueva contraseña por favor.")
 
 class EditTeacherForm(forms.Form):
     # Atributos de información personal

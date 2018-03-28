@@ -18,4 +18,7 @@ urlpatterns = [
     path('students/add/subjects/<int:pk>', views.add_subject_student, name='add_subject_student'),
     path(r'students/add/subjects/add', views.add_subject_aux2, name='add_subject_student_aux'),
     path(r'students/remove/subjects/remove', views.remove_subject_aux2, name='remove_subject_student_aux'),
+
+    path('teacher/edit', views.edit_self_teacher, name='edit_self_teacher'),
+    path('teacher/edit/password', views.edit_self_teacher_pass, name='edit_self_teacher_pass'),
 ]

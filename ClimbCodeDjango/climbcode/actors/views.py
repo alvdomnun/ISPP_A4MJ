@@ -1,11 +1,112 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, get_object_or_404
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm
+from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
+    EditSelfTeacherForm, EditSelfTeacherPassForm
 from actors.models import Teacher, School, Student
 from subjects.models import Subject
 
+
+# Edición del perfil propio profesor ------------------------------------------------------------------
+
+def edit_self_teacher(request):
+    teacher_aux = request.user
+
+    try:
+        Teacher.objects.get(userAccount_id=teacher_aux.id)
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    assert isinstance(request, HttpRequest)
+    teacher = get_object_or_404(Teacher, pk=teacher_aux.id)
+    userAccount = get_object_or_404(User, pk=teacher_aux.id)
+
+    if (request.method == 'POST'):
+        form = EditSelfTeacherForm(request.POST, request.FILES)
+        if (form.is_valid()):
+            user = teacher.userAccount
+
+            userAccount.username = user.username
+            userAccount.password = user.password
+            userAccount.email = form.cleaned_data["email"]
+            userAccount.first_name = form.cleaned_data["first_name"]
+            userAccount.last_name = form.cleaned_data["last_name"]
+
+            userAccount.save()
+
+            teacher.phone = form.cleaned_data["phone"]
+            teacher.photo = form.cleaned_data["photo"]
+            teacher.dni = form.cleaned_data["dni"]
+
+            teacher.save()
+
+            return HttpResponseRedirect('/actors/teachers/list')
+
+    else:
+        form = EditSelfTeacherForm()
+
+    data = {
+        'form': form,
+        'teacher': teacher,
+        'title': 'Editar perfil'
+    }
+
+    return render(request, 'teachers/self_edit.html', data)
+
+def edit_self_teacher_pass(request):
+    teacher_aux = request.user
+
+    try:
+        Teacher.objects.get(userAccount_id=teacher_aux.id)
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    assert isinstance(request, HttpRequest)
+    teacher = get_object_or_404(Teacher, pk=teacher_aux.id)
+    userAccount = get_object_or_404(User, pk=teacher_aux.id)
+
+    if (request.method == 'POST'):
+        form = EditSelfTeacherPassForm(request.POST, request.FILES, password=userAccount.password, user=userAccount)
+        if (form.is_valid()):
+            user = teacher.userAccount
+
+            userAccount.username = user.username
+            userAccount.email = user.email
+            userAccount.first_name = user.first_name
+            userAccount.last_name = user.last_name
+            actual_password = form.cleaned_data['actual_password']
+            new_password = form.cleaned_data['new_password']
+
+            if not userAccount.check_password(actual_password):
+                form.fields['password'].initial = 'False'
+
+            userAccount.set_password(new_password)
+            userAccount.save()
+
+            teacher.phone = teacher.phone
+            teacher.photo = teacher.photo
+            teacher.dni = teacher.dni
+
+            teacher.save()
+
+            return HttpResponseRedirect('/login')
+    else:
+        form = EditSelfTeacherPassForm(password=userAccount.password, user=userAccount)
+
+    data = {
+        'form': form,
+        'teacher': teacher,
+        'title': 'Cambiar contraseña'
+    }
+
+    return render(request, 'teachers/self_edit_pass.html', data)
+
+# -----------------------------------------------------------------------------------------------------
+
+# Gestión de alumnos y profesores (como escuela) ------------------------------------------------------
 
 #Para profesores
 def remove_subject_aux(request):
@@ -505,3 +606,5 @@ def delete_student(request, pk):
         student.delete()
         return HttpResponseRedirect('/actors/students/list')
     return render(request, 'students/delete.html', {'student':student})
+
+# -----------------------------------------------------------------------------------------------------

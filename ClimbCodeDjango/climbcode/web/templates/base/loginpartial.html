@@ -14,6 +14,8 @@
                 <hr/>
                 {% elif user.actor.programmer %}
                 <a class="dropdown-item" href="{% url 'edit_profile_programmer' %}">Editar Perfil</a>
+                {% elif user.actor.teacher %}
+                <a class="dropdown-item" href="{% url 'edit_self_teacher' %}">Editar Perfil</a>
                 {% endif %}
                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesi&#243;n</a>
             </div>

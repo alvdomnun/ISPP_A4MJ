@@ -67,8 +67,7 @@ class EditSelfTeacherPassForm(forms.Form):
                     "La nuevas contraseñas no coinciden. Por favor, asegúrese de confirmarlas correctamente.")
 
             if new_password == actual_password:
-                raise forms.ValidationError(
-                    "No puede cambiar la contraseña a una igual, elija otra nueva contraseña por favor.")
+                raise forms.ValidationError("La nueva contraseña no puede ser similar a la actual. Por favor, elija otra.")
 
 class EditTeacherForm(forms.Form):
     # Atributos de información personal
@@ -240,3 +239,7 @@ class EditProgrammerPass(forms.Form):
             confirm_password = self.cleaned_data["confirm_password"]
             if (password != confirm_password):
                     raise forms.ValidationError("La nueva contraseña no coincide. Por favor, asegúrese de confirmarla correctamente.")
+
+            # Valida que la nueva contraseña no sea igual a la actual
+            if (password == actual_password):
+                raise forms.ValidationError("La nueva contraseña no puede ser similar a la actual. Por favor, elija otra.")

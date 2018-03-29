@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <div class="table">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Curso</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% if subjects_aux %}
+                {% for subject in subjects_aux %}
+                    {% if subject in school_subjects %}
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.course }}</td>
+                            <td><a class="btn btn-default" href="/actors/teachers/add/subjects/add?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Vincular asignatura</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if subject not in school_subjects %}
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.course }}</td>
+                            <td><a class="btn btn-default" href="/actors/teachers/remove/subjects/remove?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Desvincular asignatura</a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+                </table>
+                </div>
+            {% else %}
+                <p></p>
+                <p>No existen asignaturas.</p>
+            {% endif %}
+
+    {% if school_subjects.has_other_pages %}
+        <ul class="pagination">
+            {% if school_subjects.has_previous %}
+                <li><a href="?page={{ school_subjects.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in school_subjects.paginator.page_range %}
+                {% if school_subjects.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if school_subjects.has_next %}
+                <li><a href="?page={{ school_subjects.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+     <input type="button" class="btn btn-default"
+                                   onclick="location.href='/actors/teachers/list';" value="Cancelar"/>
+{% endblock %}
+

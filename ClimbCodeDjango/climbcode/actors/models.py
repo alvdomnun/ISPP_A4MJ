@@ -108,6 +108,7 @@ class School(Actor):
         (PRIVATE, 'Private')
     )
 
+    centerName = models.CharField(max_length = 50, null = True, help_text = 'Requerido. 50 carácteres como máximo.')
     address = models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.')
     postalCode = models.CharField(verbose_name = 'Postal Code', max_length = 5, help_text = 'Requerido. 5 dígitos como máximo.',
         validators = [RegexValidator(regex = r'^(\d{5})$', message = 'El formato introducido es incorrecto.')])
@@ -118,21 +119,10 @@ class School(Actor):
     # Relación con los ejercicios comprados
     exercises = models.ManyToManyField(Exercise, blank = True)
     # Relación con la provincia
-    province = models.ForeignKey(Province, on_delete = models.SET_NULL, null = True) 
-
-    def clean(self):
-        """
-        Valida el patrón para el identificationCode
-        """
-        if self.identificationCode is not None and self.type == 'High School':
-            if re.match(r'^(\d{8})$', self.identificationCode) is None:
-                raise ValidationError({'identificationCode': _('El formato introducido no es correcto.'),})
-        elif self.identificationCode is not None and self.type == 'Academy':
-            if re.match(r'^(\d{8})([A-Z])$', self.identificationCode) is None:
-                raise ValidationError('El formato introducido no es correcto.')
+    province = models.ForeignKey(Province, on_delete = models.SET_NULL, null = True)
             
     def __str__(self):
-        return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
+        return self.centerName + ' (' + self.userAccount.get_username() + ')'
 
     class Meta:
         verbose_name = "Escuela"
@@ -143,7 +133,7 @@ class SchoolAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades del Actor-Escuela que se mostrarán en el panel de administración.
     """
-    list_display = ('userAccount', 'get_full_name', 'identificationCode', 'type')
+    list_display = ('userAccount', 'get_full_name', 'centerName', 'identificationCode', 'type')
 
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()

@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
 
 
 # Application definition
@@ -94,13 +94,15 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
         'USER': 'climbcode',
+<<<<<<< HEAD
         'PASSWORD': 'climbcode',
+=======
+        'PASSWORD': 'admin',
+>>>>>>> develop
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-
-
 
 
 # Password validation
@@ -140,6 +142,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['media']))
+STATICFILES_DIRS = [
+        os.path.join(BASE_DIR,"static")
+]
+
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = '../static'
+
+MEDIA_ROOT = '../media'
+

@@ -1,0 +1,98 @@
+{% extends "base/base.html" %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+    <h2>{{ titulo }}</h2>
+    {{ form.userAccount.first_name }}
+    <div class="row">
+
+        <div class="container-fluid">
+            <br/>
+            <div class="col-md-12">
+
+                <!-- Formulario Edición -->
+                <form id="editar" enctype="multipart/form-data" method="post" action="" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="email" class="control-label">Email</label>
+                            <input class="form-control" id="email" name="email"
+                                   placeholder="Direcci&#243;n de correo electr&#243;nico" type="email"
+                                   value="{{ student.userAccount.email|default:"" }}" required/>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="first_name" class="control-label">Nombre</label>
+                            <input class="form-control" name="first_name" id="first_name" type="text"
+                                   placeholder="Nombre" value="{{ student.userAccount.first_name|default:"" }}"
+                                   required/>
+                        </div>
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="last_name" class="control-label">Apellidos</label>
+                            <input class="form-control" name="last_name" id="last_name" type="text"
+                                   placeholder="Apellidos" value="{{ student.userAccount.last_name|default:"" }}"
+                                   required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="dni" class="control-label">D.N.I.</label>
+                            <input type="text" maxlength="9" class="form-control" name="dni" id="dni"
+                                   placeholder="D.N.I." value="{{ student.dni|default:"" }}" required/>
+                        </div>
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="phone" class="control-label">Tel&#233;fono</label>
+                            <input type="text" maxlength="11" class="form-control" name="phone" id="phone"
+                                   placeholder="Tel&#233;fono" value="{{ student.phone|default:"" }}" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="photo" class="control-label">Foto de perfil</label>
+                            <input class="form-control" name="photo" id="photo" type="file"
+                                   placeholder="Foto de perfil del usuario" value="{{ student.photo|default:"" }}"/>
+                        </div>
+                    </div>
+
+                    <!-- Tratamiento de Errores -->
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- Botones -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <input type="submit" value="Actualizar" class="btn btn-primary"/>
+                            <input type="button" class="btn btn-default"
+                                   onclick="location.href='/actors/students/list';" value="Cancelar"/>
+                            <input type="button" class="btn btn-danger"
+                                   onclick="location.href='/actors/students/edit/delete/{{ student.pk }}';"
+                                   value="Borrar"/>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

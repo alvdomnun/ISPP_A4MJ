@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'welcome/welcome-base.html' %}
 
 {% block content %}
     <style>
@@ -11,38 +11,58 @@
 
     <div class="table">
         <table class="table table-striped">
-            <thead>
-            <tr>
-                <td>Nombre</td>
-                <td>Apellidos</td>
-                <td>Email</td>
-                <td>DNI</td>
-                <td>Foto</td>
-                <td>Teléfono</td>
-                <td></td>
-            </tr>
-            </thead>
-            <tbody>
             {% if teacher_list %}
-                {% for teacher in teacher_list %}
+
+                    <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Apellidos</td>
+                        <td>Email</td>
+                        <td>DNI</td>
+                        <td>Foto</td>
+                        <td>Teléfono</td>
+                        <td>Asignaturas</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+            {% for teacher in teacher_list %}
+                    <tbody>
+
                     <tr>
                         <td>{{ teacher.userAccount.first_name }}</td>
                         <td>{{ teacher.userAccount.last_name }}</td>
                         <td>{{ teacher.userAccount.email }}</td>
                         <td>{{ teacher.dni }}</td>
-                        <td>{{ teacher.photo}}</td>
+                        <td>{{ teacher.photo }}</td>
                         <td>{{ teacher.phone }}</td>
-                        <td><a href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a></td>
+                        {% if teacher.subjects != None %}
+                        <td>
+                            {% for subject in teacher.subjects.all %}
+                                {{ subject }}<br>
+
+                            {% endfor %}
+                        </td>
+
+                        {% endif %}
+                        <td>
+                            <a class="btn btn-default" href="/actors/teachers/add/subjects/{{ teacher.pk }}">Modificar sus asignaturas</a>
+                            <a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
+                            <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
+                        </td>
                     </tr>
                 {% endfor %}
-                </tbody>
+            </tbody>
                 </table>
                 </div>
             {% else %}
                 <p></p>
                 <p>No existen profesores.</p>
             {% endif %}
-
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/actors/teachers/register';"
+               value="Crear profesor"/>
+    </div>
 
     {% if teacher_list.has_other_pages %}
         <ul class="pagination">
@@ -66,9 +86,5 @@
         </ul>
     {% endif %}
 
-    <div class="create">
-        <input type="button" class="btn btn-default btn-block"
-               onclick="location.href='/actors/teachers/register';"
-               value="Crear profesor"/>
-    </div>
+
 {% endblock %}

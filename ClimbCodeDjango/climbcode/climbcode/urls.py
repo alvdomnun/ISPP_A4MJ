@@ -26,7 +26,7 @@ admin.autodiscover()
 
 urlpatterns = [
     # Página de bienvenida
-    # url(r'^$', ruta, name='home'),
+    url(r'^$', web.views.index, name='home'),
 
     # Sesión
     url(r'^login/$', django.contrib.auth.views.login,
@@ -37,7 +37,7 @@ urlpatterns = [
             {
                 'titulo': 'Inicio de sesión',
                 'year': datetime.now().year,
-            }
+            },
         },
         name='login'),
     url(r'^logout$', django.contrib.auth.views.logout,
@@ -46,6 +46,7 @@ urlpatterns = [
         },
         name='logout'),
     url(r'^register/programmer$', web.views.register_programmer, name='registerProgrammer'),
+    url(r'^register/school$', web.views.register_school, name='registerSchool'),
 
     # Administrador
     path('admin/', admin.site.urls),
@@ -54,5 +55,8 @@ urlpatterns = [
     path('web/', include('web.urls')),
 
     # Profesores
-    path('actors/', include('actors.urls'))
+    path('actors/', include('actors.urls')),
+
+    # Asignturas
+    path('subjects/', include('subjects.urls')),
 ]

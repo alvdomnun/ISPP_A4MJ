@@ -48,7 +48,7 @@ class LicenseType(models.Model):
     #Sin relaciones
 
     def __str__(self):
-        return self.name + ' - ' + self.numUsers + ' - ' + self.numFreeExercises + ' -- ' + self.price
+        return str(self.name) + ' - ' + str(self.numUsers) + ' - ' + str(self.numFreeExercises) + ' - ' + str(self.price)
 
     class Meta:
         verbose_name = "Licencia Tipo"

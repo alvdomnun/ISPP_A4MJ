@@ -90,6 +90,7 @@ class EditTeacherForm(forms.Form):
     #def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
 
+
 class EditStudentForm(forms.Form):
     # Atributos de información personal
     username = forms.HiddenInput
@@ -110,7 +111,6 @@ class EditStudentForm(forms.Form):
 # Validaciones adicionales
     #def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
-
 
 
 class RegisterTeacherForm(forms.Form):
@@ -200,3 +200,43 @@ class RegisterStudentForm(forms.Form):
             if (password != confirm_password):
                 raise forms.ValidationError(
                     "Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
+
+
+class EditProgrammerProfile(forms.Form):
+    """ Formulario de edición del perfil Programador """
+
+    # Campos editables del User model
+    email = forms.EmailField()
+    first_name = forms.CharField(min_length = 2, max_length = 32, label = 'Nombre')
+    last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
+
+    # Campos requeridos por el modelo Actor-Programador
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    photo = forms.ImageField(required = False)
+    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
+
+
+class EditProgrammerPass(forms.Form):
+    """ Formulario de edición de las contraseñas del usuario """
+    userAccountId = forms.IntegerField()
+    actual_password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Contraseña actual')
+    password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Nueva contraseña')
+    confirm_password = forms.CharField(min_length = 5, max_length = 32, widget = forms.PasswordInput, label = 'Confirmar nueva contraseña')
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida la contraseña actual del usuario sea la que ha introducido en el formulario
+            actual_password = self.cleaned_data["actual_password"]
+            userAccountId = self.cleaned_data["userAccountId"]
+            userAccount = User.objects.get(pk = userAccountId)
+            if not (userAccount.check_password(actual_password)):
+                    raise forms.ValidationError("Por favor, introduzca correctamente su contraseña actual para realizar el cambio.")
+
+            # Valida que la nueva contraseña haya sido confirmada correctamente
+            password = self.cleaned_data["password"]
+            confirm_password = self.cleaned_data["confirm_password"]
+            if (password != confirm_password):
+                    raise forms.ValidationError("La nueva contraseña no coincide. Por favor, asegúrese de confirmarla correctamente.")

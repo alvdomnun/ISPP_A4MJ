@@ -77,8 +77,8 @@ class RegisterSchoolForm(forms.Form):
     type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
     teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
     identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
-    # TODO : Funcionalidad completa: extras a las licencias.
     licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
+    numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
 
     # Validaciones propias
     def clean(self):
@@ -99,7 +99,6 @@ class RegisterSchoolForm(forms.Form):
 
             # Valida los patrones para cuando sea escuela o academia
             type = self.cleaned_data["type"]
-            print(type)
             idCode = self.cleaned_data["identificationCode"]
             if idCode is not None and type == 'High School':
                 if re.match(r'^(\d{8})$', idCode) is None:
@@ -107,3 +106,11 @@ class RegisterSchoolForm(forms.Form):
             elif idCode is not None and type == 'Academy':
                 if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
                     raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
+
+            # Valida que el número de usuarios indicados no sea inferior al de la licencia dada
+            licenseType = self.cleaned_data["licenseType"]
+            license = LicenseType.objects.filter(pk = licenseType.id)[0]
+            numUsers = self.cleaned_data["numUsers"]
+             # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
+            if (license.numUsers > numUsers):
+                raise forms.ValidationError("El número de usuarios indicado no supera el mínimo exigido por la licencia.")

@@ -12,6 +12,8 @@
                 {% if user.is_staff %}
                 <a class="dropdown-item" href="/admin/">Panel Administraci&#243;n</a>
                 <hr/>
+                {% elif user.actor.programmer %}
+                <a class="dropdown-item" href="{% url 'edit_profile_programmer' %}">Editar Perfil</a>
                 {% endif %}
                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesi&#243;n</a>
             </div>

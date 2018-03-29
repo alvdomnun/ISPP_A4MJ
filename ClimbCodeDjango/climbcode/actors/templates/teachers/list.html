@@ -12,7 +12,7 @@
     <div class="table">
         <table class="table table-striped">
             {% if teacher_list %}
-                {% for teacher in teacher_list %}
+
                     <thead>
                     <tr>
                         <td>Nombre</td>
@@ -21,9 +21,11 @@
                         <td>DNI</td>
                         <td>Foto</td>
                         <td>Teléfono</td>
+                        <td>Asignaturas</td>
                         <td></td>
                     </tr>
                     </thead>
+            {% for teacher in teacher_list %}
                     <tbody>
 
                     <tr>
@@ -33,8 +35,18 @@
                         <td>{{ teacher.dni }}</td>
                         <td>{{ teacher.photo }}</td>
                         <td>{{ teacher.phone }}</td>
-                        <td><a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
-                            <a class="btn btn-default" href="/actors/teachers/add/subjects/{{ teacher.pk }}">Asignar asignaturas</a>
+                        {% if teacher.subjects != None %}
+                        <td>
+                            {% for subject in teacher.subjects.all %}
+                                {{ subject }}<br>
+
+                            {% endfor %}
+                        </td>
+
+                        {% endif %}
+                        <td>
+                            <a class="btn btn-default" href="/actors/teachers/add/subjects/{{ teacher.pk }}">Modificar sus asignaturas</a>
+                            <a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
                             <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
                         </td>
                     </tr>

@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{ subject.name }}</td>
                             <td>{{ subject.course }}</td>
-                            <td><a class="btn btn-default" href="/actors/teachers/add/subjects/add?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Vincular asignatura</a>
+                            <td><a class="btn btn-default" href="/actors/students/add/subjects/add?pk1={{ student.pk }}&pk2={{ subject.pk }}">Vincular asignatura</a>
                             </td>
                         </tr>
                     {% endif %}
@@ -27,7 +27,7 @@
                         <tr>
                             <td>{{ subject.name }}</td>
                             <td>{{ subject.course }}</td>
-                            <td><a class="btn btn-default" href="/actors/teachers/remove/subjects/remove?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Desvincular asignatura</a>
+                            <td><a class="btn btn-default" href="/actors/students/remove/subjects/remove?pk1={{ student.pk }}&pk2={{ subject.pk }}">Desvincular asignatura</a>
                             </td>
                         </tr>
                     {% endif %}
@@ -62,7 +62,7 @@
         </ul>
     {% endif %}
 
-     <input type="button" class="btn btn-default"
-                                   onclick="location.href='/actors/teachers/list';" value="Cancelar"/>
-{% endblock %}
+    <input type="button" class="btn btn-default"
+                                   onclick="location.href='/actors/students/list';" value="Cancelar"/>
 
+{% endblock %}

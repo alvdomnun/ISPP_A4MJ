@@ -2,9 +2,12 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpRequest
 from django.shortcuts import render, get_object_or_404
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm
+from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, EditProgrammerProfile, EditProgrammerPass
 from actors.models import Teacher, School, Student
 from subjects.models import Subject
+from django.contrib.auth.decorators import login_required
+from actors.decorators import user_is_programmer
+
 
 def add_subject_aux(request):
     pk1 = request.GET.get('pk1')
@@ -280,3 +283,105 @@ def delete_student(request, pk):
         student.delete()
         return HttpResponseRedirect('/actors/students/list')
     return render(request, 'students/delete.html', {'student':student})
+
+
+@login_required(login_url='/login/')
+@user_is_programmer
+def edit_profile_programmer(request):
+    """
+    Edición del perfil Programador
+    """
+
+    assert isinstance(request, HttpRequest)
+    
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    programmer = request.user.actor.programmer
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditProgrammerProfile(request.POST)
+        if (form.is_valid()):
+            # Actualiza el User (model Django) en BD
+            email = form.cleaned_data["email"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]            
+
+            userAccount = request.user
+            userAccount.email = email
+            userAccount.first_name = first_name
+            userAccount.last_name = last_name
+            userAccount.save()
+
+            # Actualiza el Programador en BD
+            phone = form.cleaned_data["phone"]
+            photo = form.cleaned_data["photo"]
+            dni = form.cleaned_data["dni"]
+
+            programmer.phone = phone
+            programmer.photo = photo 
+            programmer.dni = dni
+            programmer.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        dataForm = {'first_name': programmer.userAccount.first_name, 'last_name': programmer.userAccount.last_name, 'email': programmer.userAccount.email, 
+                 'phone': programmer.phone, 'dni': programmer.dni, 'photo': programmer.photo}
+        form = EditProgrammerProfile(dataForm)
+    
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'programmer': programmer,
+        'titulo': 'Editar Perfil'
+    }
+        
+    return render(request, 'programmers/editProgrammerProfile.html', data)
+
+
+@login_required(login_url='/login/')
+@user_is_programmer
+def edit_pass_programmer(request):
+    """Edición de la clave del usuario """
+    assert isinstance(request, HttpRequest)
+    
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditProgrammerPass(request.POST)
+        if (form.is_valid()):
+            # Se asegura que la Id que viene del formulario es la misma que la del usuario que realiza la acción
+            userAccountId = form.cleaned_data["userAccountId"]
+            userAccount = request.user
+            if (userAccountId != userAccount.id):
+                    return HttpResponseForbidden()
+
+            # Establece la nueva contraseña del usuario
+            password = form.cleaned_data["password"]
+            userAccount.set_password(password)
+            userAccount.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        form = EditProgrammerPass()
+    
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'userAccount': request.user,
+        'titulo': 'Cambiar credenciales',
+    }
+        
+    return render(request, 'programmers/editProgrammerPass.html', data)
+
+
+

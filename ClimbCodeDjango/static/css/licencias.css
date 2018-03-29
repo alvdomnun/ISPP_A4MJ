@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
+
+body {
+    font-size: 16px;
+    line-height: 25px;
+    padding-top: 50px;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+
+.pricing-wrapper .pricing-table {
+    border: 1px solid #5bc0de;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #e9e9e9;
+}
+
+.pricing-wrapper .popular {
+    color: #5bc0de;
+}
+
+.pricing-wrapper hr {
+    border-top: 1px solid #d0d0d0 !important;
+}
+
+.pricing-wrapper .pricing-table .price-wrap {
+    background-color: #fff;
+    padding: 40px 30px 40px 30px;
+}
+
+.pricing-wrapper .type {
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.pricing-wrapper .pricing-table .price {
+    font-weight: 900;
+    font-size: 30px;
+}

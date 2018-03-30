@@ -1,0 +1,264 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 250px;
+            }
+        </style>
+        <script src="/static/js/jquery.min.js"></script>
+        <script src="/static/js/notebook.js"></script>
+        
+        
+        <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+
+
+        <script>
+            $( document ).ready(function() {
+                //INIT EDITOR CODIGO
+                var idEditor = "idEditor1";
+                var editor = ace.edit(idEditor);
+                editor.getSession().setMode("ace/mode/javascript");
+                editor.getSession().setTabSize(4);
+                editor.getSession().setUseWrapMode(true);
+                editor.setFontSize(16);
+                editor.setShowPrintMargin(false);
+                var heightUpdateFunction = function() {                    
+                    $('#'+idEditor).height("250px");
+                    $('#editor-section').height("250px");
+                    // This call is required for the editor to fix all of
+                    // its inner structure for adapting to a change in size
+                    editor.resize();
+                    };
+                // Set initial size to match initial content
+                heightUpdateFunction();
+                // Whenever a change happens inside the ACE editor, update
+                // the size again
+                editor.getSession().on('change', heightUpdateFunction);
+
+                //INIT CHART
+
+                idChart ="myChart_idBox4";
+                var ctx = document.getElementById(idChart);
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Nombre Gráfica',
+                            data: [],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        chartArea: {
+                            backgroundColor: 'rgba(251, 255, 255, 0.4)',
+                        },
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                });
+
+        </script>
+
+{% endblock %}
+
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+<div style="width:80%;margin-left: 10%">
+    <h1 style="text-align: center">Ejercicio Corriente Continua</h1>
+    <div class="row" style="background-color: #bbbabb">
+        <div class="col-md-12" style="height: auto;">
+            <div class="row">
+                <!-- CABECERA CON TITULO Y SUBTITULO -->
+                <div class="col-md-12 custom-mt-1" >
+                    <div style="background-color: #ebebeb;width: auto;height: 200px;padding-top: 15px">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="form-group">
+                                    <label for="username">Título:</label>
+                                    <input class="form-control" type="text" name="title" value="CIRCUITO DE CORRIENTE CONTINUA">
+                               </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="form-group">
+                                    <label for="username">Subtítulo:</label>
+                                    <input class="form-control" type="text" name="subtitle" value="Ejercicio de corriente continua">
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+                <div class="col-md-12 custom-mt-1">
+                    <div id="notebook_content" style="background-color: #ebebeb;width: auto;height: 4000px">
+                        <div class="col-md-12" style="margin-top: 20px;text-align:center">
+                            
+                            <div class="row">
+                                <div class="col-md-12" style="background-color:#bbbabb">
+                                    <h2 style="text-align: center">Añadir Cuadro</h2>
+                                    <div class="row">
+                                        <div class="col-md-2 offset-md-3"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addTextBox('notebook_content');">
+                                               Texto
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addCodeBox('notebook_content');">
+                                               Código
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addImageBox('notebook_content');">
+                                               Ilustración
+                                            </button>
+                                        </div>        
+                                    </div>
+                                </div>                                    
+                            </div>                                                 
+                        </div>
+                    <div class="col-md-12 custom-mt-1" id="idBox1"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><img class="notebook-img" id="idImg1" src="http://drawingfit.com/wp-content/uploads/2018/01/drawing-of-a-soccer-ball-soccer-ball-drawing-pencil-art-drawing.png" height="256px" width="256px"></div></div><div class="col-md-6 offset-md-3"><input class="form-control" id="idUrlInput1" type="text" placeholder="Establecer URL"></div><div class="col-md-12 offset-md-3"><button class="btn btn-info pull-right" style="margin-top:10px" onclick="updateImg('idImg1','idUrlInput1')" type="button">Actualizar URL</button><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox1')" type="button">Eliminar</button></div></div></div>
+                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox2"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 127px;">
+</textarea><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox2')" type="button">Eliminar</button></div></div></div></div>
+                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox3"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 291px;">1) Descomponemos la velocidad inicial en sus componentes. Calcular y apuntar la componente horizontal de la pelota.
+
+2) Calcular y apuntar la componente vertical de la pelota.
+
+3) Obteniendo las ecuaciones del movimiento en los ejes x e y para la posición y la velocidad, calcular el momento en el que alcanza la altura máxima. Introducir ese valor en el campo param1.
+
+4) Calcular la altura máxima. Introducir ese valor en el campo param2
+
+5) Calcularemos el tiempo que tarda la pelota en llegar al suelo a partir de la ecuación de la velocidad en el eje. Apuntar dicho valor.
+
+6) Calcular la distancia recorrida por la pelota. Introducir ese valor en el campo param3.</textarea><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox3')" type="button">Eliminar</button></div></div></div></div>
+
+                <div class="col-md-12 custom-mt-1" >
+                            <div class="row" id="idBox4">
+                                <div class="col-md-10 custom-mt-1 offset-md-1" >
+                                    <h2 style="text-align: center">CUADRO DE CÓDIGO</h2>
+                                    <div style="background-color: #ebebeb;margin-left: 30px; margin-right: 30px;width: auto;height: auto">
+                                        <div class="row" id="idRowPrincipal4">
+                                            <div class="col-md-12">
+                                                <div id="idEditor1">var xMax = parseInt(document.getElementById("param3").value);
+var yMax = parseInt(document.getElementById("param2").value);
+var xYMax = 7.5*parseInt(document.getElementById("param1").value);
+var ctx = document.getElementById("myChart_idBox4");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [0, xYMax, xMax],
+        datasets: [{
+            label: 'Trayectoria de la pelota',
+            data: [20, yMax, 0],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+"";
+                                                </div>
+                                                <button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox4')" type="button">Eliminar</button>
+                                            </div>
+                                            
+                                            <div class="col-md-12" style="margin-top: 20px;">
+                                                    <div class="row" style="padding: 15px;">                                                    
+                                                        <div class="col-md-12 div-notebook-parameter" style="margin-top: 20px;background-color: white">
+                                                        <h3 style="text-align:center">Parámetros</h3>
+                                                            <div class="row" id="id_div_parameter_4">
+                                                                <div class="col-md-2" style="margin-top: 20px;"><p>id: param1</p><input name="param1" value="1" class="form-control" id="param1" type="text"></div>
+                                                                <div class="col-md-2"  style="margin-top: 20px;"><p>id: param2</p><input name="param2" value="15" class="form-control" id="param2" type="text"></div>
+                                                                <div class="col-md-2" style="margin-top: 20px;"><p>id: param3</p><input name="param3" value="15" class="form-control" id="param3" type="text"></div><div id="id_div_parameter_button_4" class="col-md-2" style="margin-top: 20px;"><p>Añadir Parámetro</p><button type="submit" class="btn btn-primary" onclick="addParameter('id_div_parameter_4','id_div_parameter_button_4');"> Añadir </button></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div id="idColChartButtons1" class="col-md-4" style="margin-top: 20px;">
+                                                <button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('idEditor1');">
+                                                   Ejecutar >>
+                                                </button>
+                                                <br><br>
+                                                <h4>Resultado del código</h4>
+                                                <input name="resultado_idEditor1" class="form-control resultado_code_editor"  id="resultado_idEditor1" type="text" disabled="disabled">
+                                                <br><br>
+                                            </div>
+
+                                            <div class="col-md-12" id="myChart_idBox4_row" style="height="300">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <b><p style="text-align:center">chart id: myChart_idBox4</p></b>
+                                                    </div>                      
+                                                    <div class="col-md-12">
+                                                        <canvas class="notebook-chart" id="myChart_idBox4" width="auto" height="300"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+                </div>                                        
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

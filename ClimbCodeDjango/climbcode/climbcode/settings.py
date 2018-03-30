@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition

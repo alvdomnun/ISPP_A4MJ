@@ -246,7 +246,7 @@ class EditProgrammerPass(forms.Form):
 
 
 class EditSchoolProfile(forms.Form):
-    """ Formulario de edición del perfil Student """
+    """ Formulario de edición del perfil School """
 
     # Campos editables del User model
     email = forms.EmailField()

@@ -59,4 +59,7 @@ urlpatterns = [
 
     # Asignturas
     path('subjects/', include('subjects.urls')),
+
+    # Ejercicios
+    path('exercises/', include('exercises.urls')),
 ]

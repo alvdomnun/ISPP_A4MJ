@@ -21,7 +21,7 @@ class License(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, null = True)
 
     def __str__(self):
-        return self.numUsers + ' - ' + self.numFreeExercises + ' - ' + self.price + ' ( ' + self.startDate + ' -- ' + self.endDate + ' ) '
+        return str(self.numUsers) + ' - ' + str(self.numFreeExercises) + ' - ' + str(self.price)
 
     class Meta:
         verbose_name = "Licencia"
@@ -30,10 +30,13 @@ class License(models.Model):
 
 class LicenseAdminPanel(admin.ModelAdmin):
     # Panel de admin
-    list_display = ('get_school', 'numUsers', 'numFreeExercises', 'price', 'startDate', 'endDate')
+    list_display = ('get_user_school', 'get_school', 'numUsers', 'numFreeExercises', 'price', 'startDate', 'endDate')
+
+    def get_user_school(self, obj):
+        return obj.school.userAccount.get_username()
 
     def get_school(self, obj):
-        return obj.school.name
+        return obj.school.centerName
 
 
 class LicenseType(models.Model):

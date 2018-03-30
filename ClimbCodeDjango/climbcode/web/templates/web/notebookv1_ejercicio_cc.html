@@ -97,7 +97,7 @@ Notebookv1
 {% endblock %}
 {% block content %}
 <div style="width:80%;margin-left: 10%">
-    <h1 style="text-align: center">Ejercicio Corriente Continua</h1>
+    <h1 style="text-align: center">Ejercicio de Corriente Continua</h1>
     <div class="row" style="background-color: #bbbabb">
         <div class="col-md-12" style="height: auto;">
             <div class="row">
@@ -150,20 +150,22 @@ Notebookv1
                                 </div>                                    
                             </div>                                                 
                         </div>
-                    <div class="col-md-12 custom-mt-1" id="idBox1"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><img class="notebook-img" id="idImg1" src="http://drawingfit.com/wp-content/uploads/2018/01/drawing-of-a-soccer-ball-soccer-ball-drawing-pencil-art-drawing.png" height="256px" width="256px"></div></div><div class="col-md-6 offset-md-3"><input class="form-control" id="idUrlInput1" type="text" placeholder="Establecer URL"></div><div class="col-md-12 offset-md-3"><button class="btn btn-info pull-right" style="margin-top:10px" onclick="updateImg('idImg1','idUrlInput1')" type="button">Actualizar URL</button><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox1')" type="button">Eliminar</button></div></div></div>
-                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox2"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 127px;">
+                    <div class="col-md-12 custom-mt-1" id="idBox1"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><img class="notebook-img" id="idImg1" src="https://3.bp.blogspot.com/-tYRTzE6cSek/V107qpaOwwI/AAAAAAAABAg/OUvQKk-20-s6GYTjEDTmVrx6qxKro4v5gCLcB/s1600/Ejercicio%2B1.jpg" height="256px" width="512px"></div></div><div class="col-md-6 offset-md-3"><input class="form-control" id="idUrlInput1" type="text" placeholder="Establecer URL"></div><div class="col-md-12 offset-md-3"><button class="btn btn-info pull-right" style="margin-top:10px" onclick="updateImg('idImg1','idUrlInput1')" type="button">Actualizar URL</button><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox1')" type="button">Eliminar</button></div></div></div>
+                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox2"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 127px;">Sea el circuito de corriente continua de la figura, calcular:
+
+a)	La intensidad total del circuito IT que sale de la fuente de tensión.
+b)	La intensidad I1 que fluye a través de la resistencia de 2 ohmios.
+c)	La intensidad I2 que fluye a través de la resistencia de 8 ohmios.
+d)	Calcula la potencia que suministra la fuente de tensión.
+
 </textarea><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox2')" type="button">Eliminar</button></div></div></div></div>
-                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox3"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 291px;">1) Descomponemos la velocidad inicial en sus componentes. Calcular y apuntar la componente horizontal de la pelota.
+                    <div class="col-md-10 custom-mt-1 offset-md-1" id="idBox3"><div class="row"><div class="col-md-12 custom-mt-1"><div class="form-group" style="padding:12px;"><textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" style="height: 291px;">a)	Para calcular la intensidad total “IT“ del circuito que sale de la fuente de tensión se halla la resistencia equivalente del circuito. Introducir el valor en el campo param1
 
-2) Calcular y apuntar la componente vertical de la pelota.
+b)	Para obtener la intensidad I1 aplicamos la segunda ley de Kirchhoff o de malla. Introducir el valor en el campo param2
 
-3) Obteniendo las ecuaciones del movimiento en los ejes x e y para la posición y la velocidad, calcular el momento en el que alcanza la altura máxima. Introducir ese valor en el campo param1.
+c)	Para obtener la intensidad I2 se aplica la primera ley de Kirchhoff o de nodo. Introducir el valor en el campo param3
 
-4) Calcular la altura máxima. Introducir ese valor en el campo param2
-
-5) Calcularemos el tiempo que tarda la pelota en llegar al suelo a partir de la ecuación de la velocidad en el eje. Apuntar dicho valor.
-
-6) Calcular la distancia recorrida por la pelota. Introducir ese valor en el campo param3.</textarea><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox3')" type="button">Eliminar</button></div></div></div></div>
+d)	La intensidad potencia que suministra la fuente la podemos calcular con las dos fórmulas para obtener la potencia. Apuntar dicho valor.</textarea><button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('idBox3')" type="button">Eliminar</button></div></div></div></div>
 
                 <div class="col-md-12 custom-mt-1" >
                             <div class="row" id="idBox4">
@@ -173,17 +175,23 @@ Notebookv1
                                         <div class="row" id="idRowPrincipal4">
                                             <div class="col-md-12">
                                                 <div id="idEditor1">var xMax = parseInt(document.getElementById("param3").value);
-var yMax = parseInt(document.getElementById("param2").value);
-var xYMax = 7.5*parseInt(document.getElementById("param1").value);
+var IT = parseInt(document.getElementById("param1").value);
+var I1 = parseInt(document.getElementById("param2").value);
+var I2 = parseInt(document.getElementById("param3").value);
 var ctx = document.getElementById("myChart_idBox4");
 var myChart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-        labels: [0, xYMax, xMax],
+        labels: ['IT', 'I1', 'I2'],
         datasets: [{
-            label: 'Trayectoria de la pelota',
-            data: [20, yMax, 0],
+            label: ['Intensidad total', 'Intesidad I1', 'Intesidad I2'],
+            data: [IT, I1, I2],
             borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            backgroundColor: [
                 'rgba(255,99,132,1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)'
@@ -192,6 +200,11 @@ var myChart = new Chart(ctx, {
         }]
     },
     options: {
+        legend: { display: false },
+        title: {
+            display: true,
+            text: 'Intesididad total (IT), Intensidad 1 (I1) e Intensidad 2 (I2)'
+        },
         maintainAspectRatio: false,
         scales: {
             yAxes: [{

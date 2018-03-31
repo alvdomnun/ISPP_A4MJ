@@ -2,16 +2,16 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms.utils import ErrorList
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, EditProgrammerProfile, EditProgrammerPass
+from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
+    EditProgrammerProfile, EditProgrammerPass, EditSchoolPass, EditStudentPass, EditStudentProfile, EditSchoolProfile
 from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
     EditSelfTeacherForm, EditSelfTeacherPassForm
 from actors.models import Teacher, School, Student
 from subjects.models import Subject
 from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_programmer
-
+from actors.decorators import user_is_programmer, user_is_school, user_is_student
 
 
 # Edición del perfil propio profesor ------------------------------------------------------------------
@@ -708,3 +708,205 @@ def edit_pass_programmer(request):
         
     return render(request, 'programmers/editProgrammerPass.html', data)
 
+@login_required(login_url='/login/')
+@user_is_school
+def edit_profile_school(request):
+    """
+    Edición del perfil School
+    """
+
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    school = request.user.actor.school
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditSchoolProfile(request.POST)
+        if (form.is_valid()):
+            # Actualiza el User (model Django) en BD
+            email = form.cleaned_data["email"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+
+            userAccount = request.user
+            userAccount.email = email
+            userAccount.first_name = first_name
+            userAccount.last_name = last_name
+            userAccount.save()
+
+            # Actualiza el School en BD
+            phone = form.cleaned_data["phone"]
+            centerName = form.cleaned_data["centerName"]
+            identificationCode = form.cleaned_data["identificationCode"]
+            postalCode = form.cleaned_data["postalCode"]
+            address = form.cleaned_data["address"]
+
+            school.phone = phone
+            school.identificationCode = identificationCode
+            school.centerName = centerName
+            school.postalCode = postalCode
+            school.address = address
+            school.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        dataForm = {'first_name': school.userAccount.first_name, 'last_name': school.userAccount.last_name,
+                    'email': school.userAccount.email,
+                    'phone': school.phone, 'identificationCode': school.identificationCode, 'centerName': school.centerName,
+                    'postalCode': school.postalCode,'address': school.address,}
+        form = EditSchoolProfile(dataForm)
+
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'school': school,
+        'titulo': 'Editar Perfil'
+    }
+
+    return render(request, 'schools/editSchoolProfile.html', data)
+
+
+@login_required(login_url='/login/')
+@user_is_school
+def edit_pass_school(request):
+    """Edición de la clave del usuario """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditSchoolPass(request.POST)
+        if (form.is_valid()):
+            # Se asegura que la Id que viene del formulario es la misma que la del usuario que realiza la acción
+            userAccountId = form.cleaned_data["userAccountId"]
+            userAccount = request.user
+            if (userAccountId != userAccount.id):
+                return HttpResponseForbidden()
+
+            # Establece la nueva contraseña del usuario
+            password = form.cleaned_data["password"]
+            userAccount.set_password(password)
+            userAccount.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        form = EditSchoolPass()
+
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'userAccount': request.user,
+        'titulo': 'Cambiar credenciales',
+    }
+
+    return render(request, 'schools/editSchoolPass.html', data)
+
+@login_required(login_url='/login/')
+@user_is_student
+def edit_profile_student(request):
+    """
+    Edición del perfil Student
+    """
+
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    student = request.user.actor.student
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditStudentProfile(request.POST)
+        if (form.is_valid()):
+            # Actualiza el User (model Django) en BD
+            email = form.cleaned_data["email"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+
+            userAccount = request.user
+            userAccount.email = email
+            userAccount.first_name = first_name
+            userAccount.last_name = last_name
+            userAccount.save()
+
+            # Actualiza el Student en BD
+            phone = form.cleaned_data["phone"]
+            photo = form.cleaned_data["photo"]
+            dni = form.cleaned_data["dni"]
+
+            student.phone = phone
+            student.photo = photo
+            student.dni = dni
+            student.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        dataForm = {'first_name': student.userAccount.first_name, 'last_name': student.userAccount.last_name,
+                    'email': student.userAccount.email,
+                    'phone': student.phone, 'dni': student.dni, 'photo': student.photo}
+        form = EditStudentProfile(dataForm)
+
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'student': student,
+        'titulo': 'Editar Perfil'
+    }
+
+    return render(request, 'students/editStudentProfile.html', data)
+
+
+@login_required(login_url='/login/')
+@user_is_student
+def edit_pass_student(request):
+    """Edición de la clave del usuario """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = EditStudentPass(request.POST)
+        if (form.is_valid()):
+            # Se asegura que la Id que viene del formulario es la misma que la del usuario que realiza la acción
+            userAccountId = form.cleaned_data["userAccountId"]
+            userAccount = request.user
+            if (userAccountId != userAccount.id):
+                return HttpResponseForbidden()
+
+            # Establece la nueva contraseña del usuario
+            password = form.cleaned_data["password"]
+            userAccount.set_password(password)
+            userAccount.save()
+
+            return HttpResponseRedirect('/')
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        form = EditStudentPass()
+
+    # Datos del modelo (vista)
+    data = {
+        'form': form,
+        'userAccount': request.user,
+        'titulo': 'Cambiar credenciales',
+    }
+
+    return render(request, 'students/editStudentPass.html', data)

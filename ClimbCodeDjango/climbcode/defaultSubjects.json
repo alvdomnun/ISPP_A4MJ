@@ -174,5 +174,37 @@
         "name": "F\u00edsica - Bachillerato",
         "course": "2"
     }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 27,
+    "fields": {
+        "name": "Qu\u00edmica - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 28,
+    "fields": {
+        "name": "Dibujo T\u00e9cnico II - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 29,
+    "fields": {
+        "name": "Tecnolog\u00eda - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 30,
+    "fields": {
+        "name": "Estad\u00edstica - Bachillerato",
+        "course": "2"
+    }
 }
 ]

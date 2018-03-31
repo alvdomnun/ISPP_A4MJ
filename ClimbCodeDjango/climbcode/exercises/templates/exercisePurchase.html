@@ -1,0 +1,123 @@
+﻿{% extends 'welcome/welcome-base.html' %}
+
+{% block title %}ClimbCode{% endblock %}
+
+{% load staticfiles %}
+{% block extrastatic %}
+    <link rel="stylesheet" href="{% static '../static/css/purchaseExercise.css' %}">
+{% endblock %}
+
+<!-- CONTENIDO -->
+{% block content %}
+<div class="container">
+    <div class="row color-invoice">
+        <div class="col-md-12">
+            <!-- Presentación -->
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <h1>PROCESO DE COMPRA</h1>
+                    <br />
+                    <strong>ClimbCode</strong>
+                    <br />
+                    {{ date }}
+                </div>
+            </div>
+            <hr />
+
+            <!-- Detalles del comprador y del programador -->
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-sm-7">
+                    <h3>Comprador:</h3>
+                    <h5>{{ school.userAccount.get_full_name }}</h5>
+                    <p>
+                        <strong>Centro:</strong> {{ school.centerName }}
+                        <br/>
+                        <strong>Dirección:</strong> {{ school.address }}, {{ school.postalCode }}, {{ school.province }}
+                    </p>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <h3>Programador:</h3>
+                    <h5>{{ exercise.programmer.userAccount.get_full_name }}</h5>
+                    <p>
+                        <strong>Contacto:</strong> {{ exercise.programmer.userAccount.email }}
+                        <br/>
+                    </p>
+                </div>
+            </div>
+            <hr />
+
+            <!-- Detalles del ejercicio -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h3>{{ exercise.title }}</h3>
+                    <p>
+                        {{ exercise.description }}
+                    </p>
+                    <p>
+                        <strong>Número de ventas:</strong> {{ exercise.sales }}&emsp; | &emsp;<strong>Nivel:</strong> {{ exercise.level }}&emsp; 
+                        | &emsp;<strong>Asignatura:</strong> {{ exercise.category.name }}&emsp; | &emsp;<strong>Curso:</strong> {{ exercise.category.course }}º
+                    </p>
+                </div>
+            </div>
+            <hr />
+
+            <!-- Detalles del precio -->
+            <div class="row">
+                <!-- Precio -->
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h4>Precio: {{ prices.buyExerciseValue }} &euro;</h4> 
+                </div>
+            </div>
+            <hr/>
+
+            <!-- PROCESO DE COMPRA -->
+            {% if not repeatedPurchase %}
+
+                <!-- Botones o Warning de Ejercicio ya comprado -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <!-- Formulario: el botón determina si es compra gratuita o no -->
+                        <form id="purchaseForm" method="post" class="form" role="form">
+                            {% csrf_token %}
+                            <input type="hidden" name="exerciseId" value="{{ exercise.id }}">
+                            <button name="freePurchase" type="submit" value="false" class="btn btn-success btn-block">Obtener con Paypal</button>
+                            {% if license.numFreeExercises > 0 %}
+                            <button name="freePurchase" type="submit" value="true" class="btn btn-warning btn-block">Obtener Gratis</button>
+                            {% endif %}
+                            <a href="/" class="btn btn-info btn-block">Cancelar</a>
+                        </form>
+                    </div>
+                </div>
+                <hr/>
+
+                <!-- Letra pequeña de la compra -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <strong>Información: </strong>
+                        <ul>
+                            {% if license.numFreeExercises > 0 %}
+                            <li>Su licencia actual aún dispone de {{ license.numFreeExercises }} ejercicios gratuitos.</li>
+                            <li>Haz clic en 'Obtener gratis' y este será añadido automáticamente a su repertorio.</li>
+                            {% else %}
+                            <li>Su licencia no dispone de ejercicios gratuitos.</li>
+                            {% endif %}
+                            <li>Para comprar con PayPal, haz clic en 'Obtener con Paypal'. A continuación, serás redirigido a la página de PayPal para proceder al pago.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            <!-- WARNING SI EJERCICIO YA HA SIDO COMPRADO -->
+            {% else %}
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger">
+                            <strong>Está intentando adquirir un ejercicio que ya ha comprado. Por favor, pulse <a href="/">aquí</a> para cancelar la operación.</strong>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <hr />
+        </div>
+    </div>
+</div>
+{% endblock %}

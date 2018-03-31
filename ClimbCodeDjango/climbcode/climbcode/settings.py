@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'exercises.apps.ExercisesConfig',
     'licenses.apps.LicensesConfig',
     'boxes.apps.BoxesConfig',
+    'purchaseTickets.apps.PurchaseTicketsConfig',
 ]
 
 MIDDLEWARE = [

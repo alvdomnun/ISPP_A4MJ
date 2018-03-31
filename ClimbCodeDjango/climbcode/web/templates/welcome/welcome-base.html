@@ -50,12 +50,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_students' %}">Mis Alumnos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_exercisesS' %}">Ejercicios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_own_exercisesS' %}">Mis ejercicios</a>
-                        </li>
                     </ul>
                     {% elif user.actor.programmer %}
                     <ul class="navbar-nav mr-auto">
@@ -65,30 +59,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
                         </li>
-                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
-                        </li>
                     </ul>
-                    {% elif user.actor.teacher %}
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_own_exercisesT' %}">Mis ejercicios</a>
-                            </li>
-                         </ul>
-
                     {% elif user.actor.student %}
                         Student
                     {% elif user.actor.administrator %}
-
+                        
                     {% endif %}
                     <!-- Inicio/Cierre de sesión -->
 			        {% include 'base/loginpartial.html' %}

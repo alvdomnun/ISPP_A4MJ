@@ -20,12 +20,7 @@ urlpatterns = [
     path('students/add/subjects/<int:pk>', views.add_subject_student, name='add_subject_student'),
     path(r'students/add/subjects/add', views.add_subject_aux2, name='add_subject_student_aux'),
     path(r'students/remove/subjects/remove', views.remove_subject_aux2, name='remove_subject_student_aux'),
-    path('students/edit/profile', views.edit_profile_student, name='edit_profile_student'),
-    path('students/edit/pass', views.edit_pass_student, name='edit_pass_student'),
 
     path('programmers/edit/profile', views.edit_profile_programmer, name='edit_profile_programmer'),
     path('programmers/edit/pass', views.edit_pass_programmer, name='edit_pass_programmer'),
-
-    path('schools/edit/profile', views.edit_profile_school, name='edit_profile_school'),
-    path('schools/edit/pass', views.edit_pass_school, name='edit_pass_school'),
 ]

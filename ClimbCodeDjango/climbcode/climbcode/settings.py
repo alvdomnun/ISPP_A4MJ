@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import posixpath
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,11 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-DEBUG = True
+DEBUG = False
 
-#ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
 
 
 # Application definition
@@ -96,7 +93,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': 'postgres',
+        'USER': 'climbcode',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432',

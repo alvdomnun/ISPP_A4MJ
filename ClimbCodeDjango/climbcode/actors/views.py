@@ -55,7 +55,7 @@ def edit_self_teacher(request):
     data = {
         'form': form,
         'teacher': teacher,
-        'title': 'Editar perfil'
+        'title': 'Editar mi perfil'
     }
 
     return render(request, 'teachers/self_edit.html', data)

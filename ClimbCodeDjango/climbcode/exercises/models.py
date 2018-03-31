@@ -32,8 +32,7 @@ class Exercise(models.Model):
     programmer = models.ForeignKey('actors.Programmer', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.title + ' - ' + self.description + ' - ' + self.sales  + ' - ' \
-               + self.level + ' ( ' + self.promoted + ' : ' + self.startPromotionDate + ' -- '+ self.endPromotionDate + ' )  ' + self.draft
+        return self.title + ' - ' + self.description
 
     class Meta:
         verbose_name = "Ejercicio"

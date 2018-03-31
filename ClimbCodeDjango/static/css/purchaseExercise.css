@@ -1,0 +1,18 @@
+/* Google Fonts */
+
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+
+/* General Styles */
+
+body {
+    font-size: 16px;
+    line-height: 25px;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.color-invoice {
+    background-color: #e7e7e7;
+    border: 1px solid #e7e7e7;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}

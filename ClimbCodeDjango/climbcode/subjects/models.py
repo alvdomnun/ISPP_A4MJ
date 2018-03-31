@@ -9,7 +9,7 @@ class Subject(models.Model):
     """
     Clase que define el modelo Asignatura: nombre, curso y código.
     """
-    name = models.CharField(max_length = 50, unique = True, help_text = 'Requerido. 50 carácteres como máximo.')
+    name = models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.')
     course = models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.')
 
     # Relación con la escuela a la que pertenece la asignatura
@@ -29,4 +29,7 @@ class SubjectAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades de la asignatura que se mostrarán en el panel de administración.
     """
-    list_display = ('name', 'course')
+    list_display = ('name', 'course', 'get_school')
+
+    def get_school(self, obj):
+        return obj.school.centerName

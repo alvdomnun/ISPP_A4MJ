@@ -33,10 +33,11 @@ class RegisterProgrammerForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Programador
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
-    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
-        label = 'D.N.I.')
+    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$',
+                message = 'El D.N.I. debe estar compuesto de 8 dígitos seguidos de 1 letra mayúscula.')], label = 'D.N.I.')
 
     # Validaciones propias
     def clean(self):
@@ -68,7 +69,8 @@ class RegisterSchoolForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Escuela
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$', 
+           message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
     photo = forms.ImageField(required = False, label = 'Foto de perfil')
     centerName = forms.CharField(max_length = 50, label = 'Nombre del Centro')
     address = forms.CharField(max_length = 50, label = 'Dirección')

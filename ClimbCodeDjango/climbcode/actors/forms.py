@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.forms.utils import ErrorList
 
-from actors.models import Teacher
+from actors.models import Teacher, School
 from subjects.models import Subject
-from hashlib import sha1
+from _datetime import date
+import datetime
 
 class EditSelfTeacherForm(forms.Form):
     # Atributos de información personal
@@ -112,6 +113,23 @@ class EditStudentForm(forms.Form):
         # Si no se han capturado otros errores, hace las validaciones por orden
 
 
+def get_license_school(school):
+    """ Obtiene la licencia activa para la escuela indicada """
+
+    # Fecha actual
+    today = datetime.date.today()
+
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si se encuentra licencia activa, la devuelve
+    if (license.count() > 0):
+        return license.first()
+
+    # Si no se encuentra
+    else:
+        False
+
 class RegisterTeacherForm(forms.Form):
     # Atributos de información personal
     username = forms.CharField(min_length=5, max_length=32, label='Nombre de usuario')
@@ -141,6 +159,18 @@ class RegisterTeacherForm(forms.Form):
     def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
         if not self.errors:
+
+            # Comprueba que la licencia activa de la escuela no tenga el contador de usuarios a añadir a 0
+            school = School.objects.get(userAccount_id=self.user.id)
+            license = get_license_school(school)
+            if not license:
+                raise forms.ValidationError(
+                    "No tienen ninguna licencia activa. Diríjase al apartado de compra de licencias.")
+            else:
+                if license.numUsers == 0:
+                    raise forms.ValidationError(
+                        "Su licencia no permite el registro de más usuarios.")
+
 
             # Valida que el username no sea repetido
             username = self.cleaned_data["username"]

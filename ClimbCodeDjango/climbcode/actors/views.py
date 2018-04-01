@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -16,6 +17,7 @@ from actors.decorators import user_is_programmer, user_is_student, user_is_schoo
 
 # Edición del perfil propio profesor ------------------------------------------------------------------
 
+@login_required(login_url='/login/')
 def edit_self_teacher(request):
     teacher_aux = request.user
 
@@ -60,6 +62,7 @@ def edit_self_teacher(request):
 
     return render(request, 'teachers/self_edit.html', data)
 
+@login_required(login_url='/login/')
 def edit_self_teacher_pass(request):
     teacher_aux = request.user
 
@@ -113,6 +116,7 @@ def edit_self_teacher_pass(request):
 # Gestión de alumnos y profesores (como escuela) ------------------------------------------------------
 
 #Para profesores
+@login_required(login_url='/login/')
 def remove_subject_aux(request):
 
     try:
@@ -143,6 +147,7 @@ def remove_subject_aux(request):
     return HttpResponseRedirect('/actors/teachers/list')
 
 #Para estudiantes
+@login_required(login_url='/login/')
 def remove_subject_aux2(request):
 
     try:
@@ -173,6 +178,7 @@ def remove_subject_aux2(request):
     return HttpResponseRedirect('/actors/students/list')
 
 #Para profesores
+@login_required(login_url='/login/')
 def add_subject_aux(request):
 
     try:
@@ -204,6 +210,7 @@ def add_subject_aux(request):
     return HttpResponseRedirect('/actors/teachers/list')
 
 #Para estudiantes
+@login_required(login_url='/login/')
 def add_subject_aux2(request):
 
     pk1 = request.GET.get('pk1')
@@ -230,6 +237,7 @@ def add_subject_aux2(request):
 
     return HttpResponseRedirect('/actors/students/list')
 
+@login_required(login_url='/login/')
 def add_subject_teacher(request, pk):
     teacher = Teacher.objects.get(pk=pk)
     teachers = Teacher.objects.filter(pk=pk)
@@ -269,7 +277,7 @@ def add_subject_teacher(request, pk):
 
     return render(request, 'teachers/add_subjects.html', data)
 
-
+@login_required(login_url='/login/')
 def add_subject_student(request, pk):
     student = Student.objects.get(pk=pk)
     students = Student.objects.filter(pk=pk)
@@ -308,6 +316,7 @@ def add_subject_student(request, pk):
 
     return render(request, 'students/add_subjects.html', data)
 
+@login_required(login_url='/login/')
 def list_teachers(request):
     user = request.user
 
@@ -333,6 +342,7 @@ def list_teachers(request):
     }
     return render(request, 'teachers/list.html', data)
 
+@login_required(login_url='/login/')
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
 
@@ -353,6 +363,7 @@ def delete_teacher(request, pk):
 
     return render(request, 'teachers/delete.html', {'teacher':teacher})
 
+@login_required(login_url='/login/')
 def edit_teacher(request, pk):
     teacher = get_object_or_404(Teacher, pk=pk)
 
@@ -402,12 +413,31 @@ def edit_teacher(request, pk):
 
     return render(request, 'teachers/edit.html', data)
 
+@login_required(login_url='/login/')
+def get_license_school(school):
+    """ Obtiene la licencia activa para la escuela indicada """
+
+    # Fecha actual
+    today = datetime.date.today()
+
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si se encuentra licencia activa, la devuelve
+    if (license.count() > 0):
+        return license.first()
+
+    # Si no se encuentra
+    else:
+        False
+
+@login_required(login_url='/login/')
 def register_teacher(request):
     current_school = request.user
 
     try:
 
-        School.objects.get(userAccount_id=current_school.id)
+        school = School.objects.get(userAccount_id=current_school.id)
 
     except Exception as e:
         return HttpResponseRedirect('/')
@@ -418,6 +448,8 @@ def register_teacher(request):
     if (request.method == 'POST'):
         form = RegisterTeacherForm(request.POST, request.FILES, user=request.user)
         if (form.is_valid()):
+
+            license = get_license_school(school)
 
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
@@ -435,6 +467,10 @@ def register_teacher(request):
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
             subjects = form.cleaned_data["subjects"]
+
+            # Aumento de 1 en los usuarios de la licencia de la escuela
+            license.numUsers = license.numUsers - 1
+            license.save()
 
             userAccount = user
 
@@ -461,6 +497,7 @@ def register_teacher(request):
 
     return render(request, 'teachers/register.html', data)
 
+@login_required(login_url='/login/')
 def list_students(request):
     user = request.user
 
@@ -486,6 +523,7 @@ def list_students(request):
     }
     return render(request, 'students/list.html', data)
 
+@login_required(login_url='/login/')
 def register_student(request):
     current_school = request.user
 
@@ -543,6 +581,7 @@ def register_student(request):
 
     return render(request, 'students/register.html', data)
 
+@login_required(login_url='/login/')
 def edit_student(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
@@ -593,6 +632,7 @@ def edit_student(request, pk):
 
     return render(request, 'students/edit.html', data)
 
+@login_required(login_url='/login/')
 def delete_student(request, pk):
     student = get_object_or_404(Student, pk=pk)
 

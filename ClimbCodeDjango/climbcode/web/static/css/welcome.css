@@ -1,4 +1,4 @@
-.bgimg-1, .bgimg-2, .bgimg-3 {
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -7,13 +7,29 @@
 
 
 .bgimg-1 {
-    background-image: url('/static/img/parallax1.jpg');
+    background-image: url('/static/img/fondo-libro.jpg');
+    min-height: 100%;
+}
+
+.bgimg-2 {
+    background-image: url('/static/img/fondo-cuaderno.jpg');
+    min-height: 100%;
+}
+
+.bgimg-3 {
+    background-image: url('/static/img/fondo-programador.jpg');
+    min-height: 100%;
+}
+
+.bgimg-4 {
+    background-image: url('/static/img/fondo-libro.jpg');
     min-height: 100%;
 }
 
 .parallax {
-    height: 300px;
-    margin-bottom: 50px;
+    /*height: 300px;*/
+    height: 40vh;
+    margin-bottom: 35px;
 }
 
 .display-middle {
@@ -29,4 +45,8 @@
     /*font-weight: bold;*/
     letter-spacing: 4px;
     font-size: large;
+}
+
+#home {
+    margin-top: 55px;
 }

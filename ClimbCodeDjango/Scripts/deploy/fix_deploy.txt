@@ -10,6 +10,7 @@ source venv/bin/activate &&
 pip install -r requirements.txt &&
 pip install gunicorn &&
 cd climbcode &&
+echo "from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell &&
 python manage.py migrate &&
 python manage.py loaddata defaultSubjects && 
 python manage.py loaddata provinces &&

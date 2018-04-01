@@ -13,7 +13,9 @@ from provinces.models import Province
 from actors.models import School
 from licenses.models import LicenseType
 import re
-
+from django.forms import ModelForm
+from exercises.models import Exercise
+from defaultSubjects.models import DefaultSubject
 
 class LoginForm(AuthenticationForm):
     """Formulario de inicio de sesión"""
@@ -107,3 +109,14 @@ class RegisterSchoolForm(forms.Form):
             elif idCode is not None and type == 'Academy':
                 if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
                     raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
+
+
+class ExerciseForm(forms.Form):
+    """
+    Formulario para el modelo Exercise
+    """
+    title = forms.CharField()
+    description = forms.CharField()
+    level = forms.ChoiceField(choices = Exercise.LevelType, label = 'Nivel')
+    category = forms.ModelChoiceField(queryset = DefaultSubject.objects.all(), empty_label = None, label = 'Asignatura')
+

@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import posixpath
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     'exercises.apps.ExercisesConfig',
     'licenses.apps.LicensesConfig',
     'boxes.apps.BoxesConfig',
+    'purchaseTickets.apps.PurchaseTicketsConfig',
 ]
 
 MIDDLEWARE = [

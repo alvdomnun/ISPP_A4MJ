@@ -1,0 +1,23 @@
+sudo -u postgres psql -c "drop database climbcode;" &&
+sudo -u postgres psql -c "create database climbcode;" &&
+sudo -u postgres psql -c "grant all privileges on database climbcode to climbcode;" &&
+cd &&
+rm -r ISPP_A4MJ &&
+git clone -b develop --single-branch https://github.com/alvdomnun/ISPP_A4MJ.git &&
+cd ~/ISPP_A4MJ/ClimbCodeDjango &&
+virtualenv venv --python=$(which python3.5) &&
+source venv/bin/activate &&
+pip install -r requirements.txt &&
+pip install gunicorn &&
+cd climbcode &&
+python manage.py migrate &&
+python manage.py loaddata defaultSubjects && 
+python manage.py loaddata provinces &&
+python manage.py collectstatic --noinput &&
+sudo supervisorctl reread &&
+sudo supervisorctl update &&
+sudo supervisorctl stop climbcode &&
+sudo supervisorctl start climbcode &&
+sudo service nginx restart &&
+echo 'Fix de archivos finalizado' &&
+sudo su - root

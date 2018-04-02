@@ -413,7 +413,6 @@ def edit_teacher(request, pk):
 
     return render(request, 'teachers/edit.html', data)
 
-@login_required(login_url='/login/')
 def get_license_school(school):
     """ Obtiene la licencia activa para la escuela indicada """
 
@@ -468,7 +467,7 @@ def register_teacher(request):
             dni = form.cleaned_data["dni"]
             subjects = form.cleaned_data["subjects"]
 
-            # Aumento de 1 en los usuarios de la licencia de la escuela
+            # Decremento de 1 en los usuarios de la licencia de la escuela
             license.numUsers = license.numUsers - 1
             license.save()
 
@@ -529,7 +528,7 @@ def register_student(request):
 
     try:
 
-        School.objects.get(userAccount_id=request.user.id)
+        school = School.objects.get(userAccount_id=request.user.id)
 
     except Exception as e:
         return HttpResponseRedirect('/')
@@ -540,6 +539,7 @@ def register_student(request):
     if (request.method == 'POST'):
         form = RegisterStudentForm(request.POST, request.FILES, user=request.user)
         if (form.is_valid()):
+            license = get_license_school(school)
 
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
@@ -557,6 +557,10 @@ def register_student(request):
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
             subjects = form.cleaned_data["subjects"]
+
+            # Decremento de 1 en los usuarios de la licencia de la escuela
+            license.numUsers = license.numUsers - 1
+            license.save()
 
             userAccount = user
 

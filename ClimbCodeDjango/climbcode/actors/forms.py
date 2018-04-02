@@ -216,6 +216,16 @@ class RegisterStudentForm(forms.Form):
         # Si no se han capturado otros errores, hace las validaciones por orden
         if not self.errors:
 
+            # Comprueba que la licencia activa de la escuela no tenga el contador de usuarios a añadir a 0
+            school = School.objects.get(userAccount_id=self.user.id)
+            license = get_license_school(school)
+            if not license:
+                raise forms.ValidationError(
+                    "No tienen ninguna licencia activa. Diríjase al apartado de compra de licencias.")
+            else:
+                if license.numUsers == 0:
+                    raise forms.ValidationError(
+                        "Su licencia no permite el registro de más usuarios.")
             # Valida que el username no sea repetido
             username = self.cleaned_data["username"]
             num_usuarios = User.objects.filter(username=username).count()

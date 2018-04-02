@@ -1,12 +1,15 @@
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 import datetime
+
+from actors.models import School
 from licenses.models import License
 from subjects.models import Subject
 from purchaseTickets.models import PurchaseTicket
 from elementPrices.models import ElementPrice
 from exercises.forms import BuyExerciseForm
 from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_school
+from actors.decorators import user_is_school, user_is_teacher, user_is_programmer
 from exercises.models import Exercise
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.http.request import HttpRequest
@@ -186,3 +189,183 @@ def get_license_school(school):
     # Si no se encuentra
     else:
         False
+
+#################################################################################
+
+#Listado de todos los ejercicios como programador
+@login_required(login_url='/login/')
+@user_is_programmer
+def list_exercisesP(request):
+    #Filtro por NO draft y Orden de fecha de promocion
+    exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'exercises_programmer.html', data)
+
+#Listado de ejercicios propios como programador
+@login_required(login_url='/login/')
+@user_is_programmer
+def list_own_exercisesP(request):
+    programmer = request.user
+
+    #Filtro ejercicios propios
+    exercise_list =  Exercise.objects.filter(programmer__userAccount=programmer)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de tus ejercicios'
+    }
+    return render(request, 'own_exercises_programmer.html', data)
+
+#Listado de todos los ejercicios como escuela
+@login_required(login_url='/login/')
+@user_is_school
+def list_exercisesS(request):
+    school =  request.user.actor.school
+    # Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado
+    exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+
+    license = get_license_school(school)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios',
+        'license':license
+    }
+    return render(request, 'exercises_school.html', data)
+
+#Listado de ejercicios propios como escuela
+@login_required(login_url='/login/')
+@user_is_school
+def list_own_exercisesS(request):
+    school = request.user.actor.school
+
+    #Filtro ejercicios propios y NO draft
+    exercise_list =  Exercise.objects.filter(school=school).filter(draft=False)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'own_exercises_school.html', data)
+
+
+#Listado de todos los ejercicios como teacher
+@login_required(login_url='/login/')
+@user_is_teacher
+def list_exercisesT(request):
+    #Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado la escuela
+    teacher = request.user
+    school = School.objects.get(teacher__userAccount=teacher)
+    exercise_list = list( Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'exercises_teacher.html', data)
+
+#Listado de todos los ejercicios de la escuela como teacher
+@login_required(login_url='/login/')
+@user_is_teacher
+def list_school_exercisesT(request):
+    teacher = request.user
+    # Escuela del teacher
+    school = School.objects.get(teacher__userAccount=teacher)
+    # Filtro ejercicios propios
+    exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'own_exercises_school.html', data)
+
+
+#Listado de todos los ejercicios que enseña el teacher
+@login_required(login_url='/login/')
+@user_is_teacher
+def list_own_exercisesT(request):
+    teacher = request.user
+    # Escuela del teacher
+    school = School.objects.get(teacher__userAccount=teacher)
+    # Filtro ejercicios propios
+    exercise_list = Exercise.objects.filter(school__userAccount=school).filter(subject__teacher__userAccount=teacher).filter(draft=False)
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'own_exercises_school.html', data)

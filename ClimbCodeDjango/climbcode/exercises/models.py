@@ -44,4 +44,4 @@ class ExerciseAdminPanel(admin.ModelAdmin):
     list_display = ('title', 'level', 'promoted', 'sales', 'draft', 'get_default_subject')
 
     def get_default_subject(self, obj):
-        return obj.category.name
+        return obj.category.name + ' ' + str(obj.category.course)

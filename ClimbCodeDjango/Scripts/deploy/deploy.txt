@@ -1,0 +1,13 @@
+cd ISPP_A4MJ && git pull &&
+cd ClimbCodeDjango &&
+source venv/bin/activate &&
+cd climbcode && python manage.py migrate &&
+echo "from django.contrib.auth.models import User; User.objects.filter(email='admin@example.com').delete(); User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell &&
+python manage.py loaddata defaultSubjects &&
+python manage.py loaddata provinces &&
+python manage.py collectstatic --noinput &&
+sudo supervisorctl stop climbcode &&
+sudo supervisorctl start climbcode &&
+sudo service nginx restart &&
+echo 'Actualización de archivos finalizada' &&
+sudo su - root

@@ -1,0 +1,69 @@
+{% extends 'welcome/welcome-base.html' %}
+
+{% block content %}
+    <style>
+        table td {
+            align-content: center
+        }
+    </style>
+
+    <h1>Lista de ejercicios</h1>
+
+    <div class="table">
+        <table class="table table-striped">
+            {% if exercise_list %}
+
+            <thead>
+            <tr>
+                <td>Título</td>
+                <td>Descripción</td>
+                <td>Precio</td>
+                <td>Nivel</td>
+                <td></td>
+            </tr>
+            </thead>
+            {% for exercise in exercise_list %}
+            <tbody>
+
+                    <tr>
+                        <td>{{ exercise.title }}</td>
+                        <td>{{ exercise.description }}</td>
+                        <td>{{ exercise.sales }}</td>
+                        <td>{{ exercise.level }}</td>
+                        <td>
+                            <a class="btn btn-default" href="">Mostrar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                </div>
+            {% else %}
+                <p></p>
+                <p>No existen ejercicios.</p>
+            {% endif %}
+
+
+    {% if exercise_list.has_other_pages %}
+        <ul class="pagination">
+            {% if exercise_list.has_previous %}
+                <li><a href="?page={{ exercise_list.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in exercise_list.paginator.page_range %}
+                {% if exercise_list.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if exercise_list.has_next %}
+                <li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

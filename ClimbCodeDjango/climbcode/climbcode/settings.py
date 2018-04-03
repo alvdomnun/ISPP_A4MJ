@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
         'USER': 'climbcode',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'jghsa87121hiisadou6akjiou27yiugIYBJhiyU67UuiYU5',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

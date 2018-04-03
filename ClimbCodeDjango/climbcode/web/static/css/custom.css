@@ -4,10 +4,6 @@ body {
     background-color: #ebebeb !important;
 }
 
-.navbar {
-    margin-bottom: 20px;
-}
-
 .input-group-text {
     background-color: lightblue !important;
 }
@@ -125,4 +121,8 @@ body {
     border-radius: 5px;
     border-color: #928a8a;
     background-color: white
+}
+
+.brand-icon {
+    height: 35px;
 }

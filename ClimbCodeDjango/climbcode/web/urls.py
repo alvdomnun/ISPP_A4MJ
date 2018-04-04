@@ -10,4 +10,7 @@ urlpatterns = [
     path('notebookv1_ejercicio_creado', views.notebookv1_ejercicio_creado, name='notebookv1_ejercicio_creado'),
     path('notebookv1_ejercicio_cc', views.notebookv1_ejercicio_cc, name='notebookv1_ejercicio_cc'),
     path('notebookv1aux', views.notebookv1aux, name='notebookv1aux'),
+
+    path('paypal', views.testingPaypal, name='testingPaypal'),
+
 ]

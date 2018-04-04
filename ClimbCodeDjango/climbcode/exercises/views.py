@@ -1,7 +1,6 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 import datetime
-
 from actors.models import School
 from licenses.models import License
 from subjects.models import Subject

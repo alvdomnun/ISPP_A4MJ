@@ -164,6 +164,13 @@ def register_school(request):
             license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
                 endDate = endDate, licenseType = licenseType, school = school)
 
+            paymentData = {
+                'school': school,
+                'license': license,
+                'date': date.today()
+            }
+
+            #return render(request, 'web/registerPayment.html', paymentData)
             return HttpResponseRedirect('/login/')
 
         else:
@@ -194,6 +201,18 @@ def register_school(request):
     }
 
     return render(request, 'web/registerSchool.html', data)
+
+def testingPaypal(request):
+    school = School.objects.all().first()
+    license = License.objects.all().first()
+
+    paymentData = {
+        'school': school,
+        'license': license,
+        'date': date.today()
+    }
+
+    return render(request, 'web/registerPayment.html', paymentData)
 
 
 ####################################################    PRIVATE     METHODS     #################################################################

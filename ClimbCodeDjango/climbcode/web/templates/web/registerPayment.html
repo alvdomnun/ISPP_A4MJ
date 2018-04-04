@@ -1,0 +1,145 @@
+{% extends 'welcome/welcome-base.html' %}
+
+{% block extrastatic %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+{% endblock %}
+
+
+{% block title %}ClimbCode{% endblock %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+
+<div class="container">
+
+        <br/>
+            <h2> Finalizaci&#243;n Registro </h2>
+        <hr/>
+
+        <div class="well col-xs-12 col-sm-12 col-md-12">
+            <!-- Cabecera Pagos -->
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <address>
+                        <strong>ClimbCode.tk</strong>
+                    </address>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <p>
+                        <em>{{ date }}</em>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tabla Precios -->
+            <div class="row">
+                <div class="text-center">
+                    <h1>Datos del pago</h1>
+                </div>
+                <br/>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Licencia Tipo</th>
+                            <th>N&#186; Usuarios</th>
+                            <th>N&#186; Ejercicios Gratuitos</th>
+                            <th>#</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-9"><em>{{ license.name }}</em></td>
+                            <td class="col-md-1 text-center">{{ license.numUsers }}</td>
+                            <td class="col-md-1 text-center">{{ license.numFreeExercises }}</td>
+                            <td class="col-md-1" style="text-align: center">1</td>
+                            <td class="col-md-1 text-center">{{ license.price }}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"><h4><strong>Total</strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong>{{ license.price }} Euros</strong></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bot&#243;n Paypal -->
+                <div id="paypal-button-container"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extrajs %}
+    <script>
+        paypal.Button.render({
+
+            env: 'sandbox', // sandbox | production
+
+            locale: 'es_ES',
+
+            style: {
+                size: 'responsive',
+                color: 'gold',
+                shape: 'rect',
+                label: 'pay',
+                tagline: false,
+                fundingicons: true,
+            },
+
+            // PayPal Client IDs - replace with your own
+            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+            client: {
+                sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+                production: '<insert production client id>'
+            },
+
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            // payment() is called when the button is clicked
+            payment: function(data, actions) {
+
+                // Make a call to the REST api to create the payment
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: '0.01', currency: 'EUR' }
+                            }
+                        ]
+                    }
+                });
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+
+                // Make a call to the REST api to execute the payment
+                return actions.payment.execute().then(function() {
+                    window.alert('Payment Complete!');
+                });
+            },
+
+            // onCancel() is called when the buyer cancels the payment
+            onCancel: function(data, actions) {
+
+                // Returns a WindowsAlert
+                return window.alert('Payment Cancelled!');
+            },
+
+            // onError() is called when the an error occurs
+            onError: function(data, actions) {
+
+                // Returns a WindowsAlert
+                return window.alert('Payment Cancelled!');
+            }
+
+        }, '#paypal-button-container');
+
+    </script>
+{% endblock %}

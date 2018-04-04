@@ -1,1 +1,0 @@
-plink.exe 159.89.103.249:22 -l root -pw 8q6u6szfx -m deploy.txt -t

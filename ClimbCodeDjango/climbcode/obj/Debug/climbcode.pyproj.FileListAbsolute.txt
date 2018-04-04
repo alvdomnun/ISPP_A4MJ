@@ -1,0 +1,3 @@
+D:\Alvaro\ISPP\ClimbCode\ClimbCodeDjango\climbcode\obj\Debug\climbcode.pyproj.CoreCompileInputs.cache
+D:\Alvaro\ISPP\ClimbCode\ClimbCodeDjango\climbcode\bin\Microsoft.PythonTools.WebRole.dll
+D:\Alvaro\ISPP\ClimbCode\ClimbCodeDjango\climbcode\bin\wfastcgi.py

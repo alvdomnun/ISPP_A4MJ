@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
-from web.forms import RegisterProgrammerForm, RegisterSchoolForm
+from web.forms import RegisterProgrammerForm, RegisterSchoolForm, ExerciseForm
 from django.contrib.auth.models import User
 from actors.models import School, Programmer
 from datetime import datetime
@@ -14,6 +14,7 @@ from provinces.models import Province
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from exercises.models import Exercise
+from defaultSubjects.models import DefaultSubject
 
 
 # Create your views here.
@@ -194,6 +195,77 @@ def pruebaAjaxNotebook(request):
             'respuesta': "Recibido en servidor el título: "+title+" y subtítulo: "+subtitle
         }
         return JsonResponse(data)
+
+@csrf_exempt
+def saveNotebook(request):
+    print("hemos llegado")
+    if request.method == 'POST':
+        print("metodo post")
+        idValorNotebook = request.POST.get('idValorNotebook')
+        print(idValorNotebook)
+        province = Province.objects.create(name=idValorNotebook)
+
+        #provinces = Province.objects.all
+        template = loader.get_template('web/notebookv1.html')
+        context = {
+            'province': province,
+        }
+        return HttpResponse(template.render(context, request))
+
+@csrf_exempt
+def createNotebook(request):
+    """
+    Muestra un formulario para crear un ejercicio y la crea si la petición es POST
+    :param request: HttpRequest
+    :return: HttpResponse
+    """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario sea anónimo (no registrado)
+    if (request.user.is_authenticated):
+        return HttpResponseRedirect('/')
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = ExerciseForm(request.POST)
+        if (form.is_valid()):
+            # Guarda el User (model Django) en BD
+            title = form.cleaned_data["title"]
+            description = form.cleaned_data["description"]
+            level = form.cleaned_data["level"]
+            category = form.cleaned_data["category"]
+
+            exercise = Exercise.objects.create(title=title, description=description,sales=0,
+                                               promoted=False, draft = True, level=level, category=category)
+
+            idNotebook = exercise.id
+            template = loader.get_template('web/notebookv1.html')
+            data={
+                'idNotebook':idNotebook
+            }
+            return HttpResponse(template.render(data, request))
+
+        else:
+            # Si la validación falla también cargo los datos necesarios
+            categories = DefaultSubject.objects.all()
+            levels = form.fields['level'].choices
+
+    # Si se accede al form vía GET o cualquier otro método
+    else:
+        form = ExerciseForm()
+
+        # Datos del modelo (vista)
+        categories = DefaultSubject.objects.all()
+        levels = form.fields['level'].choices
+
+    data = {
+        'form': form,
+        'categories': categories,
+        'levels': levels,
+    }
+    template = loader.get_template('web/createNotebook.html')
+
+    return HttpResponse(template.render(data, request))
 
 def editNotebook(request):
     print("Editing notebook")

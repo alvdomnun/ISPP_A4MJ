@@ -33,6 +33,8 @@ class BoxAdminPanel(admin.ModelAdmin):
 
 class Text(Box):
     #Clase que define a Text
+    content = models.TextField()
+
     def __str__(self):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
@@ -47,6 +49,8 @@ class TextAdminPanel(BoxAdminPanel):
 
 class Code(Box):
     # Clase que define a Text
+    content = models.TextField()
+
     def __str__(self):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
@@ -61,6 +65,8 @@ class CodeAdminPanel(BoxAdminPanel):
 
 class Picture(Box):
     #Clase que define a Text
+    content = models.ImageField(upload_to = 'uploads/')
+
     def __str__(self):
         return '( ' + self.order + ' ) ' + self.exercise.title
 

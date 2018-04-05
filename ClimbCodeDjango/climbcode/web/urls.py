@@ -11,6 +11,8 @@ urlpatterns = [
     path('notebookv1_ejercicio_creado', views.notebookv1_ejercicio_creado, name='notebookv1_ejercicio_creado'),
     path('notebookv1aux', views.notebookv1aux, name='notebookv1aux'),
     url(r'^pruebaAjaxNotebook$', views.pruebaAjaxNotebook, name='pruebaAjaxNotebook'),
+    url(r'^saveNotebook$', views.saveNotebook, name='saveNotebook'),
+    url(r'^createNotebook$', views.createNotebook, name='createNotebook'),
     url(r'^editNotebook$', views.editNotebook, name='editNotebook'),
     url(r'^editNotebookAjax$', views.editNotebookAjax, name='editNotebookAjax'),
 

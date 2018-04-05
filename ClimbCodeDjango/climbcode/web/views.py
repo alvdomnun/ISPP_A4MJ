@@ -13,6 +13,7 @@ from licenses.models import LicenseType
 from provinces.models import Province
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from exercises.models import Exercise
 
 
 # Create your views here.
@@ -193,3 +194,58 @@ def pruebaAjaxNotebook(request):
             'respuesta': "Recibido en servidor el título: "+title+" y subtítulo: "+subtitle
         }
         return JsonResponse(data)
+
+def editNotebook(request):
+    print("Editing notebook")
+    if request.method == 'GET':
+        # Petición de edición de notebook existente
+        idNotebook = request.GET.get('idNotebook')
+        # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
+        if permisoEditNotebook:
+            print("Programmer is allowed to edit this notebook")
+            print("Editing notebook with id: "+idNotebook)
+            exercise = Exercise.objects.get(id=idNotebook)
+            print("El título del notebook recuperado es: "+exercise.title)
+            if exercise is not None:
+                template = loader.get_template('notebook/edit_notebook_v1.html')
+                context = {'exercise':exercise}
+                return HttpResponse(template.render(context, request))
+        else:
+            print("This actor is not allowed to edit this notebook")
+        
+
+def permisoEditNotebook(idNotebook):
+    tienePermiso = False
+    #TODO MBC recuperar actor logado, debe ser programador
+
+    #TODO MBC recuperar notebook
+
+    #TODO MBC comprobar que el notebook tiene como id del programador al logado
+    return True
+
+# Llamadas ajax
+
+@csrf_exempt
+def editNotebookAjax(request):
+    print("Editing notebook by ajax")
+    if request.method == 'POST':
+        print("metodo post")
+        idNotebook = request.POST.get('idNotebook')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        #TODO MBC VALIDAR CAMPOS
+        print(title)
+        editedExercise = updateNotebook(idNotebook,title,description)
+        data = {
+            'editedExerciseTitle':editedExercise.title,
+            'editedExerciseDescription':editedExercise.description
+        }
+        return JsonResponse(data)
+
+def updateNotebook(idNotebook,title,description):
+    #TODO MBC VALIDAR CAMPOS
+    exercise = Exercise.objects.get(id=idNotebook)
+    exercise.title = title
+    exercise.description = description
+    exercise.save()
+    return exercise

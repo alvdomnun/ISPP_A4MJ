@@ -1,0 +1,214 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 250px;
+            }
+
+#notificaciones-holder {
+width: 250px;
+min-height:0px;
+z-index: 1000;
+position: fixed;
+top: 60px;
+right: 10px;
+height: auto;
+display: none;
+text-align: center
+}
+
+.notificacion {
+padding: 10px;
+width: 100%;
+position: relative;
+margin-bottom: 10px;
+}
+
+.notificacion.error {
+background-color: red;
+}
+
+
+
+
+
+
+
+    </style>
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/notebook.js"></script>
+    <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#form_exercise').on('submit', function(event){
+                event.preventDefault();
+                console.log("form submitted!");
+                editExerciseInfo();
+            });
+        });
+
+        function editExerciseInfo(){
+            console.log("send title is working!"); // sanity check
+            var title = $('#title').val();
+            var description = $('#description').val();
+            var idNotebook = $('#idNotebook').val();
+            //TODO MBC VALIDAR CAMPOS
+            //alert("Mandando por Ajax el título: "+ title+" y descripción: "+description);
+            $.ajax({
+                url : "/web/editNotebookAjax", // the endpoint
+                type : "POST", // http method
+                data : { 
+                'title': title,
+                'description': description,
+                'idNotebook': idNotebook
+                
+                }, // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                    console.log(json); // log the returned json to the console
+                    //alert("Notebook editado correctamente");
+                    //Actualización de los campos
+                    var newTitle = json['editedExerciseTitle'];
+                    $('#title').val(newTitle);
+                    var newDescription = json['editedExerciseDescription'];
+                    $('#description').val(newDescription);
+                    console.log("success"); // another sanity check
+                    //$("#getCodeModal").modal('show');
+                    $('#notification-text').text('Editado correctamente');
+                    $('#notificaciones-holder').slideDown();
+                    
+                    setTimeout(
+                      function() 
+                      {
+                        $('#notificaciones-holder').slideUp();
+                      }, 2000);
+                },
+
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+                    $('#notification-text').text('Error al editar');
+                    $('#notificaciones-holder').show();
+
+                    setTimeout(
+                      function() 
+                      {
+                        $('#notificaciones-holder').hide();
+                      }, 2000);
+                }
+            }); 
+        }
+       
+    </script>
+{% endblock %}
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+<div id="notificaciones-holder" class="alert alert-success" role="alert">
+    <div id="notification-text" class="notificacion success">
+    </div>
+</div>
+
+
+ <div class="modal fade" id="getCodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+       <div class="modal-header">
+         <h4 class="modal-title" id="myModalLabel"> Edición notebook </h4>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         
+       </div>
+       <div class="modal-body" id="getCode" style="overflow-x: scroll;">
+          Editado con exito
+       </div>
+    </div>
+   </div>
+ </div>
+<div style="width:80%;margin-left: 10%">
+    <h1 style="text-align: center">Crear Notebook</h1>
+    <div class="row" style="background-color: #bbbabb">
+        <div class="col-md-12" style="height: auto;">
+            <div class="row">
+                <!-- CABECERA CON TITULO Y SUBTITULO -->
+                <div class="col-md-12 custom-mt-1" >
+                    <form id="form_exercise" method="POST">
+                        {% csrf_token %}
+                        <div style="background-color: #ebebeb;width: auto;height: 250px;padding-top: 15px">
+                            <div class="row">
+
+                                <div class="col-md-6 offset-md-3">
+                                    <div class="form-group">
+
+                                        <input type="hidden" id="idNotebook" name="idNotebook" value="{{exercise.id}}">
+
+                                        <label for="username">Título:</label>
+                                        <input class="form-control" type="text" id="title" name="title" value="{{exercise.title}}">
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+                                    <div class="form-group">
+                                        <label for="username">Descripción:</label>
+                                        <input class="form-control" type="text" name="description" id="description" value="{{exercise.description}}">
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+                <div class="col-md-12 custom-mt-1">
+                    <div id="notebook_content" style="background-color: #ebebeb;width: auto;height: 4000px">
+                        <div class="col-md-12" style="margin-top: 20px;text-align:center">
+                            
+                            <div class="row">
+                                <div class="col-md-12" style="background-color:#bbbabb">
+                                    <h2 style="text-align: center">Añadir Cuadro</h2>
+                                    <div class="row">
+                                        <div class="col-md-2 offset-md-3"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addTextBox('notebook_content');">
+                                               Texto
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addCodeBox('notebook_content');">
+                                               Código
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addImageBox('notebook_content');">
+                                               Ilustración
+                                            </button>
+                                        </div>        
+                                    </div>
+                                </div>                                    
+                            </div>                                                 
+                        </div>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

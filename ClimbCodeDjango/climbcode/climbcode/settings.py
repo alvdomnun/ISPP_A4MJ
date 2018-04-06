@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import posixpath
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
     'exercises.apps.ExercisesConfig',
     'licenses.apps.LicensesConfig',
     'boxes.apps.BoxesConfig',
+    'purchaseTickets.apps.PurchaseTicketsConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
         'USER': 'climbcode',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'jghsa87121hiisadou6akjiou27yiugIYBJhiyU67UuiYU5',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

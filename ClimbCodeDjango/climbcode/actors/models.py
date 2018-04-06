@@ -82,7 +82,7 @@ class ProgrammerAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades del Programador que se mostrarán en el panel de administración.
     """
-    list_display = ('userAccount', 'get_full_name', 'dni')
+    list_display = ('userAccount', 'get_full_name', 'dni', 'balance')
 
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()
@@ -117,7 +117,7 @@ class School(Actor):
     identificationCode = models.CharField(verbose_name = 'CIF or Center Code', max_length = 9, null = True, help_text = 'Requerido. CIF para escuelas; Código de Centro para academías.')
 
     # Relación con los ejercicios comprados
-    exercises = models.ManyToManyField(Exercise, blank = True)
+    exercises = models.ManyToManyField(Exercise, through = 'purchaseTickets.PurchaseTicket', blank = True)
     # Relación con la provincia
     province = models.ForeignKey(Province, on_delete = models.SET_NULL, null = True)
             

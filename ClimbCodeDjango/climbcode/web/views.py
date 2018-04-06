@@ -4,11 +4,10 @@ from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.template import loader
 from django.http import HttpRequest
 from django.template import RequestContext
-from datetime import datetime
+from datetime import datetime, date
 from web.forms import RegisterProgrammerForm, RegisterSchoolForm
 from django.contrib.auth.models import User
 from actors.models import School, Programmer
-from datetime import datetime
 from licenses.models import LicenseType, License
 from provinces.models import Province
 
@@ -47,6 +46,21 @@ def notebookv1aux(request):
 
 def notebookv1_ejercicio_creado(request):
     template = loader.get_template('web/notebookv1_ejercicio_creado.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def notebookv1_ejercicio_cc(request):
+    template = loader.get_template('web/notebookv1_ejercicio_cc.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def notebookv1_ejercicio_am(request):
+    template = loader.get_template('web/notebookv1_ejercicio_am.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def notebookv1_ejercicio_qin(request):
+    template = loader.get_template('web/notebookv1_ejercicio_qin.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -153,9 +167,12 @@ def register_school(request):
             school = School.objects.create(phone = phone, photo = photo, province = province, address = address, type = type, teachingType = teachingType, 
                 centerName = centerName, postalCode = postalCode, identificationCode = identificationCode, userAccount = userAccount)
 
-            # Guarda la licencia específica asociada a la escuela
-            license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises, 
-                licenseType = licenseType, school = school)
+            # Crea las fechas de la licencia
+            today = date.today()
+            endDate = date(today.year + 1, today.month, today.day)
+            # Guarda la licencia asociándola a la escuela que se registra
+            license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
+                endDate = endDate, licenseType = licenseType, school = school)
 
             return HttpResponseRedirect('/login/')
 

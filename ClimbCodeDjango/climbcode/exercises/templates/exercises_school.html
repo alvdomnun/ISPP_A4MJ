@@ -17,7 +17,7 @@
             <tr>
                 <td>Título</td>
                 <td>Descripción</td>
-                <td>Precio</td>
+                <td>Ventas</td>
                 <td>Nivel</td>
                 <td></td>
             </tr>
@@ -30,17 +30,7 @@
                         <td>{{ exercise.description }}</td>
                         <td>{{ exercise.sales }}</td>
                         <td>{{ exercise.level }}</td>
-                        <td>
-                            {% if license.numFreeExercises == 0 %}
-                                <a class="btn btn-default" href="">Comprar</a>
-                                {% elif license.numFreeExercises > 0 %}
-                                <a class="btn btn-default" href="">Añadir</a>
-                            {% endif %}
-
-
-
-
-                        </td>
+                        <td><a class='btn btn-warning btn-md' href="{% url 'buy_exercise' exercise.id %}">Adquirir</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

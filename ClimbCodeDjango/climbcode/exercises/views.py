@@ -67,9 +67,7 @@ def buy_exercise(request, exercise_id):
             else: 
                 # TODO: Compra con Paypal
                 """
-                pagoRealizado = Llamada a Paypal
-                if (not pagoRealizado):
-                    return HttpResponseForbidden()                    
+                Tocar la vista para que si hace uso de Paypal, se envie el form con freePurchase = False
                 """
 
                 # Crea el ticket

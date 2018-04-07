@@ -4,6 +4,7 @@ Definition of forms.
 #encoding:utf-8
 
 from django import forms
+from licenses.models import License
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -116,3 +117,36 @@ class RegisterSchoolForm(forms.Form):
              # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
             if (license.numUsers > numUsers):
                 raise forms.ValidationError("El número de usuarios indicado no supera el mínimo exigido por la licencia.")
+
+
+class RegisterSchoolPaymentForm(forms.Form):
+    """ Formulario para recibir el pago de Paypal """
+
+    license = forms.IntegerField();
+    licensePrice = forms.CharField(min_length = 6, max_length = 10);
+    payment = forms.IntegerField();
+    school = forms.IntegerField();
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el usuario de la escuela esté inactivo
+            school = self.cleaned_data["school"]
+            school = School.objects.filter(pk = school).first()
+            if (school.userAccount.is_active):
+                raise forms.ValidationError("Esta escuela ya está activa.")
+
+            # Valida que la licencia que se paga corresponda con la escuela
+            license = self.cleaned_data["license"]
+            license = License.objects.filter(id = license).first()
+            if not(license.school == school):
+                raise forms.ValidationError("La licencia que se intenta pagar no pertenece a la escuela.")
+
+            # Valida el precio de licencia que trae el form sea similar al de la licencia
+            licensePrice = self.cleaned_data["licensePrice"]
+            # Formatea cambiando la coma del decimal por punto (, -> .)
+            licensePrice = licensePrice.replace(',', '.')
+            if not(licensePrice == str(license.price)):
+                raise forms.ValidationError('El precio de la licencia no corresponde con el real.')

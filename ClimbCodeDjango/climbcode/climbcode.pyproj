@@ -155,6 +155,11 @@
     <Content Include="actors\templates\teachers\register.html" />
     <None Include="bundleconfig.json" />
     <Content Include="exercises\templates\exercisePurchase.html" />
+    <Content Include="exercises\templates\exercises_programmer.html" />
+    <Content Include="exercises\templates\exercises_school.html" />
+    <Content Include="exercises\templates\exercises_teacher.html" />
+    <Content Include="exercises\templates\own_exercises_programmer.html" />
+    <Content Include="exercises\templates\own_exercises_school.html" />
     <Content Include="purchaseTickets\templates\index.html" />
     <Content Include="static\css\bootstrap.min.css" />
     <Content Include="static\js\bootstrap.min.js" />
@@ -167,6 +172,7 @@
     <Content Include="web\static\css\custom.css" />
     <Content Include="web\static\css\licences.css" />
     <Content Include="exercises\static\css\purchaseExercise.css" />
+    <Content Include="web\static\css\welcome.css" />
     <Content Include="web\static\img\parallax1.jpg" />
     <Content Include="web\static\js\ace-editor\src-min\ace.js" />
     <Content Include="web\static\js\ace-editor\src-min\ext-beautify.js" />
@@ -540,6 +546,7 @@
     <Content Include="web\static\js\jquery.min.js" />
     <Content Include="web\static\js\licenses.js" />
     <Content Include="web\static\js\notebook.js" />
+    <Content Include="web\static\js\paypalPayment.js" />
     <Content Include="web\templates\base\base.html" />
     <Content Include="web\templates\base\login.html" />
     <Content Include="web\templates\base\loginpartial.html" />

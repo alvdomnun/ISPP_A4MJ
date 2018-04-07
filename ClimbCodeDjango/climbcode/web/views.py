@@ -238,11 +238,7 @@ def createNotebook(request):
                                                promoted=False, draft = True, level=level, category=category)
 
             idNotebook = exercise.id
-            template = loader.get_template('/web/editNotebook?idNotebook='+idNotebook)
-            data={
-                'idNotebook':idNotebook
-            }
-            return HttpResponse(template.render(data, request))
+            return HttpResponseRedirect('/web/editNotebook?idNotebook='+str(idNotebook))
 
         else:
             # Si la validación falla también cargo los datos necesarios

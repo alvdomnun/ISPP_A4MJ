@@ -213,7 +213,6 @@ def saveNotebook(request):
         }
         return HttpResponse(template.render(context, request))
 
-@csrf_exempt
 def createNotebook(request):
     """
     Muestra un formulario para crear un ejercicio y la crea si la petición es POST
@@ -240,11 +239,7 @@ def createNotebook(request):
                                                promoted=False, draft = True, level=level, category=category)
 
             idNotebook = exercise.id
-            template = loader.get_template('web/notebookv1.html')
-            data={
-                'idNotebook':idNotebook
-            }
-            return HttpResponse(template.render(data, request))
+            return HttpResponseRedirect('/web/editNotebook?idNotebook='+str(idNotebook))
 
         else:
             # Si la validación falla también cargo los datos necesarios

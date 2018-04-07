@@ -14,6 +14,7 @@ from provinces.models import Province
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from exercises.models import Exercise
+from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
 
 
@@ -295,7 +296,8 @@ def permisoEditNotebook(idNotebook):
     #TODO MBC comprobar que el notebook tiene como id del programador al logado
     return True
 
-# Llamadas ajax
+
+### Llamadas ajax
 
 @csrf_exempt
 def editNotebookAjax(request):
@@ -314,6 +316,25 @@ def editNotebookAjax(request):
         }
         return JsonResponse(data)
 
+@csrf_exempt
+def createTextBoxAjax(request):
+    print("Creating text box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        order = request.POST.get('boxOrder')
+        text = request.POST.get('text')
+        #TODO MBC VALIDAR CAMPOS
+        createdBox = createTextBox(idNotebook,order,text)
+        data = {
+            'createdBoxId':createdBox.id,
+            'createdBoxText':createdBox.content
+        }
+        return JsonResponse(data)
+
+### Servicios CRUD Ejercicios y boxes
+
+# Update notebook
 def updateNotebook(idNotebook,title,description):
     #TODO MBC VALIDAR CAMPOS
     exercise = Exercise.objects.get(id=idNotebook)
@@ -321,3 +342,11 @@ def updateNotebook(idNotebook,title,description):
     exercise.description = description
     exercise.save()
     return exercise
+
+# Create text box
+def createTextBox(idNotebook,order,text):
+    #TODO MBC VALIDAR CAMPOS
+    exercise = Exercise.objects.get(id=idNotebook)
+    textBox = Text.objects.create(exercise=exercise,order=order,content=text)
+    textBox.save()
+    return textBox

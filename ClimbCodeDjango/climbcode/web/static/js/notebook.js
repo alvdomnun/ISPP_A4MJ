@@ -8,25 +8,45 @@ function prueba(){
 }
 
 
-function addTextBox(idNotebookContent){
+function addTextBox(idNotebookContent,idNotebookBD){
 	numBox++;
 	var idBox = "idBox"+numBox;
 	var idBoxParameter = "'idBox"+numBox+"'";
+	var idFormBox = "form_box_"+idBox;
+	var idInputText = "input_text_box_"+idBox;
+	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
+	//TODO MBC MEJORAR PARA TENER EN CUENTA EL ORDEN DE BOXES, PUDIENDO HABERSE CARGADO CAJAS POR CÓDIGO TEMPLATE
+	var idHiddenOrder = "input_hidden_order_"+idBox;
+	var order = numBox;
 
 	//HTML DE LA CAJA DE TEXTO
 		var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
 								'<div class="row">'+
 									'<div class="col-md-12 custom-mt-1" >'+
 										'<div class="form-group" style="padding:12px;">'+
-			                            	'<textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí"></textarea>'+
-			                         		/*'<button class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+*/
-			                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
+											'<form method="POST" id="'+idFormBox+'">'+
+												'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
+												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
+				                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí"></textarea>'+
+				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+
+				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
+			                        		'</form>'+
 			                        	'</div>'+
 									'</div>'+
 								'</div>'+
 							'</div>';
 
     $('#'+idNotebookContent).append(htmlTextBox);
+
+    // Comportamiento al pulsar SAVE -> Llamada Ajax
+
+    $('#'+idFormBox).on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");
+        //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
+        createTextBox(idHiddenIdNotebook,idHiddenOrder,idInputText);
+    });
+
 
 }
 
@@ -319,4 +339,120 @@ function create_notebook() {
     console.log("create notebook is working!") // sanity check
     console.log($('#post-text').val())
 };
+
+// AJAX para actualizar el notebook
+
+function editExerciseInfo(){
+    console.log("send title is working!"); // sanity check
+    var title = $('#title').val();
+    var description = $('#description').val();
+    var idNotebook = $('#idNotebook').val();
+    //TODO MBC VALIDAR CAMPOS
+    //alert("Mandando por Ajax el título: "+ title+" y descripción: "+description);
+    $.ajax({
+        url : "/web/editNotebookAjax", // the endpoint
+        type : "POST", // http method
+        data : { 
+        'title': title,
+        'description': description,
+        'idNotebook': idNotebook
+        
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // log the returned json to the console
+            //alert("Notebook editado correctamente");
+            //Actualización de los campos
+            var newTitle = json['editedExerciseTitle'];
+            $('#title').val(newTitle);
+            var newDescription = json['editedExerciseDescription'];
+            $('#description').val(newDescription);
+            console.log("success"); // another sanity check
+            
+            $('#notification-text').text('Editado correctamente');
+            $('#notificaciones-holder').slideDown();
+            
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').slideUp();
+              }, 2000);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            $('#notification-text').text('Error al editar');
+            $('#notificaciones-holder').show();
+
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').hide();
+              }, 2000);
+        }
+	});
+}
+
+//AJAX para crear box
+
+function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
+	console.log("Retrieving text box tields"); // sanity check
+	var idNotebook = $('#'+idHiddenIdNotebook).val();
+	var boxOrder = $('#'+idHiddenOrder).val();
+	var text = $('#'+idInputText).val();
+	console.log("Recuperado idNotebook: "+idNotebook);
+	console.log("Recuperado boxOrder: "+boxOrder);
+	console.log("Recuperado text: "+text);
+
+	$.ajax({
+        url : "/web/createTextBoxAjax", // the endpoint
+        type : "POST", // http method
+        data : { 
+        'idNotebook': idNotebook,
+        'boxOrder': boxOrder,
+        'text': text
+        
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // log the returned json to the console
+            //alert("Notebook editado correctamente");
+            //Actualización de los campos
+            console.log("success"); // another sanity check
+            //$("#getCodeModal").modal('show');
+            $('#notification-text').text('Box creada correctamente');
+            $('#notificaciones-holder').slideDown();
+            
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').slideUp();
+              }, 2000);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            $('#notification-text').text('Error al editar');
+            $('#notificaciones-holder').show();
+
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').hide();
+              }, 2000);
+        }
+	});
+
+}
+
 

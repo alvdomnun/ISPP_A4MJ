@@ -4,6 +4,7 @@ __pycache__/
 *__pycache__*
 **/__pycache__*
 *__pycache__/**
+ClimbCodeDjango/climbcode/.vs/**
 **/__pycache__/**
 *.pyc
 *.pyo

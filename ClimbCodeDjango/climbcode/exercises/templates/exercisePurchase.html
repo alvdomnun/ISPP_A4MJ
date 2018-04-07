@@ -84,7 +84,7 @@
                             {% if license.numFreeExercises > 0 %}
                             <button name="freePurchase" type="submit" value="true" class="btn btn-warning btn-block">Obtener Gratis</button>
                             {% endif %}
-                            <a href="/" class="btn btn-info btn-block">Cancelar</a>
+                            <a href="{% url 'list_exercisesS' %}" class="btn btn-info btn-block">Cancelar</a>
                         </form>
                     </div>
                 </div>

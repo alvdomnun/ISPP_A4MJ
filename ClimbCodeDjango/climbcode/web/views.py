@@ -1,4 +1,5 @@
 from django.shortcuts import render, render_to_response
+from web.forms import RegisterSchoolPaymentForm
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.template import loader
@@ -174,7 +175,13 @@ def register_school(request):
             license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
                 endDate = endDate, licenseType = licenseType, school = school)
 
-            return HttpResponseRedirect('/login/')
+            paymentData = {
+                'school': school,
+                'license': license,
+                'date': date.today()
+            }
+
+            return render(request, 'web/registerPayment.html', paymentData)
 
         else:
             # Si la validación falla también cargo los datos necesarios
@@ -205,6 +212,53 @@ def register_school(request):
 
     return render(request, 'web/registerSchool.html', data)
 
+def paypalTransaction(request):
+    """
+        Controla el pago del usuario tras 
+    """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario sea anónimo (no registrado)
+    if (request.user.is_authenticated):
+        return HttpResponseForbidden()
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = RegisterSchoolPaymentForm(request.POST)
+        if (form.is_valid()):
+            # Extrae valores y activa el usuario si el pago ha sido correcto
+            school = form.cleaned_data["school"]
+            license = form.cleaned_data["license"]
+            licensePrice = form.cleaned_data["licensePrice"]
+            payment = form.cleaned_data["payment"]
+
+            # Obtiene la licencia y la escuela a partir de los Ids que trae el form
+            school = School.objects.filter(pk = school).first()
+            license = License.objects.filter(id = license).first()
+
+            # Si el pago se ha ejecutado correctamente, se activa la escuela
+            if (payment == 1):
+                school.userAccount.is_active = True
+                school.userAccount.save()
+
+                return HttpResponseRedirect('/login/')
+
+            # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
+            else:
+                paymentData = {
+                    'school': school,
+                    'license': license,
+                    'date': date.today()
+                }
+
+                return render(request, 'web/registerPayment.html', paymentData)
+        else:
+            # Si el form no es válido, Forbidden
+            return HttpResponseForbidden()
+    
+    # Si el request no es un POST con el pago, Forbidden
+    return HttpResponseForbidden()
+
 
 ####################################################    PRIVATE     METHODS     #################################################################
 
@@ -226,4 +280,3 @@ def getFinalPrice(license, numUsers):
     res = license.price + (unitPricePerUser * extraUsers)
 
     return res
-    

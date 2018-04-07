@@ -1,7 +1,6 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 import datetime
-
 from actors.models import School
 from licenses.models import License
 from subjects.models import Subject
@@ -68,9 +67,7 @@ def buy_exercise(request, exercise_id):
             else: 
                 # TODO: Compra con Paypal
                 """
-                pagoRealizado = Llamada a Paypal
-                if (not pagoRealizado):
-                    return HttpResponseForbidden()                    
+                Tocar la vista para que si hace uso de Paypal, se envie el form con freePurchase = False
                 """
 
                 # Crea el ticket

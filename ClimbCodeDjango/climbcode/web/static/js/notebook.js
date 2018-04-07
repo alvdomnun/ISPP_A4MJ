@@ -7,17 +7,22 @@ function prueba(){
 	alert(saludo);
 }
 
+function addNewTextBox(idNotebookContent,idNotebookBD){
+	addTextBox(idNotebookContent,idNotebookBD,null,null,'');
+}
 
-function addTextBox(idNotebookContent,idNotebookBD){
+function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	numBox++;
 	var idBox = "idBox"+numBox;
 	var idBoxParameter = "'idBox"+numBox+"'";
 	var idFormBox = "form_box_"+idBox;
 	var idInputText = "input_text_box_"+idBox;
 	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
-	//TODO MBC MEJORAR PARA TENER EN CUENTA EL ORDEN DE BOXES, PUDIENDO HABERSE CARGADO CAJAS POR CÓDIGO TEMPLATE
 	var idHiddenOrder = "input_hidden_order_"+idBox;
-	var order = numBox;
+	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
+	if(order==null){
+		var order = numBox;
+	}
 
 	//HTML DE LA CAJA DE TEXTO
 		var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
@@ -27,7 +32,8 @@ function addTextBox(idNotebookContent,idNotebookBD){
 											'<form method="POST" id="'+idFormBox+'">'+
 												'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
 												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
-				                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí"></textarea>'+
+												'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
+				                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí">'+content+'</textarea>'+
 				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+
 				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
 			                        		'</form>'+
@@ -454,5 +460,3 @@ function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
 	});
 
 }
-
-

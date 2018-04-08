@@ -65,6 +65,11 @@ def notebookv1_ejercicio_qin(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def notebookv1_ejercicio_est(request):
+    template = loader.get_template('web/notebookv1_ejercicio_est.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def register_programmer(request):
     """
 	Registro del Programador en el sistema.

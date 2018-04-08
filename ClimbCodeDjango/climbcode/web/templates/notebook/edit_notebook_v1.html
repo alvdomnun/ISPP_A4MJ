@@ -112,7 +112,7 @@ Notebookv1
                                             </button>
                                         </div>
                                         <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
-                                            <button type="submit" class="btn btn-primary" onclick="addCodeBox('notebook_content',{{exercise.id}});">
+                                            <button type="submit" class="btn btn-primary" onclick="addNewCodeBox('notebook_content',{{exercise.id}});">
                                                Código
                                             </button>
                                         </div>
@@ -131,12 +131,6 @@ Notebookv1
         </div>
     </div>
 </div>
-
-<!-- ALE CAMBIAR ESTO POR LLAMADA DESDE CODIGUITO DJANGO CUANDO RECORRAS LAS BOXES Y SEAN DE TEXTO -->
-<script>
-    addTextBox('notebook_content',{{exercise.id}},5,1,'Hola');
-</script>
-
 
 
 <!-- MODAL -->
@@ -162,7 +156,7 @@ Notebookv1
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
                             <label for="title" class="control-label">Titulo</label>
-                            <input class="form-control" name="title" id="title" type="text" placeholder="Titulo" value="{{ exercise.title}}" required/>
+                            <input class="form-control" name="title" id="title" type="text" placeholder="Titulo" value="{{exercise.title}}" required/>
                         </div>
                     </div>
                     <div class="row">

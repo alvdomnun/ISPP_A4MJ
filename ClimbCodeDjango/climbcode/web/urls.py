@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^editNotebook$', views.editNotebook, name='editNotebook'),
     url(r'^editNotebookAjax$', views.editNotebookAjax, name='editNotebookAjax'),
     url(r'^createTextBoxAjax$', views.createTextBoxAjax, name='createTextBoxAjax'),
+    url(r'^createCodeBoxAjax$', views.createCodeBoxAjax, name='createCodeBoxAjax'),
+    url(r'^createCodeParamAjax$', views.createCodeParamAjax, name='createCodeParamAjax'),
 ]

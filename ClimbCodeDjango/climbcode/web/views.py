@@ -328,7 +328,7 @@ def editNotebookAjax(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         #TODO MBC VALIDAR CAMPOS
-        print(title)
+        print(title) 
         editedExercise = updateNotebook(idNotebook,title,description)
         data = {
             'editedExerciseTitle':editedExercise.title,
@@ -352,6 +352,42 @@ def createTextBoxAjax(request):
         }
         return JsonResponse(data)
 
+# Create code box
+@csrf_exempt
+def createCodeBoxAjax(request):
+    print("Creating code box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        order = request.POST.get('boxOrder')
+        contentCode = request.POST.get('contentCode')
+        #TODO MBC VALIDAR CAMPOS
+        createdBox = createCodeBox(idNotebook,order,contentCode)
+        data = {
+            'createdBoxId':createdBox.id,
+            'createdBoxCode':createdBox.content
+        }
+        return JsonResponse(data)
+
+
+# Create code param
+@csrf_exempt
+def createCodeParamAjax(request):
+    print("Creating code param for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idBox = request.POST.get('idBox')
+        paramValue = request.POST.get('paramValue')
+        idPkParam = request.POST.get('idPkParam')
+        nameIdParam = request.POST.get('nameIdParam')
+        print(nameIdParam)
+        #TODO MBC VALIDAR CAMPOS
+        createdParam = createCodeParam(idBox,paramValue,idPkParam,nameIdParam)
+        data = {
+            'createdParamId':createdParam.id,
+        }
+        return JsonResponse(data)
+
 ### Servicios CRUD Ejercicios y boxes
 
 # Update notebook
@@ -371,6 +407,21 @@ def createTextBox(idNotebook,order,text):
     textBox.save()
     return textBox
 
+# Create code box
+def createCodeBox(idNotebook,order,contentCode):
+    #TODO MBC VALIDAR CAMPOS
+    exercise = Exercise.objects.get(id=idNotebook)
+    codeBox = Code.objects.create(exercise=exercise, order=order, content=contentCode)
+    codeBox.save()
+    return codeBox
+
+# Create code box
+def createCodeParam(idBox,paramValue,idPkParam,nameIdParam):
+    #TODO MBC VALIDAR CAMPOS
+    codeBox = Code.objects.get(id=idBox)
+    param = Parameter.objects.create(code=codeBox,value =paramValue,idName = nameIdParam)
+    param.save()
+    return param
 
 class BoxView:
     def __init__(self, id, idExercise, order, type, content, parameters=None):

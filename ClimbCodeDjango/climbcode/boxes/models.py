@@ -80,7 +80,8 @@ class PictureAdminPanel(BoxAdminPanel):
 
 class Parameter(models.Model):
     # Atributos de la clase Parameter: id
-    id = models.PositiveIntegerField(default=0,primary_key=True)
+    value = models.TextField(default="")
+    idName = models.TextField(default="")
 
     #Relación ManyToOne con Code
     code = models.ForeignKey('boxes.Code', on_delete=models.CASCADE, null=True)

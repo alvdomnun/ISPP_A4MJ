@@ -312,35 +312,83 @@ def editNotebookAjax(request):
         return JsonResponse(data)
 
 @csrf_exempt
-def createTextBoxAjax(request):
-    print("Creating text box for exercise by Ajax")
+def createUpdateTextBoxAjax(request):
+    print("Creating or updating text box for exercise by Ajax")
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
         order = request.POST.get('boxOrder')
         text = request.POST.get('text')
-        #TODO MBC VALIDAR CAMPOS
-        createdBox = createTextBox(idNotebook,order,text)
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+        #Bandera actualización box
+        updateBox = False
+        if idBox is not None and idBox>0:
+           savedBox = updateTextBox(idNotebook,order,text,idBox)
+           updateBox = True
+        else:
+           savedBox = createTextBox(idNotebook,order,text)
+        
         data = {
-            'createdBoxId':createdBox.id,
-            'createdBoxText':createdBox.content
+            'savedBoxId':savedBox.id,
+            'savedBoxText':savedBox.content,
+            'updateBox':updateBox
+        }
+        return JsonResponse(data)
+
+@csrf_exempt
+def deleteTextBoxAjax(request):
+    print("Deleting text box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        #Bandera actualización box
+        updateBox = False
+        if idBox is not None and idBox>0:
+           deleteTextBox(idNotebook,idBox)
+
+        data = {
         }
         return JsonResponse(data)
 
 # Create code box
 @csrf_exempt
-def createCodeBoxAjax(request):
-    print("Creating code box for exercise by Ajax")
+def createUpdateCodeBoxAjax(request):
+    print("Creating or updating code box for exercise by Ajax")
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
         order = request.POST.get('boxOrder')
         contentCode = request.POST.get('contentCode')
-        #TODO MBC VALIDAR CAMPOS
-        createdBox = createCodeBox(idNotebook,order,contentCode)
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+
+        #Bandera actualización box
+        updateBox = False
+        if idBox is not None and idBox>0:
+           savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
+           updateBox = True
+        else:
+           savedBox = createCodeBox(idNotebook,order,contentCode)
+        
         data = {
-            'createdBoxId':createdBox.id,
-            'createdBoxCode':createdBox.content
+            'savedBoxId':savedBox.id,
+            'savedBoxCode':savedBox.content,
+            'updateBox':updateBox
         }
         return JsonResponse(data)
 
@@ -382,11 +430,43 @@ def createTextBox(idNotebook,order,text):
     textBox.save()
     return textBox
 
+# Update text box
+def updateTextBox(idNotebook,order,text,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK 
+    exercise = Exercise.objects.get(id=idNotebook)
+    textBox = Text.objects.get(id=idBox)
+    textBox.content = text
+    textBox.save()
+    return textBox
+
+# Delete text box
+def deleteTextBox(idNotebook,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK
+    exercise = Exercise.objects.get(id=idNotebook)
+    textBox = Text.objects.get(id=idBox)
+    textBox.delete()
+
+
 # Create code box
 def createCodeBox(idNotebook,order,contentCode):
     #TODO MBC VALIDAR CAMPOS
     exercise = Exercise.objects.get(id=idNotebook)
     codeBox = Code.objects.create(exercise=exercise, order=order, content=contentCode)
+    codeBox.save()
+    return codeBox
+
+# Update code box
+def updateCodeBox(idNotebook,order,contentCode,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK 
+    exercise = Exercise.objects.get(id=idNotebook)
+    codeBox = Code.objects.get(id=idBox)
+    codeBox.content = contentCode
     codeBox.save()
     return codeBox
 

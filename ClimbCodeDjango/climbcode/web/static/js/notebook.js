@@ -34,8 +34,8 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
 												'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
 				                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí">'+content+'</textarea>'+
-				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Save</button>'+
-				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
+				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
 			                        		'</form>'+
 			                        	'</div>'+
 									'</div>'+
@@ -44,13 +44,13 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 
     $('#'+idNotebookContent).append(htmlTextBox);
 
-    // Comportamiento al pulsar SAVE -> Llamada Ajax
+    // Comportamiento al pulsar GUARDAR -> Llamada Ajax
 
     $('#'+idFormBox).on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
-        createTextBox(idHiddenIdNotebook,idHiddenOrder,idInputText);
+        createUpdateTextBox(idHiddenIdNotebook,idHiddenOrder,idInputText,idHiddenIdBox);
     });
 
 
@@ -176,13 +176,13 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
     // the size again
     editor.getSession().on('change', heightUpdateFunction);
 
-    // Comportamiento al pulsar SAVE -> Llamada Ajax
+    // Comportamiento al pulsar GUARDAR -> Llamada Ajax
     $('#'+idFormBox).on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
         var form = $('#'+idFormBox);
-        createCodeBox(idHiddenIdNotebook,idHiddenOrder,idEditor,idAddParamButton,idDivParam,idDivParamButton);
+        createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton);
     });
 
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
@@ -298,7 +298,7 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 
     $('#'+idParameterDiv).append(htmlButton);
 
-    // Comportamiento al pulsar SAVE -> Llamada Ajax
+    // Comportamiento al pulsar GUARDAR -> Llamada Ajax
     $('#'+idFormParam).on('submit', function(event){
         event.preventDefault();
         console.log("form submitted!");
@@ -480,10 +480,11 @@ function editExerciseInfo(){
 
 //AJAX para crear code box
 
-function createCodeBox(idHiddenIdNotebook, idHiddenOrder, idEditor, idAddParamButton, idDivParam, idDivParamButton){
+function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, idEditor, idAddParamButton, idDivParam, idDivParamButton){
 	console.log("Retrieving code box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var boxOrder = $('#'+idHiddenOrder).val();
+	var idBox = $('#'+idHiddenIdBox).val();
 
 	//Recuperando el código del editor como String
 	var editor = ace.edit(idEditor);
@@ -492,14 +493,16 @@ function createCodeBox(idHiddenIdNotebook, idHiddenOrder, idEditor, idAddParamBu
 	console.log("Recuperado idNotebook: "+idNotebook);
 	console.log("Recuperado boxOrder: "+boxOrder);
 	console.log("Recuperado código: "+contentCode);
+	console.log("Recuperado idBox: "+idBox);
 
 	$.ajax({
-        url : "/web/createCodeBoxAjax", // the endpoint
+        url : "/web/createUpdateCodeBoxAjax", // the endpoint
         type : "POST", // http method
-        data : { 
+        data : {
         'idNotebook': idNotebook,
         'boxOrder': boxOrder,
-        'contentCode': contentCode
+        'contentCode': contentCode,
+        'idBox': idBox,
         }, // data sent with the post request
         // handle a successful response
         success : function(json) {
@@ -508,7 +511,15 @@ function createCodeBox(idHiddenIdNotebook, idHiddenOrder, idEditor, idAddParamBu
             //Actualización de los campos
             console.log("success"); // another sanity check
             //$("#getCodeModal").modal('show');
-            $('#notification-text').text('Code Box creada correctamente');
+            
+			//Se comprueba si el box ha sido creado o actua
+            var updateBox = json['updateBox'];
+            if(updateBox){
+            	$('#notification-text').text('Box editada correctamente');
+            }else{
+            	$('#notification-text').text('Box creada correctamente');
+            }
+
             $('#notificaciones-holder').slideDown();
             setTimeout(
               function() 
@@ -518,7 +529,9 @@ function createCodeBox(idHiddenIdNotebook, idHiddenOrder, idEditor, idAddParamBu
 
             //Activar el botón de añadir parámetros para esa caja de código
             //Recuperar id box
-            var idBox = json['createdBoxId'];
+            var idBox = json['savedBoxId'];
+            //Actualizar el campo idbox, por si se está creando
+            $('#'+idHiddenIdBox).val(idBox);
 
             $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
 
@@ -548,7 +561,7 @@ function createCodeBox(idHiddenIdNotebook, idHiddenOrder, idEditor, idAddParamBu
 
 //AJAX para crear code param
 
-function createCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,idHiddenIdNameParam){
+function createCodeParam(idHiddenIdBox,idValueParaemter,idHiddenIdPkParam,idHiddenIdNameParam){
 	console.log("Retrieving code param fields"); // sanity check
 	var idBox = $('#'+idHiddenIdBox).val();
 	var paramValue = $('#'+idValueParameter).val();
@@ -617,23 +630,26 @@ function createCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,idHidd
 }
 
 //AJAX para crear text box
-
-function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
+function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idHiddenIdBox){
 	console.log("Retrieving text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var boxOrder = $('#'+idHiddenOrder).val();
 	var text = $('#'+idInputText).val();
+	var idBox = $('#'+idHiddenIdBox).val();
+
 	console.log("Recuperado idNotebook: "+idNotebook);
 	console.log("Recuperado boxOrder: "+boxOrder);
 	console.log("Recuperado text: "+text);
+	console.log("Recuperado idBox: "+idBox);
 
 	$.ajax({
-        url : "/web/createTextBoxAjax", // the endpoint
+        url : "/web/createUpdateTextBoxAjax", // the endpoint
         type : "POST", // http method
         data : { 
         'idNotebook': idNotebook,
         'boxOrder': boxOrder,
-        'text': text
+        'text': text,
+        'idBox': idBox
         
         }, // data sent with the post request
 
@@ -644,7 +660,15 @@ function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
             //Actualización de los campos
             console.log("success"); // another sanity check
             //$("#getCodeModal").modal('show');
-            $('#notification-text').text('Box creada correctamente');
+
+            //Se comprueba si el box ha sido creado o actua
+            var updateBox = json['updateBox'];
+            if(updateBox){
+            	$('#notification-text').text('Box editada correctamente');
+            }else{
+            	$('#notification-text').text('Box creada correctamente');
+            }
+            
             $('#notificaciones-holder').slideDown();
             
             setTimeout(
@@ -652,6 +676,12 @@ function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
               {
                 $('#notificaciones-holder').slideUp();
               }, 2000);
+
+            //Activar el botón de añadir parámetros para esa caja de texto
+            //Recuperar id box
+            var idBox = json['savedBoxId'];
+            //Actualizar el campo idbox, por si se está creando
+            $('#'+idHiddenIdBox).val(idBox);
         },
 
         // handle a non-successful response
@@ -670,5 +700,70 @@ function createTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText){
               }, 2000);
         }
 	});
+}
 
+//AJAX para crear text box
+function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+	console.log("Retrieving ids text box fields"); // sanity check
+	var idNotebook = $('#'+idHiddenIdNotebook).val();
+	var idBox = $('#'+idHiddenIdBox).val();
+
+	console.log("Recuperado idNotebook: "+idNotebook);
+	console.log("Recuperado idBox: "+idBox);
+
+	//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+	if(idBox!=null && idBox!='null'){
+		$.ajax({
+        url : "/web/deleteTextBoxAjax", // the endpoint
+        type : "POST", // http method
+        data : { 
+        'idNotebook': idNotebook,
+        'idBox': idBox
+        
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // log the returned json to the console
+            //alert("Notebook editado correctamente");
+            //Actualización de los campos
+            console.log("success"); // another sanity check
+            //$("#getCodeModal").modal('show');
+
+            //Se comprueba si el box ha sido creado o actua
+        	$('#notification-text').text('Box borrada correctamente');
+
+            $('#notificaciones-holder').slideDown();
+            
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').slideUp();
+              }, 2000);
+
+            deleteElement(idBoxParameter);
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            $('#notification-text').text('Error al eliminar');
+            $('#notificaciones-holder').show();
+
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').hide();
+              }, 2000);
+        }
+	});
+	}else{
+		deleteElement(idBoxParameter);
+	}
+
+	
 }

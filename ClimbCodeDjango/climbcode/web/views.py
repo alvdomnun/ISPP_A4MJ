@@ -264,6 +264,7 @@ def createNotebook(request):
     return HttpResponse(template.render(data, request))
 
 def editNotebook(request):
+    #TODO Controlar los ataques por GET
     print("Editing notebook")
     if request.method == 'GET':
         # Petición de edición de notebook existente
@@ -276,7 +277,31 @@ def editNotebook(request):
             print("El título del notebook recuperado es: "+exercise.title)
             if exercise is not None:
                 template = loader.get_template('notebook/edit_notebook_v1.html')
-                context = {'exercise':exercise}
+
+                boxesText = Text.objects.filter(exercise=exercise)
+                boxesView = []
+                for box in boxesText:
+                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',box.content)
+                    boxesView.append(boxTextView)
+
+                boxesCode = Code.objects.filter(exercise=exercise)
+                for box in boxesCode:
+                    paramtersCode = Parameter.objects.filter(code=box)
+                    parameters = []
+                    for parameter in paramtersCode:
+                        parameters.append(parameter)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content,parameters)
+                    boxesView.append(boxCodeView)
+
+                boxesPicture = Picture.objects.filter(exercise=exercise)
+                for box in boxesPicture:
+                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.content)
+                    boxesView.append(boxPictureView)
+
+                context = {
+                    'exercise':exercise,
+                    'boxesView':boxesView
+                }
                 return HttpResponse(template.render(context, request))
         else:
             print("This actor is not allowed to edit this notebook")
@@ -477,3 +502,12 @@ def createCodeParam(idBox,paramValue,idPkParam,nameIdParam):
     param = Parameter.objects.create(code=codeBox,value =paramValue,idName = nameIdParam)
     param.save()
     return param
+
+class BoxView:
+    def __init__(self, id, idExercise, order, type, content, parameters=None):
+        self.id = id
+        self.idExercise = idExercise
+        self.order = order
+        self.type = type
+        self.content = content
+        self.parameters = parameters

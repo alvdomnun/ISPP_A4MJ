@@ -132,6 +132,28 @@ Notebookv1
     </div>
 </div>
 
+{% for box in boxesView %}
+    {% if box.type in "Text" %}
+        <script>
+        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% elif box.type in "Code" %}
+        <script>
+        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+        {% for parameter in box.parameters %}
+             <script>
+            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            </script>
+        {% endfor %}
+    {% elif box.type in "Picture" %}
+        <script>
+        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% endif %}
+{% endfor %}
+
+
 
 <!-- MODAL -->
 

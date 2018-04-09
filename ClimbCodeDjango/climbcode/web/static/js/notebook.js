@@ -561,7 +561,7 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 
 //AJAX para crear code param
 
-function createCodeParam(idHiddenIdBox,idValueParaemter,idHiddenIdPkParam,idHiddenIdNameParam){
+function createCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,idHiddenIdNameParam){
 	console.log("Retrieving code param fields"); // sanity check
 	var idBox = $('#'+idHiddenIdBox).val();
 	var paramValue = $('#'+idValueParameter).val();

@@ -298,6 +298,8 @@ def editNotebook(request):
                     boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.content)
                     boxesView.append(boxPictureView)
 
+                boxesView.sort(key=lambda x: x.order, reverse=False)
+
                 context = {
                     'exercise':exercise,
                     'boxesView':boxesView

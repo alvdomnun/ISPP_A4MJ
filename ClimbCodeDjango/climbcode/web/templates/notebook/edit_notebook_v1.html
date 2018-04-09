@@ -139,11 +139,11 @@ Notebookv1
         </script>
     {% elif box.type in "Code" %}
         <script>
-        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
         {% for parameter in box.parameters %}
              <script>
-            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}');
             </script>
         {% endfor %}
     {% elif box.type in "Picture" %}

@@ -217,7 +217,11 @@ def list_exercisesP(request):
 #Listado de ejercicios propios como programador
 @login_required(login_url='/login/')
 def list_own_exercisesP(request):
-    programmer = request.user
+
+    try:
+        programmer = request.user
+    except Exception as e:
+        return HttpResponseRedirect('/')
     # Comprobación de si son ejercicios propios
     ownList = True
     #Filtro ejercicios propios

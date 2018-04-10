@@ -8,6 +8,5 @@ ClimbCodeDjango/climbcode/.vs/**
 **/__pycache__/**
 *.pyc
 *.pyo
-ClimbCodeDjango/climbcode/bin/**
 ClimbCodeDjango/climbcode/obj/**
 ClimbCodeDjango/climbcode/static/**

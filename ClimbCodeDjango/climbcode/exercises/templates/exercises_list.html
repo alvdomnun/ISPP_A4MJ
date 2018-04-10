@@ -1,0 +1,105 @@
+{% extends 'welcome/welcome-base.html' %}
+
+{% block content %}
+    <style>
+        table td {
+            align-content: center
+        }
+    </style>
+
+    <h1>Lista de ejercicios</h1>
+{% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+    <div class="table">
+        <table class="table table-striped">
+            {% if exercise_list %}
+
+            <thead>
+            <tr>
+                <td>Título</td>
+                <td>Descripción</td>
+                <td>Ventas</td>
+                <td>Nivel</td>
+                {% if user.actor.programmer %}
+                    <td align="center">¿Promocionado?</td>
+                    <td>Fecha de comienzo</td>
+                    <td>Fecha de fin</td>
+                {% endif %}
+                <td></td>
+            </tr>
+            </thead>
+            {% for exercise in exercise_list %}
+            <tbody>
+
+                    <tr>
+                        <td>{{ exercise.title }}</td>
+                        <td>{{ exercise.description }}</td>
+                        <td>{{ exercise.sales }}</td>
+                        <td>{{ exercise.level }}</td>
+                        {% if user.actor.programmer %}
+                            {% if exercise.promoted == True %}
+                            <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
+                        {% else %}
+                            <td align="center"><input type="checkbox" disabled="disabled"></td>
+                        {% endif %}
+                        {% if exercise.promoted == True %}
+                            <td>{{ exercise.startPromotionDate }}</td>
+                            <td>{{ exercise.endPromotionDate }}</td>
+                        {% else %}
+                            <td></td>
+                            <td></td>
+
+                        {% endif %}
+
+
+                        {% endif %}
+
+                        <td>
+                            {% if user.actor.school %}
+                                {% if not ownList %}
+                                    <a class='btn btn-warning btn-md' href="{% url 'buy_exercise' exercise.id %}">Adquirir</a>
+                                {% endif %}
+                            {% endif %}
+                            {% if ownList %}
+                                <a class="btn btn-default" href="">Mostrar</a>
+                                {% if user.actor.programmer %}
+                                    {% if exercise.promoted == False %}
+                                        <a class="btn btn-default" href="">Promocionar</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+                </div>
+            {% else %}
+                <p></p>
+                <p>No existen ejercicios.</p>
+            {% endif %}
+
+
+    {% if exercise_list.has_other_pages %}
+        <ul class="pagination">
+            {% if exercise_list.has_previous %}
+                <li><a href="?page={{ exercise_list.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in exercise_list.paginator.page_range %}
+                {% if exercise_list.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if exercise_list.has_next %}
+                <li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endif %}
+{% endblock %}

@@ -9,4 +9,3 @@ ClimbCodeDjango/climbcode/.vs/**
 *.pyc
 *.pyo
 ClimbCodeDjango/climbcode/obj/**
-ClimbCodeDjango/climbcode/static/**

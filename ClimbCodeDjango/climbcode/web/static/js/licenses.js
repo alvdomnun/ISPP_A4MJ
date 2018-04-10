@@ -17,8 +17,18 @@ function FillLicenseFields(license) {
         '<hr />' +
         '<div class="row">' +
         '<div class="col-xs-12 col-md-12 form-group">' +
-        '<label for="numUsers" class="control-label">&#191;Necesitas m&#225;s usuarios?</label>' +
-        '<input required oninput="CalculatePriceField()" type="number" min="' + license.users + '" class="form-control" id="numUsers" name="numUsers" id="numUsers" placeholder="Esta licencia incluye ' + license.users + ' usuarios de base" />' +
+        '<h4 style="text-align: center; color: #1fb4e0;">&#161; Has elegido una licencia de tipo ' + license.name + ' !</h4>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="row">' +
+        '<div class="col-xs-6 col-md-6 form-group">' +
+        '<label for="numExercises" class="control-label">Ejercicios gratuitos</label>' +
+        '<input readonly class="form-control" type="text" placeholder="Esta licencia incluye ' + license.exercises + ' ejercicios gratuitos." />' +
+        '</div>' +
+        '<div class="col-xs-6 col-md-6 form-group">' +
+        '<label for="numUsers" class="control-label">Usuarios de base</label>' +
+        '<input required oninput="CalculatePriceField()" type="number" min="' + license.users + '" class="form-control" id="numUsers" name="numUsers" id="numUsers" value="'+ license.users +'" />' +
         '<span class="unit-price-user">* El coste unitario de cada usuario extra es de ' + unitPrice +' &euro;.</span>' +
         '</div>' +
         '</div>';

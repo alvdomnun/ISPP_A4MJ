@@ -9,3 +9,8 @@ ClimbCodeDjango/climbcode/.vs/**
 *.pyc
 *.pyo
 ClimbCodeDjango/climbcode/obj/**
+ClimbCodeDjango/climbcode/bin/**
+ClimbCodeDjango/climbcode/*.pyproj
+ClimbCodeDjango/climbcode/*.pyproj.user
+ClimbCodeDjango/climbcode/*.sln
+ClimbCodeDjango/climbcode/*.sqlite3

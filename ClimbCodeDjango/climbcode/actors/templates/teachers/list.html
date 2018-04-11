@@ -33,7 +33,7 @@
                         <td>{{ teacher.userAccount.last_name }}</td>
                         <td>{{ teacher.userAccount.email }}</td>
                         <td>{{ teacher.dni }}</td>
-                        <td>{{ teacher.photo }}</td>
+                        <td> <img src="{{ teacher.photo.url }}" width="150" border="1"/></td>
                         <td>{{ teacher.phone }}</td>
                         {% if teacher.subjects != None %}
                         <td>

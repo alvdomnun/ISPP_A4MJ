@@ -46,16 +46,17 @@ def buy_exercise(request, exercise_id):
     # Detemina si la escuela ha comprado ya el ejercicio o no
     repeatedPurchase = school_repeat_exercise_purchase(exercise, school)
 
-    # Si es una nueva compra y llamado POST
+    # Si es una nueva compra y llamada POST
     if (not repeatedPurchase and request.method == 'POST'):
         form = BuyExerciseForm(request.POST)
         if (form.is_valid()):
             # Obtiene los campos del form
             exerciseId = form.cleaned_data["exerciseId"]
+            payment = form.cleaned_data["payment"]
             freePurchase = form.cleaned_data["freePurchase"]
 
             # Si la compra es gratuita
-            if (freePurchase == True):
+            if (freePurchase == 1):
                 # Valida que pueda ser gratis: Licencia asociada a la School con "numFreeExercises" > 0
                 if not (license.numFreeExercises > 0):
                      return HttpResponseForbidden()
@@ -65,13 +66,25 @@ def buy_exercise(request, exercise_id):
 
             # Si la compra es via Paypal
             else: 
-                # TODO: Compra con Paypal
-                """
-                Tocar la vista para que si hace uso de Paypal, se envie el form con freePurchase = False
-                """
+                # Si el pago se ha ejecutado correctamente, se activa la escuela
+                if (payment == 1):
+                    # Crea el ticket
+                    ticket = create_ticket(school, exerciseId, False)
 
-                # Crea el ticket
-                ticket = create_ticket(school, exerciseId, False)
+                # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
+                else:
+                    form = BuyExerciseForm()
+                    data = {
+                        'school': school,
+                        'repeatedPurchase': repeatedPurchase,
+                        'exercise': exercise,
+                        'license': license,
+                        'prices': elementPrices,
+                        'form': form,
+                        'date': date.today(),
+                    }
+
+                    return render(request, 'exercisePurchase.html', data)
 
             # Actualiza la escuela (su licencia) y el ejercicio: comprueba existencia asignaturas y asocia el ejercicio a esta
             update_school_subjects_after_purchase(ticket, license)
@@ -79,7 +92,11 @@ def buy_exercise(request, exercise_id):
             # Actualiza el ejercicio y su programador: +1 en nº ventas (Ejercicio) ; +Precio en el saldo (Programador).
             update_exercise_programmer_after_purchase(ticket, elementPrices)
 
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/exercises/school/own_list')
+
+        # Si el form no es válido, Forbidden
+        else:
+            return HttpResponseForbidden()
 
     else:
         form = BuyExerciseForm()

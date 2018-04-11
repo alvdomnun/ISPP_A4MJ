@@ -1,8 +1,7 @@
 // Obtiene el precio de la licencia
-var licensePrice = document.getElementById("licensePrice").value;
-var school = document.getElementById("school").value;
+var purchasePrice = document.getElementById("buyExerciseValue").value;
 // Formatea el precio para poder setearlo en Paypal
-licensePrice = licensePrice.replace(',', '.');
+purchasePrice = purchasePrice.replace(',', '.');
 
 // Proceso de Paypal
 paypal.Button.render({
@@ -17,7 +16,7 @@ paypal.Button.render({
         shape: 'rect',
         label: 'pay',
         tagline: false,
-        fundingicons: true,
+        fundingicons: false,
     },
 
     // PayPal Client IDs - replace with your own
@@ -38,7 +37,7 @@ paypal.Button.render({
             payment: {
                 transactions: [
                     {
-                        amount: { total: licensePrice, currency: 'EUR' }
+                        amount: { total: purchasePrice, currency: 'EUR' }
                     }
                 ]
             }
@@ -55,8 +54,11 @@ paypal.Button.render({
             // Activa el input del Formulario para controlar errores
             document.getElementById("payment").value = '1';
 
+            // Campo FreePurchase a false (no es una compra gratuita)
+            document.forms.purchaseForm.freePurchase.value = '0';
+
             // Env&#237;a el formulario
-            document.forms.payForm.submit();
+            document.forms.purchaseForm.submit();
         });
     },
 
@@ -67,19 +69,25 @@ paypal.Button.render({
         // Desactiva el input del Formulario para controlar errores
         document.getElementById("payment").value = '0';
 
+        // Campo FreePurchase a false (no es una compra gratuita)
+        document.forms.purchaseForm.freePurchase.value = '0';
+
         // Env&#237;a el formulario
-        document.forms.payForm.submit();
+        document.forms.purchaseForm.submit();
     },
 
     // onError() is called when the an error occurs
     onError: function (data, actions) {
-        //return window.alert('Payment Cancelled!');
+        //return window.alert('Payment Error!');
 
         // Desactiva el input del Formulario para controlar errores
         document.getElementById("payment").value = '0';
 
+        // Campo FreePurchase a false (no es una compra gratuita)
+        document.forms.purchaseForm.freePurchase.value = '0';
+
         // Env&#237;a el formulario
-        document.forms.payForm.submit();
+        document.forms.purchaseForm.submit();
     }
 
 }, '#paypal-button-container');

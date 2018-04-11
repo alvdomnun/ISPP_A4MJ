@@ -34,7 +34,7 @@
                         <td>{{ student.userAccount.email }}</td>
                         <td>{{ student.dni }}</td>
                         <td>{{ student.photo}}</td>
-                        <td>{{ student.phone }}</td>
+                        <td> <img src="{{ student.photo.url }}" width="150" border="1"/></td>
                         {% if student.subjects != None %}
                         <td>
                             {% for subject in student.subjects.all %}

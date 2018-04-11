@@ -20,7 +20,9 @@ from datetime import datetime
 import web.forms
 import web.views
 from django.conf.urls import url
+from django.conf.urls.static import static
 
+from climbcode import settings
 
 admin.autodiscover()
 
@@ -62,4 +64,4 @@ urlpatterns = [
 
     # Ejercicios
     path('exercises/', include('exercises.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

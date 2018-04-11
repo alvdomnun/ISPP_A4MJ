@@ -299,10 +299,17 @@ def editNotebook(request):
                     boxesView.append(boxPictureView)
 
                 boxesView.sort(key=lambda x: x.order, reverse=False)
+                form = ExerciseForm()
+
+                # Datos del modelo (vista)
+                categories = DefaultSubject.objects.all()
+                levels = form.fields['level'].choices
 
                 context = {
                     'exercise':exercise,
-                    'boxesView':boxesView
+                    'boxesView':boxesView,
+                    'levels':levels,
+                    'categories':categories
                 }
                 return HttpResponse(template.render(context, request))
         else:
@@ -329,12 +336,17 @@ def editNotebookAjax(request):
         idNotebook = request.POST.get('idNotebook')
         title = request.POST.get('title')
         description = request.POST.get('description')
+        level = request.POST.get('level')
+        category = request.POST.get('category')
         #TODO MBC VALIDAR CAMPOS
         print(title) 
-        editedExercise = updateNotebook(idNotebook,title,description)
+        editedExercise = updateNotebook(idNotebook,title,description,level,category)
         data = {
             'editedExerciseTitle':editedExercise.title,
-            'editedExerciseDescription':editedExercise.description
+            'editedExerciseDescription':editedExercise.description,
+            'editedExerciseLevel': editedExercise.level,
+            'editedExerciseCategory': editedExercise.category.name,
+            'editedExerciseCategoryId':editedExercise.category.id
         }
         return JsonResponse(data)
 
@@ -441,11 +453,14 @@ def createCodeParamAjax(request):
 ### Servicios CRUD Ejercicios y boxes
 
 # Update notebook
-def updateNotebook(idNotebook,title,description):
+def updateNotebook(idNotebook,title,description,level,category):
     #TODO MBC VALIDAR CAMPOS
     exercise = Exercise.objects.get(id=idNotebook)
     exercise.title = title
     exercise.description = description
+    exercise.level = level
+    catego = DefaultSubject.objects.get(id=category)
+    exercise.category = catego
     exercise.save()
     return exercise
 

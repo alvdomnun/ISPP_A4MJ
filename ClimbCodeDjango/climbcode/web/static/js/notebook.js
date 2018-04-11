@@ -211,7 +211,7 @@ function addImageBox(idNotebookContent){
 							'<div class="row">'+
 								'<div class="col-md-12 custom-mt-1" >'+
 									'<div class="form-group" style="padding:12px;">'+
-		                            	'<img class="notebook-img" id="'+idImg+'" src="" height="256px" width="256px" />'+		                         		
+		                            	'<img class="notebook-img" id="'+idImg+'" src="" height="256px" width="256px" />'+
 		                        	'</div>'+
 		                        '</div>'+
 		                        '<div class="col-md-6 offset-md-3" >'+
@@ -426,6 +426,8 @@ function editExerciseInfo(){
     console.log("send title is working!"); // sanity check
     var title = $('#title').val();
     var description = $('#description').val();
+    var level = $('#level').val();
+    var category = $('#category').val();
     var idNotebook = $('#idNotebook').val();
     //TODO MBC VALIDAR CAMPOS
     //alert("Mandando por Ajax el título: "+ title+" y descripción: "+description);
@@ -435,8 +437,10 @@ function editExerciseInfo(){
         data : { 
         'title': title,
         'description': description,
+        'level': level,
+        'category': category,
         'idNotebook': idNotebook
-        
+
         }, // data sent with the post request
 
         // handle a successful response
@@ -446,8 +450,18 @@ function editExerciseInfo(){
             //Actualización de los campos
             var newTitle = json['editedExerciseTitle'];
             $('#title').val(newTitle);
+            $('#title_disabled').val(newTitle);
             var newDescription = json['editedExerciseDescription'];
             $('#description').val(newDescription);
+            $('#description_disabled').val(newDescription);
+            var newLevel = json['editedExerciseLevel'];
+            $('#level').val(newLevel);
+            $('#level_disabled').val(newLevel);
+            var newCategory = json['editedExerciseCategory'];
+            var newCategoryId = json['editedExerciseCategoryId'];
+
+            $('#category').val(newCategoryId);
+            $('#category_disabled').val(newCategory);
             console.log("success"); // another sanity check
             
             $('#notification-text').text('Editado correctamente');

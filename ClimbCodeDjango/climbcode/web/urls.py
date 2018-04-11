@@ -18,5 +18,7 @@ urlpatterns = [
     url(r'^createUpdateTextBoxAjax$', views.createUpdateTextBoxAjax, name='createUpdateTextBoxAjax'),
     url(r'^deleteTextBoxAjax$', views.deleteTextBoxAjax, name='deleteTextBoxAjax'),
     url(r'^createUpdateCodeBoxAjax$', views.createUpdateCodeBoxAjax, name='createUpdateCodeBoxAjax'),
-    url(r'^createCodeParamAjax$', views.createCodeParamAjax, name='createCodeParamAjax'),
+    url(r'^deleteCodeBoxAjax$', views.deleteCodeBoxAjax, name='deleteCodeBoxAjax'),
+    url(r'^createUpdateCodeParamAjax$', views.createUpdateCodeParamAjax, name='createUpdateCodeParamAjax'),
+    url(r'^deleteParamAjax$', views.deleteParamAjax, name='deleteParamAjax'),
 ]

@@ -377,8 +377,6 @@ def deleteTextBoxAjax(request):
         else:
             idBox = int(idBox)
         #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
-        #Bandera actualización box
-        updateBox = False
         if idBox is not None and idBox>0:
            deleteTextBox(idNotebook,idBox)
 
@@ -417,10 +415,30 @@ def createUpdateCodeBoxAjax(request):
         }
         return JsonResponse(data)
 
+@csrf_exempt
+def deleteCodeBoxAjax(request):
+    print("Deleting code box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+
+        if idBox is not None and idBox>0:
+           deleteCodeBox(idNotebook,idBox)
+
+        data = {
+        }
+        return JsonResponse(data)
+
 
 # Create code param
 @csrf_exempt
-def createCodeParamAjax(request):
+def createUpdateCodeParamAjax(request):
     print("Creating code param for code box by Ajax")
     if request.method == 'POST':
         print("post method")
@@ -428,11 +446,45 @@ def createCodeParamAjax(request):
         paramValue = request.POST.get('paramValue')
         idPkParam = request.POST.get('idPkParam')
         nameIdParam = request.POST.get('nameIdParam')
-        print(nameIdParam)
+        nameParam = request.POST.get('nameParam')
+
         #TODO MBC VALIDAR CAMPOS
-        createdParam = createCodeParam(idBox,paramValue,idPkParam,nameIdParam)
+        #Bandera actualización param
+        updateParam = False
+
+        if idPkParam == 'null':
+            idPkParam = None
+        else:
+            idPkParam = int(idPkParam)
+
+        if idPkParam is not None and idPkParam>0:
+           savedParam = updateCodeParam(idBox,paramValue,nameIdParam,idPkParam,nameParam)
+           updateParam = True
+        else:
+           savedParam = createCodeParam(idBox,paramValue,nameIdParam,nameParam)
+
         data = {
-            'createdParamId':createdParam.id,
+            'savedParamId':savedParam.id,
+            'updateParam':updateParam
+        }
+        return JsonResponse(data)
+
+@csrf_exempt
+def deleteParamAjax(request):
+    print("Deleting parameter for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idParam = request.POST.get('idParam')
+        if idParam == 'null':
+            idParam = None
+        else:
+            idParam = int(idParam)
+
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        if idParam is not None and idParam>0:
+           deleteParam(idParam)
+
+        data = {
         }
         return JsonResponse(data)
 
@@ -495,13 +547,44 @@ def updateCodeBox(idNotebook,order,contentCode,idBox):
     codeBox.save()
     return codeBox
 
+# Delete text box
+def deleteCodeBox(idNotebook,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK
+    exercise = Exercise.objects.get(id=idNotebook)
+    codeBox = Code.objects.get(id=idBox)
+    parameters = Parameter.objects.filter(code=codeBox)
+    for parameter in parameters:
+        parameter.delete()
+    codeBox.delete()
+
 # Create code box
-def createCodeParam(idBox,paramValue,idPkParam,nameIdParam):
+def createCodeParam(idBox,paramValue,nameIdParam,nameParam):
     #TODO MBC VALIDAR CAMPOS
     codeBox = Code.objects.get(id=idBox)
-    param = Parameter.objects.create(code=codeBox,value =paramValue,idName = nameIdParam)
+    param = Parameter.objects.create(code=codeBox,value =paramValue,idName = nameIdParam,name=nameParam)
     param.save()
     return param
+
+# Update code box
+def updateCodeParam(idBox,paramValue,nameIdParam,idPkParam,nameParam):
+    #TODO MBC VALIDAR QUE EL NOTEBOOK PERTENEE AL USUARIO LOGADO
+    codeBox = Code.objects.get(id=idBox)
+    exercise = Exercise.objects.get(id=codeBox.exercise.id)
+    param = Parameter.objects.get(id=idPkParam)
+    param.value = paramValue
+    param.name = nameParam
+    param.save()
+    return param
+
+# Delete text box
+def deleteParam(idParam):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK
+    param = Parameter.objects.get(id=idParam)
+    param.delete()
 
 class BoxView:
     def __init__(self, id, idExercise, order, type, content, parameters=None):

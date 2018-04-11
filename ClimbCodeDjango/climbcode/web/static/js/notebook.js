@@ -120,8 +120,9 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
 												'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
 												'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+												'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteCodeBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
 											'</form>'+
-	                                        '<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
+	                                        
 	                                                '<div class="row" style="padding: 15px;">'+                                                	
 	                                                    '<div class="col-md-12 div-notebook-parameter" style="margin-top: 20px;background-color: white">'+
 	                                                    '<h3 style="text-align:center">Parámetros</h3>'+
@@ -228,7 +229,6 @@ function addImageBox(idNotebookContent){
 }
 
 function deleteElement(idElement){
-	console.log('hola');
 	$('#'+idElement).remove();
 }
 
@@ -246,18 +246,22 @@ function evalUserCodeAce(idEditor){
 }
 
 function addNewParameter(idParameterDiv,idButtonParameter,idBox){
-	addParameter(idParameterDiv,idButtonParameter,idBox,null,'',null);
+	addParameter(idParameterDiv,idButtonParameter,idBox,null,'',null,null);
 }
 
-function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,idNameValue){
+function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,idNameValue,nameParam){
 
 	numParameter++;
 
 	/* IDS FORM */
 	var idFormParam = "form_param_"+numParameter;
+	var idDivParam = "div_param_"+numParameter;
 	var idHiddenIdBox = "input_hidden_parameter_id_box_"+numParameter;
 	var idHiddenIdPkParam = "input_hidden_parameter_id_pk_param_"+numParameter;
+	//El nombre del id para obtenerse por código
 	var idHiddenIdNameParam = "input_hidden_parameter_id_name_param_"+numParameter;
+	//El nombre del parámetro establecido por el usuario
+	var idNameParam = "input__name_param_"+numParameter;
 	var idValueParam = "input_parameter_value_"+numParameter;
 
 	/* FIN IDS FORM */
@@ -277,16 +281,29 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 		idNameParameter = idNameValue;
 	}
 
-    var htmlParameter 	= 	'<div class="col-md-2" style="margin-top: 20px;">'+
+	if(nameParam==null){
+		nameParam = '';
+	}
+
+    var htmlParameter 	= 	'<div id="'+idDivParam+'" class="col-xs-4 col-md-4" style="margin-top: 20px;">'+
 	    						'<form method="POST" id="'+idFormParam+'">'+
 									'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBox+'">'+
 									'<input type="hidden" id="'+idHiddenIdPkParam+'" value="'+idParam+'">'+
 									'<input type="hidden" id="'+idHiddenIdNameParam+'" value="'+idNameParameter+'">'+
-    							'<p>id: '+idNameParameter+'</p>'+
+								'<label class="control-label">ID</label>'+
+    							'<input value="'+idNameParameter+'" class="form-control" type="text" disabled="disabled">'+
+    							'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
+    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text">'+
+    							'<label for="'+idNameParameter+'" class="control-label">Valor</label>'+
     							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text">'+
-    							'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+    							'<button type="submit" class="btn btn-primary pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+    							'<button type="submit" class="btn btn-danger pull-right" style="margin-top:10px" type="button">Eliminar</button>'+
+    							'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteParam(\''+idDivParam+'\',\''+idHiddenIdPkParam+'\')" type="button">Eliminar</button>'+
     							'</form>'+
     						'</div>'
+
+
+
 
     $('#'+idParameterDiv).append(htmlParameter);
 
@@ -304,7 +321,7 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
         var form = $('#'+idFormParam);
-        createCodeParam(idHiddenIdBox,idNameParameter,idHiddenIdPkParam,idHiddenIdNameParam);
+        createUpdateCodeParam(idHiddenIdBox,idNameParameter,idHiddenIdPkParam,idHiddenIdNameParam,idNameParam);
     });
 }
 
@@ -561,7 +578,7 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 
 //AJAX para crear code param
 
-function createCodeParam(idHiddenIdBox,idValueParaemter,idHiddenIdPkParam,idHiddenIdNameParam){
+function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,idHiddenIdNameParam,idNameParam){
 	console.log("Retrieving code param fields"); // sanity check
 	var idBox = $('#'+idHiddenIdBox).val();
 	var paramValue = $('#'+idValueParameter).val();
@@ -569,20 +586,25 @@ function createCodeParam(idHiddenIdBox,idValueParaemter,idHiddenIdPkParam,idHidd
 	var idPkParam = $('#'+idHiddenIdPkParam).val();
 	//Id del input del parámetro
 	var nameIdParam = $('#'+idHiddenIdNameParam).val();
+	//Nombre del parámetro, establecido por el usuario
+	var nameParam = $('#'+idNameParam).val();
+	
 
 	console.log("Recuperado idBox: "+idBox);
 	console.log("Recuperado paramValue: "+paramValue);
 	console.log("Recuperado idPkParam: "+idPkParam);
 	console.log("Recuperado nameIdParam: "+nameIdParam);
+	console.log("Recuperado nameParam: "+nameParam);
 
 	$.ajax({
-        url : "/web/createCodeParamAjax", // the endpoint
+        url : "/web/createUpdateCodeParamAjax", // the endpoint
         type : "POST", // http method
         data : { 
         'idBox': idBox,
         'paramValue': paramValue,
         'idPkParam': idPkParam,
-        'nameIdParam': nameIdParam
+        'nameIdParam': nameIdParam,
+        'nameParam': nameParam,
         }, // data sent with the post request
         // handle a successful response
         success : function(json) {
@@ -591,19 +613,30 @@ function createCodeParam(idHiddenIdBox,idValueParaemter,idHiddenIdPkParam,idHidd
             //Actualización de los campos
             console.log("success"); // another sanity check
             //$("#getCodeModal").modal('show');
-            $('#notification-text').text('Code Param creado correctamente');
+            //Se comprueba si el box ha sido creado o actua
+            var updateParam = json['updateParam'];
+            if(updateParam){
+            	$('#notification-text').text('Parámetro editado correctamente');
+            }else{
+            	$('#notification-text').text('Parámetro creado correctamente');
+            }
+
             $('#notificaciones-holder').slideDown();
+            
             setTimeout(
               function() 
               {
                 $('#notificaciones-holder').slideUp();
               }, 2000);
 
-            //Activar el botón de añadir parámetros para esa caja de código
-            //Recuperar id box
-            var idBox = json['createdBoxId'];
+            //Recuperar id param
+            var idPkParam = json['savedParamId'];
+            //Actualizar el campo idbox, por si se está creando
+            $('#'+idHiddenIdPkParam).val(idPkParam);
 
-            $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+
+
+            //$('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
 
             //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
 
@@ -702,7 +735,77 @@ function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idH
 	});
 }
 
-//AJAX para crear text box
+//AJAX para eliminar code box
+function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+	console.log("Retrieving ids text box fields"); // sanity check
+	var idNotebook = $('#'+idHiddenIdNotebook).val();
+	var idBox = $('#'+idHiddenIdBox).val();
+
+	console.log("Recuperado idNotebook: "+idNotebook);
+	console.log("Recuperado idBox: "+idBox);
+
+	mensajeConfirmacion = '¿Seguro que quiere eliminar esta caja de código? Se eliminarán los parámetros y gráfica asociados. Esta acción no se puede deshacer';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		if(idBox!=null && idBox!='null'){
+			$.ajax({
+	        url : "/web/deleteCodeBoxAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idNotebook': idNotebook,
+	        'idBox': idBox
+	        }, // data sent with the post request
+
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Caja de código borrada correctamente');
+
+	            $('#notificaciones-holder').slideDown();
+	            
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
+
+	            deleteElement(idBoxParameter);
+
+	        },
+
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
+		}else{
+			deleteElement(idBoxParameter);
+		}
+	}
+	
+}
+
+
+//AJAX para eliminar text box
 function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	console.log("Retrieving ids text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
@@ -711,59 +814,128 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	console.log("Recuperado idNotebook: "+idNotebook);
 	console.log("Recuperado idBox: "+idBox);
 
-	//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
-	if(idBox!=null && idBox!='null'){
-		$.ajax({
-        url : "/web/deleteTextBoxAjax", // the endpoint
-        type : "POST", // http method
-        data : { 
-        'idNotebook': idNotebook,
-        'idBox': idBox
-        
-        }, // data sent with the post request
+	mensajeConfirmacion = '¿Seguro que quiere eliminar esta caja de texto?';
 
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		if(idBox!=null && idBox!='null'){
+			$.ajax({
+	        url : "/web/deleteTextBoxAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idNotebook': idNotebook,
+	        'idBox': idBox
+	        
+	        }, // data sent with the post request
 
-            //Se comprueba si el box ha sido creado o actua
-        	$('#notification-text').text('Box borrada correctamente');
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
 
-            $('#notificaciones-holder').slideDown();
-            
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Box borrada correctamente');
 
-            deleteElement(idBoxParameter);
+	            $('#notificaciones-holder').slideDown();
+	            
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
 
-        },
+	            deleteElement(idBoxParameter);
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al eliminar');
-            $('#notificaciones-holder').show();
+	        },
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
-	}else{
-		deleteElement(idBoxParameter);
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
+		}else{
+			deleteElement(idBoxParameter);
+		}
 	}
+	
+}
 
+//AJAX para eliminar parametro
+function deleteParam(idDivParam,idPkParam){
+	console.log("Retrieving ids text box fields"); // sanity check
+
+	var idParam = $('#'+idPkParam).val();
+
+	mensajeConfirmacion = '¿Seguro que quiere eliminar este parámetro?';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		if(idParam!=null && idParam!='null'){
+			$.ajax({
+	        url : "/web/deleteParamAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idParam': idParam	        
+	        }, // data sent with the post request
+
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Parámetro borrado correctamente');
+
+	            $('#notificaciones-holder').slideDown();
+	            
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
+
+	            deleteElement(idDivParam);
+
+	        },
+
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
+		}else{
+			deleteElement(idDivParam);
+		}
+	}
 	
 }

@@ -4,7 +4,8 @@
 
 {% load staticfiles %}
 {% block extrastatic %}
-    <link rel="stylesheet" href="{% static '../static/css/purchaseExercise.css' %}">
+    <link rel="stylesheet" href="{% static '../static/css/purchaseExercise.css' %}">{% load staticfiles %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 {% endblock %}
 
 <!-- CONTENIDO -->
@@ -79,10 +80,16 @@
                         <!-- Formulario: el botón determina si es compra gratuita o no -->
                         <form id="purchaseForm" method="post" class="form" role="form">
                             {% csrf_token %}
-                            <input type="hidden" name="exerciseId" value="{{ exercise.id }}">
-                            <button name="freePurchase" type="submit" value="false" class="btn btn-success btn-block">Obtener con Paypal</button>
+                            <input type="hidden" id="exerciseId" name="exerciseId" value="{{ exercise.id }}">
+                            <input type="hidden" id="buyExerciseValue" value="{{ prices.buyExerciseValue }}">
+                            <input type="hidden" id="freePurchase" name="freePurchase" value="1">
+                            <input type="hidden" id="payment" name="payment" value="1">
+
+                            <!-- Bot&#243;n Paypal -->
+                            <div id="paypal-button-container"></div>
+                            <br/>
                             {% if license.numFreeExercises > 0 %}
-                            <button name="freePurchase" type="submit" value="true" class="btn btn-warning btn-block">Obtener Gratis</button>
+                            <button type="submit" class="btn btn-success btn-block">Obtener Gratis</button>
                             {% endif %}
                             <a href="{% url 'list_exercisesS' %}" class="btn btn-info btn-block">Cancelar</a>
                         </form>
@@ -97,11 +104,11 @@
                         <ul>
                             {% if license.numFreeExercises > 0 %}
                             <li>Su licencia actual aún dispone de {{ license.numFreeExercises }} ejercicios gratuitos.</li>
-                            <li>Haz clic en 'Obtener gratis' y este será añadido automáticamente a su repertorio.</li>
+                            <li>Haga clic en 'Obtener gratis' y el ejercicio será añadido automáticamente a su repertorio.</li>
                             {% else %}
                             <li>Su licencia no dispone de ejercicios gratuitos.</li>
                             {% endif %}
-                            <li>Para comprar con PayPal, haz clic en 'Obtener con Paypal'. A continuación, serás redirigido a la página de PayPal para proceder al pago.</li>
+                            <li>Para comprar con PayPal, haz clic en 'Pagar con Paypal'. A continuación, serás redirigido a la página de PayPal para proceder al pago.</li>
                         </ul>
                     </div>
                 </div>
@@ -120,4 +127,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="/static/js/paypalPaymentExercise.js"></script>
 {% endblock %}

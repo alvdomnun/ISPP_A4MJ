@@ -33,7 +33,12 @@
                         <td>{{ teacher.userAccount.last_name }}</td>
                         <td>{{ teacher.userAccount.email }}</td>
                         <td>{{ teacher.dni }}</td>
-                        <td> <img src="{{ teacher.photo.url }}" width="150" border="1"/></td>
+                        {% if teacher.photo%}
+                            <td> <img src="{{ teacher.photo.url }}" width="150" border="1"/></td>
+                        {%  endif %}
+                        {% if not teacher.photo%}
+                            <td> </td>
+                        {%  endif %}
                         <td>{{ teacher.phone }}</td>
                         {% if teacher.subjects != None %}
                         <td>

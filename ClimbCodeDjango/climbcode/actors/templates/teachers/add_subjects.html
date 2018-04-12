@@ -13,14 +13,24 @@
             </tr>
             </thead>
             <tbody>
-            {% if school_subjects %}
-                {% for subject in school_subjects %}
+            {% if subjects_aux %}
+                {% for subject in subjects_aux %}
+                    {% if subject in school_subjects %}
                         <tr>
                             <td>{{ subject.name }}</td>
                             <td>{{ subject.course }}</td>
-                            <td><a class="btn btn-default" href="/actors/teachers/add/subjects/add?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Asignar asignaturas</a>
+                            <td><a class="btn btn-default" href="/actors/teachers/add/subjects/add?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Vincular asignatura</a>
                             </td>
                         </tr>
+                    {% endif %}
+                    {% if subject not in school_subjects %}
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.course }}</td>
+                            <td><a class="btn btn-default" href="/actors/teachers/remove/subjects/remove?pk1={{ teacher.pk }}&pk2={{ subject.pk }}">Desvincular asignatura</a>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
                 </table>
@@ -52,4 +62,7 @@
         </ul>
     {% endif %}
 
+     <input type="button" class="btn btn-default"
+                                   onclick="location.href='/actors/teachers/list';" value="Cancelar"/>
 {% endblock %}
+

@@ -1,0 +1,93 @@
+// Obtiene el precio de la licencia
+var purchasePrice = document.getElementById("buyExerciseValue").value;
+// Formatea el precio para poder setearlo en Paypal
+purchasePrice = purchasePrice.replace(',', '.');
+
+// Proceso de Paypal
+paypal.Button.render({
+
+    env: 'sandbox', // sandbox | production
+
+    locale: 'es_ES',
+
+    style: {
+        size: 'responsive',
+        color: 'gold',
+        shape: 'rect',
+        label: 'pay',
+        tagline: false,
+        fundingicons: false,
+    },
+
+    // PayPal Client IDs - replace with your own
+    // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+    client: {
+        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+        production: '<insert production client id>'
+    },
+
+    // Show the buyer a 'Pay Now' button in the checkout flow
+    commit: true,
+
+    // payment() is called when the button is clicked
+    payment: function (data, actions) {
+
+        // Make a call to the REST api to create the payment
+        return actions.payment.create({
+            payment: {
+                transactions: [
+                    {
+                        amount: { total: purchasePrice, currency: 'EUR' }
+                    }
+                ]
+            }
+        });
+    },
+
+    // onAuthorize() is called when the buyer approves the payment
+    onAuthorize: function (data, actions) {
+
+        // Make a call to the REST api to execute the payment
+        return actions.payment.execute().then(function () {
+            //window.alert('Payment Complete!');
+
+            // Activa el input del Formulario para controlar errores
+            document.getElementById("payment").value = '1';
+
+            // Campo FreePurchase a false (no es una compra gratuita)
+            document.forms.purchaseForm.freePurchase.value = '0';
+
+            // Env&#237;a el formulario
+            document.forms.purchaseForm.submit();
+        });
+    },
+
+    // onCancel() is called when the buyer cancels the payment
+    onCancel: function (data, actions) {
+        //return window.alert('Payment Cancelled!');
+
+        // Desactiva el input del Formulario para controlar errores
+        document.getElementById("payment").value = '0';
+
+        // Campo FreePurchase a false (no es una compra gratuita)
+        document.forms.purchaseForm.freePurchase.value = '0';
+
+        // Env&#237;a el formulario
+        document.forms.purchaseForm.submit();
+    },
+
+    // onError() is called when the an error occurs
+    onError: function (data, actions) {
+        //return window.alert('Payment Error!');
+
+        // Desactiva el input del Formulario para controlar errores
+        document.getElementById("payment").value = '0';
+
+        // Campo FreePurchase a false (no es una compra gratuita)
+        document.forms.purchaseForm.freePurchase.value = '0';
+
+        // Env&#237;a el formulario
+        document.forms.purchaseForm.submit();
+    }
+
+}, '#paypal-button-container');

@@ -1,0 +1,33 @@
+
+[
+{
+    "model": "licenses.licensetype",
+    "pk": 1,
+    "fields": {
+        "name": "BASIC",
+		"numUsers": 60,
+		"numFreeExercises": 20,
+		"price": 200.00
+    }
+},
+{
+    "model": "licenses.licensetype",
+    "pk": 2,
+    "fields": {
+        "name": "MEDIUM",
+		"numUsers": 200,
+		"numFreeExercises": 50,
+		"price": 550.00
+    }
+},
+{
+    "model": "licenses.licensetype",
+    "pk": 3,
+    "fields": {
+        "name": "LARGE",
+		"numUsers": 500,
+		"numFreeExercises": 75,
+		"price": 700.00
+    }
+}
+]

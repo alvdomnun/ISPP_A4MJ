@@ -4,6 +4,7 @@ Definition of forms.
 #encoding:utf-8
 
 from django import forms
+from licenses.models import License
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -35,10 +36,11 @@ class RegisterProgrammerForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Programador
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
-    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
-        label = 'D.N.I.')
+    dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$',
+                message = 'El D.N.I. debe estar compuesto de 8 dígitos seguidos de 1 letra mayúscula.')], label = 'D.N.I.')
 
     # Validaciones propias
     def clean(self):
@@ -70,7 +72,8 @@ class RegisterSchoolForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Escuela
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$', 
+           message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
     photo = forms.ImageField(required = False, label = 'Foto de perfil')
     centerName = forms.CharField(max_length = 50, label = 'Nombre del Centro')
     address = forms.CharField(max_length = 50, label = 'Dirección')
@@ -79,8 +82,8 @@ class RegisterSchoolForm(forms.Form):
     type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
     teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
     identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
-    # TODO : Funcionalidad completa: extras a las licencias.
     licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
+    numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
 
     # Validaciones propias
     def clean(self):
@@ -101,7 +104,6 @@ class RegisterSchoolForm(forms.Form):
 
             # Valida los patrones para cuando sea escuela o academia
             type = self.cleaned_data["type"]
-            print(type)
             idCode = self.cleaned_data["identificationCode"]
             if idCode is not None and type == 'High School':
                 if re.match(r'^(\d{8})$', idCode) is None:
@@ -110,6 +112,13 @@ class RegisterSchoolForm(forms.Form):
                 if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
                     raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
 
+            # Valida que el número de usuarios indicados no sea inferior al de la licencia dada
+            licenseType = self.cleaned_data["licenseType"]
+            license = LicenseType.objects.filter(pk = licenseType.id)[0]
+            numUsers = self.cleaned_data["numUsers"]
+             # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
+            if (license.numUsers > numUsers):
+                raise forms.ValidationError("El número de usuarios indicado no supera el mínimo exigido por la licencia.")
 
 class ExerciseForm(forms.Form):
     """
@@ -120,3 +129,34 @@ class ExerciseForm(forms.Form):
     level = forms.ChoiceField(choices = Exercise.LevelType, label = 'Nivel')
     category = forms.ModelChoiceField(queryset = DefaultSubject.objects.all(), empty_label = None, label = 'Asignatura')
 
+class RegisterSchoolPaymentForm(forms.Form):
+    """ Formulario para recibir el pago de Paypal """
+
+    license = forms.IntegerField();
+    licensePrice = forms.CharField(min_length = 6, max_length = 10);
+    payment = forms.IntegerField();
+    school = forms.IntegerField();
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el usuario de la escuela esté inactivo
+            school = self.cleaned_data["school"]
+            school = School.objects.filter(pk = school).first()
+            if (school.userAccount.is_active):
+                raise forms.ValidationError("Esta escuela ya está activa.")
+
+            # Valida que la licencia que se paga corresponda con la escuela
+            license = self.cleaned_data["license"]
+            license = License.objects.filter(id = license).first()
+            if not(license.school == school):
+                raise forms.ValidationError("La licencia que se intenta pagar no pertenece a la escuela.")
+
+            # Valida el precio de licencia que trae el form sea similar al de la licencia
+            licensePrice = self.cleaned_data["licensePrice"]
+            # Formatea cambiando la coma del decimal por punto (, -> .)
+            licensePrice = licensePrice.replace(',', '.')
+            if not(licensePrice == str(license.price)):
+                raise forms.ValidationError('El precio de la licencia no corresponde con el real.')

@@ -11,12 +11,20 @@
     <div class="row">
     
         <div class="container-fluid">
-            <br/>
             <div class="col-md-12">
 
-                <!-- Formulario Registro -->
+                <!-- FORMULARIO -->
                 <form id="registro" method="post" action="{% url 'registerSchool' %}" class="form" role="form">
                     {% csrf_token %}
+
+                    <!-- Licencia -->
+                    {% include 'web/basicLicenses.html' %}
+
+                    <hr/>
+
+                    <!-- Escuela -->
+                    <h3>Rellena tus datos</h3>
+
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="username" class="control-label">Nombre de usuario</label>
@@ -118,22 +126,6 @@
                     </div>
 
                     <hr/>
-
-                    <h3>{{ licenseTitle }}</h3>
-
-                    <br/>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12 form-group">
-                            <label for="licenseType" class="control-label">Tipo de Licencia</label>
-                            <select class="form-control" id="licenseType" name="licenseType" required>
-                                <option value="" selected="selected">Seleccione una licencia</option>
-                                {% for l in licenseTypes %}
-                                    <option value="{{ l.id }}">{{ l.name }} - {{ l.numUsers }} Usuarios y {{ l.numFreeExercises}} Ejercicios gratuitos - {{ l.price}} &euro;</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                    <br/>
                 
                     <!-- Tratamiento de Errores -->
                     {% if form.errors %}
@@ -154,7 +146,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
                             <input type="hidden" name="next" value="/" />
-                            <input type="submit" value="Registrarse" class="btn btn-primary btn-block" />
+                            <input type="submit" value="Proceder con el pago" class="btn btn-primary btn-block" />
                             <input type="button" class="btn btn-default btn-block" onclick="location.href='/';" value="Cancelar" />
                         </div>
                     </div>
@@ -168,6 +160,4 @@
 
 
 {% block scripts %}
-
-
 {% endblock %}

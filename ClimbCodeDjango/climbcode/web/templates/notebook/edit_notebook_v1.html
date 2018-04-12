@@ -44,11 +44,42 @@ background-color: red;
                 event.preventDefault();
                 console.log("form submitted!");
                 editExerciseInfo();
+                $('#getCodeModal').modal('hide');
             });            
         });
         function mostrarModal(){
                 $('#getCodeModal').modal('show');
         }
+        function ocultarModal(){
+                $('#getCodeModal').modal('hide');
+        }
+    $(document).ready(function (e) {
+        $('#imageUploadForm').on('submit',(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                type:'POST',
+                url: $(this).attr('action'),
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    console.log("success");
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log("error");
+                    console.log(data);
+                }
+        });
+    }));
+
+        $("#ImageBrowse").on("change", function() {
+            $("#imageUploadForm").submit();
+        });
+    });
     </script>
 {% endblock %}
 {% block title %}
@@ -69,27 +100,39 @@ Notebookv1
             <div class="row">
                 <!-- CABECERA CON TITULO Y SUBTITULO, INPUTS DISABLED -->
                 <div class="col-md-12 custom-mt-1" >
-                        <div style="background-color: #ebebeb;width: auto;height: 250px;padding-top: 15px">
+                        <div style="background-color: #ebebeb;width: auto;height: 250px;padding-top: 15px;padding-left:15px;padding-right:15px">
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-6 offset-md-0">
                                     <div class="form-group">
-                                        
+
                                         <label for="username">Título:</label>
-                                        <input class="form-control" type="text" id="title_disabled" name="title" value="{{exercise.title}}">
+                                        <input class="form-control" type="text" id="title_disabled" name="title" style="background-color:#BFC9CA;" value="{{exercise.title}}" disabled>
                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 offset-md-3">
+                                <div class="col-md-6 offset-md-0">
                                     <div class="form-group">
-                                        <label for="username">Descripción:</label>
-                                        <input class="form-control" type="text" name="description" id="description_disabled" value="{{exercise.description}}">
+                                        <label for="description">Descripción:</label>
+                                        <input class="form-control" type="text" name="description" id="description_disabled" style="background-color:#BFC9CA;" value="{{exercise.description}}" disabled>
                                    </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 offset-md-3">
-                                    <button type="submit" class="btn btn-primary">Guardar</button>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="level">Nivel:</label>
+                                        <input class="form-control" type="text" name="level" id="level_disabled" style="background-color:#BFC9CA;" value="{{exercise.level}}" disabled>
+                                   </div>
+                                </div>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="category">Asignatura:</label>
+                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.name}}" disabled>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <button type="submit" class="btn btn-primary" hidden="hidden">Guardar</button>
                                     <button onclick="mostrarModal()" type="submit" class="btn btn-primary">Ver/Editar</button>
                                     
                                 </div>
@@ -139,11 +182,11 @@ Notebookv1
         </script>
     {% elif box.type in "Code" %}
         <script>
-        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
         {% for parameter in box.parameters %}
              <script>
-            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}');
             </script>
         {% endfor %}
     {% elif box.type in "Picture" %}
@@ -152,7 +195,6 @@ Notebookv1
         </script>
     {% endif %}
 {% endfor %}
-
 
 
 <!-- MODAL -->
@@ -184,8 +226,7 @@ Notebookv1
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
                             <label for="description" class="control-label">Descripción</label>
-                            <textarea class="form-control" rows="12" name="description" id="description" placeholder="Descripción" value="{{exercise.description}}" required>{{exercise.description}}
-                            </textarea>
+                            <textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" rows="3" name="description" id="description" placeholder="Descripción" value="{{exercise.description}}" required>{{exercise.description}}</textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -229,8 +270,8 @@ Notebookv1
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
                             <input type="hidden" name="next" value="/" />
-                            <input type="submit" value="Siguiente" class="btn btn-primary btn-block" />
-                            <input type="button" class="btn btn-default btn-block" onclick="location.href='/';" value="Cancelar" />
+                            <input type="submit" value="Actualizar" class="btn btn-primary btn-block" />
+                            <input type="button" class="btn btn-default btn-block" onclick="ocultarModal();" value="Cancelar" />
                         </div>
                     </div>
                 </form>

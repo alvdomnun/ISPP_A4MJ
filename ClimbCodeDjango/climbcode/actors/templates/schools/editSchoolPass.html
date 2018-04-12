@@ -1,4 +1,4 @@
-﻿{% extends 'base/base.html' %}
+﻿{% extends 'welcome/welcome-base.html' %}
 
 <!-- TITULO -->
 {% block title %}ClimbCode{% endblock %}
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <hr/>
-
+                
                     <!-- Tratamiento de Errores -->
                     {% if form.errors %}
                         {% for field in form %}

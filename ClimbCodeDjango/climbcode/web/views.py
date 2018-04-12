@@ -261,7 +261,10 @@ def createNotebook(request):
 
     # Valida que el usuario sea anónimo (no registrado)
     if not request.user.is_authenticated:
-        return HttpResponseRedirect('/')
+        template = loader.get_template('notebook/notebook_no_permiso.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
 
     # Comprobar que sea un programador
 

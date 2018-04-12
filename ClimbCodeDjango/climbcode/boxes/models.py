@@ -65,14 +65,15 @@ class CodeAdminPanel(BoxAdminPanel):
 
 class Picture(Box):
     #Clase que define a Text
-    content = models.ImageField(upload_to = 'uploads/',default=None)
+    #content = models.ImageField(upload_to = 'uploads/',default=None)
+    url = models.TextField(default="")
 
     def __str__(self):
         return '( ' + self.order + ' ) ' + self.exercise.title
 
     class Meta:
-        verbose_name = "Gráfica"
-        verbose_name_plural = "Gráficas"
+        verbose_name = "Ilustración"
+        verbose_name_plural = "Ilustraciones"
 
 class PictureAdminPanel(BoxAdminPanel):
     pass

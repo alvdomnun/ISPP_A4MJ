@@ -21,4 +21,10 @@ urlpatterns = [
     url(r'^deleteCodeBoxAjax$', views.deleteCodeBoxAjax, name='deleteCodeBoxAjax'),
     url(r'^createUpdateCodeParamAjax$', views.createUpdateCodeParamAjax, name='createUpdateCodeParamAjax'),
     url(r'^deleteParamAjax$', views.deleteParamAjax, name='deleteParamAjax'),
+    url(r'^createUpdateImageBoxAjax$', views.createUpdateImageBoxAjax, name='createUpdateImageBoxAjax'),
+    url(r'^deleteImageBoxAjax$', views.deleteImageBoxAjax, name='deleteImageBoxAjax'),
+
+
+
+
 ]

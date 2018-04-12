@@ -295,7 +295,7 @@ def editNotebook(request):
 
                 boxesPicture = Picture.objects.filter(exercise=exercise)
                 for box in boxesPicture:
-                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.content)
+                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.url)
                     boxesView.append(boxPictureView)
 
                 context = {
@@ -379,6 +379,56 @@ def deleteTextBoxAjax(request):
         #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
         if idBox is not None and idBox>0:
            deleteTextBox(idNotebook,idBox)
+
+        data = {
+        }
+        return JsonResponse(data)
+
+# Create code box
+@csrf_exempt
+def createUpdateImageBoxAjax(request):
+    print("Creating or updating image box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        order = request.POST.get('boxOrder')
+        url = request.POST.get('url')
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+
+        #Bandera actualización box
+        updateBox = False
+        if idBox is not None and idBox>0:
+           savedBox = updateImageBox(idNotebook,order,url,idBox)
+           updateBox = True
+        else:
+           savedBox = createImageBox(idNotebook,order,url)
+        
+        data = {
+            'savedBoxId':savedBox.id,
+            'updateBox':updateBox
+        }
+        return JsonResponse(data)
+
+# Delete image box
+@csrf_exempt
+def deleteImageBoxAjax(request):
+    print("Deleting image box for exercise by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idNotebook = request.POST.get('idNotebook')
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        if idBox is not None and idBox>0:
+           deleteImageBox(idNotebook,idBox)
 
         data = {
         }
@@ -489,6 +539,34 @@ def deleteParamAjax(request):
         return JsonResponse(data)
 
 ### Servicios CRUD Ejercicios y boxes
+
+# Create image box
+def createImageBox(idNotebook,order,url):
+    #TODO MBC VALIDAR CAMPOS
+    exercise = Exercise.objects.get(id=idNotebook)
+    imageBox = Picture.objects.create(exercise=exercise,order=order,url=url)
+    imageBox.save()
+    return imageBox
+
+# Update image box
+def updateImageBox(idNotebook,order,url,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK 
+    exercise = Exercise.objects.get(id=idNotebook)
+    imageBox = Picture.objects.get(id=idBox)
+    imageBox.url = url
+    imageBox.save()
+    return imageBox
+
+# Delete image box
+def deleteImageBox(idNotebook,idBox):
+    ##TODO MBC VALIDAR CAMPOS
+    # VALIDAR QUE EL BOX PERTENECE AL NOTEBOOK
+    # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK
+    exercise = Exercise.objects.get(id=idNotebook)
+    imageBox = Picture.objects.get(id=idBox)
+    imageBox.delete()
 
 # Update notebook
 def updateNotebook(idNotebook,title,description):

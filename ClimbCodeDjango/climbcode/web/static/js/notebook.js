@@ -25,22 +25,22 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	}
 
 	//HTML DE LA CAJA DE TEXTO
-		var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
-								'<div class="row">'+
-									'<div class="col-md-12 custom-mt-1" >'+
-										'<div class="form-group" style="padding:12px;">'+
-											'<form method="POST" id="'+idFormBox+'">'+
-												'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
-												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
-												'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
-				                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí">'+content+'</textarea>'+
-				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
-			                        		'</form>'+
-			                        	'</div>'+
-									'</div>'+
+	var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
+							'<div class="row">'+
+								'<div class="col-md-12 custom-mt-1" >'+
+									'<div class="form-group" style="padding:12px;">'+
+										'<form method="POST" id="'+idFormBox+'">'+
+											'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
+											'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
+											'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
+			                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" required>'+content+'</textarea>'+
+			                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+			                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+		                        		'</form>'+
+		                        	'</div>'+
 								'</div>'+
-							'</div>';
+							'</div>'+
+						'</div>';
 
     $('#'+idNotebookContent).append(htmlTextBox);
 
@@ -192,40 +192,66 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 
 }
 
-function addImageBox(idNotebookContent){
+function addNewImageBox(idNotebookContent,idNotebookBD){
+	addImageBox(idNotebookContent,idNotebookBD,null,null,'');
+}
+
+function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 	numBox++;
 	//Box id
 	var idBox = "idBox"+numBox;
-	var idBoxParameter = "'idBox"+numBox+"'";
 
 	//Img id
-	numImg++;
-	var idImg = "idImg"+numImg;
-	var idImgParameter = "'idImg"+numImg+"'";
+	var idImg = "idImg"+idBox;
 	//Input URL id
-	var idUrlInput = "idUrlInput"+numImg;
-	var idUrlInputParameter = "'idUrlInput"+numImg+"'";
+	var idUrlInput = "input_url_img_"+idBox;
 
+	var idFormBox = "form_box_"+idBox;
+	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
+	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
+	var idHiddenOrder = "input_hidden_order_"+idBox;
+
+	if(order==null){
+		var order = numBox;
+	}
+
+	if(url==null){
+		url = '';
+	}
 
 	//HTML DE LA CAJA DE IMAGEN
 	var htmlImageBox = '<div class="col-md-12 custom-mt-1" id="'+idBox+'">'+
 							'<div class="row">'+
 								'<div class="col-md-12 custom-mt-1" >'+
 									'<div class="form-group" style="padding:12px;">'+
-		                            	'<img class="notebook-img" id="'+idImg+'" src="" height="256px" width="256px" />'+		                         		
+		                            	'<img class="notebook-img" id="'+idImg+'" src="/static/img/placeholder.png" height="256px" />'+		                         		
 		                        	'</div>'+
 		                        '</div>'+
-		                        '<div class="col-md-6 offset-md-3" >'+
-		                        		'<input class="form-control" id="'+idUrlInput+'" type="text" placeholder="Establecer URL">'+
-								'</div>'+
-								'<div class="col-md-12 offset-md-3" >'+
-		                         		'<button class="btn btn-info pull-right" style="margin-top:10px" onclick="updateImg('+idImgParameter+','+idUrlInputParameter+')" type="button">Actualizar URL</button>'+
-		                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteElement('+idBoxParameter+')" type="button">Eliminar</button>'+
+		                        '<div class="form-group col-md-6 offset-md-3" style="padding:12px;">'+
+									'<form method="POST" id="'+idFormBox+'">'+
+										'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
+										'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
+										'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
+				                        '<input class="form-control col-md-5 offset-md-3" id="'+idUrlInput+'" type="text" placeholder="Establecer URL" required value="'+url+'">'+
+										'<div class="col-md-12 offset-md-3" >'+
+				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteImageBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+										'</div>'+
+									'</form>'+
 								'</div>'+
 							'</div>'+
 						'</div>';
 
 	$('#'+idNotebookContent).append(htmlImageBox);
+
+	// Comportamiento al pulsar GUARDAR -> Llamada Ajax
+    $('#'+idFormBox).on('submit', function(event){
+        event.preventDefault();
+        console.log("form submitted!");
+        //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
+        //var form = $('#'+idFormBox);
+        createUpdateImageBox(idHiddenIdNotebook,idHiddenOrder,idUrlInput,idHiddenIdBox,idImg);
+    });
 }
 
 function deleteElement(idElement){
@@ -293,11 +319,10 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 								'<label class="control-label">ID</label>'+
     							'<input value="'+idNameParameter+'" class="form-control" type="text" disabled="disabled">'+
     							'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
-    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text">'+
+    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" required>'+
     							'<label for="'+idNameParameter+'" class="control-label">Valor</label>'+
-    							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text">'+
+    							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text" required>'+
     							'<button type="submit" class="btn btn-primary pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-    							'<button type="submit" class="btn btn-danger pull-right" style="margin-top:10px" type="button">Eliminar</button>'+
     							'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteParam(\''+idDivParam+'\',\''+idHiddenIdPkParam+'\')" type="button">Eliminar</button>'+
     							'</form>'+
     						'</div>'
@@ -663,6 +688,83 @@ function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,
 }
 
 //AJAX para crear text box
+function createUpdateImageBox(idHiddenIdNotebook, idHiddenOrder, idUrlInput, idHiddenIdBox, idImg){
+	console.log("Retrieving text box fields"); // sanity check
+	var idNotebook = $('#'+idHiddenIdNotebook).val();
+	var boxOrder = $('#'+idHiddenOrder).val();
+	var url = $('#'+idUrlInput).val();
+	var idBox = $('#'+idHiddenIdBox).val();
+
+	console.log("Recuperado idNotebook: "+idNotebook);
+	console.log("Recuperado boxOrder: "+boxOrder);
+	console.log("Recuperado url: "+url);
+	console.log("Recuperado idBox: "+idBox);
+
+	$.ajax({
+        url : "/web/createUpdateImageBoxAjax", // the endpoint
+        type : "POST", // http method
+        data : { 
+        'idNotebook': idNotebook,
+        'boxOrder': boxOrder,
+        'url': url,
+        'idBox': idBox
+        
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // log the returned json to the console
+            //alert("Notebook editado correctamente");
+            //Actualización de los campos
+            console.log("success"); // another sanity check
+            //$("#getCodeModal").modal('show');
+
+            //Se comprueba si el box ha sido creado o actua
+            var updateBox = json['updateBox'];
+            if(updateBox){
+            	$('#notification-text').text('Caja de ilustración editada correctamente');
+            }else{
+            	$('#notification-text').text('Caja de ilustración creada correctamente');
+            }
+            
+            $('#notificaciones-holder').slideDown();
+            
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').slideUp();
+              }, 2000);
+
+            //Activar el botón de añadir parámetros para esa caja de texto
+            //Recuperar id box
+            var idBox = json['savedBoxId'];
+            //Actualizar el campo idbox, por si se está creando
+            $('#'+idHiddenIdBox).val(idBox);
+
+            //Mostrar la imagen en el img
+            $("#"+idImg).attr("src",url);
+
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            $('#notification-text').text('Error al editar');
+            $('#notificaciones-holder').show();
+
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').hide();
+              }, 2000);
+        }
+	});
+}
+
+//AJAX para crear text box
 function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idHiddenIdBox){
 	console.log("Retrieving text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
@@ -935,6 +1037,76 @@ function deleteParam(idDivParam,idPkParam){
 		});
 		}else{
 			deleteElement(idDivParam);
+		}
+	}
+	
+}
+
+//AJAX para eliminar text box
+function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+	console.log("Retrieving ids text box fields"); // sanity check
+	var idNotebook = $('#'+idHiddenIdNotebook).val();
+	var idBox = $('#'+idHiddenIdBox).val();
+
+	console.log("Recuperado idNotebook: "+idNotebook);
+	console.log("Recuperado idBox: "+idBox);
+
+	mensajeConfirmacion = '¿Seguro que quiere eliminar esta caja de ilustración?';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		if(idBox!=null && idBox!='null'){
+			$.ajax({
+	        url : "/web/deleteImageBoxAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idNotebook': idNotebook,
+	        'idBox': idBox
+	        
+	        }, // data sent with the post request
+
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Box borrada correctamente');
+
+	            $('#notificaciones-holder').slideDown();
+	            
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
+
+	            deleteElement(idBoxParameter);
+
+	        },
+
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function() 
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
+		}else{
+			deleteElement(idBoxParameter);
 		}
 	}
 	

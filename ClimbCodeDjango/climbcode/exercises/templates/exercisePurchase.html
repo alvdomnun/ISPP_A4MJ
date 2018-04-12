@@ -1,4 +1,4 @@
-﻿{% extends 'welcome/welcome-base.html' %}
+﻿{% extends 'base/base.html' %}
 
 {% block title %}ClimbCode{% endblock %}
 
@@ -54,7 +54,7 @@
                         {{ exercise.description }}
                     </p>
                     <p>
-                        <strong>Número de ventas:</strong> {{ exercise.sales }}&emsp; | &emsp;<strong>Nivel:</strong> {{ exercise.level }}&emsp; 
+                        <strong>Número de ventas:</strong> {{ exercise.sales }}&emsp; | &emsp;<strong>Nivel:</strong> {{ exercise.level }}&emsp;
                         | &emsp;<strong>Asignatura:</strong> {{ exercise.category.name }}&emsp; | &emsp;<strong>Curso:</strong> {{ exercise.category.course }}º
                     </p>
                 </div>
@@ -65,7 +65,7 @@
             <div class="row">
                 <!-- Precio -->
                 <div class="col-lg-12 col-md-12 col-sm-12">
-                    <h4>Precio: {{ prices.buyExerciseValue }} &euro;</h4> 
+                    <h4>Precio: {{ prices.buyExerciseValue }} &euro;</h4>
                 </div>
             </div>
             <hr/>

@@ -4,6 +4,14 @@ body {
     background-color: #ebebeb !important;
 }
 
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,.75) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255,255,255,1) !important;
+}
+
 /* Estilo para que como minimo se ocupe todo el alto de la pantalla */
 .body-parent {
   min-height: 100vh;
@@ -13,6 +21,10 @@ body {
   El no anidar el contenido dentro de un div con esta clase provocara que el footer no aparezca al final de la pagina*/
 .body-container {
   flex: 1 0 auto;
+}
+
+.nav-item {
+  font-size: 1.2em;
 }
 
 .input-group-text {

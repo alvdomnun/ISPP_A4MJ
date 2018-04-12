@@ -175,7 +175,7 @@ Notebookv1
     </div>
 </div>
 
-{% for box in boxesViews %}
+{% for box in boxesView %}
     {% if box.type in "Text" %}
         <script>
         addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
@@ -191,7 +191,7 @@ Notebookv1
         {% endfor %}
     {% elif box.type in "Picture" %}
         <script>
-        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
     {% endif %}
 {% endfor %}

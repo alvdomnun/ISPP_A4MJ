@@ -214,9 +214,11 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 	if(order==null){
 		var order = numBox;
 	}
-
-	if(url==null){
+    var urlImg = '/static/img/placeholder.png'
+	if(url==null || url==""){
 		url = '';
+	}else{
+	    urlImg = url;
 	}
 
 	//HTML DE LA CAJA DE IMAGEN
@@ -224,7 +226,7 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 							'<div class="row">'+
 								'<div class="col-md-12 custom-mt-1" >'+
 									'<div class="form-group" style="padding:12px;">'+
-		                            	'<img class="notebook-img" id="'+idImg+'" src="/static/img/placeholder.png" height="256px" />'+		                         		
+		                            	'<img class="notebook-img" id="'+idImg+'" src="'+urlImg+'" height="256px" />'+
 		                        	'</div>'+
 		                        '</div>'+
 		                        '<div class="form-group col-md-6 offset-md-3" style="padding:12px;">'+

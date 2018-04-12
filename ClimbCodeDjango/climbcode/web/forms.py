@@ -119,4 +119,3 @@ class ExerciseForm(forms.Form):
     description = forms.CharField()
     level = forms.ChoiceField(choices = Exercise.LevelType, label = 'Nivel')
     category = forms.ModelChoiceField(queryset = DefaultSubject.objects.all(), empty_label = None, label = 'Asignatura')
-

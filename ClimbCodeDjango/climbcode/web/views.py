@@ -222,11 +222,17 @@ def createNotebook(request):
     assert isinstance(request, HttpRequest)
 
     # Valida que el usuario sea anónimo (no registrado)
-    if (request.user.is_authenticated):
+    if not request.user.is_authenticated:
         return HttpResponseRedirect('/')
 
+    # Comprobar que sea un programador
+
+    user = request.user
+
+    programmer = Programmer.objects.get(actor_ptr_id=request.user.id)
+
     # Si se ha enviado el Form
-    if (request.method == 'POST'):
+    if (programmer is not None and request.method == 'POST'):
         form = ExerciseForm(request.POST)
         if (form.is_valid()):
             # Guarda el User (model Django) en BD
@@ -236,7 +242,7 @@ def createNotebook(request):
             category = form.cleaned_data["category"]
 
             exercise = Exercise.objects.create(title=title, description=description,sales=0,
-                                               promoted=False, draft = True, level=level, category=category)
+                                               promoted=False, draft = True, level=level, category=category, programmer=programmer)
 
             idNotebook = exercise.id
             return HttpResponseRedirect('/web/editNotebook?idNotebook='+str(idNotebook))
@@ -270,7 +276,7 @@ def editNotebook(request):
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
-        if permisoEditNotebook:
+        if permisoEditNotebook(idNotebook,request):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
             exercise = Exercise.objects.get(id=idNotebook)
@@ -315,17 +321,21 @@ def editNotebook(request):
                 }
                 return HttpResponse(template.render(context, request))
         else:
-            print("This actor is not allowed to edit this notebook")
+            template = loader.get_template('notebook/notebook_no_permiso.html')
+            context = {
+            }
+            return HttpResponse(template.render(context, request))
         
 
-def permisoEditNotebook(idNotebook):
+def permisoEditNotebook(idNotebook,request):
     tienePermiso = False
     #TODO MBC recuperar actor logado, debe ser programador
-
+    user = request.user
     #TODO MBC recuperar notebook
-
+    exercise = Exercise.objects.get(id=idNotebook)
     #TODO MBC comprobar que el notebook tiene como id del programador al logado
-    return True
+    tienePermiso = exercise.programmer.actor_ptr_id == user.id
+    return tienePermiso
 
 
 ### Llamadas ajax
@@ -336,21 +346,22 @@ def editNotebookAjax(request):
     if request.method == 'POST':
         print("metodo post")
         idNotebook = request.POST.get('idNotebook')
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        level = request.POST.get('level')
-        category = request.POST.get('category')
-        #TODO MBC VALIDAR CAMPOS
-        print(title) 
-        editedExercise = updateNotebook(idNotebook,title,description,level,category)
-        data = {
-            'editedExerciseTitle':editedExercise.title,
-            'editedExerciseDescription':editedExercise.description,
-            'editedExerciseLevel': editedExercise.level,
-            'editedExerciseCategory': editedExercise.category.name,
-            'editedExerciseCategoryId':editedExercise.category.id
-        }
-        return JsonResponse(data)
+        if permisoEditNotebook(idNotebook, request):
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            level = request.POST.get('level')
+            category = request.POST.get('category')
+            #TODO MBC VALIDAR CAMPOS
+            print(title)
+            editedExercise = updateNotebook(idNotebook,title,description,level,category)
+            data = {
+                'editedExerciseTitle':editedExercise.title,
+                'editedExerciseDescription':editedExercise.description,
+                'editedExerciseLevel': editedExercise.level,
+                'editedExerciseCategory': editedExercise.category.name,
+                'editedExerciseCategoryId':editedExercise.category.id
+            }
+            return JsonResponse(data)
 
 @csrf_exempt
 def createUpdateTextBoxAjax(request):
@@ -358,28 +369,29 @@ def createUpdateTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        order = request.POST.get('boxOrder')
-        text = request.POST.get('text')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
-        #Bandera actualización box
-        updateBox = False
-        if idBox is not None and idBox>0:
-           savedBox = updateTextBox(idNotebook,order,text,idBox)
-           updateBox = True
-        else:
-           savedBox = createTextBox(idNotebook,order,text)
-        
-        data = {
-            'savedBoxId':savedBox.id,
-            'savedBoxText':savedBox.content,
-            'updateBox':updateBox
-        }
-        return JsonResponse(data)
+        if permisoEditNotebook(idNotebook, request):
+            order = request.POST.get('boxOrder')
+            text = request.POST.get('text')
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            #Bandera actualización box
+            updateBox = False
+            if idBox is not None and idBox>0:
+               savedBox = updateTextBox(idNotebook,order,text,idBox)
+               updateBox = True
+            else:
+               savedBox = createTextBox(idNotebook,order,text)
+
+            data = {
+                'savedBoxId':savedBox.id,
+                'savedBoxText':savedBox.content,
+                'updateBox':updateBox
+            }
+            return JsonResponse(data)
 
 @csrf_exempt
 def deleteTextBoxAjax(request):
@@ -387,18 +399,19 @@ def deleteTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
-        if idBox is not None and idBox>0:
-           deleteTextBox(idNotebook,idBox)
+        if permisoEditNotebook(idNotebook, request):
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            if idBox is not None and idBox>0:
+               deleteTextBox(idNotebook,idBox)
 
-        data = {
-        }
-        return JsonResponse(data)
+            data = {
+            }
+            return JsonResponse(data)
 
 # Create code box
 @csrf_exempt
@@ -407,28 +420,29 @@ def createUpdateImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        order = request.POST.get('boxOrder')
-        url = request.POST.get('url')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+        if permisoEditNotebook(idNotebook, request):
+            order = request.POST.get('boxOrder')
+            url = request.POST.get('url')
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
 
-        #Bandera actualización box
-        updateBox = False
-        if idBox is not None and idBox>0:
-           savedBox = updateImageBox(idNotebook,order,url,idBox)
-           updateBox = True
-        else:
-           savedBox = createImageBox(idNotebook,order,url)
-        
-        data = {
-            'savedBoxId':savedBox.id,
-            'updateBox':updateBox
-        }
-        return JsonResponse(data)
+            #Bandera actualización box
+            updateBox = False
+            if idBox is not None and idBox>0:
+               savedBox = updateImageBox(idNotebook,order,url,idBox)
+               updateBox = True
+            else:
+               savedBox = createImageBox(idNotebook,order,url)
+
+            data = {
+                'savedBoxId':savedBox.id,
+                'updateBox':updateBox
+            }
+            return JsonResponse(data)
 
 # Delete image box
 @csrf_exempt
@@ -437,18 +451,19 @@ def deleteImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
-        if idBox is not None and idBox>0:
-           deleteImageBox(idNotebook,idBox)
+        if permisoEditNotebook(idNotebook, request):
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            if idBox is not None and idBox>0:
+               deleteImageBox(idNotebook,idBox)
 
-        data = {
-        }
-        return JsonResponse(data)
+            data = {
+            }
+            return JsonResponse(data)
 
 # Create code box
 @csrf_exempt
@@ -457,29 +472,30 @@ def createUpdateCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        order = request.POST.get('boxOrder')
-        contentCode = request.POST.get('contentCode')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+        if permisoEditNotebook(idNotebook, request):
+            order = request.POST.get('boxOrder')
+            contentCode = request.POST.get('contentCode')
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
 
-        #Bandera actualización box
-        updateBox = False
-        if idBox is not None and idBox>0:
-           savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
-           updateBox = True
-        else:
-           savedBox = createCodeBox(idNotebook,order,contentCode)
-        
-        data = {
-            'savedBoxId':savedBox.id,
-            'savedBoxCode':savedBox.content,
-            'updateBox':updateBox
-        }
-        return JsonResponse(data)
+            #Bandera actualización box
+            updateBox = False
+            if idBox is not None and idBox>0:
+               savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
+               updateBox = True
+            else:
+               savedBox = createCodeBox(idNotebook,order,contentCode)
+
+            data = {
+                'savedBoxId':savedBox.id,
+                'savedBoxCode':savedBox.content,
+                'updateBox':updateBox
+            }
+            return JsonResponse(data)
 
 @csrf_exempt
 def deleteCodeBoxAjax(request):
@@ -487,19 +503,20 @@ def deleteCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        idBox = request.POST.get('idBox')
-        if idBox == 'null':
-            idBox = None
-        else:
-            idBox = int(idBox)
-        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        if permisoEditNotebook(idNotebook, request):
+            idBox = request.POST.get('idBox')
+            if idBox == 'null':
+                idBox = None
+            else:
+                idBox = int(idBox)
+            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
 
-        if idBox is not None and idBox>0:
-           deleteCodeBox(idNotebook,idBox)
+            if idBox is not None and idBox>0:
+               deleteCodeBox(idNotebook,idBox)
 
-        data = {
-        }
-        return JsonResponse(data)
+            data = {
+            }
+            return JsonResponse(data)
 
 
 # Create code param

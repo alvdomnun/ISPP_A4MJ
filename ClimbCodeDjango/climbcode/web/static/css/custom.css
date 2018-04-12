@@ -4,6 +4,10 @@ body {
     background-color: #ebebeb !important;
 }
 
+.navbar {
+  height: 100px;
+}
+
 .navbar-dark .navbar-nav .nav-link {
   color: rgba(255,255,255,.75) !important;
 }
@@ -11,6 +15,7 @@ body {
 .navbar-dark .navbar-nav .nav-link:hover {
   color: rgba(255,255,255,1) !important;
 }
+
 
 /* Estilo para que como minimo se ocupe todo el alto de la pantalla */
 .body-parent {

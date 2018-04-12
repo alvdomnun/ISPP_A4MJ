@@ -37,7 +37,9 @@ background-color: red;
     <script src="/static/js/jquery-3.3.1.js"></script>
     <script src="/static/js/notebook.js"></script>
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/Chart.min.js"></script>
 
+    
     <script>
         $(document).ready(function(){
             $('#form_exercise').on('submit', function(event){
@@ -175,25 +177,55 @@ Notebookv1
     </div>
 </div>
 
+<script>
+    //Control siguiente order a asignar por JS
+    var maxOrder = 0;
+
+    //Control siguiente id param a asignar por JS
+    var maxNumParam = 0;
+</script>
+
 {% for box in boxesView %}
+    <script>
+        //Control siguiente order a asignar por JS
+        if({{box.order}} > maxOrder){
+            maxOrder = {{box.order}};
+            setMaxOrder(maxOrder);
+        }
+
+        
+    </script>
     {% if box.type in "Text" %}
         <script>
-        addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
     {% elif box.type in "Code" %}
         <script>
-        var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
         {% for parameter in box.parameters %}
              <script>
-            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}');
+            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
+
+            var idNameActual = "{{parameter.idName}}";
+            var numParamActualString = idNameActual.substring(5,idNameActual.length);
+            
+            //Pasar el num como String a Integer
+            var numParamActual = parseInt(numParamActualString);
+
+            if(numParamActual > maxNumParam){
+                maxNumParam = numParamActual;
+                setNumParam(maxNumParam);
+            }
             </script>
         {% endfor %}
     {% elif box.type in "Picture" %}
         <script>
-        addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
     {% endif %}
+
+
 {% endfor %}
 
 

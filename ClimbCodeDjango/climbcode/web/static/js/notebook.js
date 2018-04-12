@@ -1,7 +1,9 @@
 //Variables para generar ids unicos
 var numBox = 0;
 var numImg = 0;
-var numParameter = 0;
+var maxOrder = 0;
+//Variable global seteada
+var numParam = 0;
 
 function prueba(){
 	alert(saludo);
@@ -12,6 +14,9 @@ function addNewTextBox(idNotebookContent,idNotebookBD){
 }
 
 function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+
+	var vistaEdicion = true;
+
 	numBox++;
 	var idBox = "idBox"+numBox;
 	var idBoxParameter = "'idBox"+numBox+"'";
@@ -21,28 +26,41 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idHiddenOrder = "input_hidden_order_"+idBox;
 	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
 	if(order==null){
-		var order = numBox;
+		maxOrder++;
+		var order = maxOrder;
 	}
+
+	//Contar número de saltos de línea en content
+	var numSaltos = content.split(/\r\n|\r|\n/).length;
 
 	//HTML DE LA CAJA DE TEXTO
 	var htmlTextBox = 	'<div class="col-md-10 custom-mt-1 offset-md-1" id="'+idBox+'">'+
 							'<div class="row">'+
 								'<div class="col-md-12 custom-mt-1" >'+
-									'<div class="form-group" style="padding:12px;">'+
-										'<form method="POST" id="'+idFormBox+'">'+
+									'<div class="form-group" style="padding:12px;">';
+					if(vistaEdicion){
+						htmlTextBox+=   '<form method="POST" id="'+idFormBox+'">'+
 											'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
 											'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
-											'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
-			                            	'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" required>'+content+'</textarea>'+
-			                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-			                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
-		                        		'</form>'+
-		                        	'</div>'+
+											'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">';
+					}
+		                htmlTextBox+=		'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" required>'+content+'</textarea>';
+		            if(vistaEdicion){
+		                htmlTextBox+=   	'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+		                         			'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+                        				'</form>';
+	                }
+           			htmlTextBox+= '</div>'+
 								'</div>'+
 							'</div>'+
 						'</div>';
 
     $('#'+idNotebookContent).append(htmlTextBox);
+
+    for(i=0;i<numSaltos;i++){
+    	var element = $('#'+idInputText);
+    	auto_grow(element[0]);
+    }
 
     // Comportamiento al pulsar GUARDAR -> Llamada Ajax
 
@@ -66,6 +84,7 @@ function addNewCodeBox(idNotebookContent,idNotebookBD){
 }
 
 function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+
 	numBox++;
 	var idBox = "idBox"+numBox;
 	var idBoxParameter = "'idBox"+numBox+"'";
@@ -95,8 +114,10 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idHiddenOrder = "input_hidden_order_"+idBox;
 	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
 	if(order==null){
-		var order = numBox;
+		maxOrder++;
+		var order = maxOrder;
 	}
+
 	
 
 	//HTML DE LA CAJA DE CÓDIGO
@@ -212,7 +233,8 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 	var idHiddenOrder = "input_hidden_order_"+idBox;
 
 	if(order==null){
-		var order = numBox;
+		maxOrder++;
+		var order = maxOrder;
 	}
     var urlImg = '/static/img/placeholder.png'
 	if(url==null || url==""){
@@ -279,7 +301,18 @@ function addNewParameter(idParameterDiv,idButtonParameter,idBox){
 
 function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,idNameValue,nameParam){
 
-	numParameter++;
+	var numParameter = 0;
+
+	if(idNameValue!=null && idNameValue!='null'){
+    	var numParamActualString = idNameValue.substring(5,idNameValue.length);
+        //Pasar el num como String a Integer
+        var numParamActual = parseInt(numParamActualString);
+        numParameter = numParamActual;
+	}else{
+		numParameter = getNumParam();
+		numParameter++;
+		setNumParam(numParameter);
+	}
 
 	/* IDS FORM */
 	var idFormParam = "form_param_"+numParameter;
@@ -626,7 +659,7 @@ function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,
 	//PK del parámetro
 	var idPkParam = $('#'+idHiddenIdPkParam).val();
 	//Id del input del parámetro
-	var nameIdParam = $('#'+idNameParam).val();
+	var nameIdParam = $('#'+idHiddenIdNameParam).val();
 	//Nombre del parámetro, establecido por el usuario
 	var nameParam = $('#'+idNameParam).val();
 	
@@ -1126,4 +1159,20 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 		}
 	}
 	
+}
+
+function getMaxOrder(){
+	return maxOrder;
+}
+
+function setMaxOrder(maxOrderParam){
+	maxOrder = maxOrderParam;
+}
+
+function getNumParam(){
+	return numParam;
+}
+
+function setNumParam(numParameter){
+	numParam = numParameter;
 }

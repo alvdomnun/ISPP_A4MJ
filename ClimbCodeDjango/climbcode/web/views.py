@@ -281,16 +281,18 @@ def editNotebook(request):
                 boxesText = Text.objects.filter(exercise=exercise)
                 boxesView = []
                 for box in boxesText:
-                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',box.content)
+                    contentEscape = box.content.replace("\n", "\\n")
+                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',contentEscape)
                     boxesView.append(boxTextView)
 
                 boxesCode = Code.objects.filter(exercise=exercise)
                 for box in boxesCode:
+                    contentEscape = box.content.replace("\n", "\\n")
                     paramtersCode = Parameter.objects.filter(code=box)
                     parameters = []
                     for parameter in paramtersCode:
                         parameters.append(parameter)
-                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content,parameters)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters)
                     boxesView.append(boxCodeView)
 
                 boxesPicture = Picture.objects.filter(exercise=exercise)

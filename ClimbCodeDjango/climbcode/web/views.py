@@ -321,7 +321,6 @@ def editNotebook(request):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
             exercise = Exercise.objects.get(id=idNotebook)
-            print("El título del notebook recuperado es: "+exercise.title)
             if exercise is not None:
                 template = loader.get_template('notebook/edit_notebook_v1.html')
 

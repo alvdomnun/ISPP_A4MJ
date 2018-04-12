@@ -18,54 +18,176 @@
 
 	<title>{% block title %}Document {% endblock %}</title>
 </head>
-<body>
+<body class="d-flex flex-column body-parent">
 	{% block navbar %}
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/web/">
-                ClimbCode
-            </a>
-            <!--Botón de "colapso", se mostrará si la ventana es demasiado pequeña-->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Sección "colapsable", se agruparán si la ventana es demasiado pequeña -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- Elementos principales -->
-                <ul class="navbar-nav mr-auto">
-                    <!-- Dropdown menu -->
-                    <li class="dropdown">
-                        <!-- Título del dropdown -->
-                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ejemplos <span class="badge badge-info">Nuevo</span>
-                        </a>
-                        <!-- Menú -->
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'sampleDashboard' %}">Sample dashboard</a>
-                            <a class="dropdown-item" href="#">Option2</a>
-                        </div>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ml-auto">
-                    <li class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Ajustes <i style="height: 100%" class="material-icons">settings</i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+			{% if user.is_authenticated %}
+
+					<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+							<a class="navbar-brand" href="/">
+									<img src="{% static 'img/ClimbCode_inv.png' %}" alt="ClimbCode" class="brand-icon"/>
+							</a>
+							<!--Botón de "colapso", se mostrará si la ventana es demasiado pequeña-->
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+									<span class="navbar-toggler-icon"></span>
+							</button>
+							<!-- Sección "colapsable", se agruparán si la ventana es demasiado pequeña -->
+							<div class="collapse navbar-collapse" id="navbarNav">
+									<!-- Elementos principales
+									<ul class="navbar-nav ml-auto">
+											<li class="dropdown">
+													<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															Ajustes <i style="height: 100%" class="material-icons">settings</i>
+													</a>
+													<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+															<a class="dropdown-item" href="#">Logout</a>
+													</div>
+											</li>
+									</ul> -->
+									{% if user.actor.school %}
+									<ul class="navbar-nav mr-auto">
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_students' %}">Mis Alumnos</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_exercisesS' %}">Ejercicios</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_own_exercisesS' %}">Mis ejercicios</a>
+											</li>
+									</ul>
+									{% elif user.actor.programmer %}
+									<ul class="navbar-nav mr-auto">
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'notebookv1' %}">Nuevo Ejercicio</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
+											</li>
+											<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
+											</li>
+									</ul>
+									{% elif user.actor.teacher %}
+											<ul class="navbar-nav mr-auto">
+													<li class="nav-item">
+															<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
+													</li>
+													<li class="nav-item">
+															<a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
+													</li>
+													<li class="nav-item">
+															<a class="nav-link" href="{% url 'list_own_exercisesT' %}">Mis ejercicios</a>
+													</li>
+											</ul>
+									{% elif user.actor.student %}
+											Student
+									{% elif user.actor.administrator %}
+
+									{% endif %}
+									<!-- Inicio/Cierre de sesión -->
+						{% include 'base/loginpartial.html' %}
+							</div>
+					</nav>
+
+
+
+
+			{% else %}
+			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+					<a class="navbar-brand" href="/">
+							<img src="{% static 'img/ClimbCode_inv.png' %}" alt="ClimbCode" class="brand-icon"/>
+					</a>
+
+					<!--Botón de "colapso", se mostrará si la ventana es demasiado pequeña-->
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+					</button>
+					<!-- Sección "colapsable", se agruparán si la ventana es demasiado pequeña -->
+					<div class="collapse navbar-collapse" id="navbarNav">
+							<!-- Elementos principales -->
+							<ul class="navbar-nav mr-auto">
+									<li class="nav-item">
+											<a class="nav-link" href="/">Inicio</a>
+									</li>
+
+									<!-- Dropdown menu
+									<li class="dropdown">
+											<!-- Título del dropdown
+											<a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Ejemplos <span class="badge badge-info">Nuevo</span>
+											</a>
+											<!-- Menú
+											<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+													<a class="dropdown-item" href="{% url 'sampleDashboard' %}">Sample dashboard</a>
+													<a class="dropdown-item" href="#">Option2</a>
+											</div>
+									</li>-->
+							</ul>
+							<ul class="navbar-nav ml-auto">
+									<!-- <li class="dropdown">
+											<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuProfesores" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Profesores
+											</a>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuProfesores">
+													<a class="dropdown-item" href="/actors/teachers/register">Registro</a>
+													<a class="dropdown-item" href="/actors/teachers/list">Lista</a>
+													<a class="dropdown-item" href="/actors/teachers/add/subject/add">Añadir asignatura</a>
+											</div>
+									</li>
+									<li class="dropdown">
+											<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuEstudiantes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Estudiantes
+											</a>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuEstudiantes">
+													<a class="dropdown-item" href="/actors/students/list">Lista</a>
+											</div>
+									</li>
+									<li class="dropdown">
+											<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Ajustes <i style="height: 100%" class="material-icons">settings</i>
+											</a>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+													<a class="dropdown-item" href="#">Logout</a>
+													<a class="dropdown-item" href="#">Logout</a>
+													<a class="dropdown-item" href="#">Logout</a>
+											</div>
+									</li> -->
+									<li class="nav-item">
+											<a class="nav-link" href="/login">Iniciar Sesi&#243;n</a>
+									</li>
+									<li class="dropdown">
+											<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+													Registrarse
+											</a>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+													<a class="dropdown-item" href="/register/school">Escuela</a>
+													<a class="dropdown-item" href="/register/programmer">Programador</a>
+											</div>
+									</li>
+							</ul>
+					</div>
+			</nav>
+			{% endif %}
 	{% endblock %}
 
-
+<div class="body-container">
 	{% block content %}
-	<h4>	Bloque de contenido		</h4>
-	{% endblock %}
 
+	{% endblock %}
+</div>
 
 	{% block footer %}
+		<footer class="page-footer font-small blue pt-4 mt-4 bg-dark text-white" style="height: 200px;">
+				<div class="display-middle ">
+
+				</div>
+		</footer>
 	{% endblock%}
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

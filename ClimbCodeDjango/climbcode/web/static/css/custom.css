@@ -4,6 +4,17 @@ body {
     background-color: #ebebeb !important;
 }
 
+/* Estilo para que como minimo se ocupe todo el alto de la pantalla */
+.body-parent {
+  min-height: 100vh;
+}
+
+/* Clase para hacer que el contenido ocupe todo el espacio disponible
+  El no anidar el contenido dentro de un div con esta clase provocara que el footer no aparezca al final de la pagina*/
+.body-container {
+  flex: 1 0 auto;
+}
+
 .input-group-text {
     background-color: lightblue !important;
 }

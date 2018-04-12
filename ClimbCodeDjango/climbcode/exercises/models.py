@@ -32,8 +32,7 @@ class Exercise(models.Model):
     programmer = models.ForeignKey('actors.Programmer', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.title + ' - ' + self.description + ' - ' + self.sales  + ' - ' \
-               + self.level + ' ( ' + self.promoted + ' : ' + self.startPromotionDate + ' -- '+ self.endPromotionDate + ' )  ' + self.draft
+        return str(self.title) + ' - ' + str(self.sales)  + ' - ' + str(self.level) + ' ( ' + str(self.promoted) + ' - ' + str(self.draft) + ' )'
 
     class Meta:
         verbose_name = "Ejercicio"
@@ -42,4 +41,7 @@ class Exercise(models.Model):
 
 class ExerciseAdminPanel(admin.ModelAdmin):
     # Panel de admin
-    list_display = ('title', 'level', 'promoted', 'sales', 'draft')
+    list_display = ('title', 'level', 'promoted', 'sales', 'draft', 'get_default_subject')
+
+    def get_default_subject(self, obj):
+        return obj.category.name + ' ' + str(obj.category.course)

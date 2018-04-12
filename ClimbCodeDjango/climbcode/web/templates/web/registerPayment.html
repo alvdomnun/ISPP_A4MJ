@@ -1,0 +1,93 @@
+{% extends 'welcome/welcome-base.html' %}
+{% load staticfiles %}
+{% block extrastatic %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+{% endblock %}
+
+
+{% block title %}ClimbCode{% endblock %}
+
+<!-- CONTENIDO -->
+{% block content %}
+
+<div class="container">
+
+        <br/>
+            <h2>Proceso de Pago</h2>
+        <hr/>
+
+        <div class="well col-xs-12 col-sm-12 col-md-12">
+            <!-- Cabecera Pagos -->
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6">
+                    <h5>{{ school.userAccount.get_full_name }}</h5>
+                    <p>
+                        {{ school.centerName }}
+                        <br/>
+                        <em>{{ school.address }}, {{ school.postalCode }}, {{ school.province }}</em>
+                    </p>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                    <address>
+                        <strong>ClimbCode.tk</strong>
+                    </address>
+                    <p>
+                        <em>{{ date }}</em>
+                    </p>
+                </div>
+            </div>
+            <br/>
+
+            <!-- Tabla Precios -->
+            <div class="row">
+                <div class="text-center">
+                    <h2>Datos del pago</h2>
+                </div>
+                <br/>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:50%;">Tipo de licencia</th>
+                            <th class="text-right">#</th>
+                            <th class="text-right">N&#186; Usuarios</th>
+                            <th class="text-right">N&#186; Ejercicios Gratuitos</th>
+                            <th class="text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><em>{{ license.licenseType.name }}</em></td>
+                            <td class="text-right">1</td>
+                            <td class="text-right">{{ license.numUsers }}</td>
+                            <td class="text-right">{{ license.numFreeExercises }}</td>
+                            <td class="text-right">{{ license.price }} &euro;</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"><h4><strong>Total</strong></h4></td>
+                            <td class="text-center text-danger"><h4><strong>{{ license.price }} Euros</strong></h4></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <form id="payForm" action="{% url 'paypalTransaction' %}" method="POST" class="form" role="form">
+                {% csrf_token %}
+                <input type="hidden" id="license" name="license" value="{{ license.id }}">
+                <input type="hidden" id="licensePrice" name="licensePrice" value="{{ license.price }}">
+                <input type="hidden" id="payment" name="payment" value="0">
+                <input type="hidden" id="school" name="school" value="{{ school.pk }}"/>
+            </form>
+
+            <!-- Bot&#243;n Paypal -->
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="/static/js/paypalPayment.js"></script>
+{% endblock %}

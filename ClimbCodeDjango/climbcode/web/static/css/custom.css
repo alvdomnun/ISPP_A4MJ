@@ -154,3 +154,62 @@ body {
 .brand-icon {
     height: 35px;
 }
+
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.bgimg-1 {
+    background-image: url('/static/img/fondo-libro.jpg');
+    min-height: 100%;
+}
+
+.bgimg-2 {
+    background-image: url('/static/img/fondo-cuaderno.jpg');
+    min-height: 100%;
+}
+
+.bgimg-3 {
+    background-image: url('/static/img/fondo-programador.jpg');
+    min-height: 100%;
+}
+
+.bgimg-4 {
+    background-image: url('/static/img/fondo-libro.jpg');
+    min-height: 100%;
+}
+
+.parallax {
+    /*height: 300px;*/
+    height: 40vh;
+    margin-bottom: 35px;
+}
+
+.display-middle {
+
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.display-card {
+    display:inline-block !important;
+    /*font-weight: bold;*/
+    letter-spacing: 4px;
+    font-size: large;
+}
+
+#home {
+    margin-top: 55px;
+}

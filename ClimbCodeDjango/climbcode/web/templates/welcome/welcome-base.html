@@ -9,7 +9,7 @@
 	{% endblock %}
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- {{ STATIC_URL }} no resuelve (vacio) -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
+    <link rel="stylesheet" type="text/css" href="'/static/css/custom.css' %}" />
     <link rel="stylesheet" type="text/css" href="/static/css/welcome.css" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -88,7 +88,7 @@
                     {% elif user.actor.student %}
                         Student
                     {% elif user.actor.administrator %}
-                        
+
                     {% endif %}
                     <!-- Inicio/Cierre de sesión -->
 			        {% include 'base/loginpartial.html' %}
@@ -123,15 +123,15 @@
 
                         <!-- Dropdown menu
                         <li class="dropdown">
-                            <!-- Título del dropdown 
+                            <!-- Título del dropdown
                             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ejemplos <span class="badge badge-info">Nuevo</span>
                             </a>
-                            <!-- Menú 
+                            <!-- Menú
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{% url 'sampleDashboard' %}">Sample dashboard</a>
                                 <a class="dropdown-item" href="#">Option2</a>
-                            </div> 
+                            </div>
                         </li>-->
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -189,7 +189,7 @@
 	{% block footer %}
         <footer class="page-footer font-small blue pt-4 mt-4 bg-dark text-white" style="height: 200px;">
             <div class="display-middle ">
-                
+
             </div>
         </footer>
 	{% endblock%}

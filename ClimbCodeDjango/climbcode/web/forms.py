@@ -14,7 +14,9 @@ from provinces.models import Province
 from actors.models import School
 from licenses.models import LicenseType
 import re
-
+from django.forms import ModelForm
+from exercises.models import Exercise
+from defaultSubjects.models import DefaultSubject
 
 class LoginForm(AuthenticationForm):
     """Formulario de inicio de sesión"""
@@ -118,6 +120,14 @@ class RegisterSchoolForm(forms.Form):
             if (license.numUsers > numUsers):
                 raise forms.ValidationError("El número de usuarios indicado no supera el mínimo exigido por la licencia.")
 
+class ExerciseForm(forms.Form):
+    """
+    Formulario para el modelo Exercise
+    """
+    title = forms.CharField()
+    description = forms.CharField()
+    level = forms.ChoiceField(choices = Exercise.LevelType, label = 'Nivel')
+    category = forms.ModelChoiceField(queryset = DefaultSubject.objects.all(), empty_label = None, label = 'Asignatura')
 
 class RegisterSchoolPaymentForm(forms.Form):
     """ Formulario para recibir el pago de Paypal """

@@ -1,0 +1,95 @@
+{% extends 'welcome/welcome-base.html' %}
+{% block extrastatic %}
+<script>
+    function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight)+"px";
+}
+</script>
+{% endblock %}
+{% block title %}Crear Ejercicio{% endblock %}
+
+<!-- CONTENIDO -->
+{% block content %}
+<div class="container">
+    <br />
+    <h2>{{ title }}</h2>
+    <div class="row">
+    
+        <div class="container-fluid">
+            <br/>
+            <div class="col-md-12">
+
+                <!-- Formulario Notebook -->
+                <form id="notebook" method="post" action="{% url 'createNotebook' %}" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="title" class="control-label">Titulo</label>
+                            <input class="form-control" name="title" id="title" type="text" placeholder="Titulo" value="{{ form.title.value|default:"" }}" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="description" class="control-label">Descripción</label>
+                            <textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" rows="3" name="description" id="description" placeholder="Descripción" value="{{ form.description.value|default:"" }}" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                            <label for="level" class="control-label">Nivel de dificultad</label>
+                            <select class="form-control" id="level" name="level" required>
+                                <option value="" selected="selected">Seleccione un nivel</option>
+                                {% for lt in levels %}
+                                    <option value="{{ lt.0 }}">{{ lt.0 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="category" class="control-label">Asignatura</label>
+                            <select class="form-control" id="category" name="category" required>
+                                <option value="" selected="selected">Seleccione una asignatura</option>
+                                {% for s in categories %}
+                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Tratamiento de Errores -->
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- Botones -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <input type="hidden" name="next" value="/" />
+                            <input type="submit" value="Siguiente" class="btn btn-primary btn-block" />
+                            <input type="button" class="btn btn-default btn-block" onclick="location.href='/';" value="Cancelar" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+
+{% endblock %}

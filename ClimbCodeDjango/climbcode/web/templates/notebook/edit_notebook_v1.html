@@ -1,0 +1,319 @@
+{% extends 'welcome/welcome-base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 250px;
+            }
+
+#notificaciones-holder {
+width: 250px;
+min-height:0px;
+z-index: 1000;
+position: fixed;
+top: 60px;
+right: 10px;
+height: auto;
+display: none;
+text-align: center
+}
+
+.notificacion {
+padding: 10px;
+width: 100%;
+position: relative;
+margin-bottom: 10px;
+}
+
+.notificacion.error {
+background-color: red;
+}
+
+    </style>
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/notebook.js"></script>
+    <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/Chart.min.js"></script>
+
+    
+    <script>
+        $(document).ready(function(){
+            $('#form_exercise').on('submit', function(event){
+                event.preventDefault();
+                console.log("form submitted!");
+                editExerciseInfo();
+                $('#getCodeModal').modal('hide');
+            });            
+        });
+        function mostrarModal(){
+                $('#getCodeModal').modal('show');
+        }
+        function ocultarModal(){
+                $('#getCodeModal').modal('hide');
+        }
+    $(document).ready(function (e) {
+        $('#imageUploadForm').on('submit',(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                type:'POST',
+                url: $(this).attr('action'),
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    console.log("success");
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log("error");
+                    console.log(data);
+                }
+        });
+    }));
+
+        $("#ImageBrowse").on("change", function() {
+            $("#imageUploadForm").submit();
+        });
+    });
+    </script>
+{% endblock %}
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+<div id="notificaciones-holder" class="alert alert-success" role="alert">
+    <div id="notification-text" class="notificacion success">
+    </div>
+</div>
+
+
+
+<div style="width:80%;margin-left: 10%">
+    <h1 style="text-align: center">Crear Notebook</h1>
+    <div class="row" style="background-color: #bbbabb">
+        <div class="col-md-12" style="height: auto;">
+            <div class="row">
+                <!-- CABECERA CON TITULO Y SUBTITULO, INPUTS DISABLED -->
+                <div class="col-md-12 custom-mt-1" >
+                        <div style="background-color: #ebebeb;width: auto;height: 250px;padding-top: 15px;padding-left:15px;padding-right:15px">
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+
+                                        <label for="username">Título:</label>
+                                        <input class="form-control" type="text" id="title_disabled" name="title" style="background-color:#BFC9CA;" value="{{exercise.title}}" disabled>
+                                   </div>
+                                </div>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="description">Descripción:</label>
+                                        <input class="form-control" type="text" name="description" id="description_disabled" style="background-color:#BFC9CA;" value="{{exercise.description}}" disabled>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="level">Nivel:</label>
+                                        <input class="form-control" type="text" name="level" id="level_disabled" style="background-color:#BFC9CA;" value="{{exercise.level}}" disabled>
+                                   </div>
+                                </div>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="category">Asignatura:</label>
+                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.name}}" disabled>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <button type="submit" class="btn btn-primary" hidden="hidden">Guardar</button>
+                                    <button onclick="mostrarModal()" type="submit" class="btn btn-primary">Ver/Editar</button>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                </div>
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+                <div class="col-md-12 custom-mt-1">
+                    <div id="notebook_content" style="background-color: #ebebeb;width: auto;height: 4000px">
+                        <div class="col-md-12" style="margin-top: 20px;text-align:center">
+                            
+                            <div class="row">
+                                <div class="col-md-12" style="background-color:#bbbabb">
+                                    <h2 style="text-align: center">Añadir Cuadro</h2>
+                                    <div class="row">
+                                        <div class="col-md-2 offset-md-3"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addNewTextBox('notebook_content',{{exercise.id}});">
+                                               Texto
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addNewCodeBox('notebook_content',{{exercise.id}});">
+                                               Código
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
+                                            <button type="submit" class="btn btn-primary" onclick="addNewImageBox('notebook_content',{{exercise.id}});">
+                                               Ilustración
+                                            </button>
+                                        </div>        
+                                    </div>
+                                </div>                                    
+                            </div>                                                 
+                        </div>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Control siguiente order a asignar por JS
+    var maxOrder = 0;
+
+    //Control siguiente id param a asignar por JS
+    var maxNumParam = 0;
+</script>
+
+{% for box in boxesView %}
+    <script>
+        //Control siguiente order a asignar por JS
+        if({{box.order}} > maxOrder){
+            maxOrder = {{box.order}};
+            setMaxOrder(maxOrder);
+        }
+
+        
+    </script>
+    {% if box.type in "Text" %}
+        <script>
+            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% elif box.type in "Code" %}
+        <script>
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+        {% for parameter in box.parameters %}
+             <script>
+            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
+
+            var idNameActual = "{{parameter.idName}}";
+            var numParamActualString = idNameActual.substring(5,idNameActual.length);
+            
+            //Pasar el num como String a Integer
+            var numParamActual = parseInt(numParamActualString);
+
+            if(numParamActual > maxNumParam){
+                maxNumParam = numParamActual;
+                setNumParam(maxNumParam);
+            }
+            </script>
+        {% endfor %}
+    {% elif box.type in "Picture" %}
+        <script>
+            addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% endif %}
+
+
+{% endfor %}
+
+
+<!-- MODAL -->
+
+ <div class="modal fade" id="getCodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+       <div class="modal-header">
+         <h4 class="modal-title" id="myModalLabel"> Edición notebook </h4>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         
+       </div>
+       <div class="modal-body" id="getCode" style="overflow-x: scroll;">
+          <div class="row">
+    
+        <div class="container-fluid">
+            <br/>
+            <div class="col-md-12">
+                <!-- Formulario Notebook -->
+                <form id="form_exercise" method="post" class="form" role="form">
+                    <input type="hidden" id="idNotebook" name="idNotebook" value="{{exercise.id}}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="title" class="control-label">Titulo</label>
+                            <input class="form-control" name="title" id="title" type="text" placeholder="Titulo" value="{{exercise.title}}" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="description" class="control-label">Descripción</label>
+                            <textarea onkeyup="auto_grow(this)" class="form-control text-box-textarea" rows="3" name="description" id="description" placeholder="Descripción" value="{{exercise.description}}" required>{{exercise.description}}</textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                            <label for="level" class="control-label">Nivel de dificultad</label>
+                            <select class="form-control" id="level" name="level" required>
+                                <option value="" selected="selected">Seleccione un nivel</option>
+                                {% for lt in levels %}
+                                    <option value="{{ lt.0 }}">{{ lt.0 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <label for="category" class="control-label">Asignatura</label>
+                            <select class="form-control" id="category" name="category" required>
+                                <option value="" selected="selected">Seleccione una asignatura</option>
+                                {% for s in categories %}
+                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Tratamiento de Errores -->
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- Botones -->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <input type="hidden" name="next" value="/" />
+                            <input type="submit" value="Actualizar" class="btn btn-primary btn-block" />
+                            <input type="button" class="btn btn-default btn-block" onclick="ocultarModal();" value="Cancelar" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+       </div>
+    </div>
+   </div>
+ </div>
+
+{% endblock %}

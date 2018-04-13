@@ -9,16 +9,49 @@
               width: auto;
               height: 250px;
             }
-        </style>
-        <script src="/static/js/jquery.min.js"></script>
-        <script src="/static/js/notebook.js"></script>
-        
-        
-        <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    </style>
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/notebook.js"></script>
+    <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 
+    <script>
+        $(document).ready(function(){
+            $('#form_prueba_ajax').on('submit', function(event){
+                event.preventDefault();
+                console.log("form submitted!");
+                pruebaAjaxNotebook2();
+            });
+        });
+
+        function pruebaAjaxNotebook2(){
+            console.log("send title is working!"); // sanity check
+            var title = $('#title').val();
+            var subtitle = $('#subtitle').val();
+            alert("Mandando por Ajax el título: "+ title+" y subtítulo: "+subtitle);
+            $.ajax({
+                url : "/web/pruebaAjaxNotebook", // the endpoint
+                type : "POST", // http method
+                data : { title : $('#title').val(),
+                subtitle: $('#subtitle').val() }, // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                    console.log(json); // log the returned json to the console
+                    alert(json['respuesta']);
+                    console.log("success"); // another sanity check
+                },
+
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            }); 
+        }
+       
+    </script>
 {% endblock %}
-
 {% block title %}
 Notebookv1
 {% endblock %}
@@ -30,24 +63,35 @@ Notebookv1
             <div class="row">
                 <!-- CABECERA CON TITULO Y SUBTITULO -->
                 <div class="col-md-12 custom-mt-1" >
-                    <div style="background-color: #ebebeb;width: auto;height: 200px;padding-top: 15px">
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="form-group">
-                                    <label for="username">Título:</label>
-                                    <input class="form-control" type="text" name="title">
-                               </div>
+                    <form id="form_prueba_ajax" action="/create_notebook/" method="POST">
+
+                        {% csrf_token %}
+                        <div style="background-color: #ebebeb;width: auto;height: 250px;padding-top: 15px">
+                            <div class="row">
+
+                                <div class="col-md-6 offset-md-3">
+                                    <div class="form-group">
+                                        <label for="username">Título:</label>
+                                        <input class="form-control" type="text" id="title" name="title">
+                                   </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="form-group">
-                                    <label for="username">Subtítulo:</label>
-                                    <input class="form-control" type="text" name="subtitle">
-                               </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+                                    <div class="form-group">
+                                        <label for="username">Subtítulo:</label>
+                                        <input class="form-control" type="text" name="subtitle" id="subtitle">
+                                   </div>
+                                </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-3">
+                                    <button type="submit" class="btn btn-primary">Send by AJAX</button>
+                                </div>
+                            </div>
+                            
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- CAJA CONTENIDO NOTEBOOK -->
                 <div class="col-md-12 custom-mt-1">

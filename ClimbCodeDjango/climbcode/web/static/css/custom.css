@@ -4,6 +4,34 @@ body {
     background-color: #ebebeb !important;
 }
 
+.navbar {
+  height: 100px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,.75) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255,255,255,1) !important;
+}
+
+
+/* Estilo para que como minimo se ocupe todo el alto de la pantalla */
+.body-parent {
+  min-height: 100vh;
+}
+
+/* Clase para hacer que el contenido ocupe todo el espacio disponible
+  El no anidar el contenido dentro de un div con esta clase provocara que el footer no aparezca al final de la pagina*/
+.body-container {
+  flex: 1 0 auto;
+}
+
+.nav-item {
+  font-size: 1.2em;
+}
+
 .input-group-text {
     background-color: lightblue !important;
 }
@@ -125,4 +153,63 @@ body {
 
 .brand-icon {
     height: 35px;
+}
+
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.bgimg-1 {
+    background-image: url('/static/img/fondo-libro.jpg');
+    min-height: 100%;
+}
+
+.bgimg-2 {
+    background-image: url('/static/img/fondo-cuaderno.jpg');
+    min-height: 100%;
+}
+
+.bgimg-3 {
+    background-image: url('/static/img/fondo-programador.jpg');
+    min-height: 100%;
+}
+
+.bgimg-4 {
+    background-image: url('/static/img/fondo-libro.jpg');
+    min-height: 100%;
+}
+
+.parallax {
+    /*height: 300px;*/
+    height: 40vh;
+    margin-bottom: 35px;
+}
+
+.display-middle {
+
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.display-card {
+    display:inline-block !important;
+    /*font-weight: bold;*/
+    letter-spacing: 4px;
+    font-size: large;
+}
+
+#home {
+    margin-top: 55px;
 }

@@ -9,7 +9,7 @@
 	{% endblock %}
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- {{ STATIC_URL }} no resuelve (vacio) -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}" />
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/welcome.css" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -61,7 +61,7 @@
                     {% elif user.actor.programmer %}
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'notebookv1' %}">Nuevo Ejercicio</a>
+                            <a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
@@ -88,7 +88,7 @@
                     {% elif user.actor.student %}
                         Student
                     {% elif user.actor.administrator %}
-                        
+
                     {% endif %}
                     <!-- Inicio/Cierre de sesión -->
 			        {% include 'base/loginpartial.html' %}
@@ -109,29 +109,29 @@
                     <!-- Elementos principales -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#info">Informaci&#243;n</a>
+                            <a class="nav-link" href="#home">Informaci&#243;n</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#ejercicios">Ejercicios</a>
+                            <a class="nav-link" href="#ejercicios-parallax">Ejercicios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#programadores">Programadores</a>
+                            <a class="nav-link" href="#programadores-parallax">Programadores</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#escuelas">Escuelas</a>
+                            <a class="nav-link" href="#escuelas-parallax">Escuelas</a>
                         </li>
 
                         <!-- Dropdown menu
                         <li class="dropdown">
-                            <!-- Título del dropdown 
+                            <!-- Título del dropdown
                             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ejemplos <span class="badge badge-info">Nuevo</span>
                             </a>
-                            <!-- Menú 
+                            <!-- Menú
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{% url 'sampleDashboard' %}">Sample dashboard</a>
                                 <a class="dropdown-item" href="#">Option2</a>
-                            </div> 
+                            </div>
                         </li>-->
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -189,15 +189,16 @@
 	{% block footer %}
         <footer class="page-footer font-small blue pt-4 mt-4 bg-dark text-white" style="height: 200px;">
             <div class="display-middle ">
-                
+
             </div>
         </footer>
 	{% endblock%}
 
     <!-- SCRIPTS -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="/static/js/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 
 	{% block extrajs %}
 	{% endblock %}

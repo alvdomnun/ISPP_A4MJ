@@ -150,3 +150,4 @@ STATIC_ROOT = '../static'
 
 MEDIA_ROOT = '../media'
 
+CSRF_USE_SESSIONS = True

@@ -21,7 +21,6 @@
                         <td>DNI</td>
                         <td>Foto</td>
                         <td>Teléfono</td>
-                        <td>Asignaturas</td>
                         <td></td>
                     </tr>
                     </thead>
@@ -40,17 +39,7 @@
                             <td> </td>
                         {%  endif %}
                         <td>{{ teacher.phone }}</td>
-                        {% if teacher.subjects != None %}
                         <td>
-                            {% for subject in teacher.subjects.all %}
-                                {{ subject }}<br>
-
-                            {% endfor %}
-                        </td>
-
-                        {% endif %}
-                        <td>
-                            <a class="btn btn-default" href="/actors/teachers/add/subjects/{{ teacher.pk }}">Modificar sus asignaturas</a>
                             <a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
                             <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
                         </td>

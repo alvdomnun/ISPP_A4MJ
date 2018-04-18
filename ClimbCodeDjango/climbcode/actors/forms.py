@@ -3,9 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.forms.utils import ErrorList
-
 from actors.models import Teacher, School
-from subjects.models import Subject
 from _datetime import date
 import datetime
 
@@ -19,12 +17,11 @@ class EditSelfTeacherForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
 
     # Atributos propios de la clase
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
-
 
 class EditSelfTeacherPassForm(forms.Form):
     # Atributos de información personal
@@ -80,16 +77,11 @@ class EditTeacherForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
 
     # Atributos propios de la clase
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
-
-    # Validaciones adicionales
-    #def clean(self):
-        # Si no se han capturado otros errores, hace las validaciones por orden
-
 
 class EditStudentForm(forms.Form):
     # Atributos de información personal
@@ -101,34 +93,11 @@ class EditStudentForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
 
     # Atributos propios de la clase
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
-    #subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
-
-# Validaciones adicionales
-    #def clean(self):
-        # Si no se han capturado otros errores, hace las validaciones por orden
-
-
-def get_license_school(school):
-    """ Obtiene la licencia activa para la escuela indicada """
-
-    # Fecha actual
-    today = datetime.date.today()
-
-    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
-    license = school.license_set.filter(endDate__gte = today)
-
-    # Si se encuentra licencia activa, la devuelve
-    if (license.count() > 0):
-        return license.first()
-
-    # Si no se encuentra
-    else:
-        False
 
 class RegisterTeacherForm(forms.Form):
     # Atributos de información personal
@@ -141,19 +110,15 @@ class RegisterTeacherForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
 
     # Atributos propios de la clase
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
 
-    subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
-
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(RegisterTeacherForm, self).__init__(*args, **kwargs)
-        self.fields['subjects'] = forms.ModelMultipleChoiceField(
-            queryset=Subject.objects.filter(school__userAccount_id=self.user.id), label='Asignaturas')
 
     # Validaciones adicionales
     def clean(self):
@@ -197,19 +162,15 @@ class RegisterStudentForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50, label='Apellidos')
 
     # Atributos propios de la clase
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
 
-    subjects = forms.ModelMultipleChoiceField(queryset=Subject.objects.none())
-
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(RegisterStudentForm, self).__init__(*args, **kwargs)
-        self.fields['subjects'] = forms.ModelMultipleChoiceField(queryset = Subject.objects.filter(school__userAccount_id=self.user.id), label = 'Asignaturas')
-
 
     # Validaciones adicionales
     def clean(self):
@@ -240,7 +201,6 @@ class RegisterStudentForm(forms.Form):
                 raise forms.ValidationError(
                     "Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
 
-
 class EditProgrammerProfile(forms.Form):
     """ Formulario de edición del perfil Programador """
 
@@ -250,11 +210,10 @@ class EditProgrammerProfile(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Programador
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
-
 
 class EditProgrammerPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
@@ -285,7 +244,6 @@ class EditProgrammerPass(forms.Form):
             if (password == actual_password):
                 raise forms.ValidationError("La nueva contraseña no puede ser similar a la actual. Por favor, elija otra.")
 
-
 class EditSchoolProfile(forms.Form):
     """ Formulario de edición del perfil Student """
 
@@ -294,8 +252,8 @@ class EditSchoolProfile(forms.Form):
     first_name = forms.CharField(min_length = 2, max_length = 32, label = 'Nombre')
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
     # Campos requeridos por el modelo Actor-Student
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     centerName = forms.CharField(max_length=50, required=False, label='Nombre del centro')
     address = forms.CharField(max_length=50, required=False, label='Dirección' )
     identificationCode = forms.CharField( max_length = 9, required=False, label = 'CIF o código del centro')
@@ -339,11 +297,10 @@ class EditStudentProfile(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Student
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
-
 
 class EditStudentPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
@@ -373,3 +330,20 @@ class EditStudentPass(forms.Form):
             # Valida que la nueva contraseña no sea igual a la actual
             if (password == actual_password):
                 raise forms.ValidationError("La nueva contraseña no puede ser similar a la actual. Por favor, elija otra.")
+
+def get_license_school(school):
+    """ Obtiene la licencia activa para la escuela indicada """
+
+    # Fecha actual
+    today = datetime.date.today()
+
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si se encuentra licencia activa, la devuelve
+    if (license.count() > 0):
+        return license.first()
+
+    # Si no se encuentra
+    else:
+        False

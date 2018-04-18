@@ -12,6 +12,5 @@ urlpatterns = [
 
     path('teacher/list', views.list_exercisesT, name='list_exercisesT'),
     path('teacher/school_exercises', views.list_school_exercisesT, name='list_school_exercisesT'),
-    path('teacher/myExercises', views.list_own_exercisesT, name='list_own_exercisesT'),
 ]
 

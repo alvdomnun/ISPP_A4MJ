@@ -8,7 +8,7 @@ from purchaseTickets.models import PurchaseTicket
 from elementPrices.models import ElementPrice
 from exercises.forms import BuyExerciseForm
 from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_school, user_is_teacher, user_is_programmer
+from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active
 from exercises.models import Exercise
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.http.request import HttpRequest
@@ -20,6 +20,7 @@ from _datetime import date
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def buy_exercise(request, exercise_id):
     """ Compra de un ejercicio """
     assert isinstance(request, HttpRequest)
@@ -264,6 +265,7 @@ def list_own_exercisesP(request):
 
 #Listado de todos los ejercicios como escuela
 @login_required(login_url='/login/')
+@user_is_school
 def list_exercisesS(request):
 
     try:
@@ -295,6 +297,7 @@ def list_exercisesS(request):
 
 #Listado de ejercicios propios como escuela
 @login_required(login_url='/login/')
+@user_is_school
 def list_own_exercisesS(request):
     # Comprobación de si son ejercicios propios
     ownList = True
@@ -333,7 +336,7 @@ def list_exercisesT(request):
     except Exception as e:
         return HttpResponseRedirect('/')
     school = School.objects.get(teacher__userAccount=teacher)
-    exercise_list = list( Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+    exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
     # Comprobación de si son ejercicios propios
     ownList = False
     page = request.GET.get('page', 1)
@@ -368,38 +371,6 @@ def list_school_exercisesT(request):
     # Comprobación de si son ejercicios propios
     ownList = True
 
-    page = request.GET.get('page', 1)
-    paginator = Paginator(exercise_list, 6)
-
-    try:
-        exercise_list = paginator.page(page)
-    except PageNotAnInteger:
-        exercise_list = paginator.page(1)
-    except EmptyPage:
-        exercise_list = paginator.page(paginator.num_pages)
-
-    data = {
-        'exercise_list': exercise_list,
-        'ownList': ownList,
-        'title': 'Listado de ejercicios'
-    }
-    return render(request, 'exercises_list.html', data)
-
-
-#Listado de todos los ejercicios que enseña el teacher
-@login_required(login_url='/login/')
-def list_own_exercisesT(request):
-
-    try:
-        teacher = request.user
-    except Exception as e:
-        return HttpResponseRedirect('/')
-    # Escuela del teacher
-    school = School.objects.get(teacher__userAccount=teacher)
-    # Filtro ejercicios propios
-    exercise_list = Exercise.objects.filter(school__userAccount=school).filter(subject__teacher__userAccount=teacher).filter(draft=False)
-    # Comprobación de si son ejercicios propios
-    ownList = True
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)
 

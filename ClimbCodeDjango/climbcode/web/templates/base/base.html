@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
@@ -75,15 +75,12 @@
 									</ul>
 									{% elif user.actor.teacher %}
 											<ul class="navbar-nav mr-auto">
-													<li class="nav-item">
-															<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
-													</li>
-													<li class="nav-item">
-															<a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
-													</li>
-													<li class="nav-item">
-															<a class="nav-link" href="{% url 'list_own_exercisesT' %}">Mis ejercicios</a>
-													</li>
+												<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
+												</li>
 											</ul>
 									{% elif user.actor.student %}
 											Student

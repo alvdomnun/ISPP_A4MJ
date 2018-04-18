@@ -1,14 +1,15 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 import datetime
-from actors.models import School
+from actors.models import School, Student
 from licenses.models import License
 from subjects.models import Subject
 from purchaseTickets.models import PurchaseTicket
 from elementPrices.models import ElementPrice
 from exercises.forms import BuyExerciseForm
 from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active
+from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active, \
+    user_is_student
 from exercises.models import Exercise
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.http.request import HttpRequest
@@ -387,3 +388,34 @@ def list_school_exercisesT(request):
         'title': 'Listado de ejercicios'
     }
     return render(request, 'exercises_list.html', data)
+
+@login_required(login_url='/login/')
+@user_is_student
+def list_school_exercisesST(request):
+
+    try:
+        user = request.user
+    except Exception as e:
+        return HttpResponseRedirect('/')
+
+    student = get_object_or_404(Student, userAccount=user)
+    school = student.school_s
+    subjects = school.subject_set.get()
+    exercise_list = subjects.exercises.all()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'exercises_student.html', data)
+

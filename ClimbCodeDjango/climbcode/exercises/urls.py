@@ -12,5 +12,7 @@ urlpatterns = [
 
     path('teacher/list', views.list_exercisesT, name='list_exercisesT'),
     path('teacher/school_exercises', views.list_school_exercisesT, name='list_school_exercisesT'),
+
+    path('student/school_exercises', views.list_school_exercisesST, name='list_school_exercisesST'),
 ]
 

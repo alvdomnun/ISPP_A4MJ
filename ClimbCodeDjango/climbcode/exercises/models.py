@@ -8,13 +8,13 @@ class Exercise(models.Model):
     #Atributos de la clase Exercise: title, description, level, sales, promoted, startPromotionDate, endPromotionDate, daft, subjectCategory
 
     #Tipos de nivel
-    EASY = 'Easy'
-    MEDIUM = 'Medium'
-    HARD = 'Hard'
+    EASY = 'Fácil'
+    MEDIUM = 'Medio'
+    HARD = 'Difícil'
     LevelType = (
-        (EASY, 'Easy'),
-        (MEDIUM, 'Medium'),
-        (HARD, 'Hard')
+        (EASY, 'Fácil'),
+        (MEDIUM, 'Medio'),
+        (HARD, 'Difícil')
     )
 
     title = models.CharField(max_length=50, help_text="Requerido. 50 carácteres como máximo")

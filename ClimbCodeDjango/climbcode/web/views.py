@@ -205,7 +205,7 @@ def register_school(request):
 
         # Datos del modelo (vista)
         provinces = Province.objects.all()
-        licenses = LicenseType.objects.all()
+        licenses = LicenseType.objects.all().order_by('price')
         types = form.fields['type'].choices
         teachingTypes = form.fields['teachingType'].choices
     
@@ -366,7 +366,6 @@ def editNotebook(request):
             }
             return HttpResponse(template.render(context, request))
         
-
 def permisoEditNotebook(idNotebook,request):
     tienePermiso = False
     #TODO MBC recuperar actor logado, debe ser programador

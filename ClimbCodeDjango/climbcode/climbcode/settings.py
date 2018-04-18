@@ -24,10 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-#ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk']
 
 
 # Application definition
@@ -94,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'climbcode',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'USER': 'climbcode',
+        'PASSWORD': 'jghsa87121hiisadou6akjiou27yiugIYBJhiyU67UuiYU5',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

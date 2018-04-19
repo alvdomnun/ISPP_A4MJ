@@ -72,6 +72,7 @@
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
 											</li>
+
 									</ul>
 									{% elif user.actor.teacher %}
 											<ul class="navbar-nav mr-auto">
@@ -83,7 +84,11 @@
 												</li>
 											</ul>
 									{% elif user.actor.student %}
-											Student
+                                        <ul class="navbar-nav mr-auto">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
+                                            </li>
+                                         </ul>
 									{% elif user.actor.administrator %}
 
 									{% endif %}

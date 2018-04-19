@@ -1,28 +1,73 @@
 {% extends 'base/base.html' %}
 
+
 {% block content %}
     <style>
         table td {
             align-content: center
         }
+    .text {
+  font-size:18px;
+  font-family:helvetica;
+  font-weight:bold;
+  color:#003d99;
+  text-transform:uppercase;
+}
+.parpadea {
+
+  animation-name: parpadeo;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:parpadeo;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo{
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+   100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {
+  0% { opacity: 1.0; }
+   50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
     </style>
 
     <h1>Lista de ejercicios</h1>
-{% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+
     <div class="table">
         <table class="table table-striped">
             {% if exercise_list %}
 
             <thead>
             <tr>
+            {% if ownList == False %}
+                <td></td>
+            {% endif %}
                 <td>Título</td>
                 <td>Descripción</td>
-                <td>Ventas</td>
+                <td>Asignatura</td>
+                {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+                    <td>Ventas</td>
+                {% endif %}
                 <td>Nivel</td>
-                {% if user.actor.programmer %}
+                {% if user.actor.programmer and ownList %}
+                    <td align="center">¿Borrador?</td>
                     <td align="center">¿Promocionado?</td>
-                    <td>Fecha de comienzo</td>
-                    <td>Fecha de fin</td>
+                    <td align="center">Fecha de comienzo</td>
+                    <td align="center">Fecha de fin</td>
                 {% endif %}
                 <td></td>
             </tr>
@@ -31,28 +76,41 @@
             <tbody>
 
                     <tr>
+                        {% if ownList == False %}
+                            <td class="parpadea text">
+                            {% if exercise.promoted == True %}
+                                Promocionado
+                            {% endif %}
+                            </td>
+                        {% endif %}
                         <td>{{ exercise.title }}</td>
                         <td>{{ exercise.description }}</td>
-                        <td>{{ exercise.sales }}</td>
+                        <td>{{ exercise.category }}</td>
+                        {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+                            <td>{{ exercise.sales }}</td>
+                        {% endif %}
                         <td>{{ exercise.level }}</td>
-                        {% if user.actor.programmer %}
-                            {% if exercise.promoted == True %}
-                            <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
-                        {% else %}
-                            <td align="center"><input type="checkbox" disabled="disabled"></td>
-                        {% endif %}
-                        {% if exercise.promoted == True %}
-                            <td>{{ exercise.startPromotionDate }}</td>
-                            <td>{{ exercise.endPromotionDate }}</td>
-                        {% else %}
-                            <td></td>
-                            <td></td>
+                            {% if user.actor.programmer and ownList %}
+                                {% if exercise.draft == True %}
+                                    <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
+                                {% else %}
+                                    <td align="center"><input type="checkbox" disabled="disabled"></td>
+                                {% endif %}
 
-                        {% endif %}
+                                {% if exercise.promoted == True %}
+                                    <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
+                                {% else %}
+                                    <td align="center"><input type="checkbox" disabled="disabled"></td>
+                                {% endif %}
 
-
-                        {% endif %}
-
+                                {% if exercise.promoted == True %}
+                                    <td align="center">{{ exercise.startPromotionDate }}</td>
+                                    <td align="center">{{ exercise.endPromotionDate }}</td>
+                                {% else %}
+                                    <td align="center">--</td>
+                                    <td align="center">--</td>
+                                {% endif %}
+                            {% endif %}
                         <td>
                             {% if user.actor.school %}
                                 {% if not ownList %}
@@ -72,11 +130,12 @@
                 {% endfor %}
                 </tbody>
                 </table>
-                </div>
-            {% else %}
+     {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
+
+    </div>
 
 
     {% if exercise_list.has_other_pages %}
@@ -101,5 +160,4 @@
         </ul>
     {% endif %}
 
-{% endif %}
 {% endblock %}

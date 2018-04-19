@@ -72,6 +72,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
                         </li>
+                        {% if user.actor.programmer.balance > 0.0 %}
+                            <label class="col-xs-2 col-md-4 form-control border"  >Saldo:  <input class="col-md-7 border-success" style="border-width: 6px" type="text" align="center"   value="{{ user.actor.programmer.balance|default:"0.0" }} $" disabled/>
+                            </label>
+
+                            {% else %}
+                                <label class="col-xs-2 col-md-3 form-control border"  >Saldo:  <input class="col-md-7 border-danger" style="border-width: 6px" type="text" align="center"   value="{{ user.actor.programmer.balance|default:"0.0" }} $" disabled/>
+                                </label>
+                        {% endif %}
                     </ul>
                     {% elif user.actor.teacher %}
                         <ul class="navbar-nav mr-auto">
@@ -83,7 +91,11 @@
                             </li>
                         </ul>
                     {% elif user.actor.student %}
-                        Student
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
+                            </li>
+                        </ul>
                     {% elif user.actor.administrator %}
 
                     {% endif %}

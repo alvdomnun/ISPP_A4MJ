@@ -48,7 +48,7 @@ def edit_self_teacher(request):
 
             teacher.save()
 
-            return HttpResponseRedirect('/actors/teachers/list')
+            return HttpResponseRedirect('/')
 
     else:
         form = EditSelfTeacherForm()

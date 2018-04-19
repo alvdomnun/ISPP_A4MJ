@@ -210,6 +210,7 @@ def get_license_school(school):
 
 #Listado de todos los ejercicios como programador
 @login_required(login_url='/login/')
+@user_is_programmer
 def list_exercisesP(request):
     #Filtro por NO draft y Orden de fecha de promocion
     exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
@@ -235,6 +236,7 @@ def list_exercisesP(request):
 
 #Listado de ejercicios propios como programador
 @login_required(login_url='/login/')
+@user_is_programmer
 def list_own_exercisesP(request):
 
     try:
@@ -329,14 +331,16 @@ def list_own_exercisesS(request):
 
 #Listado de todos los ejercicios como teacher
 @login_required(login_url='/login/')
+@user_is_teacher
 def list_exercisesT(request):
     #Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado la escuela
 
     try:
         teacher = request.user
+        school = School.objects.get(teacher__userAccount=teacher)
     except Exception as e:
         return HttpResponseRedirect('/')
-    school = School.objects.get(teacher__userAccount=teacher)
+
     exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
     # Comprobación de si son ejercicios propios
     ownList = False
@@ -359,14 +363,16 @@ def list_exercisesT(request):
 
 #Listado de todos los ejercicios de la escuela como teacher
 @login_required(login_url='/login/')
+@user_is_teacher
 def list_school_exercisesT(request):
 
     try:
         teacher = request.user
+        # Escuela del teacher
+        school = School.objects.get(teacher__userAccount=teacher)
     except Exception as e:
         return HttpResponseRedirect('/')
-    # Escuela del teacher
-    school = School.objects.get(teacher__userAccount=teacher)
+
     # Filtro ejercicios propios
     exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
     # Comprobación de si son ejercicios propios
@@ -392,7 +398,7 @@ def list_school_exercisesT(request):
 @login_required(login_url='/login/')
 @user_is_student
 def list_school_exercisesST(request):
-
+    ownList = True
     try:
         user = request.user
     except Exception as e:
@@ -415,7 +421,8 @@ def list_school_exercisesST(request):
 
     data = {
         'exercise_list': exercise_list,
+        'ownList': ownList,
         'title': 'Listado de ejercicios'
     }
-    return render(request, 'exercises_student.html', data)
+    return render(request, 'exercises_list.html', data)
 

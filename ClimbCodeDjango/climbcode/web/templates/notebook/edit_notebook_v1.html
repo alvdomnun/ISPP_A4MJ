@@ -1,4 +1,4 @@
-{% extends 'welcome/welcome-base.html' %}
+{% extends 'base/base.html' %}
 {% load staticfiles %}
 
 
@@ -39,7 +39,7 @@ background-color: red;
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/Chart.min.js"></script>
 
-    
+
     <script>
         $(document).ready(function(){
             $('#form_exercise').on('submit', function(event){
@@ -107,7 +107,7 @@ Notebookv1
                                 <div class="col-md-6 offset-md-0">
                                     <div class="form-group">
 
-                                        <label for="username">Título:</label>
+                                        <label for="title_disabled">Título:</label>
                                         <input class="form-control" type="text" id="title_disabled" name="title" style="background-color:#BFC9CA;" value="{{exercise.title}}" disabled>
                                    </div>
                                 </div>
@@ -143,10 +143,9 @@ Notebookv1
                         </div>
                 </div>
                 <!-- CAJA CONTENIDO NOTEBOOK -->
-                <div class="col-md-12 custom-mt-1">
-                    <div id="notebook_content" style="background-color: #ebebeb;width: auto;height: 4000px">
-                        <div class="col-md-12" style="margin-top: 20px;text-align:center">
-                            
+                <div class="col-md-12 custom-mt-1 d-flex flex-column">
+                    <div id="notebook_content" class="body_column" style="background-color: #ebebeb;width: auto;min-height:  1000px;margin-bottom:20px">
+                        <div class="col-md-12" style="text-align:center">
                             <div class="row">
                                 <div class="col-md-12" style="background-color:#bbbabb">
                                     <h2 style="text-align: center">Añadir Cuadro</h2>

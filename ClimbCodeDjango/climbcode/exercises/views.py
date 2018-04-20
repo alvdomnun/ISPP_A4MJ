@@ -1,6 +1,8 @@
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+from exercises.forms import PromoteExerciseForm
 from django.shortcuts import render, get_object_or_404
 import datetime
+from datetime import date, timedelta
 from actors.models import School, Student
 from licenses.models import License
 from subjects.models import Subject
@@ -9,13 +11,11 @@ from elementPrices.models import ElementPrice
 from exercises.forms import BuyExerciseForm
 from django.contrib.auth.decorators import login_required
 from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active, \
-    user_is_student
+    user_is_student, user_school_license_active
 from exercises.models import Exercise
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.http.request import HttpRequest
 from _datetime import date
-
-
 
 # Create your views here.
 
@@ -117,96 +117,86 @@ def buy_exercise(request, exercise_id):
     return render(request, 'exercisePurchase.html', data)
 
 
+@login_required(login_url='/login/')
+@user_is_programmer
+def promote_exercise(request, exercise_id):
+    """ Compra de un ejercicio """
+    assert isinstance(request, HttpRequest)
 
-###################################################     MÉTODOS     PRIVADOS        ##############################################################
+     # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
 
-def school_repeat_exercise_purchase(exercise, school):
-    """ Determina si la escuela ha comprado ya el ejercicio (True) o no (False) """
+    # Obtiene el programador que va a comprar
+    programmer = request.user.actor.programmer
 
-    # Busca en las compras de la escuela (sus tickets), la compra del ejercicio de Id dado
-    repeatedPurchase = school.purchaseticket_set.filter(exercise_id = exercise.id).exists()
+    # Obtiene el ejercicio con el ID indicado verificando que no sea un borrador y no esté promocionado ya
+    exercise = get_object_or_404(Exercise, pk = exercise_id, draft = False, promoted = False)
 
-    return repeatedPurchase
+    # Verifica que el ejercicio pertenezca al programador
+    if not (exercise.programmer == programmer):
+        return HttpResponseForbidden()
+
+    # Obtiene la tarifa actual de precios
+    elementPrices = ElementPrice.objects.all().first()
+
+    # Si petición POST
+    if (request.method == 'POST'):
+        form = PromoteExerciseForm(request.POST)
+        if (form.is_valid()):
+            # Obtiene los campos del form
+            exerciseId = form.cleaned_data["exerciseId"]
+            payment = form.cleaned_data["payment"]
+
+            # Si el pago se ha ejecutado correctamente
+            if (payment == 1):
+                # Promociona el ejercico verificando que no se ha manipulado el formulario
+                if (exercise.id == exerciseId):
+                    # Crea las fechas de la promoción: 60 días de promoción
+                    startPromotionDate = date.today()
+                    endPromotionDate = startPromotionDate + timedelta(days=60)
+
+                    exercise.promoted = True
+                    exercise.startPromotionDate = startPromotionDate
+                    exercise.endPromotionDate = endPromotionDate
+                    exercise.save()
+
+                else:
+                    return HttpResponseForbidden()                
+
+            # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
+            else:
+                form = PromoteExerciseForm()
+                data = {
+                    'programmer': programmer,
+                    'exercise': exercise,
+                    'prices': elementPrices,
+                    'form': form,
+                    'date': date.today(),
+                }
+
+                return render(request, 'exercisePromotion.html', data)
+
+            return HttpResponseRedirect('/exercises/programmer/own_list')
+
+        # Si el form no es válido, Forbidden
+        else:
+            return HttpResponseForbidden()
+
+    else:
+        form = PromoteExerciseForm()
     
+    # Datos del modelo (vista)
+    data = {
+        'programmer': programmer,
+        'exercise': exercise,
+        'prices': elementPrices,
+        'form': form,
+        'date': date.today(),
+    }
 
-def create_ticket(school, exerciseId, free):
-    """ Crea el ticket asociado a la compra """
+    return render(request, 'exercisePromotion.html', data)
 
-    price = 0.0
-    paymentMethod = 'Free'
-    exercise = get_object_or_404(Exercise, pk = exerciseId, draft = False)
-
-    # Si la compra es vía Paypal consulta las tarifas
-    if (not free):
-        price = ElementPrice.objects.all().first().buyExerciseValue
-        paymentMethod = 'Paypal'
-
-    ticket = PurchaseTicket.objects.create(price = price, paymentMethod = paymentMethod, school_id = school.pk, exercise = exercise)
-
-    return ticket
-
-
-def update_school_subjects_after_purchase(ticket, license):
-    """ Actualiza las asignaturas de la escuela a partir del ticket de compra """
-
-    school = ticket.school
-    exercise = ticket.exercise
-
-    # Comprueba si la escuela tiene la asignatura del ejercicio
-    subjectsQS = Subject.objects.filter(name = exercise.category.name, course = exercise.category.course, school = school)
-    # Si no tiene asignatura para ese ejercicio, la crea y asocia el ejercicio
-    if (subjectsQS.count() == 0):
-        subject = Subject.objects.create(name = exercise.category.name, course = exercise.category.course, school = school)
-        subject.exercises.add(exercise)
-        subject.save()
-
-    # Si la escuela tiene la asignatura, solo añade el ejercicio
-    else:
-        subject = subjectsQS[0]
-        subject.exercises.add(exercise)
-        subject.save()
-
-    # Si el ejercicio se ha comprado de manera gratuita, actualiza la licencia de la escuela (restando una unidad al nº de ejercicios gratis disponibles)
-    if (ticket.paymentMethod == 'Free'):
-        license.numFreeExercises = license.numFreeExercises - 1
-        license.save()
-
-
-def update_exercise_programmer_after_purchase(ticket, elementPrices):
-    """ Actualiza el ejercicio y su programador. """
-
-    # Actualiza el ejercicio: aumento el nº de ventas en 1
-    exercise = ticket.exercise
-    exercise.sales = exercise.sales + 1
-    exercise.save()
-
-    # Obtiene el beneficio real que adquiere el programador por la compra
-    price = elementPrices.buyExerciseValue - elementPrices.profitExerciseValue
-
-    # Actualiza el programador: actualiza el saldo 
-    programmer = ticket.exercise.programmer
-    programmer.balance = programmer.balance + price
-    programmer.save()
-
-
-def get_license_school(school):
-    """ Obtiene la licencia activa para la escuela indicada """
-
-    # Fecha actual
-    today = datetime.date.today()
-
-    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
-    license = school.license_set.filter(endDate__gte = today)
-
-    # Si se encuentra licencia activa, la devuelve
-    if (license.count() > 0):
-        return license.first()
-
-    # Si no se encuentra
-    else:
-        False
-
-#################################################################################
 
 #Listado de todos los ejercicios como programador
 @login_required(login_url='/login/')
@@ -425,4 +415,93 @@ def list_school_exercisesST(request):
         'title': 'Listado de ejercicios'
     }
     return render(request, 'exercises_list.html', data)
+
+
+###################################################     MÉTODOS     PRIVADOS        ##############################################################
+
+def school_repeat_exercise_purchase(exercise, school):
+    """ Determina si la escuela ha comprado ya el ejercicio (True) o no (False) """
+
+    # Busca en las compras de la escuela (sus tickets), la compra del ejercicio de Id dado
+    repeatedPurchase = school.purchaseticket_set.filter(exercise_id = exercise.id).exists()
+
+    return repeatedPurchase
+    
+
+def create_ticket(school, exerciseId, free):
+    """ Crea el ticket asociado a la compra """
+
+    price = 0.0
+    paymentMethod = 'Free'
+    exercise = get_object_or_404(Exercise, pk = exerciseId, draft = False)
+
+    # Si la compra es vía Paypal consulta las tarifas
+    if (not free):
+        price = ElementPrice.objects.all().first().buyExerciseValue
+        paymentMethod = 'Paypal'
+
+    ticket = PurchaseTicket.objects.create(price = price, paymentMethod = paymentMethod, school_id = school.pk, exercise = exercise)
+
+    return ticket
+
+
+def update_school_subjects_after_purchase(ticket, license):
+    """ Actualiza las asignaturas de la escuela a partir del ticket de compra """
+
+    school = ticket.school
+    exercise = ticket.exercise
+
+    # Comprueba si la escuela tiene la asignatura del ejercicio
+    subjectsQS = Subject.objects.filter(name = exercise.category.name, course = exercise.category.course, school = school)
+    # Si no tiene asignatura para ese ejercicio, la crea y asocia el ejercicio
+    if (subjectsQS.count() == 0):
+        subject = Subject.objects.create(name = exercise.category.name, course = exercise.category.course, school = school)
+        subject.exercises.add(exercise)
+        subject.save()
+
+    # Si la escuela tiene la asignatura, solo añade el ejercicio
+    else:
+        subject = subjectsQS[0]
+        subject.exercises.add(exercise)
+        subject.save()
+
+    # Si el ejercicio se ha comprado de manera gratuita, actualiza la licencia de la escuela (restando una unidad al nº de ejercicios gratis disponibles)
+    if (ticket.paymentMethod == 'Free'):
+        license.numFreeExercises = license.numFreeExercises - 1
+        license.save()
+
+
+def update_exercise_programmer_after_purchase(ticket, elementPrices):
+    """ Actualiza el ejercicio y su programador. """
+
+    # Actualiza el ejercicio: aumento el nº de ventas en 1
+    exercise = ticket.exercise
+    exercise.sales = exercise.sales + 1
+    exercise.save()
+
+    # Obtiene el beneficio real que adquiere el programador por la compra
+    price = elementPrices.buyExerciseValue - elementPrices.profitExerciseValue
+
+    # Actualiza el programador: actualiza el saldo 
+    programmer = ticket.exercise.programmer
+    programmer.balance = programmer.balance + price
+    programmer.save()
+
+
+def get_license_school(school):
+    """ Obtiene la licencia activa para la escuela indicada """
+
+    # Fecha actual
+    today = datetime.date.today()
+
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si se encuentra licencia activa, la devuelve
+    if (license.count() > 0):
+        return license.first()
+
+    # Si no se encuentra
+    else:
+        False
 

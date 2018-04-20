@@ -11,12 +11,13 @@ from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, 
     EditSelfTeacherForm, EditSelfTeacherPassForm
 from actors.models import Teacher, School, Student
 from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active
+from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, user_school_license_active
 
 
 # Edición del perfil propio profesor ------------------------------------------------------------------
 
 @login_required(login_url='/login/')
+@user_school_license_active
 def edit_self_teacher(request):
     teacher_aux = request.user
 
@@ -62,6 +63,7 @@ def edit_self_teacher(request):
     return render(request, 'teachers/self_edit.html', data)
 
 @login_required(login_url='/login/')
+@user_school_license_active
 def edit_self_teacher_pass(request):
     teacher_aux = request.user
 
@@ -110,7 +112,6 @@ def edit_self_teacher_pass(request):
 
     return render(request, 'teachers/self_edit_pass.html', data)
 
-# -----------------------------------------------------------------------------------------------------
 
 # Gestión de alumnos y profesores (como escuela) ------------------------------------------------------
 
@@ -517,6 +518,7 @@ def edit_profile_programmer(request):
 
 @login_required(login_url='/login/')
 @user_is_programmer
+@user_school_license_active
 def edit_pass_programmer(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -618,7 +620,6 @@ def edit_profile_school(request):
 
     return render(request, 'schools/editSchoolProfile.html', data)
 
-
 @login_required(login_url='/login/')
 @user_is_school
 @school_license_active
@@ -662,6 +663,7 @@ def edit_pass_school(request):
 
 @login_required(login_url='/login/')
 @user_is_student
+@user_school_license_active
 def edit_profile_student(request):
     """
     Edición del perfil Student
@@ -718,9 +720,9 @@ def edit_profile_student(request):
 
     return render(request, 'students/editStudentProfile.html', data)
 
-
 @login_required(login_url='/login/')
 @user_is_student
+@user_school_license_active
 def edit_pass_student(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)

@@ -168,7 +168,7 @@ def register_school(request):
             user = User.objects.create_user(username, email, password)
             user.first_name = first_name
             user.last_name = last_name
-            #TODO : De momento se crean inactivos -> Habrá que activarlo tras el pago de Paypal
+            # Se crean inactivos -> Habrá que activarlo tras el pago de Paypal
             user.is_active = False
             user.save()
 

@@ -120,8 +120,8 @@
                             {% if ownList %}
                                 <a class="btn btn-default" href="">Mostrar</a>
                                 {% if user.actor.programmer %}
-                                    {% if exercise.promoted == False %}
-                                        <a class="btn btn-default" href="">Promocionar</a>
+                                    {% if exercise.promoted == False and exercise.draft == False %}
+                                        <a class="btn btn-default" href="{% url 'promote_exercise' exercise.id %}">Promocionar</a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

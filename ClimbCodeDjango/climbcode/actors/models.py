@@ -14,7 +14,7 @@ class Actor(models.Model):
     """
     Clase que define el modelo Actor: nombre, aepllidos, teléfono, foto.
     """
-    phone = models.CharField(max_length = 11, help_text = 'Requerido. Patrón de 9 dígitos.',
+    phone = models.CharField(max_length = 9, help_text = 'Requerido. Patrón de 9 dígitos.',
         validators = [RegexValidator(regex = r'^(\d{9})$', message = 'El formato introducido es incorrecto.')])
     photo = models.ImageField(null = True, blank = True, upload_to = 'uploads/')
 

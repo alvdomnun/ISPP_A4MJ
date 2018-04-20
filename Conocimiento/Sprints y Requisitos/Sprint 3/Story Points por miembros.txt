@@ -2,6 +2,6 @@ Ale G.: 17
 Ale R.: 13
 Miguel: 10 + Infinito
 Álvaro D.: 21
-Álvaro S.: 15
+Álvaro S.: 20
 Jesús: 16
 Andrés: 10 + Implementación (Seguridad Alumnos)

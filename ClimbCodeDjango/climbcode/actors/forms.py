@@ -1,4 +1,6 @@
 from django import forms
+from licenses.models import License
+from licenses.models import LicenseType
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
@@ -330,6 +332,63 @@ class EditStudentPass(forms.Form):
             # Valida que la nueva contraseña no sea igual a la actual
             if (password == actual_password):
                 raise forms.ValidationError("La nueva contraseña no puede ser similar a la actual. Por favor, elija otra.")
+
+class RenovateLicenseForm(forms.Form):
+    """Formulario de renovación de licencia"""
+
+    # Campos requeridos por el modelo Actor-Escuela
+    licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
+    numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el número de usuarios indicados no sea inferior al de la licencia dada
+            licenseType = self.cleaned_data["licenseType"]
+            license = LicenseType.objects.filter(pk = licenseType.id)[0]
+            numUsers = self.cleaned_data["numUsers"]
+             # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
+            if (license.numUsers > numUsers):
+                raise forms.ValidationError("El número de usuarios indicado no supera el mínimo exigido por la licencia.")
+
+class RenovateLicensePaymentForm(forms.Form):
+    """ Formulario para recibir el pago de Paypal """
+
+    license = forms.IntegerField();
+    licensePrice = forms.CharField(min_length = 6, max_length = 10);
+    payment = forms.IntegerField();
+    school = forms.IntegerField();
+
+    # Validaciones propias
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            # Valida que el usuario de la escuela no tenga licencia activa
+            school = self.cleaned_data["school"]
+            school = School.objects.filter(pk = school).first()
+            today = datetime.date.today()
+            license = school.license_set.filter(endDate__gte = today)
+            if (license.count() > 0):
+                raise forms.ValidationError("Esta escuela ya dispone de licencia activa.")
+
+            # Valida que la licencia que se paga corresponda con la escuela
+            license = self.cleaned_data["license"]
+            license = License.objects.filter(id = license).first()
+            if not(license.school == school):
+                raise forms.ValidationError("La licencia que se intenta pagar no pertenece a la escuela.")
+            # Valida que la licencia no tenga fecha de fin actia
+            if license.endDate is not None:
+                raise forms.ValidationError("La licencia que se intenta pagar ya está activa.")
+
+            # Valida el precio de licencia que trae el form sea similar al de la licencia
+            licensePrice = self.cleaned_data["licensePrice"]
+            # Formatea cambiando la coma del decimal por punto (, -> .)
+            licensePrice = licensePrice.replace(',', '.')
+            if not(licensePrice == str(license.price)):
+                raise forms.ValidationError('El precio de la licencia no corresponde con el real.')
 
 def get_license_school(school):
     """ Obtiene la licencia activa para la escuela indicada """

@@ -1,6 +1,12 @@
 import datetime
+from actors.forms import RenovateLicensePaymentForm
+from licenses.models import License
+from actors.forms import RenovateLicenseForm
+from licenses.models import LicenseType
+from datetime import date, timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.urls.base import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms.utils import ErrorList
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
@@ -13,8 +19,6 @@ from actors.models import Teacher, School, Student
 from django.contrib.auth.decorators import login_required
 from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, user_school_license_active
 
-
-# Edición del perfil propio profesor ------------------------------------------------------------------
 
 @login_required(login_url='/login/')
 @user_school_license_active
@@ -111,9 +115,6 @@ def edit_self_teacher_pass(request):
     }
 
     return render(request, 'teachers/self_edit_pass.html', data)
-
-
-# Gestión de alumnos y profesores (como escuela) ------------------------------------------------------
 
 @login_required(login_url='/login/')
 @user_is_school
@@ -760,3 +761,170 @@ def edit_pass_student(request):
     }
 
     return render(request, 'students/editStudentPass.html', data)
+
+@login_required(login_url='/login/')
+@user_is_school
+def detail_active_license(request):
+    """ Obtiene la licencia activa de la escuela """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    school = request.user.actor.school
+
+    # Obtiene la licencia activa de la escuela
+    today = datetime.date.today()
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si hay licencia activa, pantalla de detalle
+    if (license.count() > 0):
+        license = license.first()
+        # Datos del modelo (vista)
+        data = {
+            'school': school,
+            'license': license,
+            'date': date.today()
+        }
+
+        return render(request, 'schools/licenseDisplay.html', data)
+
+    # Si no hay licensia activa, formulario de renovación
+    else:
+        form = RenovateLicenseForm()
+        license = None   
+        licenseTypes = LicenseType.objects.all().order_by('price')
+
+        # Datos del modelo (vista)
+        data = {
+            'form': form,
+            'school': school,
+            'license': license,
+            'licenseTypes': licenseTypes,
+            'date': date.today()
+        }
+
+        return render(request, 'schools/licenseRenovation.html', data)
+
+@login_required(login_url='/login/')
+@user_is_school
+def license_renovation(request):
+    """
+	Renovación de la licencia de una escuela
+	"""
+    assert isinstance(request, HttpRequest)
+
+    # Si se ha enviado el Form debe ser por POST
+    if (request.method == 'POST'):
+        form = RenovateLicenseForm(request.POST)
+        if (form.is_valid()):
+            # Licencia Tipo
+            licenseType = form.cleaned_data["licenseType"]
+            # Crear la licencia específica en funcion de la licencia tipo (licenseType) y si ha añadido usuarios extras
+            licenseType = LicenseType.objects.filter(id = licenseType.id)[0]
+            licenseNumUsers = form.cleaned_data["numUsers"]
+            licensePrice = getFinalPrice(licenseType, licenseNumUsers)
+
+            # Escuela
+            school = request.user.actor.school
+
+            # Crea solo la fecha de inicio, dejando la fecha de fin a None (inactiva)
+            today = date.today()
+            # Guarda la licencia asociándola a la escuela que renueva
+            license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
+                licenseType = licenseType, school = school)
+
+            paymentData = {
+                'school': school,
+                'license': license,
+                'date': date.today()
+            }
+
+            return render(request, 'schools/renovationPayment.html', paymentData)
+
+        # Si la validación falla cargo de nuevo la vista
+        else:
+            school = request.user.actor.school
+            license = None   
+            licenseTypes = LicenseType.objects.all().order_by('price')
+
+            # Datos del modelo (vista)
+            data = {
+                'form': form,
+                'school': school,
+                'license': license,
+                'licenseTypes': licenseTypes,
+                'date': date.today()
+            }
+
+            return render(request, 'schools/licenseRenovation.html', data)
+            #return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+    # Solo se permite acceso vía POST
+    else:
+        return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+def license_renovation_paypal(request):
+    """
+    Controla el pago del usuario
+    """
+    assert isinstance(request, HttpRequest)
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = RenovateLicensePaymentForm(request.POST)
+        if (form.is_valid()):
+            # Extrae valores y activa el usuario si el pago ha sido correcto
+            school = form.cleaned_data["school"]
+            license = form.cleaned_data["license"]
+            licensePrice = form.cleaned_data["licensePrice"]
+            payment = form.cleaned_data["payment"]
+
+            # Obtiene la licencia y la escuela a partir de los Ids que trae el form
+            school = School.objects.filter(pk = school).first()
+            license = License.objects.filter(id = license).first()
+
+            # Si el pago se ha ejecutado correctamente, se activa la licencia
+            if (payment == 1):
+                license.endDate = license.startDate + timedelta(days=365)
+                license.save()
+
+                return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+            # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
+            else:
+                paymentData = {
+                    'school': school,
+                    'license': license,
+                    'date': date.today()
+                }
+
+                return render(request, 'schools/renovationPayment.html', paymentData)
+        else:
+            # Si el form no es válido, Forbidden
+            return HttpResponseForbidden()
+    
+    # Si el request no es un POST con el pago, Forbidden
+    return HttpResponseForbidden()
+
+####################################################    PRIVATE     METHODS     #################################################################
+
+def getFinalPrice(license, numUsers):
+    """
+    Calcula el precio final de la licencia a partir del tipo básico y el número de usuarios final
+    """
+
+    # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
+    if (license.numUsers > numUsers):
+        return HttpResponseForbidden()
+
+    # Precio unitario de cada usuario extra para la licencia escogida
+    unitPricePerUser = round((license.price / license.numUsers), 2)
+    # Número de usuarios extras añadidos
+    extraUsers = numUsers - license.numUsers
+
+    # Precio final = Precio por defecto + (Nº Usuarios Extra * CosteUnitario)
+    res = license.price + (unitPricePerUser * extraUsers)
+
+    return res

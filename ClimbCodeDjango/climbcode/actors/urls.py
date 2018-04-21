@@ -22,4 +22,7 @@ urlpatterns = [
 
     path('schools/edit/profile', views.edit_profile_school, name='edit_profile_school'),
     path('schools/edit/pass', views.edit_pass_school, name='edit_pass_school'),
+    path('schools/license/display', views.detail_active_license, name='display_license'),
+    path('schools/license/renovation', views.license_renovation, name='license_renovation'),
+    path('schools/license/renovation/paypal', views.license_renovation_paypal, name='license_renovation_paypal'),
 ]

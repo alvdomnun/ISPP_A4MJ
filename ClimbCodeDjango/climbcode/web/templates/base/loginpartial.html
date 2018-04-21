@@ -20,6 +20,7 @@
                 <a class="dropdown-item" href="{% url 'edit_profile_student' %}">Editar Perfil</a>
                 {% elif user.actor.school %}
                 <a class="dropdown-item" href="{% url 'edit_profile_school' %}">Editar Perfil</a>
+                <a class="dropdown-item" href="{% url 'display_license' %}">Mi Licencia</a>
                 {% endif %}
                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesi&#243;n</a>
             </div>

@@ -25,4 +25,5 @@ urlpatterns = [
     path('schools/license/display', views.detail_active_license, name='display_license'),
     path('schools/license/renovation', views.license_renovation, name='license_renovation'),
     path('schools/license/renovation/paypal', views.license_renovation_paypal, name='license_renovation_paypal'),
+    path('schools/autorization/display', views.autorization_display, name='autorization_display'),
 ]

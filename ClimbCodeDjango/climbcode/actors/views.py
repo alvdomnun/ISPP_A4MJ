@@ -1,4 +1,6 @@
 import datetime
+import os
+from climbcode import settings
 from actors.forms import RenovateLicensePaymentForm
 from licenses.models import License
 from actors.forms import RenovateLicenseForm
@@ -9,7 +11,7 @@ from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.urls.base import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.forms.utils import ErrorList
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
     EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, EditStudentProfile
@@ -865,6 +867,8 @@ def license_renovation(request):
     else:
         return HttpResponseRedirect(reverse('display_license', kwargs={}))
 
+@login_required(login_url='/login/')
+@user_is_school
 def license_renovation_paypal(request):
     """
     Controla el pago del usuario
@@ -907,6 +911,15 @@ def license_renovation_paypal(request):
     
     # Si el request no es un POST con el pago, Forbidden
     return HttpResponseForbidden()
+
+@login_required(login_url='/login/')
+@user_is_school
+def autorization_display(request):
+    file_path = os.path.join(settings.STATICFILES_DIRS[0],'Autorization.pdf')
+    documentReader = open(file_path, "rb").read()
+
+    return HttpResponse(documentReader, content_type="application/pdf")
+
 
 ####################################################    PRIVATE     METHODS     #################################################################
 

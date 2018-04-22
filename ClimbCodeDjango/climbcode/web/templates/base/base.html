@@ -23,7 +23,7 @@
 			{% if user.is_authenticated %}
 
 					<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-							<a class="navbar-brand" href="/">
+							<a class="navbar-brand flex-align-center" href="/">
 									<img src="{% static 'img/ClimbCode_inv.png' %}" alt="ClimbCode" class="brand-icon"/>
 							</a>
 							<!--Botón de "colapso", se mostrará si la ventana es demasiado pequeña-->
@@ -97,7 +97,7 @@
 
 			{% else %}
 			<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-					<a class="navbar-brand" href="/">
+					<a class="navbar-brand flex-align-center" href="/">
 							<img src="{% static 'img/ClimbCode_inv.png' %}" alt="ClimbCode" class="brand-icon"/>
 					</a>
 
@@ -158,7 +158,7 @@
 									<li class="nav-item">
 											<a class="nav-link" href="/login">Iniciar Sesi&#243;n</a>
 									</li>
-									<li class="dropdown">
+									<li class="dropdown flex-align-center">
 											<a href="#" class="nav-link dropdown-toggle navbar-text" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 													Registrarse
 											</a>
@@ -179,13 +179,58 @@
 	{% endblock %}
 </div>
 
-	{% block footer %}
-		<footer class="page-footer font-small blue pt-4 mt-4 bg-dark text-white" style="height: 200px;">
-				<div class="display-middle ">
+{% block footer %}
+			<footer class="page-footer font-small blue pt-4 mt-4 bg-dark text-white">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12 col-md-3">
+							<p class="column-title">Información</p>
+						</div>
 
-				</div>
-		</footer>
-	{% endblock%}
+						<div class="col-sm-12 col-md-3">
+							<p class="column-title">Equipo</p>
+
+							<ul class="list-unstyled list-sm">
+								<h6>Jefe de proyecto</h6>
+								<li>Alejandro Román Rodríguez</li>
+							</ul>
+
+							<ul class=" list-unstyled list-sm">
+								<h6>Jefe de negocio</h6>
+								<li>Álvaro Domínguez Núñez</li>
+							</ul>
+
+							<ul class=" list-unstyled list-sm">
+								<h6>Front-End</h6>
+								<li>Miguel Ángel Baños Carretón</li>
+								<li>Alejandro Garrido Resina</li>
+							</ul>
+
+							<ul class="list-unstyled list-sm">
+								<h6>Back-End</h6>
+								<li>Andrés Fernández Alés</li>
+								<li>Álvaro Sánchez López</li>
+								<li>Jesús Sosa Sánchez</li>
+							</ul>
+						</div>
+
+						<div class="col-sm-12 col-md-3">
+							<p class="column-title">Contacto</p>
+							<p class="footer-text">Para contactar con nosotros sólo tienes que mandar un correo a cualquiera de estas direcciones:</p>
+							<ul class="list-unstyled">
+								<li>alvdomnun@alum.us.es</li>
+								<li>aldonu1@gmail.com</li>
+							</ul>
+						</div>
+
+						<div class="col-sm-12 col-md-3">
+							<p class="column-title">Programación</p>
+							<p class="footer-text">Si te interesa aprender a programar puedes consultarnos acerca de cursos de programación, o ver estas fantásticas páginas:</p>
+						</div>
+					</div>
+				</div
+			</footer>
+{% endblock%}
 	<script src="/static/js/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

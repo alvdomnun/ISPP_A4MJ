@@ -184,7 +184,7 @@ Notebookv1
                                 </div>                                    
                             </div>                                                 
                         </div>
-                        <div class="col-md-12" style="text-align:center">
+<!--                         <div class="col-md-12" style="text-align:center">
                             <h1>Evalbox</h1>
                             <textarea id='code'>1+2</textarea>
                             <h1>Iframe</h1>
@@ -196,61 +196,9 @@ Notebookv1
                             <br><br>
                                 <h4>Resultado del código</h4>
                                 <input name="resultado" class="form-control resultado_code_editor"  id="resultado" type="text" disabled="disabled">
-                        </div>
+                        </div> -->
 
                         <script>
-                          window.localStorage['sekrit'] = '[insert sensitive information here]';
-                          var sandboxedFrame = document.getElementById('sandboxed');
-
-                          function evaluate(frame) {
-                            var code = document.getElementById('code').value;
-                            // Note that we're sending the message to "*", rather than some specific
-                            // origin. Sandboxed iframes which lack the 'allow-same-origin' header
-                            // don't have an origin which you can target: you'll have to send to any
-                            // origin, which might alow some esoteric attacks. Validate your output!
-                            data = ['evalCode', code];
-                            alert(data[0]);
-                            alert(data[1]);
-                            frame.contentWindow.postMessage(data, '*');
-
-                            /* Ejemplos del uso de la API para el Iframe */
-                            //Creando y editando parámetros
-                            editCreateParamIframe('sandboxed', 'param49802', 29108);
-                            editCreateParamIframe('sandboxed', 'param49802', 'valorcambiadoprimo');
-                            editCreateParamIframe('sandboxed', 'param49806872', 29108);
-                            //Eliminando parámetros
-                            deleteParamIframe('sandboxed', 'param49802');
-                            deleteParamIframe('sandboxed', 'meloinvento');
-                            editCreateParamIframe('sandboxed', 'despuesdeInventar', 29108);
-
-                          }
-
-                        
-
-                          function editCreateParamIframe(idIframe, idParam, valueParam){
-                            var sandboxedFrame = document.getElementById(idIframe);
-                            data = ['editCreateParam', idParam, valueParam];
-
-                            sandboxedFrame.contentWindow.postMessage(data, '*');
-                          }
-
-                          function resetParamsIframe(idIframe){
-                            var sandboxedFrame = document.getElementById(idIframe);
-                            data = ['resetParams'];
-
-                            sandboxedFrame.contentWindow.postMessage(data, '*');
-                          }
-
-                          function deleteParamIframe(idIframe, idParam){
-                            var sandboxedFrame = document.getElementById(idIframe);
-                            data = ['deleteParam', idParam];
-
-                            sandboxedFrame.contentWindow.postMessage(data, '*');
-                          }
-
-                          document.getElementById('safe').addEventListener('click', function () {
-                            evaluate(sandboxedFrame);
-                          });
 
                           // Listen for response messages from the frames.
                           window.addEventListener('message', function (e) {

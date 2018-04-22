@@ -171,6 +171,9 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
 	                                               'Ejecutar >>'+
 	                                            '</button>'+
+	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
+	                                               'Ejecutar en Iframe >>'+
+	                                            '</button>'+
 	                                            '<br><br>'+
 	                                            '<h4>Resultado del código</h4>'+
 	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
@@ -178,13 +181,15 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                            '<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
 	                                               'Añadir Gráfica'+
 	                                            '</button>'+
-	                                            '<iframe style="width: 1000px;height: 200px" sandbox=\'allow-scripts\' id="'+idIframe+'" src="iframe_notebook"></iframe>'+
-	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
-	                                               'Ejecutar en Iframe >>'+
-	                                            '</button>'+
+	                                            '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\','+idBoxParameter+','+idColChartButtonsParameter+');">'+
+	                                               'Añadir Gráfica en Iframe >>'+
+	                                            '</button>'+	                                            
 	                                        '</div>'+
-
+											'<div class="col-md-12" style="margin-top: 20px;">'+
+	                                        	'<iframe style="width:100%;height: 0px;display:none" sandbox=\'allow-scripts\' id="'+idIframe+'" src="iframe_notebook"></iframe>'+
+	                                        '</div>'+
 	                                    '</div>'+
+
 	                                '</div>'+
 	                            '</div>'+
 	                        '</div>'+
@@ -364,7 +369,7 @@ function evalUserCodeAceIframe(idEditor, idDivParamsCodeBox, idIframe, idInputRe
 	data = ['evalCode', code, idInputResultado];
 
 	var sandboxedFrame = document.getElementById(idIframe);
-	
+
     sandboxedFrame.contentWindow.postMessage(data, '*');
 }
 
@@ -541,6 +546,90 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 	});
 
 }
+
+function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
+
+	var idChart = "myChart_"+idBoxParameter;
+
+	var idChartRow = idChart+'_row';
+
+	var element = $('#'+idChartRow);
+	if(element != null){
+		$('#'+idChartRow).remove();
+	}
+
+	//TODO LLAMAR AL IFRAME PARA CARGAR LA GRÁFICA
+
+	var sandboxedFrame = document.getElementById(idIframe);
+    data = ['addChart', idChart];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+
+	//Botón eliminar gráfica
+
+	//Quitamos previamente el botón de aceptar
+
+	$('#'+idColChartButtons+' button:last-child').remove();
+
+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+                                   'Eliminar Gráfica'+
+                                '</button>';
+
+    $('#'+idColChartButtons).append(htmlDeleteChartButton);
+
+    //Aumentar el tamaño del iframe para mostrar la gráfica
+
+    document.getElementById(idIframe).style.height = "365px"
+
+    document.getElementById(idIframe).style.display = "block"
+
+}
+
+function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons){
+
+	var sandboxedFrame = document.getElementById(idIframe);
+    data = ['deleteChart'];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+
+    document.getElementById(idIframe).style.height = "0px"
+
+    $('#'+idColChartButtons+' button:last-child').remove();
+
+
+	var htmlAddChartButton = '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+                                   'Añadir Gráfica Iframe'+
+                                '</button>';
+
+    $('#'+idColChartButtons).append(htmlAddChartButton);
+
+    document.getElementById(idIframe).style.display = "none";
+
+
+}
+
+function editCreateParamIframe(idIframe, idParam, valueParam){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['editCreateParam', idParam, valueParam];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
+
+
+  function resetParamsIframe(idIframe){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['resetParams'];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
+
+  function deleteParamIframe(idIframe, idParam){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['deleteParam', idParam];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
 
 function deleteChart(idChartRow,idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 

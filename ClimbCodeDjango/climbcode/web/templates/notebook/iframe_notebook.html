@@ -5,6 +5,8 @@
 
 
     <script src="/static/js/jquery-3.3.1.js"></script>
+	<script src="/static/js/notebook_chart.js"></script>
+	<script src="/static/js/Chart.min.js"></script>
 
     <script>
 
@@ -25,6 +27,7 @@
 	      		document.getElementById(idParam).value = value;
 	      	}
     	}
+
 
     	function resetParams(){
 	      	$('#params').empty();
@@ -80,6 +83,11 @@
 					createEditParameter(idParam, valueParam);
 				}else if(messageType == 'resetParams'){
 					resetParams();
+				}else if(messageType == 'addChart'){
+					var idChart = e.data[1];
+					addChartIframeJS(idChart);
+				}else if(messageType == 'deleteChart'){
+					$('#chart').empty();
 				}
 
 	        	
@@ -92,8 +100,8 @@
     </script>
   </head>
   <body>
-  	HOLA PRIMO
   	<div id="params"></div>
+  	<div id="chart"></div>
   </body>
 
 </html>

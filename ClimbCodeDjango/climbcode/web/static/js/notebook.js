@@ -5,6 +5,9 @@ var maxOrder = 0;
 //Variable global seteada
 var numParam = 0;
 
+//Constante para recuperar parámetro para el Iframe
+var ID_HIDDEN_NAME_PARAM = "input_hidden_parameter_id_name_param_";
+
 function prueba(){
 	alert(saludo);
 }
@@ -108,6 +111,12 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idColChartButtons = "id_col_chart_buttons_"+idBox;
 	var idColChartButtonsParameter = "'id_col_chart_buttons_"+idBox+"'";
 
+	//ID IFRAME
+	var idIframe = "id_iframe_code_box_"+numBox;
+
+	//ID INPUT RESULTADO CODIGO
+	var idInputResultado = 'resultado_'+idEditor;
+
 	/* IDS FORM */
 	var idFormBox = "form_box_"+idBox;
 	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
@@ -168,6 +177,10 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                            '<br><br>'+
 	                                            '<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
 	                                               'Añadir Gráfica'+
+	                                            '</button>'+
+	                                            '<iframe style="width: 1000px;height: 200px" sandbox=\'allow-scripts\' id="'+idIframe+'" src="iframe_notebook"></iframe>'+
+	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
+	                                               'Ejecutar en Iframe >>'+
 	                                            '</button>'+
 	                                        '</div>'+
 
@@ -295,6 +308,66 @@ function evalUserCodeAce(idEditor){
     document.getElementById("resultado_"+idEditor).value = String(resultado);
 }
 
+function setParametersIframe(idDivParamsCodeBox, idIframe){
+	//En primer lugar, se borran todos los parámetros anteriores del iframe
+
+    resetParamsIframe(idIframe);
+
+    var childrens = $("#"+idDivParamsCodeBox).children();
+
+	for (index1 = 0; index1 < childrens.length; ++index1) {
+		//Obtenemos los inputs del form de cada parámetro
+    	var children = childrens[index1];
+    	var idChildren = children.id;
+
+    	//Recorremos los inputs buscando el id y el valor del parámetro
+    	inputs = $("#"+idChildren+" :input");
+    	if(inputs!=null){
+    		var idParam = null;
+	    	var paramValue = null;
+
+	    	for (index2 = 0; index2 < inputs.length; ++index2) {
+	    		input = inputs[index2];
+	    		
+	    		if (input.id && input.id.indexOf(ID_HIDDEN_NAME_PARAM) == 0) {
+		        	//Encontrado el id del parámetro
+		        	idParam = input.value;
+		    	}
+
+
+	    	}
+	    	//Si se ha recuperado el id del parámetro, obtenemos el valor
+	    	if(idParam!=null){
+		    	paramValue = $('#'+idParam).val();
+	    	}
+	    	//Si se ha recuperado correctamente el id y valor del parámetro,
+	    	//se crea en el iframe
+	    	if(idParam!=null && paramValue!=null){
+	    		editCreateParamIframe(idIframe, idParam, paramValue);
+	    	}
+	    }
+	}
+}
+
+function evalUserCodeAceIframe(idEditor, idDivParamsCodeBox, idIframe, idInputResultado){
+    var editor = ace.edit(idEditor);
+    var code = editor.getValue();
+
+    /*
+    	Recuperamos los valores actuales de los parámetros de la caja de código
+		para mandarlos al iframe
+    */
+    setParametersIframe(idDivParamsCodeBox, idIframe);
+    
+
+	//Una vez seteados los parámetros en el iframe, ejecutamos el código en él
+	data = ['evalCode', code, idInputResultado];
+
+	var sandboxedFrame = document.getElementById(idIframe);
+	
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+}
+
 function addNewParameter(idParameterDiv,idButtonParameter,idBox){
 	addParameter(idParameterDiv,idButtonParameter,idBox,null,'',null,null);
 }
@@ -320,7 +393,8 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 	var idHiddenIdBox = "input_hidden_parameter_id_box_"+numParameter;
 	var idHiddenIdPkParam = "input_hidden_parameter_id_pk_param_"+numParameter;
 	//El nombre del id para obtenerse por código
-	var idHiddenIdNameParam = "input_hidden_parameter_id_name_param_"+numParameter;
+	//NO CAMBIAR EL VALOR DE ESTA VARIABLE
+	var idHiddenIdNameParam = ID_HIDDEN_NAME_PARAM+numParameter;
 	//El nombre del parámetro establecido por el usuario
 	var idNameParam = "input__name_param_"+numParameter;
 	var idValueParam = "input_parameter_value_"+numParameter;

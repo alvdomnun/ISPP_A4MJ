@@ -1,5 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -28,6 +29,9 @@ urlpatterns = [
     url(r'^deleteParamAjax$', views.deleteParamAjax, name='deleteParamAjax'),
     url(r'^createUpdateImageBoxAjax$', views.createUpdateImageBoxAjax, name='createUpdateImageBoxAjax'),
     url(r'^deleteImageBoxAjax$', views.deleteImageBoxAjax, name='deleteImageBoxAjax'),
+
+    url(r'^iframe_notebook', TemplateView.as_view(template_name="notebook/iframe_notebook.html"),
+                   name='iframe_notebook'),
 
     path('paypal', views.paypalTransaction, name='paypalTransaction'),
 

@@ -168,21 +168,21 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                                '</div>'+
 	                                        '</div>'+
 	                                        '<div id="'+idColChartButtons+'" class="col-md-4" style="margin-top: 20px;">'+
-	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
+	                                            /*'<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
 	                                               'Ejecutar >>'+
-	                                            '</button>'+
+	                                            '</button>'+*/
 	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
-	                                               'Ejecutar en Iframe >>'+
+	                                               'Ejecutar>>'+
 	                                            '</button>'+
 	                                            '<br><br>'+
 	                                            '<h4>Resultado del código</h4>'+
 	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
 	                                            '<br><br>'+
-	                                            '<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
+	                                            /*'<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
 	                                               'Añadir Gráfica'+
-	                                            '</button>'+
+	                                            '</button>'+*/
 	                                            '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\','+idBoxParameter+','+idColChartButtonsParameter+');">'+
-	                                               'Añadir Gráfica en Iframe >>'+
+	                                               'Añadir Gráfica'+
 	                                            '</button>'+	                                            
 	                                        '</div>'+
 											'<div class="col-md-12" style="margin-top: 20px;">'+
@@ -581,8 +581,8 @@ function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
     //Aumentar el tamaño del iframe para mostrar la gráfica
 
     document.getElementById(idIframe).style.height = "365px"
-
     document.getElementById(idIframe).style.display = "block"
+    document.getElementById(idIframe).style.marginBottom = "20px";
 
 }
 
@@ -599,13 +599,13 @@ function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons){
 
 
 	var htmlAddChartButton = '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
-                                   'Añadir Gráfica Iframe'+
+                                   'Añadir Gráfica'+
                                 '</button>';
 
     $('#'+idColChartButtons).append(htmlAddChartButton);
 
     document.getElementById(idIframe).style.display = "none";
-
+    document.getElementById(idIframe).style.marginBottom = "0px";
 
 }
 

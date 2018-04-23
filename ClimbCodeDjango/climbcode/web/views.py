@@ -16,6 +16,7 @@ from django.http import JsonResponse
 from exercises.models import Exercise
 from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
+import re
 
 # Create your views here.
 
@@ -516,27 +517,32 @@ def createUpdateCodeBoxAjax(request):
         if permisoEditNotebook(idNotebook, request):
             order = request.POST.get('boxOrder')
             contentCode = request.POST.get('contentCode')
-            idBox = request.POST.get('idBox')
-            if idBox == 'null':
-                idBox = None
-            else:
-                idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            # Validar que el código no contiene funciones no permitidas
+            regExp = re.compile('(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)')
 
-            #Bandera actualización box
-            updateBox = False
-            if idBox is not None and idBox>0:
-               savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
-               updateBox = True
-            else:
-               savedBox = createCodeBox(idNotebook,order,contentCode)
+            if not regExp.search(contentCode):
+                idBox = request.POST.get('idBox')
+                if idBox == 'null':
+                    idBox = None
+                else:
+                    idBox = int(idBox)
+                #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
 
-            data = {
-                'savedBoxId':savedBox.id,
-                'savedBoxCode':savedBox.content,
-                'updateBox':updateBox
-            }
-            return JsonResponse(data)
+                #Bandera actualización box
+                updateBox = False
+                if idBox is not None and idBox>0:
+                   savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
+                   updateBox = True
+                else:
+                   savedBox = createCodeBox(idNotebook,order,contentCode)
+
+                data = {
+                    'savedBoxId':savedBox.id,
+                    'savedBoxCode':savedBox.content,
+                    'updateBox':updateBox
+                }
+
+                return JsonResponse(data)
 
 @csrf_exempt
 def deleteCodeBoxAjax(request):

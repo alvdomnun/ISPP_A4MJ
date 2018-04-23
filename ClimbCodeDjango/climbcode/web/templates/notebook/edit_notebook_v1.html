@@ -83,20 +83,6 @@ background-color: red;
     });
     });
 
-    $(function() {  
-        var $iframe = $('#sandboxed');
-        $iframe.ready(function() {
-            $iframe.contents().find("body").append('Test');
-        });
-    });
-
-
-    $(document).ready(function(){
-        //CARGAR ELEMENTO EN IFRAME HIJO, UN INPUT HIDDEN
-        var $iframe = $('#sandboxed');
-        $iframe.contents().find("body").append('Test');
-
-    });
     </script>
 {% endblock %}
 {% block title %}

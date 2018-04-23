@@ -64,18 +64,19 @@
 				var messageType = e.data[0];
 
 				if(messageType == 'evalCode'){
-
-					try {
-						var code = e.data[1];
-						var idInputResultado = e.data[2];
-						result = eval(code);
-					} catch (e) {
-			          result = e.message;
-			        }
-
-			        data = [result, idInputResultado];
-
-			        mainWindow.postMessage(data, e.origin);
+					var code = e.data[1];
+					var rexExp = new RegExp("(?:^|\W)(eval\()|(alert\()|(window.)|(location.)|(ajax)(?:$|\W)");
+					var invalidCode = rexExp.test(code);
+					if(!invalidCode){
+						try {							
+							var idInputResultado = e.data[2];
+							result = eval(code);
+						} catch (e) {
+				          result = e.message;
+				        }
+				        data = [result, idInputResultado];
+				        mainWindow.postMessage(data, e.origin);
+			    	}
 
 				}else if(messageType == 'editCreateParam'){
 					var idParam = e.data[1];

@@ -359,18 +359,34 @@ function evalUserCodeAceIframe(idEditor, idDivParamsCodeBox, idIframe, idInputRe
     var code = editor.getValue();
 
     /*
+    	Comprobamos si el código contiene operaciones no permitidas. Estas son:
+    		alert(
+    		ajax.
+    		window.
+    		location.
+    		eval(
+	*/
+
+	var rexExp = new RegExp("(?:^|\W)(eval)|(alert)|(window.)|(location.)|(ajax)(?:$|\W)");
+	var invalidCode = rexExp.test(code);
+
+
+    /*
     	Recuperamos los valores actuales de los parámetros de la caja de código
 		para mandarlos al iframe
     */
-    setParametersIframe(idDivParamsCodeBox, idIframe);
-    
+    if(!invalidCode){
+	    setParametersIframe(idDivParamsCodeBox, idIframe);   
 
-	//Una vez seteados los parámetros en el iframe, ejecutamos el código en él
-	data = ['evalCode', code, idInputResultado];
+		//Una vez seteados los parámetros en el iframe, ejecutamos el código en él
+		data = ['evalCode', code, idInputResultado];
 
-	var sandboxedFrame = document.getElementById(idIframe);
+		var sandboxedFrame = document.getElementById(idIframe);
 
-    sandboxedFrame.contentWindow.postMessage(data, '*');
+	    sandboxedFrame.contentWindow.postMessage(data, '*');
+	}else{
+		alert("El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval");
+	}
 }
 
 function addNewParameter(idParameterDiv,idButtonParameter,idBox){
@@ -703,7 +719,7 @@ function editExerciseInfo(){
             $('#category').val(newCategoryId);
             $('#category_disabled').val(newCategory);
             console.log("success"); // another sanity check
-            
+            document.getElementById("notificaciones-holder").className = "alert-success";
             $('#notification-text').text('Editado correctamente');
             $('#notificaciones-holder').slideDown();
             
@@ -719,7 +735,7 @@ function editExerciseInfo(){
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            document.getElementById("notificaciones-holder").className = "alert-danger";
             $('#notification-text').text('Error al editar');
             $('#notificaciones-holder').show();
 
@@ -744,72 +760,102 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 	var editor = ace.edit(idEditor);
     var contentCode = editor.getValue();
 
-	console.log("Recuperado idNotebook: "+idNotebook);
-	console.log("Recuperado boxOrder: "+boxOrder);
-	console.log("Recuperado código: "+contentCode);
-	console.log("Recuperado idBox: "+idBox);
+    //Validar que el código no contiene funciones no permitidas
+    var rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+	var invalidCode = rexExp.test(contentCode);
+	if(!invalidCode){
 
-	$.ajax({
-        url : "/web/createUpdateCodeBoxAjax", // the endpoint
-        type : "POST", // http method
-        data : {
-        'idNotebook': idNotebook,
-        'boxOrder': boxOrder,
-        'contentCode': contentCode,
-        'idBox': idBox,
-        }, // data sent with the post request
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
-            
-			//Se comprueba si el box ha sido creado o actua
-            var updateBox = json['updateBox'];
-            if(updateBox){
-            	$('#notification-text').text('Box editada correctamente');
-            }else{
-            	$('#notification-text').text('Box creada correctamente');
-            }
+		console.log("Recuperado idNotebook: "+idNotebook);
+		console.log("Recuperado boxOrder: "+boxOrder);
+		console.log("Recuperado código: "+contentCode);
+		console.log("Recuperado idBox: "+idBox);
 
-            $('#notificaciones-holder').slideDown();
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+		$.ajax({
+		    url : "/web/createUpdateCodeBoxAjax", // the endpoint
+		    type : "POST", // http method
+		    data : {
+		    'idNotebook': idNotebook,
+		    'boxOrder': boxOrder,
+		    'contentCode': contentCode,
+		    'idBox': idBox,
+		    }, // data sent with the post request
+		    // handle a successful response
+		    success : function(json) {
+		        console.log(json); // log the returned json to the console
+		        //alert("Notebook editado correctamente");
+		        //Actualización de los campos
+		        console.log("success"); // another sanity check
+		        //$("#getCodeModal").modal('show');
+		        
+				//Se comprueba si el box ha sido creado o actua
+		        var updateBox = json['updateBox'];
+		        if(updateBox){
+		        	$('#notification-text').text('Box editada correctamente');
+		        }else{
+		        	$('#notification-text').text('Box creada correctamente');
+		        }
+		        document.getElementById("notificaciones-holder").className = "alert-success";
+		        $('#notificaciones-holder').slideDown();
+		        setTimeout(
+		          function() 
+		          {
+		            $('#notificaciones-holder').slideUp();
+		          }, 2000);
 
-            //Activar el botón de añadir parámetros para esa caja de código
-            //Recuperar id box
-            var idBox = json['savedBoxId'];
-            //Actualizar el campo idbox, por si se está creando
-            $('#'+idHiddenIdBox).val(idBox);
+		        //Activar el botón de añadir parámetros para esa caja de código
+		        //Recuperar id box
+		        var idBox = json['savedBoxId'];
+		        //Actualizar el campo idbox, por si se está creando
+		        $('#'+idHiddenIdBox).val(idBox);
 
-            $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+		        $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
 
-            //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
+		        //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
 
-            //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
-        },
+		        //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
+		    },
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al editar');
-            $('#notificaciones-holder').show();
+		    // handle a non-successful response
+		    error : function(xhr,errmsg,err) {
+		        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+		            " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+		        //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
+		        $('#notification-text').text('Error al editar');
+		        rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+				invalidCode = rexExp.test(contentCode);
+				document.getElementById("notificaciones-holder").className = "alert-danger";
+
+			    /*
+			    	Recuperamos los valores actuales de los parámetros de la caja de código
+					para mandarlos al iframe
+			    */
+			    if(invalidCode){
+			    	$('#notification-text').text('El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval');
+			    	$('#notificaciones-holder').show();
+			        setTimeout(
+			          function() 
+			          {
+			            $('#notificaciones-holder').hide();
+			          }, 5000);
+
+			    }else{
+			    	$('#notificaciones-holder').show();
+			        setTimeout(
+			          function() 
+			          {
+			            $('#notificaciones-holder').hide();
+			          }, 2000);
+			    }
+		        
+
+		        
+		    }
+		});
+	}else{
+		alert("El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval");
+	}
 
 }
 
@@ -858,6 +904,8 @@ function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,
             	$('#notification-text').text('Parámetro creado correctamente');
             }
 
+            document.getElementById("notificaciones-holder").className = "alert-success";
+
             $('#notificaciones-holder').slideDown();
             
             setTimeout(
@@ -885,7 +933,7 @@ function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            document.getElementById("notificaciones-holder").className = "alert-danger";
             $('#notification-text').text('Error al editar');
             $('#notificaciones-holder').show();
 
@@ -938,7 +986,7 @@ function createUpdateImageBox(idHiddenIdNotebook, idHiddenOrder, idUrlInput, idH
             }else{
             	$('#notification-text').text('Caja de ilustración creada correctamente');
             }
-            
+            document.getElementById("notificaciones-holder").className = "alert-success";
             $('#notificaciones-holder').slideDown();
             
             setTimeout(
@@ -963,7 +1011,7 @@ function createUpdateImageBox(idHiddenIdNotebook, idHiddenOrder, idUrlInput, idH
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            document.getElementById("notificaciones-holder").className = "alert-danger";
             $('#notification-text').text('Error al editar');
             $('#notificaciones-holder').show();
 
@@ -1015,7 +1063,7 @@ function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idH
             }else{
             	$('#notification-text').text('Box creada correctamente');
             }
-            
+            document.getElementById("notificaciones-holder").className = "alert-success";
             $('#notificaciones-holder').slideDown();
             
             setTimeout(
@@ -1036,7 +1084,7 @@ function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idH
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            document.getElementById("notificaciones-holder").className = "alert-danger";
             $('#notification-text').text('Error al editar');
             $('#notificaciones-holder').show();
 
@@ -1079,7 +1127,7 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Caja de código borrada correctamente');
 
@@ -1100,7 +1148,7 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1150,7 +1198,7 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Box borrada correctamente');
 
@@ -1171,7 +1219,7 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1215,7 +1263,7 @@ function deleteParam(idDivParam,idPkParam){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Parámetro borrado correctamente');
 
@@ -1236,7 +1284,7 @@ function deleteParam(idDivParam,idPkParam){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1285,7 +1333,7 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Box borrada correctamente');
 
@@ -1306,7 +1354,7 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 

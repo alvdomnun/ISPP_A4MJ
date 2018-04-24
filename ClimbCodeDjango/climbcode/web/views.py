@@ -164,7 +164,14 @@ def register_school(request):
             teachingType = form.cleaned_data["teachingType"]
             identificationCode = form.cleaned_data["identificationCode"]
 
-            # Persiste el User Model (inactivo hasta el pago con Paypal)
+            # Comprueba si existe ya usuario con estos datos
+            existingUser = User.objects.filter(username = username)
+            if (existingUser.count() > 0):
+                # Si existe es una escuela "bloqueada" -> La elimina
+                if not(existingUser[0].is_active) and not(existingUser[0].actor.school.isPayed):
+                    existingUser[0].delete()
+
+            # Crea y persiste el User Model (inactivo hasta el pago con Paypal)
             user = User.objects.create_user(username, email, password)
             user.first_name = first_name
             user.last_name = last_name

@@ -94,7 +94,11 @@ class RegisterSchoolForm(forms.Form):
             username = self.cleaned_data["username"]
             num_usuarios = User.objects.filter(username = username).count()
             if (num_usuarios > 0):
-                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+                # Busca el usuario por username
+                user = User.objects.filter(username = username)
+                # Si es programador o es una escuela ya activada, error de username ocupado
+                if (hasattr(user[0].actor, 'programmer')) or (hasattr(user[0].actor, 'school') and user[0].actor.school.isPayed):
+                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, elija otro para completar su registro.")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]

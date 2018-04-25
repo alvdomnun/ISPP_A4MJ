@@ -1,23 +1,30 @@
 import datetime
+import os
+from datetime import date, timedelta
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.forms.utils import ErrorList
-from django.http import HttpResponseRedirect, HttpRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
-    EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, EditStudentProfile
+from django.urls.base import reverse
+
+from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, \
+    user_school_license_active, user_is_teacher
+from actors.forms import EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, \
+    EditStudentProfile
 from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
     EditSelfTeacherForm, EditSelfTeacherPassForm
+from actors.forms import RenovateLicenseForm
+from actors.forms import RenovateLicensePaymentForm
 from actors.models import Teacher, School, Student
-from subjects.models import Subject
-from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_programmer, user_is_student, user_is_school
+from climbcode import settings
+from licenses.models import License
+from licenses.models import LicenseType
 
-
-# Edición del perfil propio profesor ------------------------------------------------------------------
 
 @login_required(login_url='/login/')
+@user_is_teacher
 def edit_self_teacher(request):
     teacher_aux = request.user
 
@@ -49,7 +56,7 @@ def edit_self_teacher(request):
 
             teacher.save()
 
-            return HttpResponseRedirect('/actors/teachers/list')
+            return HttpResponseRedirect('/')
 
     else:
         form = EditSelfTeacherForm()
@@ -63,6 +70,7 @@ def edit_self_teacher(request):
     return render(request, 'teachers/self_edit.html', data)
 
 @login_required(login_url='/login/')
+@user_is_teacher
 def edit_self_teacher_pass(request):
     teacher_aux = request.user
 
@@ -111,220 +119,21 @@ def edit_self_teacher_pass(request):
 
     return render(request, 'teachers/self_edit_pass.html', data)
 
-# -----------------------------------------------------------------------------------------------------
-
-# Gestión de alumnos y profesores (como escuela) ------------------------------------------------------
-
-#Para profesores
 @login_required(login_url='/login/')
-def remove_subject_aux(request):
-
-    try:
-        School.objects.get(userAccount_id=request.user.id)
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    pk1 = request.GET.get('pk1')
-    pk2 = request.GET.get('pk2')
-    teacher = get_object_or_404(Teacher, pk=pk1)
-
-    try:
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    new_subjects = Subject.objects.filter(teacher__userAccount_id=teacher.userAccount_id) \
-        .exclude(pk=pk2)
-
-    teacher.subjects.set(new_subjects)
-
-    teacher.save()
-
-    return HttpResponseRedirect('/actors/teachers/list')
-
-#Para estudiantes
-@login_required(login_url='/login/')
-def remove_subject_aux2(request):
-
-    try:
-        School.objects.get(userAccount_id=request.user.id)
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    pk1 = request.GET.get('pk1')
-    pk2 = request.GET.get('pk2')
-    student = get_object_or_404(Student, pk=pk1)
-
-    try:
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    new_subjects = Subject.objects.filter(teacher__userAccount_id=student.userAccount_id) \
-        .exclude(pk=pk2)
-
-    student.subjects.set(new_subjects)
-
-    student.save()
-
-    return HttpResponseRedirect('/actors/students/list')
-
-#Para profesores
-@login_required(login_url='/login/')
-def add_subject_aux(request):
-
-    try:
-        School.objects.get(userAccount_id=request.user.id)
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    pk1 = request.GET.get('pk1')
-    pk2 = request.GET.get('pk2')
-    teacher = get_object_or_404(Teacher, pk=pk1)
-    subject = Subject.objects.filter(pk=pk2)
-
-    try:
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    t_subjects = Subject.objects.filter(teacher__userAccount_id=teacher.userAccount_id)
-
-    new_subjects = subject | t_subjects
-    teacher.subjects.set(new_subjects)
-
-    teacher.save()
-
-    return HttpResponseRedirect('/actors/teachers/list')
-
-#Para estudiantes
-@login_required(login_url='/login/')
-def add_subject_aux2(request):
-
-    pk1 = request.GET.get('pk1')
-    pk2 = request.GET.get('pk2')
-
-    student = get_object_or_404(Student, pk=pk1)
-    subject = Subject.objects.filter(pk=pk2)
-
-    try:
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-    s_subjects = Subject.objects.filter(student__userAccount_id=student.userAccount_id)
-
-    new_subjects = subject | s_subjects
-    student.subjects.set(new_subjects)
-
-    student.save()
-
-    return HttpResponseRedirect('/actors/students/list')
-
-@login_required(login_url='/login/')
-def add_subject_teacher(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
-    teachers = Teacher.objects.filter(pk=pk)
-
-    user = request.user
-
-    try:
-        school = School.objects.get(userAccount_id=user.id)
-        subjects_aux = Subject.objects.filter(school_id=school.userAccount_id)
-        school_subjects_aux = Subject.objects.filter(school_id=school.userAccount_id) \
-            .exclude(teacher__in=teachers)
-
-        if teacher.school_t_id != school.userAccount_id:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        print(e)
-        return HttpResponseRedirect('/')
-
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(school_subjects_aux, 6)
-
-    try:
-        school_subjects = paginator.page(page)
-    except PageNotAnInteger:
-        school_subjects = paginator.page(1)
-    except EmptyPage:
-        school_subjects = paginator.page(paginator.num_pages)
-
-    data = {
-        'school_subjects': school_subjects,
-        'teacher': teacher,
-        'title': 'Asignar asignaturas',
-        'subjects_aux': subjects_aux,
-    }
-
-    return render(request, 'teachers/add_subjects.html', data)
-
-@login_required(login_url='/login/')
-def add_subject_student(request, pk):
-    student = Student.objects.get(pk=pk)
-    students = Student.objects.filter(pk=pk)
-
-    user = request.user
-
-    try:
-        school = School.objects.get(userAccount_id=user.id)
-        school_subjects_aux = Subject.objects.filter(school=school)\
-            .exclude(student__in=students)
-        subjects_aux = Subject.objects.filter(school=school)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
-
-    page = request.GET.get('page', 1)
-    paginator = Paginator(school_subjects_aux, 6)
-
-    try:
-        school_subjects_aux = paginator.page(page)
-    except PageNotAnInteger:
-        school_subjects_aux = paginator.page(1)
-    except EmptyPage:
-        school_subjects_aux = paginator.page(paginator.num_pages)
-
-    data = {
-        'school_subjects': school_subjects_aux,
-        'student': student,
-        'title': 'Asignar asignaturas',
-        'subjects_aux': subjects_aux,
-    }
-
-    return render(request, 'students/add_subjects.html', data)
-
-@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def list_teachers(request):
     user = request.user
 
+    school = School.objects.get(userAccount_id=user.id)
+
     try:
-        school = School.objects.get(userAccount_id=user.id)
+
         teacher_list_aux = Teacher.objects.filter(school_t=school)
+
     except Exception as e:
-        return HttpResponseRedirect('/')
+
+        teacher_list_aux = Teacher.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(teacher_list_aux, 6)
@@ -343,19 +152,15 @@ def list_teachers(request):
     return render(request, 'teachers/list.html', data)
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def delete_teacher(request, pk):
+
     teacher = get_object_or_404(Teacher, pk=pk)
+    school = School.objects.get(userAccount_id=request.user.id)
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
+    if teacher.school_t_id != school.pk:
+        return HttpResponseForbidden()
 
     if request.method == 'POST':
         teacher.delete()
@@ -364,19 +169,18 @@ def delete_teacher(request, pk):
     return render(request, 'teachers/delete.html', {'teacher':teacher})
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def edit_teacher(request, pk):
+
     teacher = get_object_or_404(Teacher, pk=pk)
+    school = School.objects.get(userAccount_id=request.user.id)
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if teacher.school_t_id != school.pk:
+        return HttpResponseForbidden()
 
     assert isinstance(request, HttpRequest)
+
     userAccount = get_object_or_404(User, pk=teacher.userAccount_id)
 
     if (request.method == 'POST'):
@@ -431,18 +235,14 @@ def get_license_school(school):
         False
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def register_teacher(request):
     current_school = request.user
 
-    try:
-
-        school = School.objects.get(userAccount_id=current_school.id)
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    school = School.objects.get(userAccount_id=current_school.id)
 
     form = RegisterStudentForm(user=request.user)  # Si se pone debajo con el else da error
-    subjects = form.fields['subjects'].choices
 
     if (request.method == 'POST'):
         form = RegisterTeacherForm(request.POST, request.FILES, user=request.user)
@@ -465,7 +265,6 @@ def register_teacher(request):
             phone = form.cleaned_data["phone"]
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
-            subjects = form.cleaned_data["subjects"]
 
             # Decremento de 1 en los usuarios de la licencia de la escuela
             license.numUsers = license.numUsers - 1
@@ -476,8 +275,7 @@ def register_teacher(request):
             try:
                 school = School.objects.get(userAccount_id=current_school.id)
                 teacher = Teacher.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_t=school)
-                # Asignación de las asignaturas
-                teacher.subjects.set(subjects)
+
             except Exception as e:
                 teacher = Teacher.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount)
 
@@ -491,20 +289,26 @@ def register_teacher(request):
     data = {
         'form': form,
         'title': 'Registrar profesor',
-        'subjects': subjects,
     }
 
     return render(request, 'teachers/register.html', data)
 
 @login_required(login_url='/login/')
+@school_license_active
+@user_is_school
 def list_students(request):
     user = request.user
 
+    school = School.objects.get(userAccount_id=user.id)
+
     try:
-        school = School.objects.get(userAccount_id=user.id)
+
         student_list_aux = Student.objects.filter(school_s=school)
+
     except Exception as e:
-        return HttpResponseRedirect('/')
+
+        student_list_aux = Student.objects.none()
+
 
     page = request.GET.get('page', 1)
     paginator = Paginator(student_list_aux, 6)
@@ -523,18 +327,14 @@ def list_students(request):
     return render(request, 'students/list.html', data)
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def register_student(request):
     current_school = request.user
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    school = School.objects.get(userAccount_id=request.user.id)
 
     form = RegisterStudentForm(user=request.user)# Si se pone debajo con el else da error
-    subjects = form.fields['subjects'].choices
 
     if (request.method == 'POST'):
         form = RegisterStudentForm(request.POST, request.FILES, user=request.user)
@@ -556,7 +356,6 @@ def register_student(request):
             phone = form.cleaned_data["phone"]
             photo = form.cleaned_data["photo"]
             dni = form.cleaned_data["dni"]
-            subjects = form.cleaned_data["subjects"]
 
             # Decremento de 1 en los usuarios de la licencia de la escuela
             license.numUsers = license.numUsers - 1
@@ -568,8 +367,6 @@ def register_student(request):
                 school = School.objects.get(userAccount_id=current_school.id)
                 student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount, school_s=school)
 
-                # Asignación de las asignaturas
-                student.subjects.set(subjects)
             except Exception as e:
                 student = Student.objects.create(phone=phone, photo=photo, dni=dni, userAccount=userAccount)
 
@@ -580,26 +377,24 @@ def register_student(request):
     data = {
         'form': form,
         'title': 'Registrar estudiante',
-        'subjects': subjects,
     }
 
     return render(request, 'students/register.html', data)
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def edit_student(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
 
-    try:
+    school = School.objects.get(userAccount_id=request.user.id)
 
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if student.school_s_id != school.pk:
+        return HttpResponseForbidden()
 
     assert isinstance(request, HttpRequest)
+
     userAccount = get_object_or_404(User, pk=student.userAccount_id)
 
     if (request.method == 'POST'):
@@ -637,18 +432,16 @@ def edit_student(request, pk):
     return render(request, 'students/edit.html', data)
 
 @login_required(login_url='/login/')
+@user_is_school
+@school_license_active
 def delete_student(request, pk):
+
     student = get_object_or_404(Student, pk=pk)
 
-    try:
+    school = School.objects.get(userAccount_id=request.user.id)
 
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if student.school_s_id != school.pk:
+        return HttpResponseForbidden()
 
     if request.method == 'POST':
         student.delete()
@@ -753,6 +546,7 @@ def edit_pass_programmer(request):
     return render(request, 'programmers/editProgrammerPass.html', data)
 
 @login_required(login_url='/login/')
+@school_license_active
 @user_is_school
 def edit_profile_school(request):
     """
@@ -815,9 +609,9 @@ def edit_profile_school(request):
 
     return render(request, 'schools/editSchoolProfile.html', data)
 
-
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def edit_pass_school(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -858,6 +652,7 @@ def edit_pass_school(request):
 
 @login_required(login_url='/login/')
 @user_is_student
+@user_school_license_active
 def edit_profile_student(request):
     """
     Edición del perfil Student
@@ -914,9 +709,9 @@ def edit_profile_student(request):
 
     return render(request, 'students/editStudentProfile.html', data)
 
-
 @login_required(login_url='/login/')
 @user_is_student
+@user_school_license_active
 def edit_pass_student(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -954,3 +749,182 @@ def edit_pass_student(request):
     }
 
     return render(request, 'students/editStudentPass.html', data)
+
+@login_required(login_url='/login/')
+@user_is_school
+@user_school_license_active
+def detail_active_license(request):
+    """ Obtiene la licencia activa de la escuela """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    school = request.user.actor.school
+
+    # Obtiene la licencia activa de la escuela
+    today = datetime.date.today()
+    license = school.license_set.filter(endDate__gte = today)
+
+    # Si hay licencia activa, pantalla de detalle
+    if (license.count() > 0):
+        license = license.first()
+        # Datos del modelo (vista)
+        data = {
+            'school': school,
+            'license': license,
+            'date': date.today()
+        }
+
+        return render(request, 'schools/licenseDisplay.html', data)
+
+    # Si no hay licensia activa, formulario de renovación
+    else:
+        form = RenovateLicenseForm()
+        license = None   
+        licenseTypes = LicenseType.objects.all().order_by('price')
+
+        # Datos del modelo (vista)
+        data = {
+            'form': form,
+            'school': school,
+            'license': license,
+            'licenseTypes': licenseTypes,
+            'date': date.today()
+        }
+
+        return render(request, 'schools/licenseRenovation.html', data)
+
+@login_required(login_url='/login/')
+@user_is_school
+def license_renovation(request):
+    """
+	Renovación de la licencia de una escuela
+	"""
+    assert isinstance(request, HttpRequest)
+
+    # Si se ha enviado el Form debe ser por POST
+    if (request.method == 'POST'):
+        form = RenovateLicenseForm(request.POST)
+        if (form.is_valid()):
+            # Licencia Tipo
+            licenseType = form.cleaned_data["licenseType"]
+            # Crear la licencia específica en funcion de la licencia tipo (licenseType) y si ha añadido usuarios extras
+            licenseType = LicenseType.objects.filter(id = licenseType.id)[0]
+            licenseNumUsers = form.cleaned_data["numUsers"]
+            licensePrice = getFinalPrice(licenseType, licenseNumUsers)
+
+            # Escuela
+            school = request.user.actor.school
+
+            # Crea solo la fecha de inicio, dejando la fecha de fin a None (inactiva)
+            today = date.today()
+            # Guarda la licencia asociándola a la escuela que renueva
+            license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
+                licenseType = licenseType, school = school)
+
+            paymentData = {
+                'school': school,
+                'license': license,
+                'date': date.today()
+            }
+
+            return render(request, 'schools/renovationPayment.html', paymentData)
+
+        # Si la validación falla cargo de nuevo la vista
+        else:
+            school = request.user.actor.school
+            license = None   
+            licenseTypes = LicenseType.objects.all().order_by('price')
+
+            # Datos del modelo (vista)
+            data = {
+                'form': form,
+                'school': school,
+                'license': license,
+                'licenseTypes': licenseTypes,
+                'date': date.today()
+            }
+
+            return render(request, 'schools/licenseRenovation.html', data)
+            #return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+    # Solo se permite acceso vía POST
+    else:
+        return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+@login_required(login_url='/login/')
+@user_is_school
+def license_renovation_paypal(request):
+    """
+    Controla el pago del usuario
+    """
+    assert isinstance(request, HttpRequest)
+
+    # Si se ha enviado el Form
+    if (request.method == 'POST'):
+        form = RenovateLicensePaymentForm(request.POST)
+        if (form.is_valid()):
+            # Extrae valores y activa el usuario si el pago ha sido correcto
+            school = form.cleaned_data["school"]
+            license = form.cleaned_data["license"]
+            licensePrice = form.cleaned_data["licensePrice"]
+            payment = form.cleaned_data["payment"]
+
+            # Obtiene la licencia y la escuela a partir de los Ids que trae el form
+            school = School.objects.filter(pk = school).first()
+            license = License.objects.filter(id = license).first()
+
+            # Si el pago se ha ejecutado correctamente, se activa la licencia
+            if (payment == 1):
+                license.endDate = license.startDate + timedelta(days=365)
+                license.save()
+
+                return HttpResponseRedirect(reverse('display_license', kwargs={}))
+
+            # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
+            else:
+                paymentData = {
+                    'school': school,
+                    'license': license,
+                    'date': date.today()
+                }
+
+                return render(request, 'schools/renovationPayment.html', paymentData)
+        else:
+            # Si el form no es válido, Forbidden
+            return HttpResponseForbidden()
+    
+    # Si el request no es un POST con el pago, Forbidden
+    return HttpResponseForbidden()
+
+@login_required(login_url='/login/')
+@user_is_school
+def autorization_display(request):
+    file_path = os.path.join(settings.STATICFILES_DIRS[0],'Autorization.pdf')
+    documentReader = open(file_path, "rb").read()
+
+    return HttpResponse(documentReader, content_type="application/pdf")
+
+
+####################################################    PRIVATE     METHODS     #################################################################
+
+def getFinalPrice(license, numUsers):
+    """
+    Calcula el precio final de la licencia a partir del tipo básico y el número de usuarios final
+    """
+
+    # Valida que el número de usuarios solicitado sea mayor que el mínimo exigido por la licencia
+    if (license.numUsers > numUsers):
+        return HttpResponseForbidden()
+
+    # Precio unitario de cada usuario extra para la licencia escogida
+    unitPricePerUser = round((license.price / license.numUsers), 2)
+    # Número de usuarios extras añadidos
+    extraUsers = numUsers - license.numUsers
+
+    # Precio final = Precio por defecto + (Nº Usuarios Extra * CosteUnitario)
+    res = license.price + (unitPricePerUser * extraUsers)
+
+    return res

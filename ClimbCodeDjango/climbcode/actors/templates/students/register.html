@@ -1,4 +1,4 @@
-{% extends 'welcome/welcome-base.html' %}
+{% extends 'base/base.html' %}
 
 <!-- CONTENIDO -->
 {% block content %}
@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-xs-6 col-md-6 form-group">
                         <label for="phone" class="control-label">Tel&#233;fono</label>
-                        <input type="text" maxlength="11" class="form-control" name="phone" id="phone" placeholder="Tel&#233;fono" value="{{ form.phone.value|default:"" }}" required/>
+                        <input type="text" maxlength="9" class="form-control" name="phone" id="phone" placeholder="Tel&#233;fono" value="{{ form.phone.value|default:"" }}" required/>
                     </div>
                 </div>
                 <div class="row">
@@ -64,16 +64,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                        <div class="col-xs-6 col-md-6 form-group">
-                            <label for="subjects" class="control-label">Seleccione asignaturas</label>
-                            <select multiple class="form-control" id="subjects" name="subjects" >
-                                {% for subject in subjects %}
-                                    <option value="{{ subject.0 }}">{{ subject.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                </div>
                 <!-- Tratamiento de Errores -->
                 {% if form.errors %}
                     {% for field in form %}

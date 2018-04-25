@@ -14,3 +14,4 @@ ClimbCodeDjango/climbcode/*.pyproj
 ClimbCodeDjango/climbcode/*.pyproj.user
 ClimbCodeDjango/climbcode/*.sln
 ClimbCodeDjango/climbcode/*.sqlite3
+ClimbCodeDjango/static/**

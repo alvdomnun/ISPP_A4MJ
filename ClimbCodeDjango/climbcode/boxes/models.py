@@ -14,7 +14,7 @@ class Box(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.order
+        return str(self.order)
 
     class Meta:
         verbose_name_plural = "Boxes"
@@ -36,7 +36,7 @@ class Text(Box):
     content = models.TextField(default="")
 
     def __str__(self):
-        return '( ' + self.order + ' ) ' + self.exercise.title
+        return '( ' + str(self.order) + ' ) ' + self.exercise.title
 
     class Meta:
         verbose_name = "Texto"
@@ -52,7 +52,7 @@ class Code(Box):
     content = models.TextField(default="")
 
     def __str__(self):
-        return '( ' + self.order + ' ) ' + self.exercise.title
+        return '( ' + str(self.order) + ' ) ' + self.exercise.title
 
     class Meta:
         verbose_name = "Código"
@@ -69,7 +69,7 @@ class Picture(Box):
     url = models.TextField(default="")
 
     def __str__(self):
-        return '( ' + self.order + ' ) ' + self.exercise.title
+        return '( ' + str(self.order) + ' ) ' + self.exercise.title
 
     class Meta:
         verbose_name = "Ilustración"
@@ -89,7 +89,7 @@ class Parameter(models.Model):
     code = models.ForeignKey('boxes.Code', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     class Meta:
         verbose_name = "Parámetro"

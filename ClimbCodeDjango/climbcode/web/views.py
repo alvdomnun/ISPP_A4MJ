@@ -165,11 +165,18 @@ def register_school(request):
             teachingType = form.cleaned_data["teachingType"]
             identificationCode = form.cleaned_data["identificationCode"]
 
-            # Persiste el User Model (inactivo hasta el pago con Paypal)
+            # Comprueba si existe ya usuario con estos datos
+            existingUser = User.objects.filter(username = username)
+            if (existingUser.count() > 0):
+                # Si existe es una escuela "bloqueada" -> La elimina
+                if not(existingUser[0].is_active) and not(existingUser[0].actor.school.isPayed):
+                    existingUser[0].delete()
+
+            # Crea y persiste el User Model (inactivo hasta el pago con Paypal)
             user = User.objects.create_user(username, email, password)
             user.first_name = first_name
             user.last_name = last_name
-            #TODO : De momento se crean inactivos -> Habrá que activarlo tras el pago de Paypal
+            # Se crean inactivos -> Habrá que activarlo tras el pago de Paypal
             user.is_active = False
             user.save()
 
@@ -206,7 +213,7 @@ def register_school(request):
 
         # Datos del modelo (vista)
         provinces = Province.objects.all()
-        licenses = LicenseType.objects.all()
+        licenses = LicenseType.objects.all().order_by('price')
         types = form.fields['type'].choices
         teachingTypes = form.fields['teachingType'].choices
     
@@ -323,7 +330,6 @@ def editNotebook(request):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
             exercise = Exercise.objects.get(id=idNotebook)
-            print("El título del notebook recuperado es: "+exercise.title)
             if exercise is not None:
                 template = loader.get_template('notebook/edit_notebook_v1.html')
 
@@ -410,7 +416,6 @@ def publishNotebook(request):
         }
         return HttpResponse(template.render(context, request))
         
-
 def permisoEditNotebook(idNotebook,request):
     tienePermiso = False
     # recuperar actor logado, debe ser programador

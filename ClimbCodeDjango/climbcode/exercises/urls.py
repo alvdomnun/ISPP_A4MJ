@@ -3,6 +3,7 @@ from exercises import views
 
 urlpatterns = [
     path(r'buy/<int:exercise_id>', views.buy_exercise, name='buy_exercise'),
+    path(r'promote/<int:exercise_id>', views.promote_exercise, name='promote_exercise'),
 
     path('programmer/list', views.list_exercisesP, name='list_exercisesP'),
     path('programmer/own_list', views.list_own_exercisesP, name='list_own_exercisesP'),
@@ -12,6 +13,7 @@ urlpatterns = [
 
     path('teacher/list', views.list_exercisesT, name='list_exercisesT'),
     path('teacher/school_exercises', views.list_school_exercisesT, name='list_school_exercisesT'),
-    path('teacher/myExercises', views.list_own_exercisesT, name='list_own_exercisesT'),
+
+    path('student/school_exercises', views.list_school_exercisesST, name='list_school_exercisesST'),
 ]
 

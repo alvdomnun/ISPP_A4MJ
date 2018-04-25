@@ -413,13 +413,101 @@ def publishNotebook(request):
 
 def permisoEditNotebook(idNotebook,request):
     tienePermiso = False
-    #TODO MBC recuperar actor logado, debe ser programador
+    # recuperar actor logado, debe ser programador
     user = request.user
-    #TODO MBC recuperar notebook
+    # recuperar notebook
     exercise = Exercise.objects.get(id=idNotebook)
-    #TODO MBC comprobar que el notebook tiene como id del programador al logado
+    # comprobar que el notebook tiene como id del programador al logado
     tienePermiso = exercise.programmer.actor_ptr_id == user.id
     return tienePermiso
+
+def permisoViewNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    if hasattr(request.user.actor, 'school'):
+        # Comprobar que la escuela ha adquirido el ejercicio
+        idSchool = request.user.actor.school.actor_ptr_id
+        school = request.user.actor.school
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+    elif hasattr(request.user.actor, 'programmer'):
+        programmerId = request.user.actor.programmer.actor_ptr_id
+        tienePermiso = exercise.programmer.actor_ptr_id == user.id
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+
+    exercise = Exercise.objects.get(id=idNotebook)
+    return tienePermiso
+
+def isSchoolAdquiredExercise(exerciseParam,school):
+    exerciseAdquired = False
+    exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
+    for exercise in exercise_list:
+        if exercise == exerciseParam:
+            exerciseAdquired = True
+            break
+    return exerciseAdquired
+
+# Visualización notebook para escuelas, profesores y alumnos
+
+def showNotebook(request):
+    #TODO Controlar los ataques por GET
+    print("Showing notebook")
+    if request.method == 'GET':
+        # Petición de edición de notebook existente
+        idNotebook = request.GET.get('idNotebook')
+        exercise = Exercise.objects.get(id=idNotebook)
+        # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
+        if (permisoViewNotebook(idNotebook,request) and exercise.draft == False):
+            print("El título del notebook recuperado es: "+exercise.title)
+            if exercise is not None:
+                template = loader.get_template('notebook/show_notebook.html')
+                boxesText = Text.objects.filter(exercise=exercise)
+                boxesView = []
+                for box in boxesText:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',contentEscape)
+                    boxesView.append(boxTextView)
+
+                boxesCode = Code.objects.filter(exercise=exercise)
+                for box in boxesCode:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    paramtersCode = Parameter.objects.filter(code=box)
+                    parameters = []
+                    for parameter in paramtersCode:
+                        parameters.append(parameter)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters)
+                    boxesView.append(boxCodeView)
+
+                boxesPicture = Picture.objects.filter(exercise=exercise)
+                for box in boxesPicture:
+                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.url)
+                    boxesView.append(boxPictureView)
+
+                boxesView.sort(key=lambda x: x.order, reverse=False)
+                form = ExerciseForm()
+
+                # Datos del modelo (vista)
+                categories = DefaultSubject.objects.all()
+                levels = form.fields['level'].choices
+
+                context = {
+                    'exercise':exercise,
+                    'boxesView':boxesView,
+                    'levels':levels,
+                    'categories':categories
+                }
+                return HttpResponse(template.render(context, request))
+        else:
+            if (not permisoEditNotebook(idNotebook,request)):
+                template = loader.get_template('notebook/notebook_no_permiso.html')
+                context = {
+                }
+                return HttpResponse(template.render(context, request))
 
 
 ### Llamadas ajax

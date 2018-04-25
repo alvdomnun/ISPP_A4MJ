@@ -341,7 +341,7 @@ def editNotebook(request):
                     parameters = []
                     for parameter in paramtersCode:
                         parameters.append(parameter)
-                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters,box.idGraphic)
                     boxesView.append(boxCodeView)
 
                 boxesPicture = Picture.objects.filter(exercise=exercise)
@@ -796,13 +796,14 @@ def publishExercise(idExercise):
     exercise.save()
 
 class BoxView:
-    def __init__(self, id, idExercise, order, type, content, parameters=None):
+    def __init__(self, id, idExercise, order, type, content, parameters=None, idGraphic=None):
         self.id = id
         self.idExercise = idExercise
         self.order = order
         self.type = type
         self.content = content
         self.parameters = parameters
+        self.idGraphic = idGraphic
 
 def paypalTransaction(request):
     """
@@ -873,3 +874,54 @@ def getFinalPrice(license, numUsers):
 
     return res
 
+
+# Create code param
+@csrf_exempt
+def createUpdateCodeIdGraphicAjax(request):
+    print("Creating code param for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idBox = request.POST.get('idBox')
+        idGraphic = request.POST.get('idGraphic')
+
+        #TODO MBC VALIDAR CAMPOS
+        updateCodeIdGrap = updateCodeIdGraphic(idBox,idGraphic)
+
+        data = {
+        }
+        return JsonResponse(data)
+
+@csrf_exempt
+def deleteIdGraphicAjax(request):
+    print("Deleting id graphic for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        if idBox is not None and idBox>0:
+           deleteCodeIdGraphic(idBox)
+
+        data = {
+        }
+        return JsonResponse(data)
+
+# Update id graphic box
+def updateCodeIdGraphic(idBox,idGraphic):
+    #TODO MBC VALIDAR QUE EL NOTEBOOK PERTENECE AL USUARIO LOGADO
+    codeBox = Code.objects.get(id=idBox)
+    codeBox.idGraphic = idGraphic
+    codeBox.save()
+    return codeBox
+
+# Update code box
+def deleteCodeIdGraphic(idBox):
+    #TODO MBC VALIDAR QUE EL NOTEBOOK PERTENECE AL USUARIO LOGADO
+    codeBox = Code.objects.get(id=idBox)
+    codeBox.idGraphic = ''
+    codeBox.save()
+    return codeBox

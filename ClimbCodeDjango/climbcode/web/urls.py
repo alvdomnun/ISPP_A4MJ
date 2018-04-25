@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^deleteParamAjax$', views.deleteParamAjax, name='deleteParamAjax'),
     url(r'^createUpdateImageBoxAjax$', views.createUpdateImageBoxAjax, name='createUpdateImageBoxAjax'),
     url(r'^deleteImageBoxAjax$', views.deleteImageBoxAjax, name='deleteImageBoxAjax'),
+    url(r'^createUpdateCodeIdGraphicAjax$', views.createUpdateCodeIdGraphicAjax, name='createUpdateCodeIdGraphicAjax'),
+    url(r'^deleteIdGraphicAjax$', views.deleteIdGraphicAjax, name='deleteIdGraphicAjax'),
 
     url(r'^iframe_notebook', TemplateView.as_view(template_name="notebook/iframe_notebook.html"),
                    name='iframe_notebook'),

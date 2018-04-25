@@ -95,10 +95,10 @@ function auto_grow(element) {
 }
 
 function addNewCodeBox(idNotebookContent,idNotebookBD){
-	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'');
+	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'',null);
 }
 
-function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart){
 
 	numBox++;
 	var idBox = "idBox"+numBox;
@@ -117,6 +117,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idAddParamButton = "id_add_parameter_button_"+numBox;
 	var idAddParamButtonParameter = "'id_add_parameter_button_"+numBox+"'";	
 	//Div Row Principal del contenido para concatenar la gráfica
+	var idAddGraphicButton = "id_add_graphic_button_"+numBox;
 	var idRowPrincipal = "id_code_box_row_"+idBox;
 	var idRowPrincipalParameter = "'id_code_box_row_"+idBox+"'";
 	//Div Col Add Delete Button Chart
@@ -198,10 +199,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                            '<h4>Resultado del código</h4>'+
 	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
 	                                            '<br><br>'+
-	                                            /*'<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
-	                                               'Añadir Gráfica'+
-	                                            '</button>'+*/
-	                                            '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\','+idBoxParameter+','+idColChartButtonsParameter+');">'+
+	                                            '<button id="'+idAddGraphicButton+'" type="submit" class="btn btn-primary" onclick="alert(\'Para añadir gráfica, guarde la caja de código.\')">'+
 	                                               'Añadir Gráfica'+
 	                                            '</button>'+
 	                                        '</div>'+
@@ -216,6 +214,16 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
                         '</div>';
 
 	$('#'+idNotebookContent).append(htmlCodeBox);
+
+    var haveChart = false;
+    if(idChart!=null && idChart!=''){
+        setTimeout(
+          function()
+          {
+            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart);
+          }, 1000);
+        haveChart = true;
+    }
 
 	var editor = ace.edit(idEditor);
     editor.getSession().setMode("ace/mode/javascript");
@@ -242,7 +250,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
         var form = $('#'+idFormBox);
-        createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton);
+        createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton,idRowPrincipalParameter,idBoxParameter,idColChartButtonsParameter,idAddGraphicButton,idIframe,haveChart);
     });
 
     //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
@@ -518,30 +526,65 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 
 }
 
-function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
+function addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart){
 
-	var idChart = "myChart_"+idBoxParameter;
+    var persistirGrafica = false;
+	if(idChart=='' || idChart==null){
+		idChart = "myChart_"+idBoxParameter;
+		persistirGrafica=true;
+	}
+
 
 	var idChartRow = idChart+'_row';
 
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
-	}
+    if(persistirGrafica){
+        $.ajax({
+            url : "/web/createUpdateCodeIdGraphicAjax", // the endpoint
+            type : "POST", // http method
+            data : {
+            'idBox': idBox,
+            'idGraphic': idChart,
+            }, // data sent with the post request
+            // handle a successful response
+            success : function(json) {
+                console.log(json); // log the returned json to the console
+                //alert("Notebook editado correctamente");
+                //Actualización de los campos
+                console.log("success"); // another sanity check
+                //$("#getCodeModal").modal('show');
+                //Se comprueba si el box ha sido creado o actua
+                addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
+                $('#notification-text').text('Gráfica creada correctamente');
 
-	var htmlChart = '<div class="col-md-12" id="'+idChartRow+'" style="height="300">'+
-						'<div class="row">'+
-							'<div class="col-md-12">'+
-								'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
-							'</div>'+	                    
-		                    '<div class="col-md-12">'+
-		                        '<canvas class="notebook-chart" id="'+idChart+'" width="auto" height="300"></canvas>'+
-		                    '</div>'+
-		                '</div>'+
-	                '</div>';
+                $('#notificaciones-holder').slideDown();
 
-	$('#'+idRowPrincipalParameter).append(htmlChart);
+                setTimeout(
+                  function()
+                  {
+                    $('#notificaciones-holder').slideUp();
+                  }, 2000);
 
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+                $('#notification-text').text('Error al editar');
+                $('#notificaciones-holder').show();
+
+                setTimeout(
+                  function()
+                  {
+                    $('#notificaciones-holder').hide();
+                  }, 2000);
+            }
+        });
+    }else{
+        addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
+    }
 	//Botón eliminar gráfica
 
 	//Quitamos previamente el botón de aceptar
@@ -549,68 +592,17 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 	$('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idChartRow+'\',\''+idRowPrincipalParameter+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
                                    'Eliminar Gráfica'+
                                 '</button>';
 
     $('#'+idColChartButtons).append(htmlDeleteChartButton);
 
-	//Mostrar la gráfica con valores por defecto
-
-	var ctx = document.getElementById(idChart);
-	var myChart = new Chart(ctx, {
-	    type: 'line',
-	    data: {
-	        labels: [],
-	        datasets: [{
-	            label: 'Nombre Gráfica',
-	            data: [],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)'
-	            ],
-	            borderColor: [
-	                'rgba(255,99,132,1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)'
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	    	chartArea: {
-		        backgroundColor: 'rgba(251, 255, 255, 0.4)',
-		    },
-	        maintainAspectRatio: false,
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                }
-	            }]
-	        }
-	    }
-	});
-
 }
 
-function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
-
-	var idChart = "myChart_"+idBoxParameter;
+function addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox){
 
 	var idChartRow = idChart+'_row';
-
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
-	}
 
 	//TODO LLAMAR AL IFRAME PARA CARGAR LA GRÁFICA
 
@@ -626,7 +618,7 @@ function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
 	$('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\');">'+
                                    'Eliminar Gráfica'+
                                 '</button>';
 
@@ -640,7 +632,7 @@ function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
 
 }
 
-function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons){
+function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons, idAddGraphicButton, idBox, idChart){
 
 	var sandboxedFrame = document.getElementById(idIframe);
     data = ['deleteChart'];
@@ -652,7 +644,7 @@ function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons){
     $('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlAddChartButton = '<button type="submit" class="btn btn-primary" onclick="addChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+	var htmlAddChartButton = '<button type="submit" class="btn btn-primary" onclick="addChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
                                    'Añadir Gráfica'+
                                 '</button>';
 
@@ -685,21 +677,66 @@ function editCreateParamIframe(idIframe, idParam, valueParam){
     sandboxedFrame.contentWindow.postMessage(data, '*');
   }
 
-function deleteChart(idChartRow,idRowPrincipalParameter,idBoxParameter,idColChartButtons){
+function deleteChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart){
 
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
+	mensajeConfirmacion = '¿Seguro que quiere eliminar esta gráfica?';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		$.ajax({
+	        url : "/web/deleteIdGraphicAjax", // the endpoint
+	        type : "POST", // http method
+	        data : {
+	        'idBox': idBox
+	        }, // data sent with the post request
+
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+				deleteChartIframe(idIframe, idBoxParameter, idColChartButtons, idAddGraphicButton, idBox, idChart);
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Gráfica borrada correctamente');
+
+	            $('#notificaciones-holder').slideDown();
+
+	            setTimeout(
+	              function()
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
+
+	            deleteElement(idAddGraphicButton);
+                $('#'+idColChartButtons+' button:last-child').remove();
+
+                var htmlAddChartButton = 	'<button id="'+idAddGraphicButton+'" type="submit" class="btn btn-primary" onclick="alert(\'Para añadir gráfica, guarde la caja de código.\')" >'+
+	                                               'Añadir Gráfica'+
+	                                        '</button>';
+
+                $('#'+idColChartButtons).append(htmlAddChartButton);
+	        },
+
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function()
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
 	}
-
-	$('#'+idColChartButtons+' button:last-child').remove();
-
-
-	var htmlAddChartButton = 	'<button type="submit" class="btn btn-primary" onclick="addChart(\''+idRowPrincipalParameter+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
-                            		'Añadir Gráfica'+
-                            	'</button>';
-
-    $('#'+idColChartButtons).append(htmlAddChartButton);
 
 }
 
@@ -788,7 +825,7 @@ function editExerciseInfo(){
 
 //AJAX para crear code box
 
-function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, idEditor, idAddParamButton, idDivParam, idDivParamButton){
+function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, idEditor, idAddParamButton, idDivParam, idDivParamButton, idRowPrincipalParameter, idBoxParameter, idColChartButtonsParameter,idAddGraphicButton,idIframe,haveChart){
 	console.log("Retrieving code box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var boxOrder = $('#'+idHiddenOrder).val();
@@ -826,7 +863,7 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 		        //Actualización de los campos
 		        console.log("success"); // another sanity check
 		        //$("#getCodeModal").modal('show');
-		        
+
 		        /*
             	Si no se está guardando el ejercicio como borrador o publicando, 
             	se muestra la notificación individual de la caja
@@ -854,6 +891,10 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 		        $('#'+idHiddenIdBox).val(idBox);
 
 		        $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+                //Si no posee gráfica cambiamos la funcionalidad del botón de añadir gráfica, de un alert a un añadir gráfica
+                if(!haveChart){
+                    $('#'+idAddGraphicButton).attr("onclick","addChart("+idBoxParameter+","+idColChartButtonsParameter+",\'"+idAddGraphicButton+"\',"+idBox+",\'"+idIframe+"\')");
+                }
 
 		        //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
 

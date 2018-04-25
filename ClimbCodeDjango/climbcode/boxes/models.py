@@ -50,6 +50,7 @@ class TextAdminPanel(BoxAdminPanel):
 class Code(Box):
     # Clase que define a Text
     content = models.TextField(default="")
+    idGraphic = models.TextField(default="")
 
     def __str__(self):
         return '( ' + self.order + ' ) ' + self.exercise.title

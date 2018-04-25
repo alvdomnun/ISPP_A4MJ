@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from licenses.models import License
 from licenses.models import LicenseType
@@ -8,6 +10,39 @@ from django.forms.utils import ErrorList
 from actors.models import Teacher, School
 from _datetime import date
 import datetime
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        if not self.errors:
+
+            file_obj = self.cleaned_data.get('file')
+
+            data = file_obj.read().decode('utf-8')
+
+            rows = re.split('\n', data)
+
+
+            school = School.objects.get(userAccount_id=self.user.id)
+            license = get_license_school(school)
+            if not license:
+                raise forms.ValidationError(
+                    "No tienen ninguna licencia activa. Diríjase al apartado de compra de licencias.")
+            else:
+                if license.numUsers == 0:
+                    raise forms.ValidationError(
+                        "Su licencia no permite el registro de más usuarios.")
+
+                if rows.__len__() > license.numUsers:
+                    raise forms.ValidationError(
+                        "El número de estudiantes que estás intenando añadir es superior a los restantes de tu licencia")
+
+
 
 class EditSelfTeacherForm(forms.Form):
     # Atributos de información personal

@@ -14,8 +14,8 @@ class Actor(models.Model):
     """
     Clase que define el modelo Actor: nombre, aepllidos, teléfono, foto.
     """
-    phone = models.CharField(max_length = 11, help_text = 'Requerido. Patrón XXX-XXX-XXX.',
-        validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$', message = 'El formato introducido es incorrecto.')])
+    phone = models.CharField(max_length = 9, help_text = 'Requerido. Patrón de 9 dígitos.',
+        validators = [RegexValidator(regex = r'^(\d{9})$', message = 'El formato introducido es incorrecto.')])
     photo = models.ImageField(null = True, blank = True, upload_to = 'uploads/')
 
     # Relaciones
@@ -93,19 +93,19 @@ class School(Actor):
     Clase que define el modelo Escuela.
     """
     # Tipos de escuela
-    HIGH_SCHOOL = 'High School'
-    ACADEMY = 'Academy'
+    HIGH_SCHOOL = 'Instituto'
+    ACADEMY = 'Academia'
     SchoolType = (
-        (HIGH_SCHOOL, 'High School'),
-        (ACADEMY, 'Academy')
+        (HIGH_SCHOOL, 'Instituto'),
+        (ACADEMY, 'Academia')
     )
 
     # Tipos de enseñanza
-    PUBLIC = 'Public'
-    PRIVATE = 'Private'
+    PUBLIC = 'Público'
+    PRIVATE = 'Privado'
     TeachingType = (
-        (PUBLIC, 'Public'),
-        (PRIVATE, 'Private')
+        (PUBLIC, 'Público'),
+        (PRIVATE, 'Privado')
     )
 
     centerName = models.CharField(max_length = 50, null = True, help_text = 'Requerido. 50 carácteres como máximo.')
@@ -115,6 +115,7 @@ class School(Actor):
     type = models.CharField(max_length = 11, choices = SchoolType, default = HIGH_SCHOOL)
     teachingType = models.CharField(verbose_name = 'Teaching Type', max_length = 20, choices = TeachingType, default = PUBLIC)
     identificationCode = models.CharField(verbose_name = 'CIF or Center Code', max_length = 9, null = True, help_text = 'Requerido. CIF para escuelas; Código de Centro para academías.')
+    isPayed = models.BooleanField(verbose_name = 'Pagada', default = False)
 
     # Relación con los ejercicios comprados
     exercises = models.ManyToManyField(Exercise, through = 'purchaseTickets.PurchaseTicket', blank = True)
@@ -146,8 +147,6 @@ class Teacher(Actor):
     dni = models.CharField(verbose_name = 'D.N.I.', max_length = 9, null = True, help_text = 'Requerido. 8 dígitos y una letra.',
         validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$', message = 'El formato introducido es incorrecto.')])
 
-    # Relación con las asignaturas impartidas
-    subjects = models.ManyToManyField(Subject, blank = True)
     # Relación con la escuela a la que pertenece
     school_t = models.ForeignKey(School, verbose_name = 'School', on_delete = models.CASCADE, null = True)
 
@@ -163,7 +162,7 @@ class TeacherAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades del Teacher que se mostrarán en el panel de administración.
     """
-    list_display = ('userAccount', 'get_full_name', 'dni')
+    list_display = ('userAccount', 'get_full_name', 'dni', 'school_t')
 
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()
@@ -176,8 +175,6 @@ class Student(Actor):
     dni = models.CharField(verbose_name = 'D.N.I.', max_length = 9, null = True, help_text = 'Requerido. 8 dígitos y una letra.',
         validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$', message = 'El formato introducido es incorrecto.')])
 
-    # Relación con las asignaturas cursadas
-    subjects = models.ManyToManyField(Subject, blank = True)
     # Relación con la escuela a la que pertenece
     school_s = models.ForeignKey(School, verbose_name = 'School', on_delete = models.CASCADE, null = True)
 
@@ -192,7 +189,7 @@ class StudentAdminPanel(admin.ModelAdmin):
     """
     Clase que define las propiedades del Alumno que se mostrarán en el panel de administración.
     """
-    list_display = ('userAccount', 'get_full_name', 'dni')
+    list_display = ('userAccount', 'get_full_name', 'dni', 'school_s')
 
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()

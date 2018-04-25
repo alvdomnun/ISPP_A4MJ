@@ -1,4 +1,4 @@
-{% extends 'welcome/welcome-base.html' %}
+{% extends 'base/base.html' %}
 
 {% block title %}ClimbCode{% endblock %}
 
@@ -9,7 +9,7 @@
     <h2>{{ title }}</h2>
 
     <div class="row">
-    
+
         <div class="container-fluid">
             <br/>
             <div class="col-md-12">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="email" class="control-label">Email</label>
-                            <input class="form-control" id="email" name="email" placeholder="Direcci&#243;n de correo electr&#243;nico" type="email" value="{{ form.email.value|default:"" }}" required/>
+                            <input class="form-control" id="email" name="email" placeholder="programador@ejemplo.com" type="email" value="{{ form.email.value|default:"" }}" required/>
                         </div>
                     </div>
                     <div class="row">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="phone" class="control-label">Tel&#233;fono</label>
-                            <input type="text" maxlength="11" class="form-control" name="phone" id="phone" placeholder="Tel&#233;fono" value="{{ form.phone.value|default:"" }}" required/>
+                            <input type="text" maxlength="9" class="form-control" name="phone" id="phone" placeholder="Tel&#233;fono" value="{{ form.phone.value|default:"" }}" required/>
                         </div>
                     </div>
                     <div class="row">
@@ -64,7 +64,7 @@
                             <input class="form-control" name="photo" id="photo" type="file" placeholder="Foto de perfil del usuario" value="{{ form.photo.value|default:"" }}"/>
                         </div>
                     </div>
-                
+
                     <!-- Tratamiento de Errores -->
                     {% if form.errors %}
                         {% for field in form %}

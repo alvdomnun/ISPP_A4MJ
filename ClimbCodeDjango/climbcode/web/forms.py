@@ -36,8 +36,8 @@ class RegisterProgrammerForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Programador
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$',
-                message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{9})$',
+                message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$',
                 message = 'El D.N.I. debe estar compuesto de 8 dígitos seguidos de 1 letra mayúscula.')], label = 'D.N.I.')
@@ -72,8 +72,8 @@ class RegisterSchoolForm(forms.Form):
     last_name = forms.CharField(min_length = 2, max_length = 50, label = 'Apellidos')
 
     # Campos requeridos por el modelo Actor-Escuela
-    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{3})(\-)(\d{3})(\-)(\d{3})$', 
-           message = 'El teléfono debe estar compuesto de 9 dígitos siguiendo el patrón: XXX-XXX-XXX.')], label = 'Teléfono')
+    phone = forms.CharField(max_length = 11, validators = [RegexValidator(regex = r'^(\d{9})$', 
+           message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False, label = 'Foto de perfil')
     centerName = forms.CharField(max_length = 50, label = 'Nombre del Centro')
     address = forms.CharField(max_length = 50, label = 'Dirección')
@@ -94,7 +94,17 @@ class RegisterSchoolForm(forms.Form):
             username = self.cleaned_data["username"]
             num_usuarios = User.objects.filter(username = username).count()
             if (num_usuarios > 0):
-                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+                # Busca el usuario por username
+                user = User.objects.filter(username = username)
+                # Si es programador o es una escuela ya activada, error de username ocupado
+                if (hasattr(user[0].actor, 'programmer')) or (hasattr(user[0].actor, 'school') and user[0].actor.school.isPayed):
+                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, elija otro para completar su registro.")
+
+            school_code = self.cleaned_data["identificationCode"]
+            num_codigo = School.objects.filter(identificationCode=school_code).count()
+            if (num_codigo > 0):
+                raise forms.ValidationError(
+                    "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]

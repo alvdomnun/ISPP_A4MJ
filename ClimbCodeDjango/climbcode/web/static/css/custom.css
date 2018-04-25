@@ -137,3 +137,7 @@ body {
 .brand-icon {
     height: 35px;
 }
+
+.error{
+    color: red;
+}

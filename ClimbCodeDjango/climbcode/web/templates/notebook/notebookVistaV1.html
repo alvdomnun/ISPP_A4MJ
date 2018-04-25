@@ -20,7 +20,7 @@
                 editor.getSession().setTabSize(4);
                 editor.getSession().setUseWrapMode(true);
                 editor.setShowPrintMargin(false);
-                var heightUpdateFunction = function() {                    
+                var heightUpdateFunction = function() {
                     $('#editor').height("200px");
                     $('#editor-section').height("200px");
                     // This call is required for the editor to fix all of
@@ -33,7 +33,7 @@
                 // the size again
                 editor.getSession().on('change', heightUpdateFunction);
             });
-            
+
             function evalUserCodeAce(){
                 var editor = ace.edit("editor");
                 var s = editor.getValue();
@@ -58,7 +58,7 @@
 Notebookv1
 {% endblock %}
 {% block content %}
-    <div class="container">
+    <div class="container panel-container">
                 <!-- CABECERA CON TITULO Y SUBTITULO -->
                 <h1>EJERCICIO DE TIRO PARABÓLICO</h1>
                 <br/>

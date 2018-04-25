@@ -125,6 +125,104 @@ def upload_students(request):
 
     return render(request, "students/import.html", data)
 
+@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
+def upload_teachers(request):
+
+    school = get_object_or_404(School, pk=request.user.id)
+    license = get_license_school(school)
+
+
+    if request.method == 'POST':
+
+        form = UploadFileForm(request.POST, request.FILES, user=request.user)
+
+        file_obj = request.FILES.get('file').file
+
+        data = file_obj.read().decode('utf-8')
+
+        rows = re.split('\n', data)
+
+        stop = False
+        try:
+            for index, row in enumerate(rows):
+                if index > 0:
+                    cells = row.split(";")
+
+                    user = User()
+
+                    user.username = cells[0]
+                    user.password = cells[1]
+                    user.email = cells[2]
+                    user.first_name = cells[5]
+                    user.last_name = cells[6]
+
+                    teacher = Teacher()
+
+                    teacher.phone = cells[4]
+                    teacher.dni = cells[3]
+                    teacher.userAccount = user
+                    teacher.school_t = school
+
+                    if User.full_clean(user) or Teacher.full_clean(teacher, exclude=['userAccount']):
+                        stop = True
+                        break
+
+        except Exception as e:
+            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+            messages.error(request, 'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+            return HttpResponseRedirect('/actors/teachers/upload')
+
+        if form.is_valid() and stop is False:
+
+            try:
+
+                print(rows.__len__())
+
+                for index, row in enumerate(rows):
+                    if index > 0:
+                        try:
+                                cells = row.split(";")
+
+                                username = cells[0]
+                                password = cells[1]
+                                email = cells[2]
+
+                                user = User.objects.create_user(username, email, password)
+
+                                user.first_name = cells[5]
+                                user.last_name = cells[6]
+
+                                user.save()
+
+                                teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
+                                                                 userAccount=user, school_t=school)
+
+                                teacher.save()
+
+                                license.numUsers = license.numUsers - 1
+                                license.save()
+
+                        except Exception as e:
+                            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+                return HttpResponseRedirect('/actors/teachers/list')
+
+            except Exception as e:
+
+                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+    else:
+        form = UploadFileForm(user=request.user)
+
+    data = {
+        'form': form,
+        'title': 'Añadir archivo .csv de profesores'
+    }
+
+    return render(request, "teachers/import.html", data)
+
 
 @login_required(login_url='/login/')
 @user_is_teacher
@@ -1029,6 +1127,25 @@ def students_upload_example(request):
 
     return response
 
+
+@login_required(login_url='/login/')
+@user_is_school
+def teachers_upload_example(request):
+
+    import os, tempfile, zipfile
+    from wsgiref.util import FileWrapper
+    from django.conf import settings
+    import mimetypes
+
+    file_path = os.path.join(settings.STATICFILES_DIRS[0],'TeacherExample.csv')
+    download_name = "EjemploProfesores.csv"
+    wrapper = FileWrapper(open(file_path, "rb"))
+    content_type = mimetypes.guess_type(file_path)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(file_path)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+
+    return response
 
 ####################################################    PRIVATE     METHODS     #################################################################
 

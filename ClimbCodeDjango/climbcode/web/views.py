@@ -260,7 +260,7 @@ def createNotebook(request):
     """
     assert isinstance(request, HttpRequest)
 
-    # Valida que el usuario sea anónimo (no registrado)
+    # Valida que el usuario no sea anónimo
     if not request.user.is_authenticated:
         template = loader.get_template('notebook/notebook_no_permiso.html')
         context = {
@@ -317,8 +317,9 @@ def editNotebook(request):
     if request.method == 'GET':
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
+        exercise = Exercise.objects.get(id=idNotebook)
         # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
-        if permisoEditNotebook(idNotebook,request):
+        if (permisoEditNotebook(idNotebook,request) and exercise.draft == True):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
             exercise = Exercise.objects.get(id=idNotebook)
@@ -363,10 +364,51 @@ def editNotebook(request):
                 }
                 return HttpResponse(template.render(context, request))
         else:
+            if (not permisoEditNotebook(idNotebook,request)):
+                template = loader.get_template('notebook/notebook_no_permiso.html')
+                context = {
+                }
+                return HttpResponse(template.render(context, request))
+            else:
+                template = loader.get_template('notebook/notebook_publicado.html')
+                context = {
+                }
+                return HttpResponse(template.render(context, request))
+
+def publishNotebook(request):
+
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo
+    if not request.user.is_authenticated:
+        template = loader.get_template('notebook/notebook_no_permiso.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
+
+    # Comprobar que sea un programador
+
+    user = request.user
+
+    programmer = Programmer.objects.get(actor_ptr_id=request.user.id)
+
+    # Si se ha enviado el Form
+    if (programmer is not None and request.method == 'POST'):
+        idExercise = request.POST.get('exerciseId')
+
+        if permisoEditNotebook(idExercise,request):
+            publishExercise(idExercise)
+            return HttpResponseRedirect('/exercises/programmer/own_list')
+        else:
             template = loader.get_template('notebook/notebook_no_permiso.html')
             context = {
             }
             return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('notebook/notebook_no_permiso.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
         
 
 def permisoEditNotebook(idNotebook,request):
@@ -746,6 +788,12 @@ def deleteParam(idParam):
     # VALIDAR QUE EL USUARIO LOGADO ES DUEÑO DEL NOTEBOOK
     param = Parameter.objects.get(id=idParam)
     param.delete()
+
+# Publicar ejercicio
+def publishExercise(idExercise):
+    exercise = Exercise.objects.get(id=idExercise)
+    exercise.draft = False
+    exercise.save()
 
 class BoxView:
     def __init__(self, id, idExercise, order, type, content, parameters=None):

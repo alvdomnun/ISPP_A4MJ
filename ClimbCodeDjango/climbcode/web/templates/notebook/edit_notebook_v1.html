@@ -38,9 +38,12 @@ background-color: red;
     <script src="/static/js/notebook.js"></script>
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    
 
 
     <script>
+        var $ = jQuery;
         $(document).ready(function(){
             $('#form_exercise').on('submit', function(event){
                 event.preventDefault();
@@ -137,7 +140,13 @@ Notebookv1
                                 <div class="col-md-6 offset-md-0">
                                     <button type="submit" class="btn btn-primary" hidden="hidden">Guardar</button>
                                     <button onclick="mostrarModal()" type="submit" class="btn btn-primary">Ver/Editar</button>
-                                    
+                                    <button onclick="saveDraft(false)" oncli class="btn btn-secondary">Guardar borrador</button>
+                                    <button onclick="publish()" class="btn btn-success">Publicar</button>
+                                    <form id="publishExerciseForm" name="publishExerciseForm" method="post" action="{% url 'publishNotebook' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="exerciseId" name="exerciseId" value="{{exercise.id}}">
+                                        <input id="publishButton" type="submit" style="display: none"/>
+                                    </form>
                                 </div>
                             </div>
                             
@@ -198,7 +207,6 @@ Notebookv1
 /*                            if ((e.origin === "null" && e.source === sandboxedFrame.contentWindow)
                                 || (e.origin === (window.location.protocol + "//" + window.location.host)
                                     && e.source === unsandboxedFrame.contentWindow)) {*/
-                                alert("atento que vamos");
                                 document.getElementById(e.data[1]).value = String(e.data[0]);
 /*                            }*/
                           });

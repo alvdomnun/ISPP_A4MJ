@@ -3,6 +3,8 @@ var numBox = 0;
 var numImg = 0;
 var numParameter = 0;
 
+
+
 function prueba(){
 	alert(saludo);
 }
@@ -313,3 +315,4 @@ function deleteChart(idChartRow,idRowPrincipalParameter,idBoxParameter,idColChar
 
 
 }
+

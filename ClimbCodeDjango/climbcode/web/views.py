@@ -319,13 +319,11 @@ def createNotebook(request):
     return HttpResponse(template.render(data, request))
 
 def editNotebook(request):
-    #TODO Controlar los ataques por GET
     print("Editing notebook")
     if request.method == 'GET':
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
         if (permisoEditNotebook(idNotebook,request) and exercise.draft == True):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
@@ -529,7 +527,8 @@ def editNotebookAjax(request):
     if request.method == 'POST':
         print("metodo post")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             title = request.POST.get('title')
             description = request.POST.get('description')
             level = request.POST.get('level')
@@ -552,7 +551,8 @@ def createUpdateTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             text = request.POST.get('text')
             idBox = request.POST.get('idBox')
@@ -560,7 +560,7 @@ def createUpdateTextBoxAjax(request):
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             #Bandera actualización box
             updateBox = False
             if idBox is not None and idBox>0:
@@ -582,13 +582,14 @@ def deleteTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             if idBox is not None and idBox>0:
                deleteTextBox(idNotebook,idBox)
 
@@ -603,7 +604,8 @@ def createUpdateImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             url = request.POST.get('url')
             idBox = request.POST.get('idBox')
@@ -611,7 +613,7 @@ def createUpdateImageBoxAjax(request):
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
 
             #Bandera actualización box
             updateBox = False
@@ -634,13 +636,14 @@ def deleteImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             if idBox is not None and idBox>0:
                deleteImageBox(idNotebook,idBox)
 
@@ -655,7 +658,8 @@ def createUpdateCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             contentCode = request.POST.get('contentCode')
             # Validar que el código no contiene funciones no permitidas
@@ -667,7 +671,7 @@ def createUpdateCodeBoxAjax(request):
                     idBox = None
                 else:
                     idBox = int(idBox)
-                #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+                #TODO MBC VALIDAR CAMPOS
 
                 #Bandera actualización box
                 updateBox = False
@@ -691,13 +695,14 @@ def deleteCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
 
             if idBox is not None and idBox>0:
                deleteCodeBox(idNotebook,idBox)

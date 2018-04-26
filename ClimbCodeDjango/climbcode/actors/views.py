@@ -35,7 +35,6 @@ def upload_students(request):
     school = get_object_or_404(School, pk=request.user.id)
     license = get_license_school(school)
 
-
     if request.method == 'POST':
 
         form = UploadFileForm(request.POST, request.FILES, user=request.user)
@@ -44,32 +43,35 @@ def upload_students(request):
 
         data = file_obj.read().decode('utf-8')
 
+        print(data)
+
         rows = re.split('\n', data)
 
         stop = False
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    cells = row.split(";")
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
 
-                    user = User()
+                        user = User()
 
-                    user.username = cells[0]
-                    user.password = cells[1]
-                    user.email = cells[2]
-                    user.first_name = cells[5]
-                    user.last_name = cells[6]
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
 
-                    student = Student()
+                        student = Student()
 
-                    student.phone = cells[4]
-                    student.dni = cells[3]
-                    student.userAccount = user
-                    student.school_s = school
+                        student.phone = cells[4]
+                        student.dni = cells[3]
+                        student.userAccount = user
+                        student.school_s = school
 
-                    if User.full_clean(user) or Student.full_clean(student, exclude=['userAccount']):
-                        stop = True
-                        break
+                        if User.full_clean(user, validate_unique=True) or Student.full_clean(student, exclude=['userAccount']):
+                            stop = True
+                            break
 
         except Exception as e:
             logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
@@ -79,35 +81,33 @@ def upload_students(request):
         if form.is_valid() and stop is False:
 
             try:
-
-                print(rows.__len__())
-
                 for index, row in enumerate(rows):
                     if index > 0:
-                        try:
-                                cells = row.split(";")
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
 
-                                username = cells[0]
-                                password = cells[1]
-                                email = cells[2]
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
 
-                                user = User.objects.create_user(username, email, password)
+                                    user = User.objects.create_user(username, email, password)
 
-                                user.first_name = cells[5]
-                                user.last_name = cells[6]
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
 
-                                user.save()
+                                    user.save()
 
-                                student = Student.objects.create(phone=cells[4], dni=cells[3],
-                                                                 userAccount=user, school_s=school)
+                                    student = Student.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_s=school)
 
-                                student.save()
+                                    student.save()
 
-                                license.numUsers = license.numUsers - 1
-                                license.save()
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
 
-                        except Exception as e:
-                            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
 
                 return HttpResponseRedirect('/actors/students/list')
 
@@ -148,26 +148,27 @@ def upload_teachers(request):
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    cells = row.split(";")
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
 
-                    user = User()
+                        user = User()
 
-                    user.username = cells[0]
-                    user.password = cells[1]
-                    user.email = cells[2]
-                    user.first_name = cells[5]
-                    user.last_name = cells[6]
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
 
-                    teacher = Teacher()
+                        teacher = Teacher()
 
-                    teacher.phone = cells[4]
-                    teacher.dni = cells[3]
-                    teacher.userAccount = user
-                    teacher.school_t = school
+                        teacher.phone = cells[4]
+                        teacher.dni = cells[3]
+                        teacher.userAccount = user
+                        teacher.school_t = school
 
-                    if User.full_clean(user) or Teacher.full_clean(teacher, exclude=['userAccount']):
-                        stop = True
-                        break
+                        if User.full_clean(user, validate_unique=True) or Teacher.full_clean(teacher, exclude=['userAccount']):
+                            stop = True
+                            break
 
         except Exception as e:
             logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
@@ -182,30 +183,31 @@ def upload_teachers(request):
 
                 for index, row in enumerate(rows):
                     if index > 0:
-                        try:
-                                cells = row.split(";")
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
 
-                                username = cells[0]
-                                password = cells[1]
-                                email = cells[2]
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
 
-                                user = User.objects.create_user(username, email, password)
+                                    user = User.objects.create_user(username, email, password)
 
-                                user.first_name = cells[5]
-                                user.last_name = cells[6]
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
 
-                                user.save()
+                                    user.save()
 
-                                teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
-                                                                 userAccount=user, school_t=school)
+                                    teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_t=school)
 
-                                teacher.save()
+                                    teacher.save()
 
-                                license.numUsers = license.numUsers - 1
-                                license.save()
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
 
-                        except Exception as e:
-                            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
 
                 return HttpResponseRedirect('/actors/teachers/list')
 
@@ -330,7 +332,7 @@ def list_teachers(request):
 
     try:
 
-        teacher_list_aux = Teacher.objects.filter(school_t=school)
+        teacher_list_aux = Teacher.objects.filter(school_t=school).order_by()
 
     except Exception as e:
 
@@ -504,7 +506,7 @@ def list_students(request):
 
     try:
 
-        student_list_aux = Student.objects.filter(school_s=school)
+        student_list_aux = Student.objects.filter(school_s=school).order_by()
 
     except Exception as e:
 

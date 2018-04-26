@@ -102,7 +102,7 @@ class RegisterSchoolForm(forms.Form):
                     raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, elija otro para completar su registro.")
 
             school_code = self.cleaned_data["identificationCode"]
-            num_codigo = School.objects.filter(identificationCode=school_code).count()
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).count()
             if (num_codigo > 0):
                 raise forms.ValidationError(
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")

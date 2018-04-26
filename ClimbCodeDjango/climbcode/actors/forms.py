@@ -27,7 +27,6 @@ class UploadFileForm(forms.Form):
 
             rows = re.split('\n', data)
 
-
             school = School.objects.get(userAccount_id=self.user.id)
             license = get_license_school(school)
             if not license:

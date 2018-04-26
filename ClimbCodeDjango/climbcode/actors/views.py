@@ -315,7 +315,7 @@ def edit_self_teacher_pass(request):
         'titulo': 'Cambiar credenciales',
     }
 
-    return render(request, 'teachers/self_edit_pass.html.html', data)
+    return render(request, 'teachers/self_edit_pass.html', data)
 
 @login_required(login_url='/login/')
 @user_is_school

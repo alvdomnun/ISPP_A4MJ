@@ -426,7 +426,7 @@ def permisoEditNotebook(idNotebook,request):
     tienePermiso = exercise.programmer.actor_ptr_id == user.id
     return tienePermiso
 
-def permisoViewNotebook(idNotebook,request):
+def permisoViewRolesEscuelaNotebook(idNotebook,request):
     tienePermiso = False
     # recuperar actor logado, debe ser programador
     user = request.user
@@ -437,15 +437,21 @@ def permisoViewNotebook(idNotebook,request):
         idSchool = request.user.actor.school.actor_ptr_id
         school = request.user.actor.school
         tienePermiso = isSchoolAdquiredExercise(exercise, school)
-    elif hasattr(request.user.actor, 'programmer'):
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+    return tienePermiso
+
+def permisoViewRolProgramadorNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    if hasattr(request.user.actor, 'programmer'):
         programmerId = request.user.actor.programmer.actor_ptr_id
         tienePermiso = exercise.programmer.actor_ptr_id == user.id
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
-
-    exercise = Exercise.objects.get(id=idNotebook)
     return tienePermiso
 
 def isSchoolAdquiredExercise(exerciseParam,school):
@@ -466,8 +472,7 @@ def showNotebook(request):
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
-        if (permisoViewNotebook(idNotebook,request) and exercise.draft == False):
+        if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
             print("El título del notebook recuperado es: "+exercise.title)
             if exercise is not None:
                 template = loader.get_template('notebook/show_notebook.html')
@@ -508,11 +513,12 @@ def showNotebook(request):
                 }
                 return HttpResponse(template.render(context, request))
         else:
-            if (not permisoEditNotebook(idNotebook,request)):
-                template = loader.get_template('notebook/notebook_no_permiso.html')
-                context = {
-                }
-                return HttpResponse(template.render(context, request))
+            template = loader.get_template('notebook/notebook_no_permiso.html')
+            context = {
+            }
+            return HttpResponse(template.render(context, request))
+
+
 
 
 ### Llamadas ajax

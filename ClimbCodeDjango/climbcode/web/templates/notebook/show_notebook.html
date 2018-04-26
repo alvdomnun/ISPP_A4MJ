@@ -201,7 +201,7 @@ Mostrar Ejercicio
         </script>
     {% elif box.type in "Code" %}
         <script>
-            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
         </script>
         {% for parameter in box.parameters %}
              <script>

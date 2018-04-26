@@ -490,7 +490,7 @@ def showNotebook(request):
                     parameters = []
                     for parameter in paramtersCode:
                         parameters.append(parameter)
-                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters,box.idGraphic)
                     boxesView.append(boxCodeView)
 
                 boxesPicture = Picture.objects.filter(exercise=exercise)

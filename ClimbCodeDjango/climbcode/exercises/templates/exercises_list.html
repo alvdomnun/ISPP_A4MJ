@@ -7,6 +7,7 @@
         }
     </style>
 
+<div class="container">
     <h1>Lista de ejercicios</h1>
 {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
     <div class="table">
@@ -26,9 +27,10 @@
                 {% endif %}
                 <td></td>
             </tr>
-            </thead>
+          </thead>
+          <tbody>
             {% for exercise in exercise_list %}
-            <tbody>
+
 
                     <tr>
                         <td>{{ exercise.title }}</td>
@@ -71,13 +73,13 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-                </table>
-                </div>
+
             {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
-
+          </table>
+          </div>
 
     {% if exercise_list.has_other_pages %}
         <ul class="pagination">
@@ -102,4 +104,6 @@
     {% endif %}
 
 {% endif %}
+
+</div>
 {% endblock %}

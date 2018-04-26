@@ -407,13 +407,14 @@ def list_school_exercisesST(request):
     user = request.user
 
     student = get_object_or_404(Student, userAccount=user)
-    school = student.school_s
 
+    # Escuela del student
+    school = School.objects.get(student__userAccount=student)
     try:
-        subjects = school.subject_set.get()
-        exercise_list = subjects.exercises.all()
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+
     except Exception as e:
-        exercise_list = subjects.exercises.none()
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)

@@ -52,7 +52,7 @@
                             <select class="form-control" id="category" name="category" required>
                                 <option value="" selected="selected">Seleccione una asignatura</option>
                                 {% for s in categories %}
-                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                    <option value="{{ s.id }}">{{ s.course }}º {{ s.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>

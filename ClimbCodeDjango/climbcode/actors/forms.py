@@ -291,9 +291,10 @@ class EditSchoolProfile(forms.Form):
     # Campos requeridos por el modelo Actor-Student
     phone = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{9})$',
                 message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
-    centerName = forms.CharField(max_length=50, required=False, label='Nombre del centro')
-    address = forms.CharField(max_length=50, required=False, label='Dirección' )
-    identificationCode = forms.CharField( max_length = 9, required=False, label = 'CIF o código del centro')
+    centerName = forms.CharField(max_length=50, label='Nombre del centro')
+    address = forms.CharField(max_length=50, label='Dirección' )
+    identificationCode = forms.CharField( max_length = 9, validators = [RegexValidator(regex = r'^(\d{8,9})$',
+           message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')],label = 'CIF o código del centro')
     postalCode = forms.CharField( max_length = 5, validators = [RegexValidator(regex = r'^(\d{5})$')], label='Código postal')
 
 class EditSchoolPass(forms.Form):

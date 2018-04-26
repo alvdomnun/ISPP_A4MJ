@@ -495,8 +495,8 @@ def register_teacher(request):
     return render(request, 'teachers/register.html', data)
 
 @login_required(login_url='/login/')
-@school_license_active
 @user_is_school
+@school_license_active
 def list_students(request):
     user = request.user
 

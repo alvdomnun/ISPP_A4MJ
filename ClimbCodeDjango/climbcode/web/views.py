@@ -1,4 +1,6 @@
 from django.shortcuts import render, render_to_response
+
+from actors.decorators import user_is_programmer
 from web.forms import RegisterSchoolPaymentForm
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
@@ -35,43 +37,57 @@ def sample_dashboard(request):
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@user_is_programmer
 def notebookVistaV1(request):
 	template = loader.get_template('notebook/notebookVistaV1.html')
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@user_is_programmer
 def notebookv1(request):
 	template = loader.get_template('web/notebookv1.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def notebookv1aux(request):
 	template = loader.get_template('web/notebookv1aux.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
+
 
 def notebookv1_ejercicio_creado(request):
     template = loader.get_template('web/notebookv1_ejercicio_creado.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def notebookv1_ejercicio_cc(request):
     template = loader.get_template('web/notebookv1_ejercicio_cc.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def notebookv1_ejercicio_am(request):
     template = loader.get_template('web/notebookv1_ejercicio_am.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def notebookv1_ejercicio_qin(request):
     template = loader.get_template('web/notebookv1_ejercicio_qin.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def notebookv1_ejercicio_est(request):
     template = loader.get_template('web/notebookv1_ejercicio_est.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+@user_is_programmer
+def notebookv1_ejercicio_geo(request):
+    template = loader.get_template('web/notebookv1_ejercicio_geo.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -259,6 +275,7 @@ def saveNotebook(request):
         }
         return HttpResponse(template.render(context, request))
 
+@user_is_programmer
 def createNotebook(request):
     """
     Muestra un formulario para crear un ejercicio y la crea si la petición es POST

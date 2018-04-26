@@ -81,7 +81,8 @@ class RegisterSchoolForm(forms.Form):
     province = forms.ModelChoiceField(queryset = Province.objects.all(), empty_label = None, label = 'Provincia')
     type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
     teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
-    identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
+    identificationCode = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{8,9})$',
+           message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')], label = 'Código de identificación')
     licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
     numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
 

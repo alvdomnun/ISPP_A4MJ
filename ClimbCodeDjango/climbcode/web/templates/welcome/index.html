@@ -40,7 +40,7 @@ Gracias a ClimbCode el usuario puede hacer esos ejercicios de toda la vida que e
         <br/>
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
            style="font-weight: bold"
-            href="/web/notebookVistaV1">
+            href="/web/notebookv1_ejercicio_creado">
             Ejemplo</a>
         <br/>
     </div>
@@ -62,10 +62,12 @@ Para confeccionarlos, el programador hará uso de JavaScript tanto para crear el
 <br/><br/>Además, al crear ejercicios interactivos, el programador puede ponerlos a la venta en la plataforma, obteniendo un beneficio cada vez que un usuario compre su ejercicio. ¿A qué esperas para participar con nosotros y ganar con ello?
         </p>
         <br/>
-        <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
-            href="/register/programmer">
-            Registro programadores</a>
-        <br/>
+        {% if  user.is_authenticated == False  %}
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
+                href="/register/programmer">
+                Registro programadores</a>
+            <br/>
+        {% endif %}
     </div>
 
     <div class="container-fluid bgimg-4 parallax" id="escuelas-parallax">
@@ -85,10 +87,12 @@ Para confeccionarlos, el programador hará uso de JavaScript tanto para crear el
 
         </p>
         <br/>
+        {% if  user.is_authenticated == False  %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
             href="register/school">
             Registro escuelas</a>
         <br/>
+        {% endif %}
     </div>
 
      <div class="container" id="licencias">

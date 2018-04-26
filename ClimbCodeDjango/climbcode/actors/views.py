@@ -1,29 +1,233 @@
 import datetime
+import datetime
+import logging
 import os
-from climbcode import settings
-from actors.forms import RenovateLicensePaymentForm
-from licenses.models import License
-from actors.forms import RenovateLicenseForm
-from licenses.models import LicenseType
+import re
 from datetime import date, timedelta
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.urls.base import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.forms.utils import ErrorList
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
-    EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, EditStudentProfile
+from django.urls.base import reverse
+from django.views.decorators.csrf import csrf_exempt
+
+from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, \
+    user_school_license_active, user_is_teacher
+from actors.forms import EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, \
+    EditStudentProfile, UploadFileForm
 from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
     EditSelfTeacherForm, EditSelfTeacherPassForm
+from actors.forms import RenovateLicenseForm
+from actors.forms import RenovateLicensePaymentForm
 from actors.models import Teacher, School, Student
-from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, user_school_license_active
+from climbcode import settings
+from licenses.models import License
+from licenses.models import LicenseType
+
+@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
+def upload_students(request):
+
+    school = get_object_or_404(School, pk=request.user.id)
+    license = get_license_school(school)
+
+    if request.method == 'POST':
+
+        form = UploadFileForm(request.POST, request.FILES, user=request.user)
+
+        file_obj = request.FILES.get('file').file
+
+        data = file_obj.read().decode('utf-8')
+
+        print(data)
+
+        rows = re.split('\n', data)
+
+        stop = False
+        try:
+            for index, row in enumerate(rows):
+                if index > 0:
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
+
+                        user = User()
+
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
+
+                        student = Student()
+
+                        student.phone = cells[4]
+                        student.dni = cells[3]
+                        student.userAccount = user
+                        student.school_s = school
+
+                        if User.full_clean(user, validate_unique=True) or Student.full_clean(student, exclude=['userAccount']):
+                            stop = True
+                            break
+
+        except Exception as e:
+            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+            messages.error(request, 'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+            return HttpResponseRedirect('/actors/students/upload')
+
+        if form.is_valid() and stop is False:
+
+            try:
+                for index, row in enumerate(rows):
+                    if index > 0:
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
+
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
+
+                                    user = User.objects.create_user(username, email, password)
+
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
+
+                                    user.save()
+
+                                    student = Student.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_s=school)
+
+                                    student.save()
+
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
+
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+                return HttpResponseRedirect('/actors/students/list')
+
+            except Exception as e:
+
+                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+    else:
+        form = UploadFileForm(user=request.user)
+
+    data = {
+        'form': form,
+        'title': 'Añadir archivo .csv de estudiantes'
+    }
+
+    return render(request, "students/import.html", data)
+
+@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
+def upload_teachers(request):
+
+    school = get_object_or_404(School, pk=request.user.id)
+    license = get_license_school(school)
+
+
+    if request.method == 'POST':
+
+        form = UploadFileForm(request.POST, request.FILES, user=request.user)
+
+        file_obj = request.FILES.get('file').file
+
+        data = file_obj.read().decode('utf-8')
+
+        rows = re.split('\n', data)
+
+        stop = False
+        try:
+            for index, row in enumerate(rows):
+                if index > 0:
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
+
+                        user = User()
+
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
+
+                        teacher = Teacher()
+
+                        teacher.phone = cells[4]
+                        teacher.dni = cells[3]
+                        teacher.userAccount = user
+                        teacher.school_t = school
+
+                        if User.full_clean(user, validate_unique=True) or Teacher.full_clean(teacher, exclude=['userAccount']):
+                            stop = True
+                            break
+
+        except Exception as e:
+            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+            messages.error(request, 'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+            return HttpResponseRedirect('/actors/teachers/upload')
+
+        if form.is_valid() and stop is False:
+
+            try:
+
+                print(rows.__len__())
+
+                for index, row in enumerate(rows):
+                    if index > 0:
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
+
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
+
+                                    user = User.objects.create_user(username, email, password)
+
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
+
+                                    user.save()
+
+                                    teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_t=school)
+
+                                    teacher.save()
+
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
+
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+                return HttpResponseRedirect('/actors/teachers/list')
+
+            except Exception as e:
+
+                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+
+    else:
+        form = UploadFileForm(user=request.user)
+
+    data = {
+        'form': form,
+        'title': 'Añadir archivo .csv de profesores'
+    }
+
+    return render(request, "teachers/import.html", data)
 
 
 @login_required(login_url='/login/')
-@user_school_license_active
+@user_is_teacher
 def edit_self_teacher(request):
     teacher_aux = request.user
 
@@ -69,7 +273,7 @@ def edit_self_teacher(request):
     return render(request, 'teachers/self_edit.html', data)
 
 @login_required(login_url='/login/')
-@user_school_license_active
+@user_is_teacher
 def edit_self_teacher_pass(request):
     teacher_aux = request.user
 
@@ -120,14 +324,19 @@ def edit_self_teacher_pass(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def list_teachers(request):
     user = request.user
 
+    school = School.objects.get(userAccount_id=user.id)
+
     try:
-        school = School.objects.get(userAccount_id=user.id)
-        teacher_list_aux = Teacher.objects.filter(school_t=school)
+
+        teacher_list_aux = Teacher.objects.filter(school_t=school).order_by()
+
     except Exception as e:
-        return HttpResponseRedirect('/')
+
+        teacher_list_aux = Teacher.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(teacher_list_aux, 6)
@@ -149,18 +358,12 @@ def list_teachers(request):
 @user_is_school
 @school_license_active
 def delete_teacher(request, pk):
+
     teacher = get_object_or_404(Teacher, pk=pk)
+    school = School.objects.get(userAccount_id=request.user.id)
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
+    if teacher.school_t_id != school.pk:
+        return HttpResponseForbidden()
 
     if request.method == 'POST':
         teacher.delete()
@@ -172,18 +375,15 @@ def delete_teacher(request, pk):
 @user_is_school
 @school_license_active
 def edit_teacher(request, pk):
+
     teacher = get_object_or_404(Teacher, pk=pk)
+    school = School.objects.get(userAccount_id=request.user.id)
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if teacher.school_t_id != school.pk:
-            raise Exception("El profesor no pertenece a tu escuela")
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if teacher.school_t_id != school.pk:
+        return HttpResponseForbidden()
 
     assert isinstance(request, HttpRequest)
+
     userAccount = get_object_or_404(User, pk=teacher.userAccount_id)
 
     if (request.method == 'POST'):
@@ -243,12 +443,7 @@ def get_license_school(school):
 def register_teacher(request):
     current_school = request.user
 
-    try:
-
-        school = School.objects.get(userAccount_id=current_school.id)
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    school = School.objects.get(userAccount_id=current_school.id)
 
     form = RegisterStudentForm(user=request.user)  # Si se pone debajo con el else da error
 
@@ -303,14 +498,20 @@ def register_teacher(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def list_students(request):
     user = request.user
 
+    school = School.objects.get(userAccount_id=user.id)
+
     try:
-        school = School.objects.get(userAccount_id=user.id)
-        student_list_aux = Student.objects.filter(school_s=school)
+
+        student_list_aux = Student.objects.filter(school_s=school).order_by()
+
     except Exception as e:
-        return HttpResponseRedirect('/')
+
+        student_list_aux = Student.objects.none()
+
 
     page = request.GET.get('page', 1)
     paginator = Paginator(student_list_aux, 6)
@@ -334,12 +535,7 @@ def list_students(request):
 def register_student(request):
     current_school = request.user
 
-    try:
-
-        school = School.objects.get(userAccount_id=request.user.id)
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    school = School.objects.get(userAccount_id=request.user.id)
 
     form = RegisterStudentForm(user=request.user)# Si se pone debajo con el else da error
 
@@ -395,16 +591,13 @@ def edit_student(request, pk):
 
     student = get_object_or_404(Student, pk=pk)
 
-    try:
+    school = School.objects.get(userAccount_id=request.user.id)
 
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if student.school_s_id != school.pk:
+        return HttpResponseForbidden()
 
     assert isinstance(request, HttpRequest)
+
     userAccount = get_object_or_404(User, pk=student.userAccount_id)
 
     if (request.method == 'POST'):
@@ -445,17 +638,13 @@ def edit_student(request, pk):
 @user_is_school
 @school_license_active
 def delete_student(request, pk):
+
     student = get_object_or_404(Student, pk=pk)
 
-    try:
+    school = School.objects.get(userAccount_id=request.user.id)
 
-        school = School.objects.get(userAccount_id=request.user.id)
-
-        if student.school_s_id != school.pk:
-            raise Exception("El estudiante no pertenece a tu escuela")
-
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    if student.school_s_id != school.pk:
+        return HttpResponseForbidden()
 
     if request.method == 'POST':
         student.delete()
@@ -470,7 +659,7 @@ def edit_profile_programmer(request):
     """
 
     assert isinstance(request, HttpRequest)
-    
+
     # Valida que el usuario no sea anónimo (esté registrado y logueado)
     if not (request.user.is_authenticated):
         return HttpResponseRedirect('/login/')
@@ -484,7 +673,7 @@ def edit_profile_programmer(request):
             # Actualiza el User (model Django) en BD
             email = form.cleaned_data["email"]
             first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]            
+            last_name = form.cleaned_data["last_name"]
 
             userAccount = request.user
             userAccount.email = email
@@ -498,7 +687,7 @@ def edit_profile_programmer(request):
             dni = form.cleaned_data["dni"]
 
             programmer.phone = phone
-            programmer.photo = photo 
+            programmer.photo = photo
             programmer.dni = dni
             programmer.save()
 
@@ -506,26 +695,25 @@ def edit_profile_programmer(request):
 
     # Si se accede al form vía GET o cualquier otro método
     else:
-        dataForm = {'first_name': programmer.userAccount.first_name, 'last_name': programmer.userAccount.last_name, 'email': programmer.userAccount.email, 
+        dataForm = {'first_name': programmer.userAccount.first_name, 'last_name': programmer.userAccount.last_name, 'email': programmer.userAccount.email,
                  'phone': programmer.phone, 'dni': programmer.dni, 'photo': programmer.photo}
         form = EditProgrammerProfile(dataForm)
-    
+
     # Datos del modelo (vista)
     data = {
         'form': form,
         'programmer': programmer,
         'titulo': 'Editar Perfil'
     }
-        
+
     return render(request, 'programmers/editProgrammerProfile.html', data)
 
 @login_required(login_url='/login/')
 @user_is_programmer
-@user_school_license_active
 def edit_pass_programmer(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
-    
+
     # Valida que el usuario no sea anónimo (esté registrado y logueado)
     if not (request.user.is_authenticated):
         return HttpResponseRedirect('/login/')
@@ -550,17 +738,18 @@ def edit_pass_programmer(request):
     # Si se accede al form vía GET o cualquier otro método
     else:
         form = EditProgrammerPass()
-    
+
     # Datos del modelo (vista)
     data = {
         'form': form,
         'userAccount': request.user,
         'titulo': 'Cambiar credenciales',
     }
-        
+
     return render(request, 'programmers/editProgrammerPass.html', data)
 
 @login_required(login_url='/login/')
+@user_is_school
 @school_license_active
 def edit_profile_school(request):
     """
@@ -666,7 +855,7 @@ def edit_pass_school(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@user_school_license_active
+@school_license_active
 def edit_profile_student(request):
     """
     Edición del perfil Student
@@ -725,7 +914,7 @@ def edit_profile_student(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@user_school_license_active
+@school_license_active
 def edit_pass_student(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -766,6 +955,7 @@ def edit_pass_student(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def detail_active_license(request):
     """ Obtiene la licencia activa de la escuela """
     assert isinstance(request, HttpRequest)
@@ -795,7 +985,7 @@ def detail_active_license(request):
     # Si no hay licensia activa, formulario de renovación
     else:
         form = RenovateLicenseForm()
-        license = None   
+        license = None
         licenseTypes = LicenseType.objects.all().order_by('price')
 
         # Datos del modelo (vista)
@@ -848,7 +1038,7 @@ def license_renovation(request):
         # Si la validación falla cargo de nuevo la vista
         else:
             school = request.user.actor.school
-            license = None   
+            license = None
             licenseTypes = LicenseType.objects.all().order_by('price')
 
             # Datos del modelo (vista)
@@ -908,7 +1098,7 @@ def license_renovation_paypal(request):
         else:
             # Si el form no es válido, Forbidden
             return HttpResponseForbidden()
-    
+
     # Si el request no es un POST con el pago, Forbidden
     return HttpResponseForbidden()
 
@@ -920,6 +1110,44 @@ def autorization_display(request):
 
     return HttpResponse(documentReader, content_type="application/pdf")
 
+@login_required(login_url='/login/')
+@user_is_school
+def students_upload_example(request):
+
+    import os, tempfile, zipfile
+    from wsgiref.util import FileWrapper
+    from django.conf import settings
+    import mimetypes
+
+    file_path = os.path.join(settings.STATICFILES_DIRS[0],'StudentExample.csv')
+    download_name = "EjemploEstudiantes.csv"
+    wrapper = FileWrapper(open(file_path, "rb"))
+    content_type = mimetypes.guess_type(file_path)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(file_path)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+
+    return response
+
+
+@login_required(login_url='/login/')
+@user_is_school
+def teachers_upload_example(request):
+
+    import os, tempfile, zipfile
+    from wsgiref.util import FileWrapper
+    from django.conf import settings
+    import mimetypes
+
+    file_path = os.path.join(settings.STATICFILES_DIRS[0],'TeacherExample.csv')
+    download_name = "EjemploProfesores.csv"
+    wrapper = FileWrapper(open(file_path, "rb"))
+    content_type = mimetypes.guess_type(file_path)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(file_path)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+
+    return response
 
 ####################################################    PRIVATE     METHODS     #################################################################
 

@@ -1,4 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
+
+from actors.decorators import user_is_programmer
 from web.forms import RegisterSchoolPaymentForm
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
@@ -16,6 +19,7 @@ from django.http import JsonResponse
 from exercises.models import Exercise
 from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
+import re
 
 # Create your views here.
 
@@ -34,43 +38,65 @@ def sample_dashboard(request):
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookVistaV1(request):
 	template = loader.get_template('notebook/notebookVistaV1.html')
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1(request):
 	template = loader.get_template('web/notebookv1.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1aux(request):
 	template = loader.get_template('web/notebookv1aux.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
+
 
 def notebookv1_ejercicio_creado(request):
     template = loader.get_template('web/notebookv1_ejercicio_creado.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_cc(request):
     template = loader.get_template('web/notebookv1_ejercicio_cc.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_am(request):
     template = loader.get_template('web/notebookv1_ejercicio_am.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_qin(request):
     template = loader.get_template('web/notebookv1_ejercicio_qin.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_est(request):
     template = loader.get_template('web/notebookv1_ejercicio_est.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+@user_is_programmer
+def notebookv1_ejercicio_geo(request):
+    template = loader.get_template('web/notebookv1_ejercicio_geo.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -258,6 +284,8 @@ def saveNotebook(request):
         }
         return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def createNotebook(request):
     """
     Muestra un formulario para crear un ejercicio y la crea si la petición es POST
@@ -266,7 +294,7 @@ def createNotebook(request):
     """
     assert isinstance(request, HttpRequest)
 
-    # Valida que el usuario sea anónimo (no registrado)
+    # Valida que el usuario no sea anónimo
     if not request.user.is_authenticated:
         template = loader.get_template('notebook/notebook_no_permiso.html')
         context = {
@@ -323,8 +351,9 @@ def editNotebook(request):
     if request.method == 'GET':
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
+        exercise = Exercise.objects.get(id=idNotebook)
         # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
-        if permisoEditNotebook(idNotebook,request):
+        if (permisoEditNotebook(idNotebook,request) and exercise.draft == True):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
             exercise = Exercise.objects.get(id=idNotebook)
@@ -345,7 +374,149 @@ def editNotebook(request):
                     parameters = []
                     for parameter in paramtersCode:
                         parameters.append(parameter)
-                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters,box.idGraphic)
+                    boxesView.append(boxCodeView)
+
+                boxesPicture = Picture.objects.filter(exercise=exercise)
+                for box in boxesPicture:
+                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.url)
+                    boxesView.append(boxPictureView)
+
+                boxesView.sort(key=lambda x: x.order, reverse=False)
+                form = ExerciseForm()
+
+                # Datos del modelo (vista)
+                categories = DefaultSubject.objects.all()
+                levels = form.fields['level'].choices
+
+                context = {
+                    'exercise':exercise,
+                    'boxesView':boxesView,
+                    'levels':levels,
+                    'categories':categories
+                }
+                return HttpResponse(template.render(context, request))
+        else:
+            if (not permisoEditNotebook(idNotebook,request)):
+                template = loader.get_template('notebook/notebook_no_permiso.html')
+                context = {
+                }
+                return HttpResponse(template.render(context, request))
+            else:
+                template = loader.get_template('notebook/notebook_publicado.html')
+                context = {
+                }
+                return HttpResponse(template.render(context, request))
+
+def publishNotebook(request):
+
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo
+    if not request.user.is_authenticated:
+        template = loader.get_template('notebook/notebook_no_permiso.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
+
+    # Comprobar que sea un programador
+
+    user = request.user
+
+    programmer = Programmer.objects.get(actor_ptr_id=request.user.id)
+
+    # Si se ha enviado el Form
+    if (programmer is not None and request.method == 'POST'):
+        idExercise = request.POST.get('exerciseId')
+
+        if permisoEditNotebook(idExercise,request):
+            publishExercise(idExercise)
+            return HttpResponseRedirect('/exercises/programmer/own_list')
+        else:
+            template = loader.get_template('notebook/notebook_no_permiso.html')
+            context = {
+            }
+            return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('notebook/notebook_no_permiso.html')
+        context = {
+        }
+        return HttpResponse(template.render(context, request))
+        
+def permisoEditNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    # comprobar que el notebook tiene como id del programador al logado
+    tienePermiso = exercise.programmer.actor_ptr_id == user.id
+    return tienePermiso
+
+def permisoViewRolesEscuelaNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    if hasattr(request.user.actor, 'school'):
+        # Comprobar que la escuela ha adquirido el ejercicio
+        idSchool = request.user.actor.school.actor_ptr_id
+        school = request.user.actor.school
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+    elif hasattr(request.user.actor, 'school'):
+        print("ES ESCUELA")
+    return tienePermiso
+
+def permisoViewRolProgramadorNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    if hasattr(request.user.actor, 'programmer'):
+        programmerId = request.user.actor.programmer.actor_ptr_id
+        tienePermiso = exercise.programmer.actor_ptr_id == user.id
+    return tienePermiso
+
+def isSchoolAdquiredExercise(exerciseParam,school):
+    exerciseAdquired = False
+    exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
+    for exercise in exercise_list:
+        if exercise == exerciseParam:
+            exerciseAdquired = True
+            break
+    return exerciseAdquired
+
+# Visualización notebook para escuelas, profesores y alumnos
+@login_required(login_url='/login/')
+def showNotebook(request):
+    print("Showing notebook")
+    if request.method == 'GET':
+        # Petición de edición de notebook existente
+        idNotebook = request.GET.get('idNotebook')
+        exercise = Exercise.objects.get(id=idNotebook)
+        #if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
+        if True:
+            if exercise is not None:
+                template = loader.get_template('notebook/show_notebook.html')
+                boxesText = Text.objects.filter(exercise=exercise)
+                boxesView = []
+                for box in boxesText:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',contentEscape)
+                    boxesView.append(boxTextView)
+
+                boxesCode = Code.objects.filter(exercise=exercise)
+                for box in boxesCode:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    paramtersCode = Parameter.objects.filter(code=box)
+                    parameters = []
+                    for parameter in paramtersCode:
+                        parameters.append(parameter)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters,box.idGraphic)
                     boxesView.append(boxCodeView)
 
                 boxesPicture = Picture.objects.filter(exercise=exercise)
@@ -372,16 +543,8 @@ def editNotebook(request):
             context = {
             }
             return HttpResponse(template.render(context, request))
-        
-def permisoEditNotebook(idNotebook,request):
-    tienePermiso = False
-    #TODO MBC recuperar actor logado, debe ser programador
-    user = request.user
-    #TODO MBC recuperar notebook
-    exercise = Exercise.objects.get(id=idNotebook)
-    #TODO MBC comprobar que el notebook tiene como id del programador al logado
-    tienePermiso = exercise.programmer.actor_ptr_id == user.id
-    return tienePermiso
+
+
 
 
 ### Llamadas ajax
@@ -521,27 +684,32 @@ def createUpdateCodeBoxAjax(request):
         if permisoEditNotebook(idNotebook, request):
             order = request.POST.get('boxOrder')
             contentCode = request.POST.get('contentCode')
-            idBox = request.POST.get('idBox')
-            if idBox == 'null':
-                idBox = None
-            else:
-                idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            # Validar que el código no contiene funciones no permitidas
+            regExp = re.compile('(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)')
 
-            #Bandera actualización box
-            updateBox = False
-            if idBox is not None and idBox>0:
-               savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
-               updateBox = True
-            else:
-               savedBox = createCodeBox(idNotebook,order,contentCode)
+            if not regExp.search(contentCode):
+                idBox = request.POST.get('idBox')
+                if idBox == 'null':
+                    idBox = None
+                else:
+                    idBox = int(idBox)
+                #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
 
-            data = {
-                'savedBoxId':savedBox.id,
-                'savedBoxCode':savedBox.content,
-                'updateBox':updateBox
-            }
-            return JsonResponse(data)
+                #Bandera actualización box
+                updateBox = False
+                if idBox is not None and idBox>0:
+                   savedBox = updateCodeBox(idNotebook,order,contentCode,idBox)
+                   updateBox = True
+                else:
+                   savedBox = createCodeBox(idNotebook,order,contentCode)
+
+                data = {
+                    'savedBoxId':savedBox.id,
+                    'savedBoxCode':savedBox.content,
+                    'updateBox':updateBox
+                }
+
+                return JsonResponse(data)
 
 @csrf_exempt
 def deleteCodeBoxAjax(request):
@@ -746,14 +914,21 @@ def deleteParam(idParam):
     param = Parameter.objects.get(id=idParam)
     param.delete()
 
+# Publicar ejercicio
+def publishExercise(idExercise):
+    exercise = Exercise.objects.get(id=idExercise)
+    exercise.draft = False
+    exercise.save()
+
 class BoxView:
-    def __init__(self, id, idExercise, order, type, content, parameters=None):
+    def __init__(self, id, idExercise, order, type, content, parameters=None, idGraphic=None):
         self.id = id
         self.idExercise = idExercise
         self.order = order
         self.type = type
         self.content = content
         self.parameters = parameters
+        self.idGraphic = idGraphic
 
 def paypalTransaction(request):
     """
@@ -824,3 +999,54 @@ def getFinalPrice(license, numUsers):
 
     return res
 
+
+# Create code param
+@csrf_exempt
+def createUpdateCodeIdGraphicAjax(request):
+    print("Creating code param for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idBox = request.POST.get('idBox')
+        idGraphic = request.POST.get('idGraphic')
+
+        #TODO MBC VALIDAR CAMPOS
+        updateCodeIdGrap = updateCodeIdGraphic(idBox,idGraphic)
+
+        data = {
+        }
+        return JsonResponse(data)
+
+@csrf_exempt
+def deleteIdGraphicAjax(request):
+    print("Deleting id graphic for code box by Ajax")
+    if request.method == 'POST':
+        print("post method")
+        idBox = request.POST.get('idBox')
+        if idBox == 'null':
+            idBox = None
+        else:
+            idBox = int(idBox)
+
+        #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+        if idBox is not None and idBox>0:
+           deleteCodeIdGraphic(idBox)
+
+        data = {
+        }
+        return JsonResponse(data)
+
+# Update id graphic box
+def updateCodeIdGraphic(idBox,idGraphic):
+    #TODO MBC VALIDAR QUE EL NOTEBOOK PERTENECE AL USUARIO LOGADO
+    codeBox = Code.objects.get(id=idBox)
+    codeBox.idGraphic = idGraphic
+    codeBox.save()
+    return codeBox
+
+# Update code box
+def deleteCodeIdGraphic(idBox):
+    #TODO MBC VALIDAR QUE EL NOTEBOOK PERTENECE AL USUARIO LOGADO
+    codeBox = Code.objects.get(id=idBox)
+    codeBox.idGraphic = ''
+    codeBox.save()
+    return codeBox

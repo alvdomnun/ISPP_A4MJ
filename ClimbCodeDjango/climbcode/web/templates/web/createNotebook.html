@@ -1,4 +1,4 @@
-{% extends 'welcome/welcome-base.html' %}
+{% extends 'base/base.html' %}
 {% block extrastatic %}
 <script>
     function auto_grow(element) {
@@ -15,7 +15,7 @@
     <br />
     <h2>{{ title }}</h2>
     <div class="row">
-    
+
         <div class="container-fluid">
             <br/>
             <div class="col-md-12">
@@ -52,7 +52,7 @@
                             <select class="form-control" id="category" name="category" required>
                                 <option value="" selected="selected">Seleccione una asignatura</option>
                                 {% for s in categories %}
-                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                    <option value="{{ s.id }}">{{ s.course }}º {{ s.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>

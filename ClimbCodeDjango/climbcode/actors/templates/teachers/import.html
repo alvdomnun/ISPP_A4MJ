@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="container">
+            <br/>
+            <h2>Subir archivo .csv para añadir varios profesores</h2>
+            <br/>
+
+            <div class="col-xs-12 col-md-12 form-group">
+                            <span style="font-style:italic;">
+                                Suba un archivo .csv desde su ordenador personal con los datos de los profesores siguiendo el ejemplo que se le ofrece <a
+                                    href="{% url 'teachers_upload_example' %}">aquí.</a>
+                            </span>
+            </div>
+            <div class="col-xs-12 col-md-12 form-group">
+                    <span style="font-style:italic;">
+                                Recuerde que todos los datos deben ser válidos y que no podrá añadir más profesores de los que su licencia le permite actualmente
+                            </span>
+            </div>
+
+            <div class="col-xs-12 col-md-12 form-group">
+                    <span style="font-style:italic;">
+                        Para evitar errores, utilice el mismo archivo que proveemos de ejemplo para añadir sus datos desde Microsoft Excel o una aplicación similar y cuando finalice asegurese de guardarlo como <b>"CSV UTF-8 (delimitado por comas) (*.csv)"</b> o similares si utiliza otra aplicación
+                            </span>
+            </div>
+
+            <div class="col-md-12">
+
+                <div class="container-fluid">
+
+                    <form method="POST" enctype="multipart/form-data" class="form" action="{% url 'upload_teachers' %}"
+                          role="form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-xs-6 col-md-6 form-group">
+                                <label for="file" class="control-label"></label>
+                                <input class="form-control" id="file" name="file"
+                                       placeholder="Archivo .csv" type="file" required
+                                       autofocus/>
+                            </div>
+                            <div class="col-xs-12 col-md-12 form-group">
+                                <input type="submit" value="Subir archivo .csv" class="btn btn-primary "/>
+                            </div>
+                        </div>
+
+                        <!-- Tratamiento de Errores -->
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% for message in messages %}
+                            <div class="alert alert-danger">
+                                <strong> {{ message|safe }} </strong>
+                            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

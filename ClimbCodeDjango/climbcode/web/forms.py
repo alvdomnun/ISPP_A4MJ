@@ -81,7 +81,8 @@ class RegisterSchoolForm(forms.Form):
     province = forms.ModelChoiceField(queryset = Province.objects.all(), empty_label = None, label = 'Provincia')
     type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
     teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
-    identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
+    identificationCode = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{8,9})$',
+           message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')], label = 'Código de identificación')
     licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
     numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
 
@@ -99,6 +100,12 @@ class RegisterSchoolForm(forms.Form):
                 # Si es programador o es una escuela ya activada, error de username ocupado
                 if (hasattr(user[0].actor, 'programmer')) or (hasattr(user[0].actor, 'school') and user[0].actor.school.isPayed):
                     raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, elija otro para completar su registro.")
+
+            school_code = self.cleaned_data["identificationCode"]
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).count()
+            if (num_codigo > 0):
+                raise forms.ValidationError(
+                    "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]

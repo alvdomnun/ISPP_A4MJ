@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Evalbox's Frame</title>
+
+
+    <script src="/static/js/jquery-3.3.1.js"></script>
+	<script src="/static/js/notebook_chart.js"></script>
+	<script src="/static/js/Chart.min.js"></script>
+
+    <script>
+
+    	function createEditParameter(idParam,value){
+	      	//Se comprueba si existe para actualizarlo, o en su defecto crearlo
+	      	var param = document.getElementById(idParam);
+	      	if(param==null){
+	      		//Se crea el elemento 
+	      		var input = document.createElement("input");
+				input.setAttribute("type", "hidden");
+				input.setAttribute("name", idParam);
+				input.setAttribute("id", idParam);
+				input.setAttribute("value", value);
+
+				//append to form element that you want .
+				document.getElementById("params").appendChild(input);
+	      	}else{
+	      		document.getElementById(idParam).value = value;
+	      	}
+    	}
+
+
+    	function resetParams(){
+	      	$('#params').empty();
+    	}
+
+    	
+    	window.addEventListener('message', function (e) {
+	        // You must verify that the origin of the message's sender matches your
+	        // expectations. In this case, we're only planning on accepting messages
+	        // from our own origin, so we can simply compare the message event's
+	        // origin to the location of this document. If we get a message from an
+	        // unexpected host, ignore the message entirely.
+	        if (e.origin !== (window.location.protocol + "//" + window.location.host))
+	          return;
+
+	        var mainWindow = e.source;
+	        var result = '';
+	        try {
+	        	/*Se comprueba el tipo de mensaje que ha llegado: 
+	        		e.data[0] == evalCode -> Evaluación de código
+	        			e.data[1] == code -> Código a ejecutar
+	        			e.data[2] == idInputResultadoPadre -> ID del input perteneciente al padre donde se mostrará el resultado del código
+
+	        		e.data[0] == editCreateParam -> Añadir parámetro
+	        			e.data[1] == idParam -> Id del parámetro
+	        			e.data[2] == value -> Valor del parámetro
+
+	        		e.data[0] == deleteParam -> Eliminar parámetro
+
+	        		e.data[0] == toggleChart -> Añadir o quitar gráfica
+	        			e.data[1] == idChart -> Id de la gráfica
+				*/
+
+				var messageType = e.data[0];
+
+				if(messageType == 'evalCode'){
+					var code = e.data[1];
+					var rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+					var invalidCode = rexExp.test(code);
+					if(!invalidCode){
+						try {							
+							var idInputResultado = e.data[2];
+							result = eval(code);
+						} catch (e) {
+				          result = e.message;
+				        }
+				        data = [result, idInputResultado];
+				        mainWindow.postMessage(data, e.origin);
+			    	}
+
+				}else if(messageType == 'editCreateParam'){
+					var idParam = e.data[1];
+					var valueParam = e.data[2];
+					createEditParameter(idParam, valueParam);
+				}else if(messageType == 'resetParams'){
+					resetParams();
+				}else if(messageType == 'addChart'){
+					var idChart = e.data[1];
+					addChartIframeJS(idChart);
+				}else if(messageType == 'deleteChart'){
+					$('#chart').empty();
+				}
+
+	        	
+	        } catch (e) {
+	          result = 'eval() threw an exception.';
+	        }
+	        
+    	});
+
+    </script>
+  </head>
+  <body>
+  	<div id="params"></div>
+  	<div id="chart"></div>
+  </body>
+
+</html>

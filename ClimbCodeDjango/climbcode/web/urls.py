@@ -1,5 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
+from django.views.generic import TemplateView
 
 from . import views
 
@@ -14,11 +15,14 @@ urlpatterns = [
     path('notebookv1_ejercicio_qin', views.notebookv1_ejercicio_qin, name='notebookv1_ejercicio_qin'),
     path('notebookv1_ejercicio_est', views.notebookv1_ejercicio_est, name='notebookv1_ejercicio_est'),
     path('notebookv1aux', views.notebookv1aux, name='notebookv1aux'),
+    path('notebookv1_ejercicio_geo', views.notebookv1_ejercicio_geo, name='notebookv1_ejercicio_geo'),
+
     url(r'^pruebaAjaxNotebook$', views.pruebaAjaxNotebook, name='pruebaAjaxNotebook'),
     url(r'^saveNotebook$', views.saveNotebook, name='saveNotebook'),
     url(r'^createNotebook$', views.createNotebook, name='createNotebook'),
     url(r'^editNotebook$', views.editNotebook, name='editNotebook'),
-    #url(r'^viewNotebook$', views.viewNotebook, name='viewNotebook'),
+    url(r'^publishNotebook$', views.publishNotebook, name='publishNotebook'),
+    url(r'^showNotebook$', views.showNotebook, name='showNotebook'),
     url(r'^editNotebookAjax$', views.editNotebookAjax, name='editNotebookAjax'),
     url(r'^createUpdateTextBoxAjax$', views.createUpdateTextBoxAjax, name='createUpdateTextBoxAjax'),
     url(r'^deleteTextBoxAjax$', views.deleteTextBoxAjax, name='deleteTextBoxAjax'),
@@ -28,6 +32,11 @@ urlpatterns = [
     url(r'^deleteParamAjax$', views.deleteParamAjax, name='deleteParamAjax'),
     url(r'^createUpdateImageBoxAjax$', views.createUpdateImageBoxAjax, name='createUpdateImageBoxAjax'),
     url(r'^deleteImageBoxAjax$', views.deleteImageBoxAjax, name='deleteImageBoxAjax'),
+    url(r'^createUpdateCodeIdGraphicAjax$', views.createUpdateCodeIdGraphicAjax, name='createUpdateCodeIdGraphicAjax'),
+    url(r'^deleteIdGraphicAjax$', views.deleteIdGraphicAjax, name='deleteIdGraphicAjax'),
+
+    url(r'^iframe_notebook', TemplateView.as_view(template_name="notebook/iframe_notebook.html"),
+                   name='iframe_notebook'),
 
     path('paypal', views.paypalTransaction, name='paypalTransaction'),
 

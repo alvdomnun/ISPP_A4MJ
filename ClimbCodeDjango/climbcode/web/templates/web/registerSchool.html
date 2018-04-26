@@ -9,7 +9,7 @@
     <h2>{{ title }}</h2>
 
     <div class="row">
-    
+
         <div class="container-fluid">
             <div class="col-md-12">
 
@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="email" class="control-label">Email</label>
-                            <input class="form-control" id="email" name="email" placeholder="Direcci&#243;n de correo electr&#243;nico" type="email" value="{{ form.email.value|default:"" }}" required/>
+                            <input class="form-control" id="email" name="email" placeholder="escuela@ejemplo.com" type="email" value="{{ form.email.value|default:"" }}" required/>
                         </div>
                     </div>
                     <div class="row">
@@ -67,7 +67,7 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="identificationCode" class="control-label">C&#243;digo de Identificaci&#243;n</label>
-                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="C&#243;digo de Identificaci&#243;n"
+                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="000000000"
                                    value="{{ form.identificationCode.value|default:"" }}" required/>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
@@ -143,7 +143,7 @@
                     </div>
 
                     <hr/>
-                
+
                     <!-- Tratamiento de Errores -->
                     {% if form.errors %}
                         {% for field in form %}

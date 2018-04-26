@@ -5,6 +5,17 @@ var maxOrder = 0;
 //Variable global seteada
 var numParam = 0;
 
+/*Variables para la gestión del guardado como borrador y publicación*/
+//Array con los IDS de los formularios de las cajas
+var boxFormsButtons = [];
+var boxForms = [];
+var savingDraft = false;
+//Si ha ocurrido un problema guardando las cajas, se notifica con la siguiente variable 
+var errorBatchSave = false;
+
+//Constante para recuperar parámetro para el Iframe
+var ID_HIDDEN_NAME_PARAM = "input_hidden_parameter_id_name_param_";
+
 function prueba(){
 	alert(saludo);
 }
@@ -21,6 +32,7 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idBox = "idBox"+numBox;
 	var idBoxParameter = "'idBox"+numBox+"'";
 	var idFormBox = "form_box_"+idBox;
+	var idFormBoxSubmitButton = "form_box_submit_button_"+idBox;
 	var idInputText = "input_text_box_"+idBox;
 	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
 	var idHiddenOrder = "input_hidden_order_"+idBox;
@@ -46,8 +58,8 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 					}
 		                htmlTextBox+=		'<textarea id="'+idInputText+'" onkeyup="auto_grow(this)" class="form-control text-box-textarea" placeholder="Escribe aquí" required>'+content+'</textarea>';
 		            if(vistaEdicion){
-		                htmlTextBox+=   	'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-		                         			'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+		                htmlTextBox+=   	'<button id="'+idFormBoxSubmitButton+'" type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+		                         			'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteTextBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\',\''+idFormBoxSubmitButton+'\',\''+idFormBox+'\')" type="button">Eliminar</button>'+
                         				'</form>';
 	                }
            			htmlTextBox+= '</div>'+
@@ -71,6 +83,9 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
         createUpdateTextBox(idHiddenIdNotebook,idHiddenOrder,idInputText,idHiddenIdBox);
     });
 
+    //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
+    addBoxFormButton(idFormBoxSubmitButton);
+    addBoxForm(idFormBox);
 
 }
 
@@ -80,10 +95,10 @@ function auto_grow(element) {
 }
 
 function addNewCodeBox(idNotebookContent,idNotebookBD){
-	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'');
+	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'',null);
 }
 
-function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart){
 
 	numBox++;
 	var idBox = "idBox"+numBox;
@@ -102,14 +117,22 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idAddParamButton = "id_add_parameter_button_"+numBox;
 	var idAddParamButtonParameter = "'id_add_parameter_button_"+numBox+"'";	
 	//Div Row Principal del contenido para concatenar la gráfica
+	var idAddGraphicButton = "id_add_graphic_button_"+numBox;
 	var idRowPrincipal = "id_code_box_row_"+idBox;
 	var idRowPrincipalParameter = "'id_code_box_row_"+idBox+"'";
 	//Div Col Add Delete Button Chart
 	var idColChartButtons = "id_col_chart_buttons_"+idBox;
 	var idColChartButtonsParameter = "'id_col_chart_buttons_"+idBox+"'";
 
+	//ID IFRAME
+	var idIframe = "id_iframe_code_box_"+numBox;
+
+	//ID INPUT RESULTADO CODIGO
+	var idInputResultado = 'resultado_'+idEditor;
+
 	/* IDS FORM */
 	var idFormBox = "form_box_"+idBox;
+	var idFormBoxSubmitButton = "form_box_submit_button_"+idBox;
 	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
 	var idHiddenOrder = "input_hidden_order_"+idBox;
 	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
@@ -118,7 +141,14 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 		var order = maxOrder;
 	}
 
-	
+	if(content==''||content==null){
+		content='//Escribe tu ejercicio con JavaScript\n'+
+		'function saludo(){\n'+
+		'	return "Hola Mundo";\n'+
+		'}\n'+
+		'\n'+
+		'saludo();\n';
+	}
 
 	//HTML DE LA CAJA DE CÓDIGO
 
@@ -140,8 +170,8 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 												'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
 												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
 												'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
-												'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-												'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteCodeBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+												'<button id="'+idFormBoxSubmitButton+'" type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+												'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteCodeBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\',\''+idFormBoxSubmitButton+'\',\''+idFormBox+'\')" type="button">Eliminar</button>'+
 											'</form>'+
 	                                        
 	                                                '<div class="row" style="padding: 15px;">'+                                                	
@@ -159,25 +189,41 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	                                                '</div>'+
 	                                        '</div>'+
 	                                        '<div id="'+idColChartButtons+'" class="col-md-4" style="margin-top: 20px;">'+
-	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
+	                                            /*'<button type="submit" class="btn btn-primary" onclick="evalUserCodeAce('+idEditorParameter+');">'+
 	                                               'Ejecutar >>'+
+	                                            '</button>'+*/
+	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
+	                                               'Ejecutar>>'+
 	                                            '</button>'+
 	                                            '<br><br>'+
 	                                            '<h4>Resultado del código</h4>'+
 	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+
 	                                            '<br><br>'+
-	                                            '<button class="btn btn-primary" onclick="addChart('+idRowPrincipalParameter+','+idBoxParameter+','+idColChartButtonsParameter+');">'+
+	                                            '<button id="'+idAddGraphicButton+'" type="submit" class="btn btn-primary" onclick="alert(\'Para añadir gráfica, guarde la caja de código.\')">'+
 	                                               'Añadir Gráfica'+
 	                                            '</button>'+
 	                                        '</div>'+
-
+											'<div class="col-md-12" style="margin-top: 20px;">'+
+	                                        	'<iframe style="width:100%;height: 0px;display:none" sandbox=\'allow-scripts\' id="'+idIframe+'" src="iframe_notebook"></iframe>'+
+	                                        '</div>'+
 	                                    '</div>'+
+
 	                                '</div>'+
 	                            '</div>'+
 	                        '</div>'+
                         '</div>';
 
 	$('#'+idNotebookContent).append(htmlCodeBox);
+
+    var haveChart = false;
+    if(idChart!=null && idChart!=''){
+        setTimeout(
+          function()
+          {
+            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart);
+          }, 1000);
+        haveChart = true;
+    }
 
 	var editor = ace.edit(idEditor);
     editor.getSession().setMode("ace/mode/javascript");
@@ -204,8 +250,12 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
         var form = $('#'+idFormBox);
-        createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton);
+        createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton,idRowPrincipalParameter,idBoxParameter,idColChartButtonsParameter,idAddGraphicButton,idIframe,haveChart);
     });
+
+    //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
+    addBoxFormButton(idFormBoxSubmitButton);
+    addBoxForm(idFormBox);
 
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
     var respuesta = [idDivParam,idDivParamButton];
@@ -228,6 +278,7 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 	var idUrlInput = "input_url_img_"+idBox;
 
 	var idFormBox = "form_box_"+idBox;
+	var idFormBoxSubmitButton = "form_box_submit_button_"+idBox;
 	var idHiddenIdBox = "input_hidden_id_box_"+idBox;
 	var idHiddenIdNotebook = "input_hidden_id_notebook_"+idBox;
 	var idHiddenOrder = "input_hidden_order_"+idBox;
@@ -248,7 +299,7 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 							'<div class="row">'+
 								'<div class="col-md-12 custom-mt-1" >'+
 									'<div class="form-group" style="padding:12px;">'+
-		                            	'<img class="notebook-img" id="'+idImg+'" src="'+urlImg+'" height="256px" />'+
+		                            	'<img class="notebook-img" id="'+idImg+'" src="'+urlImg+'" height="256px" style="max-width: 100%;" />'+
 		                        	'</div>'+
 		                        '</div>'+
 		                        '<div class="form-group col-md-6 offset-md-3" style="padding:12px;">'+
@@ -258,8 +309,8 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 										'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
 				                        '<input class="form-control col-md-5 offset-md-3" id="'+idUrlInput+'" type="text" placeholder="Establecer URL" required value="'+url+'">'+
 										'<div class="col-md-12 offset-md-3" >'+
-				                         		'<button type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteImageBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\')" type="button">Eliminar</button>'+
+				                         		'<button id="'+idFormBoxSubmitButton+'" type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteImageBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\',\''+idFormBoxSubmitButton+'\',\''+idFormBox+'\')" type="button">Eliminar</button>'+
 										'</div>'+
 									'</form>'+
 								'</div>'+
@@ -276,6 +327,10 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
         //var form = $('#'+idFormBox);
         createUpdateImageBox(idHiddenIdNotebook,idHiddenOrder,idUrlInput,idHiddenIdBox,idImg);
     });
+
+    //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
+    addBoxFormButton(idFormBoxSubmitButton);
+    addBoxForm(idFormBox);
 }
 
 function deleteElement(idElement){
@@ -293,6 +348,82 @@ function evalUserCodeAce(idEditor){
     var s = editor.getValue();
     var resultado = eval(s);
     document.getElementById("resultado_"+idEditor).value = String(resultado);
+}
+
+function setParametersIframe(idDivParamsCodeBox, idIframe){
+	//En primer lugar, se borran todos los parámetros anteriores del iframe
+
+    resetParamsIframe(idIframe);
+
+    var childrens = $("#"+idDivParamsCodeBox).children();
+
+	for (index1 = 0; index1 < childrens.length; ++index1) {
+		//Obtenemos los inputs del form de cada parámetro
+    	var children = childrens[index1];
+    	var idChildren = children.id;
+
+    	//Recorremos los inputs buscando el id y el valor del parámetro
+    	inputs = $("#"+idChildren+" :input");
+    	if(inputs!=null){
+    		var idParam = null;
+	    	var paramValue = null;
+
+	    	for (index2 = 0; index2 < inputs.length; ++index2) {
+	    		input = inputs[index2];
+	    		
+	    		if (input.id && input.id.indexOf(ID_HIDDEN_NAME_PARAM) == 0) {
+		        	//Encontrado el id del parámetro
+		        	idParam = input.value;
+		    	}
+
+
+	    	}
+	    	//Si se ha recuperado el id del parámetro, obtenemos el valor
+	    	if(idParam!=null){
+		    	paramValue = $('#'+idParam).val();
+	    	}
+	    	//Si se ha recuperado correctamente el id y valor del parámetro,
+	    	//se crea en el iframe
+	    	if(idParam!=null && paramValue!=null){
+	    		editCreateParamIframe(idIframe, idParam, paramValue);
+	    	}
+	    }
+	}
+}
+
+function evalUserCodeAceIframe(idEditor, idDivParamsCodeBox, idIframe, idInputResultado){
+    var editor = ace.edit(idEditor);
+    var code = editor.getValue();
+
+    /*
+    	Comprobamos si el código contiene operaciones no permitidas. Estas son:
+    		alert(
+    		ajax.
+    		window.
+    		location.
+    		eval(
+	*/
+
+	var rexExp = new RegExp("(?:^|\W)(eval)|(alert)|(window.)|(location.)|(ajax)(?:$|\W)");
+	var invalidCode = rexExp.test(code);
+
+
+    /*
+    	Recuperamos los valores actuales de los parámetros de la caja de código
+		para mandarlos al iframe
+    */
+    if(!invalidCode){
+	    setParametersIframe(idDivParamsCodeBox, idIframe);   
+
+		//Una vez seteados los parámetros en el iframe, ejecutamos el código en él
+		data = ['evalCode', code, idInputResultado];
+
+		var sandboxedFrame = document.getElementById(idIframe);
+
+	    sandboxedFrame.contentWindow.postMessage(data, '*');
+	}else{
+		alert("El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval");
+	}
 }
 
 function addNewParameter(idParameterDiv,idButtonParameter,idBox){
@@ -320,7 +451,8 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 	var idHiddenIdBox = "input_hidden_parameter_id_box_"+numParameter;
 	var idHiddenIdPkParam = "input_hidden_parameter_id_pk_param_"+numParameter;
 	//El nombre del id para obtenerse por código
-	var idHiddenIdNameParam = "input_hidden_parameter_id_name_param_"+numParameter;
+	//NO CAMBIAR EL VALOR DE ESTA VARIABLE
+	var idHiddenIdNameParam = ID_HIDDEN_NAME_PARAM+numParameter;
 	//El nombre del parámetro establecido por el usuario
 	var idNameParam = "input__name_param_"+numParameter;
 	var idValueParam = "input_parameter_value_"+numParameter;
@@ -329,6 +461,7 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 
 	var idParameterDivParameter = "'"+idParameterDiv+"'";
 	var idButtonParameterParameter = "'"+idButtonParameter+"'";
+	var idFormBoxSubmitButton = "form_box_submit_button_parameter"+numParameter;
 
 	var idUrlInputParameter = "'idUrlInput"+numImg+"'";
 
@@ -351,14 +484,17 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 									'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBox+'">'+
 									'<input type="hidden" id="'+idHiddenIdPkParam+'" value="'+idParam+'">'+
 									'<input type="hidden" id="'+idHiddenIdNameParam+'" value="'+idNameParameter+'">'+
+
 								'<label class="control-label">ID</label>'+
     							'<input value="'+idNameParameter+'" class="form-control" type="text" disabled="disabled">'+
     							'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
     							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" required>'+
+    							'<br>'+
     							'<label for="'+idNameParameter+'" class="control-label">Valor</label>'+
     							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text" required>'+
-    							'<button type="submit" class="btn btn-primary pull-right" style="margin-top:10px" type="button">Guardar</button>'+
-    							'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteParam(\''+idDivParam+'\',\''+idHiddenIdPkParam+'\')" type="button">Eliminar</button>'+
+    							'<br>'+
+    							'<button id="'+idFormBoxSubmitButton+'" type="submit" class="btn btn-primary pull-right" style="margin-top:10px" type="button">Guardar</button>'+
+    							'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteParam(\''+idDivParam+'\',\''+idHiddenIdPkParam+'\',\''+idFormBoxSubmitButton+'\',\''+idFormParam+'\')" type="button">Eliminar</button>'+
     							'</form>'+
     						'</div>'
 
@@ -383,31 +519,97 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
         var form = $('#'+idFormParam);
         createUpdateCodeParam(idHiddenIdBox,idNameParameter,idHiddenIdPkParam,idHiddenIdNameParam,idNameParam);
     });
+
+    //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
+    addBoxFormButton(idFormBoxSubmitButton);
+    addBoxForm(idFormParam);
+
 }
 
-function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
+function addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart){
 
-	var idChart = "myChart_"+idBoxParameter;
+    var persistirGrafica = false;
+	if(idChart=='' || idChart==null){
+		idChart = "myChart_"+idBoxParameter;
+		persistirGrafica=true;
+	}
+
 
 	var idChartRow = idChart+'_row';
 
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
-	}
+    if(persistirGrafica){
+        $.ajax({
+            url : "/web/createUpdateCodeIdGraphicAjax", // the endpoint
+            type : "POST", // http method
+            data : {
+            'idBox': idBox,
+            'idGraphic': idChart,
+            }, // data sent with the post request
+            // handle a successful response
+            success : function(json) {
+                console.log(json); // log the returned json to the console
+                //alert("Notebook editado correctamente");
+                //Actualización de los campos
+                console.log("success"); // another sanity check
+                //$("#getCodeModal").modal('show');
+                //Se comprueba si el box ha sido creado o actua
+                addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
+                $('#notification-text').text('Gráfica creada correctamente');
 
-	var htmlChart = '<div class="col-md-12" id="'+idChartRow+'" style="height="300">'+
-						'<div class="row">'+
-							'<div class="col-md-12">'+
-								'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
-							'</div>'+	                    
-		                    '<div class="col-md-12">'+
-		                        '<canvas class="notebook-chart" id="'+idChart+'" width="auto" height="300"></canvas>'+
-		                    '</div>'+
-		                '</div>'+
-	                '</div>';
+                $('#notificaciones-holder').slideDown();
 
-	$('#'+idRowPrincipalParameter).append(htmlChart);
+                setTimeout(
+                  function()
+                  {
+                    $('#notificaciones-holder').slideUp();
+                  }, 2000);
+
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+                $('#notification-text').text('Error al editar');
+                $('#notificaciones-holder').show();
+
+                setTimeout(
+                  function()
+                  {
+                    $('#notificaciones-holder').hide();
+                  }, 2000);
+            }
+        });
+    }else{
+        addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
+    }
+	//Botón eliminar gráfica
+
+	//Quitamos previamente el botón de aceptar
+
+	$('#'+idColChartButtons+' button:last-child').remove();
+
+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
+                                   'Eliminar Gráfica'+
+                                '</button>';
+
+    $('#'+idColChartButtons).append(htmlDeleteChartButton);
+
+}
+
+function addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox){
+
+	var idChartRow = idChart+'_row';
+
+	//TODO LLAMAR AL IFRAME PARA CARGAR LA GRÁFICA
+
+	var sandboxedFrame = document.getElementById(idIframe);
+    data = ['addChart', idChart];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
 
 	//Botón eliminar gráfica
 
@@ -416,73 +618,125 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 	$('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idChartRow+'\',\''+idRowPrincipalParameter+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\');">'+
                                    'Eliminar Gráfica'+
                                 '</button>';
 
     $('#'+idColChartButtons).append(htmlDeleteChartButton);
 
-	//Mostrar la gráfica con valores por defecto
+    //Aumentar el tamaño del iframe para mostrar la gráfica
 
-	var ctx = document.getElementById(idChart);
-	var myChart = new Chart(ctx, {
-	    type: 'line',
-	    data: {
-	        labels: [],
-	        datasets: [{
-	            label: 'Nombre Gráfica',
-	            data: [],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)'
-	            ],
-	            borderColor: [
-	                'rgba(255,99,132,1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)'
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	    	chartArea: {
-		        backgroundColor: 'rgba(251, 255, 255, 0.4)',
-		    },
-	        maintainAspectRatio: false,
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero:true
-	                }
-	            }]
-	        }
-	    }
-	});
+    document.getElementById(idIframe).style.height = "365px"
+    document.getElementById(idIframe).style.display = "block"
+    document.getElementById(idIframe).style.marginBottom = "20px";
 
 }
 
-function deleteChart(idChartRow,idRowPrincipalParameter,idBoxParameter,idColChartButtons){
+function deleteChartIframe(idIframe, idBoxParameter, idColChartButtons, idAddGraphicButton, idBox, idChart){
 
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
-	}
+	var sandboxedFrame = document.getElementById(idIframe);
+    data = ['deleteChart'];
 
-	$('#'+idColChartButtons+' button:last-child').remove();
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+
+    document.getElementById(idIframe).style.height = "0px"
+
+    $('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlAddChartButton = 	'<button type="submit" class="btn btn-primary" onclick="addChart(\''+idRowPrincipalParameter+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
-                            		'Añadir Gráfica'+
-                            	'</button>';
+	var htmlAddChartButton = '<button type="submit" class="btn btn-primary" onclick="addChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
+                                   'Añadir Gráfica'+
+                                '</button>';
 
     $('#'+idColChartButtons).append(htmlAddChartButton);
+
+    document.getElementById(idIframe).style.display = "none";
+    document.getElementById(idIframe).style.marginBottom = "0px";
+
+}
+
+function editCreateParamIframe(idIframe, idParam, valueParam){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['editCreateParam', idParam, valueParam];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
+
+
+  function resetParamsIframe(idIframe){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['resetParams'];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
+
+  function deleteParamIframe(idIframe, idParam){
+    var sandboxedFrame = document.getElementById(idIframe);
+    data = ['deleteParam', idParam];
+
+    sandboxedFrame.contentWindow.postMessage(data, '*');
+  }
+
+function deleteChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart){
+
+	mensajeConfirmacion = '¿Seguro que quiere eliminar esta gráfica?';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		//Si idBox no es vacío, la caja ya ha sido persistida y debe eliminarse de BD, antes de eliminar el código HTML correspondiente
+		$.ajax({
+	        url : "/web/deleteIdGraphicAjax", // the endpoint
+	        type : "POST", // http method
+	        data : {
+	        'idBox': idBox
+	        }, // data sent with the post request
+
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+				deleteChartIframe(idIframe, idBoxParameter, idColChartButtons, idAddGraphicButton, idBox, idChart);
+	            //Se comprueba si el box ha sido creado o actua
+	        	$('#notification-text').text('Gráfica borrada correctamente');
+
+	            $('#notificaciones-holder').slideDown();
+
+	            setTimeout(
+	              function()
+	              {
+	                $('#notificaciones-holder').slideUp();
+	              }, 2000);
+
+	            deleteElement(idAddGraphicButton);
+                $('#'+idColChartButtons+' button:last-child').remove();
+
+                var htmlAddChartButton = 	'<button id="'+idAddGraphicButton+'" type="submit" class="btn btn-primary" onclick="alert(\'Para añadir gráfica, guarde la caja de código.\')" >'+
+	                                               'Añadir Gráfica'+
+	                                        '</button>';
+
+                $('#'+idColChartButtons).append(htmlAddChartButton);
+	        },
+
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            $('#notification-text').text('Error al eliminar');
+	            $('#notificaciones-holder').show();
+
+	            setTimeout(
+	              function()
+	              {
+	                $('#notificaciones-holder').hide();
+	              }, 2000);
+	        }
+		});
+	}
 
 }
 
@@ -540,7 +794,7 @@ function editExerciseInfo(){
             $('#category').val(newCategoryId);
             $('#category_disabled').val(newCategory);
             console.log("success"); // another sanity check
-            
+            document.getElementById("notificaciones-holder").className = "alert-success";
             $('#notification-text').text('Editado correctamente');
             $('#notificaciones-holder').slideDown();
             
@@ -556,7 +810,7 @@ function editExerciseInfo(){
             $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
                 " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+            document.getElementById("notificaciones-holder").className = "alert-danger";
             $('#notification-text').text('Error al editar');
             $('#notificaciones-holder').show();
 
@@ -571,7 +825,7 @@ function editExerciseInfo(){
 
 //AJAX para crear code box
 
-function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, idEditor, idAddParamButton, idDivParam, idDivParamButton){
+function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, idEditor, idAddParamButton, idDivParam, idDivParamButton, idRowPrincipalParameter, idBoxParameter, idColChartButtonsParameter,idAddGraphicButton,idIframe,haveChart){
 	console.log("Retrieving code box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var boxOrder = $('#'+idHiddenOrder).val();
@@ -581,72 +835,112 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 	var editor = ace.edit(idEditor);
     var contentCode = editor.getValue();
 
-	console.log("Recuperado idNotebook: "+idNotebook);
-	console.log("Recuperado boxOrder: "+boxOrder);
-	console.log("Recuperado código: "+contentCode);
-	console.log("Recuperado idBox: "+idBox);
+    var isSavingdraft = savingDraft;
 
-	$.ajax({
-        url : "/web/createUpdateCodeBoxAjax", // the endpoint
-        type : "POST", // http method
-        data : {
-        'idNotebook': idNotebook,
-        'boxOrder': boxOrder,
-        'contentCode': contentCode,
-        'idBox': idBox,
-        }, // data sent with the post request
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
-            
-			//Se comprueba si el box ha sido creado o actua
-            var updateBox = json['updateBox'];
-            if(updateBox){
-            	$('#notification-text').text('Box editada correctamente');
-            }else{
-            	$('#notification-text').text('Box creada correctamente');
-            }
+    //Validar que el código no contiene funciones no permitidas
+    var rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+	var invalidCode = rexExp.test(contentCode);
+	if(!invalidCode){
 
-            $('#notificaciones-holder').slideDown();
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+		console.log("Recuperado idNotebook: "+idNotebook);
+		console.log("Recuperado boxOrder: "+boxOrder);
+		console.log("Recuperado código: "+contentCode);
+		console.log("Recuperado idBox: "+idBox);
 
-            //Activar el botón de añadir parámetros para esa caja de código
-            //Recuperar id box
-            var idBox = json['savedBoxId'];
-            //Actualizar el campo idbox, por si se está creando
-            $('#'+idHiddenIdBox).val(idBox);
+		$.ajax({
+		    url : "/web/createUpdateCodeBoxAjax", // the endpoint
+		    type : "POST", // http method
+		    data : {
+		    'idNotebook': idNotebook,
+		    'boxOrder': boxOrder,
+		    'contentCode': contentCode,
+		    'idBox': idBox,
+		    }, // data sent with the post request
+		    // handle a successful response
+		    success : function(json) {
+		        console.log(json); // log the returned json to the console
+		        //alert("Notebook editado correctamente");
+		        //Actualización de los campos
+		        console.log("success"); // another sanity check
+		        //$("#getCodeModal").modal('show');
 
-            $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+		        /*
+            	Si no se está guardando el ejercicio como borrador o publicando, 
+            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+					//Se comprueba si el box ha sido creado o actua
+			        var updateBox = json['updateBox'];
+			        if(updateBox){
+			        	$('#notification-text').text('Box editada correctamente');
+			        }else{
+			        	$('#notification-text').text('Box creada correctamente');
+			        }
+			        document.getElementById("notificaciones-holder").className = "alert-success";
+			        $('#notificaciones-holder').slideDown();
+			        setTimeout(
+			          function() 
+			          {
+			            $('#notificaciones-holder').slideUp();
+			          }, 2000);
+			    }
+		        //Activar el botón de añadir parámetros para esa caja de código
+		        //Recuperar id box
+		        var idBox = json['savedBoxId'];
+		        //Actualizar el campo idbox, por si se está creando
+		        $('#'+idHiddenIdBox).val(idBox);
 
-            //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
+		        $('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+                //Si no posee gráfica cambiamos la funcionalidad del botón de añadir gráfica, de un alert a un añadir gráfica
+                if(!haveChart){
+                    $('#'+idAddGraphicButton).attr("onclick","addChart("+idBoxParameter+","+idColChartButtonsParameter+",\'"+idAddGraphicButton+"\',"+idBox+",\'"+idIframe+"\')");
+                }
 
-            //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
-        },
+		        //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al editar');
-            $('#notificaciones-holder').show();
+		        //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
+		    },
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
+		    // handle a non-successful response
+		    error : function(xhr,errmsg,err) {
+		        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+		            " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+
+		        $('#notification-text').text('Error al editar');
+		        rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+				invalidCode = rexExp.test(contentCode);
+				document.getElementById("notificaciones-holder").className = "alert-danger";
+
+				if(!isSavingdraft){
+				    if(invalidCode){
+				    	$('#notification-text').text('El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval');
+				    	$('#notificaciones-holder').show();
+				        setTimeout(
+				          function() 
+				          {
+				            $('#notificaciones-holder').hide();
+				          }, 5000);
+
+				    }else{
+				    	$('#notificaciones-holder').show();
+				        setTimeout(
+				          function() 
+				          {
+				            $('#notificaciones-holder').hide();
+				          }, 2000);
+				    }
+		        }
+		        if(isSavingdraft){
+		        	errorBatchSave = true;
+		        }
+
+		        
+		    }
+		});
+	}else{
+		alert("El código contiene funciones no permitidas. Estas son:\n alert, ajax, window, location y eval");
+	}
 
 }
 
@@ -670,70 +964,92 @@ function createUpdateCodeParam(idHiddenIdBox,idValueParameter,idHiddenIdPkParam,
 	console.log("Recuperado nameIdParam: "+nameIdParam);
 	console.log("Recuperado nameParam: "+nameParam);
 
-	$.ajax({
-        url : "/web/createUpdateCodeParamAjax", // the endpoint
-        type : "POST", // http method
-        data : { 
-        'idBox': idBox,
-        'paramValue': paramValue,
-        'idPkParam': idPkParam,
-        'nameIdParam': nameIdParam,
-        'nameParam': nameParam,
-        }, // data sent with the post request
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
-            //Se comprueba si el box ha sido creado o actua
-            var updateParam = json['updateParam'];
-            if(updateParam){
-            	$('#notification-text').text('Parámetro editado correctamente');
-            }else{
-            	$('#notification-text').text('Parámetro creado correctamente');
-            }
+	var isSavingdraft = savingDraft;
 
-            $('#notificaciones-holder').slideDown();
-            
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+	if(paramValue!=null && paramValue!='' && nameParam!=null && nameParam!=''){
 
-            //Recuperar id param
-            var idPkParam = json['savedParamId'];
-            //Actualizar el campo idbox, por si se está creando
-            $('#'+idHiddenIdPkParam).val(idPkParam);
+		$.ajax({
+	        url : "/web/createUpdateCodeParamAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idBox': idBox,
+	        'paramValue': paramValue,
+	        'idPkParam': idPkParam,
+	        'nameIdParam': nameIdParam,
+	        'nameParam': nameParam,
+	        }, // data sent with the post request
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
+
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            //Se comprueba si el box ha sido creado o actua
+		            var updateParam = json['updateParam'];
+		            if(updateParam){
+		            	$('#notification-text').text('Parámetro editado correctamente');
+		            }else{
+		            	$('#notification-text').text('Parámetro creado correctamente');
+		            }
+
+		            document.getElementById("notificaciones-holder").className = "alert-success";
+
+		            $('#notificaciones-holder').slideDown();
+		            
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').slideUp();
+		              }, 2000);
+		        }
+	            //Recuperar id param
+	            var idPkParam = json['savedParamId'];
+	            //Actualizar el campo idbox, por si se está creando
+	            $('#'+idHiddenIdPkParam).val(idPkParam);
 
 
 
-            //$('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
+	            //$('#'+idAddParamButton).attr("onclick","addNewParameter(\'"+idDivParam+"\',\'"+idDivParamButton+"\',\'"+idBox+"\')");
 
-            //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
+	            //onclick="addParameter('+idDivParamParameter+','+idDivParamButtonParameter+');"
 
-            //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
-        },
+	            //NECESITAMOS ID DEL BOTÓN, '+idDivParamParameter+','+idDivParamButtonParameter+'
+	        },
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al editar');
-            $('#notificaciones-holder').show();
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            document.getElementById("notificaciones-holder").className = "alert-danger";
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
+		            $('#notification-text').text('Error al editar');
+		            $('#notificaciones-holder').show();
 
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').hide();
+		              }, 2000);
+	        	}else{
+	        		errorBatchSave = true;
+	        	}
+	        }
+		});
+
+	}
 }
 
 //AJAX para crear text box
@@ -749,68 +1065,86 @@ function createUpdateImageBox(idHiddenIdNotebook, idHiddenOrder, idUrlInput, idH
 	console.log("Recuperado url: "+url);
 	console.log("Recuperado idBox: "+idBox);
 
-	$.ajax({
-        url : "/web/createUpdateImageBoxAjax", // the endpoint
-        type : "POST", // http method
-        data : { 
-        'idNotebook': idNotebook,
-        'boxOrder': boxOrder,
-        'url': url,
-        'idBox': idBox
-        
-        }, // data sent with the post request
+	var isSavingdraft = savingDraft;
 
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
+	if(paramValue!=null && paramValue!=''){
+		$.ajax({
+	        url : "/web/createUpdateImageBoxAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idNotebook': idNotebook,
+	        'boxOrder': boxOrder,
+	        'url': url,
+	        'idBox': idBox
+	        
+	        }, // data sent with the post request
 
-            //Se comprueba si el box ha sido creado o actua
-            var updateBox = json['updateBox'];
-            if(updateBox){
-            	$('#notification-text').text('Caja de ilustración editada correctamente');
-            }else{
-            	$('#notification-text').text('Caja de ilustración creada correctamente');
-            }
-            
-            $('#notificaciones-holder').slideDown();
-            
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
 
-            //Activar el botón de añadir parámetros para esa caja de texto
-            //Recuperar id box
-            var idBox = json['savedBoxId'];
-            //Actualizar el campo idbox, por si se está creando
-            $('#'+idHiddenIdBox).val(idBox);
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            //Se comprueba si el box ha sido creado o actua
+		            var updateBox = json['updateBox'];
+		            if(updateBox){
+		            	$('#notification-text').text('Caja de ilustración editada correctamente');
+		            }else{
+		            	$('#notification-text').text('Caja de ilustración creada correctamente');
+		            }
+		            document.getElementById("notificaciones-holder").className = "alert-success";
+		            $('#notificaciones-holder').slideDown();
+		            
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').slideUp();
+		              }, 2000);
+	        	}
+	            //Activar el botón de añadir parámetros para esa caja de texto
+	            //Recuperar id box
+	            var idBox = json['savedBoxId'];
+	            //Actualizar el campo idbox, por si se está creando
+	            $('#'+idHiddenIdBox).val(idBox);
 
-            //Mostrar la imagen en el img
-            $("#"+idImg).attr("src",url);
+	            //Mostrar la imagen en el img
+	            $("#"+idImg).attr("src",url);
 
-        },
+	        },
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al editar');
-            $('#notificaciones-holder').show();
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            document.getElementById("notificaciones-holder").className = "alert-danger";
+		            $('#notification-text').text('Error al editar');
+		            $('#notificaciones-holder').show();
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').hide();
+		              }, 2000);
+	        	}else{
+	        		errorBatchSave = true;
+	        	}
+	        }
+		});
+	}
 }
 
 //AJAX para crear text box
@@ -826,68 +1160,87 @@ function createUpdateTextBox(idHiddenIdNotebook, idHiddenOrder, idInputText, idH
 	console.log("Recuperado text: "+text);
 	console.log("Recuperado idBox: "+idBox);
 
-	$.ajax({
-        url : "/web/createUpdateTextBoxAjax", // the endpoint
-        type : "POST", // http method
-        data : { 
-        'idNotebook': idNotebook,
-        'boxOrder': boxOrder,
-        'text': text,
-        'idBox': idBox
-        
-        }, // data sent with the post request
+	var isSavingdraft = savingDraft;
 
-        // handle a successful response
-        success : function(json) {
-            console.log(json); // log the returned json to the console
-            //alert("Notebook editado correctamente");
-            //Actualización de los campos
-            console.log("success"); // another sanity check
-            //$("#getCodeModal").modal('show');
+	if(text!=null && text!=''){
 
-            //Se comprueba si el box ha sido creado o actua
-            var updateBox = json['updateBox'];
-            if(updateBox){
-            	$('#notification-text').text('Box editada correctamente');
-            }else{
-            	$('#notification-text').text('Box creada correctamente');
-            }
-            
-            $('#notificaciones-holder').slideDown();
-            
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').slideUp();
-              }, 2000);
+		$.ajax({
+	        url : "/web/createUpdateTextBoxAjax", // the endpoint
+	        type : "POST", // http method
+	        data : { 
+	        'idNotebook': idNotebook,
+	        'boxOrder': boxOrder,
+	        'text': text,
+	        'idBox': idBox
+	        
+	        }, // data sent with the post request
 
-            //Activar el botón de añadir parámetros para esa caja de texto
-            //Recuperar id box
-            var idBox = json['savedBoxId'];
-            //Actualizar el campo idbox, por si se está creando
-            $('#'+idHiddenIdBox).val(idBox);
-        },
+	        // handle a successful response
+	        success : function(json) {
+	            console.log(json); // log the returned json to the console
+	            //alert("Notebook editado correctamente");
+	            //Actualización de los campos
+	            console.log("success"); // another sanity check
+	            //$("#getCodeModal").modal('show');
 
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
-            $('#notification-text').text('Error al editar');
-            $('#notificaciones-holder').show();
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            //Se comprueba si el box ha sido creado o actua
+		            var updateBox = json['updateBox'];
+		            if(updateBox){
+		            	$('#notification-text').text('Box editada correctamente');
+		            }else{
+		            	$('#notification-text').text('Box creada correctamente');
+		            }
+		            document.getElementById("notificaciones-holder").className = "alert-success";
+		            $('#notificaciones-holder').slideDown();
+		            
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').slideUp();
+		              }, 2000);
+				}
+	            //Activar el botón de añadir parámetros para esa caja de texto
+	            //Recuperar id box
+	            var idBox = json['savedBoxId'];
+	            //Actualizar el campo idbox, por si se está creando
+	            $('#'+idHiddenIdBox).val(idBox);
+	        },
 
-            setTimeout(
-              function() 
-              {
-                $('#notificaciones-holder').hide();
-              }, 2000);
-        }
-	});
+	        // handle a non-successful response
+	        error : function(xhr,errmsg,err) {
+	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+	            /*
+	            	Si no se está guardando el ejercicio como borrador o publicando, 
+	            	se muestra la notificación individual de la caja
+	            */
+	            if(!isSavingdraft){
+		            document.getElementById("notificaciones-holder").className = "alert-danger";
+
+		            $('#notification-text').text('Error al editar');
+		            $('#notificaciones-holder').show();
+
+		            setTimeout(
+		              function() 
+		              {
+		                $('#notificaciones-holder').hide();
+		              }, 2000);
+	        	}else{
+	        		errorBatchSave = true;
+	        	}
+	        }
+		});
+	}
 }
 
 //AJAX para eliminar code box
-function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter,idFormBoxSubmitButton,idFormBox){
 	console.log("Retrieving ids text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var idBox = $('#'+idHiddenIdBox).val();
@@ -916,7 +1269,7 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Caja de código borrada correctamente');
 
@@ -930,6 +1283,10 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 
 	            deleteElement(idBoxParameter);
 
+	            //Se elimina del array de formularios para guardado borrador o publicar
+	            removeBoxFormButton(idFormBoxSubmitButton);
+	            removeBoxForm(idFormBox);
+
 	        },
 
 	        // handle a non-successful response
@@ -937,7 +1294,7 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -950,6 +1307,9 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 		});
 		}else{
 			deleteElement(idBoxParameter);
+			//Se elimina del array de formularios para guardado borrador o publicar
+	        removeBoxFormButton(idFormBoxSubmitButton);
+	        removeBoxForm(idFormBox);
 		}
 	}
 	
@@ -957,7 +1317,7 @@ function deleteCodeBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 
 
 //AJAX para eliminar text box
-function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter,idFormBoxSubmitButton,idFormBox){
 	console.log("Retrieving ids text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var idBox = $('#'+idHiddenIdBox).val();
@@ -987,19 +1347,24 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Box borrada correctamente');
 
 	            $('#notificaciones-holder').slideDown();
 	            
 	            setTimeout(
-	              function() 
-	              {
+	              function()
+ 	              {
 	                $('#notificaciones-holder').slideUp();
 	              }, 2000);
 
 	            deleteElement(idBoxParameter);
+
+	            //Se elimina del array de formularios para guardado borrador o publicar
+	            removeBoxFormButton(idFormBoxSubmitButton);
+	            removeBoxForm(idFormBox);
+	            
 
 	        },
 
@@ -1008,7 +1373,7 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1021,13 +1386,16 @@ function deleteTextBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 		});
 		}else{
 			deleteElement(idBoxParameter);
+			//Se elimina del array de formularios para guardado borrador o publicar
+            removeBoxFormButton(idFormBoxSubmitButton);
+            removeBoxForm(idFormBox);
 		}
 	}
 	
 }
 
 //AJAX para eliminar parametro
-function deleteParam(idDivParam,idPkParam){
+function deleteParam(idDivParam,idPkParam,idFormBoxSubmitButton,idFormBox){
 	console.log("Retrieving ids text box fields"); // sanity check
 
 	var idParam = $('#'+idPkParam).val();
@@ -1052,7 +1420,7 @@ function deleteParam(idDivParam,idPkParam){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Parámetro borrado correctamente');
 
@@ -1066,6 +1434,10 @@ function deleteParam(idDivParam,idPkParam){
 
 	            deleteElement(idDivParam);
 
+	            //Se elimina del array de formularios para guardado borrador o publicar
+	            removeBoxFormButton(idFormBoxSubmitButton);
+	            removeBoxForm(idFormBox);
+
 	        },
 
 	        // handle a non-successful response
@@ -1073,7 +1445,7 @@ function deleteParam(idDivParam,idPkParam){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1086,13 +1458,16 @@ function deleteParam(idDivParam,idPkParam){
 		});
 		}else{
 			deleteElement(idDivParam);
+			//Se elimina del array de formularios para guardado borrador o publicar
+	        removeBoxFormButton(idFormBoxSubmitButton);
+	        removeBoxForm(idFormBox);
 		}
 	}
 	
 }
 
 //AJAX para eliminar text box
-function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
+function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter,idFormBoxSubmitButton,idFormBox){
 	console.log("Retrieving ids text box fields"); // sanity check
 	var idNotebook = $('#'+idHiddenIdNotebook).val();
 	var idBox = $('#'+idHiddenIdBox).val();
@@ -1122,7 +1497,7 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            //Actualización de los campos
 	            console.log("success"); // another sanity check
 	            //$("#getCodeModal").modal('show');
-
+	            document.getElementById("notificaciones-holder").className = "alert-success";
 	            //Se comprueba si el box ha sido creado o actua
 	        	$('#notification-text').text('Box borrada correctamente');
 
@@ -1136,6 +1511,10 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 
 	            deleteElement(idBoxParameter);
 
+	            //Se elimina del array de formularios para guardado borrador o publicar
+	            removeBoxFormButton(idFormBoxSubmitButton);
+	            removeBoxForm(idFormBox);
+
 	        },
 
 	        // handle a non-successful response
@@ -1143,7 +1522,7 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 	            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
 	                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
 	            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-	            //TODO MBC SI FALLA REINICIAR LOS INPUTS A LOS VALORES QUE ESTABAN PERSISTIDOS
+	            document.getElementById("notificaciones-holder").className = "alert-danger";
 	            $('#notification-text').text('Error al eliminar');
 	            $('#notificaciones-holder').show();
 
@@ -1156,6 +1535,9 @@ function deleteImageBox(idHiddenIdNotebook,idHiddenIdBox,idBoxParameter){
 		});
 		}else{
 			deleteElement(idBoxParameter);
+			//Se elimina del array de formularios para guardado borrador o publicar
+	        removeBoxFormButton(idFormBoxSubmitButton);
+	        removeBoxForm(idFormBox);
 		}
 	}
 	
@@ -1175,4 +1557,154 @@ function getNumParam(){
 
 function setNumParam(numParameter){
 	numParam = numParameter;
+}
+
+function getBoxFormsButtons(){
+	return boxFormsButtons;
+}
+
+function setBoxFormsButtons(boxFormsButtonParameter){
+	return boxFormsButtons = boxFormsButtonParameter;
+}
+
+function addBoxFormButton(boxFormButton){
+	boxFormsButtons.push(boxFormButton);
+}
+
+function removeBoxFormButton(boxFormButton){
+	var index = boxFormsButtons.indexOf(boxFormButton);
+	if (index > -1) {
+	  boxFormsButtons.splice(index, 1);
+	}
+}
+
+function addBoxForm(boxForm){
+	boxForms.push(boxForm);
+}
+
+function removeBoxForm(boxForm){
+	var index = boxForms.indexOf(boxForm);
+	if (index > -1) {
+	  boxForms.splice(index, 1);
+	}
+}
+
+function isSavingDraft(){
+	return savingDraft;
+}
+
+function setSavingDraft(boolSavingDraft){
+	savingDraft = boolSavingDraft;
+}
+
+function saveDraft(publishing){
+	//Seteamos la bandera de guardado para borrador
+	savingDraft = true;
+	errorBatchSave = false;
+	var formValido = true;
+	try {
+		//Se recorren los formularios de las cajas para guardarlas
+		for (index = 0; index < boxFormsButtons.length; ++index) {
+			//Si ha ocurrido un problema guardando alguna caja, se interrumpe la operación
+			if(errorBatchSave){
+				break;
+			}
+			boxForm = document.getElementById(boxForms[index]);
+			formValido = $("#"+boxForm.id).valid();
+			if(formValido){
+				boxFormButton = document.getElementById(boxFormsButtons[index]);
+				boxFormButton.click();
+			}else{
+				errorBatchSave = true;
+				boxFormButton = document.getElementById(boxFormsButtons[index]);
+				boxFormButton.click();
+			}
+		}
+
+		if(errorBatchSave){
+			/*
+			Si ha ocurrido un error, mostrar una notificación indicando 
+			que el borrador no ha podido guardarse. 
+			Mensaje genérico para poder reutilizarlo en publicación
+			*/
+			document.getElementById("notificaciones-holder").className = "alert-danger";
+			if(!publishing){
+				if(!formValido){
+					$('#notification-text').text('Error al guardar el borrador. Revise los campos marcados en rojo en las cajas.');
+				}else{
+					$('#notification-text').text('Error al guardar el borrador');
+				}
+			}else{
+				if(!formValido){
+					$('#notification-text').text('Error al publicar el ejercicio. Revise los campos marcados en rojo en las cajas.');
+				}else{
+					$('#notification-text').text('Error al publicar el ejercicio');
+				}
+			}
+            $('#notificaciones-holder').show();
+
+            setTimeout(
+              function() 
+              {
+                $('#notificaciones-holder').hide();
+              }, 2000);
+		}else{
+			/*
+			Si todo ha ido bien, mostrar una notificación indicando 
+			que el borrador se ha guardado correctamente.
+			Mensaje genérico para poder reutilizarlo en publicación
+			*/
+			document.getElementById("notificaciones-holder").className = "alert-success";
+			if(!publishing){
+				$('#notification-text').text('Borrador guardado correctamente');
+				$('#notificaciones-holder').slideDown();
+		        setTimeout(
+		          function() 
+		          {
+		            $('#notificaciones-holder').slideUp();
+		          }, 2000);
+			}
+			
+	    }
+	} catch (e) {
+
+     	errorBatchSave = true;
+     	document.getElementById("notificaciones-holder").className = "alert-danger";
+		$('#notification-text').text('Error al guardar el borrador');
+        $('#notificaciones-holder').show();
+
+        setTimeout(
+          function() 
+          {
+            $('#notificaciones-holder').hide();
+          }, 2000);
+        //Reinicio de la bandera de guardado como borrador
+        savingDraft = false;
+    }
+    //Reinicio de la bandera de guardado como borrador
+    savingDraft = false;
+}
+
+function publish(){
+	mensajeConfirmacion = 'Una vez publicado el ejercicio, no podrá editar su contenido. ¿Desea continuar?';
+
+	var confirmacion = confirm(mensajeConfirmacion);
+	if (confirmacion) {
+		saveDraft(true);
+		if(errorBatchSave){
+			//Notificar que no puede publicarse porque ha habido error al persistir el borrador
+			document.getElementById("notificaciones-holder").className = "alert-danger";
+			$('#notification-text').text('El ejercicio no puede publicarse debido a un error guardando sus cambios');
+	        $('#notificaciones-holder').show();
+
+	        setTimeout(
+	          function() 
+	          {
+	            $('#notificaciones-holder').hide();
+	          }, 2000);
+		}else{
+			//Enviar el formulario de publicación de ejercicio
+			document.publishExerciseForm.submit();
+		}
+	}
 }

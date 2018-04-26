@@ -39,7 +39,7 @@ background-color: red;
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/Chart.min.js"></script>
 
-
+    
     <script>
         $(document).ready(function(){
             $('#form_exercise').on('submit', function(event){
@@ -78,14 +78,15 @@ background-color: red;
         });
     }));
 
-        $("#ImageBrowse").on("change", function() {
-            $("#imageUploadForm").submit();
-        });
+    $("#ImageBrowse").on("change", function() {
+        $("#imageUploadForm").submit();
     });
+    });
+
     </script>
 {% endblock %}
 {% block title %}
-Notebookv1
+Editar Ejercicio
 {% endblock %}
 {% block content %}
 <div id="notificaciones-holder" class="alert alert-success" role="alert">
@@ -128,7 +129,7 @@ Notebookv1
                                 <div class="col-md-6 offset-md-0">
                                     <div class="form-group">
                                         <label for="category">Asignatura:</label>
-                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.name}}" disabled>
+                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.course}}º {{exercise.category.name}}" disabled>
                                    </div>
                                 </div>
                             </div>
@@ -136,7 +137,13 @@ Notebookv1
                                 <div class="col-md-6 offset-md-0">
                                     <button type="submit" class="btn btn-primary" hidden="hidden">Guardar</button>
                                     <button onclick="mostrarModal()" type="submit" class="btn btn-primary">Ver/Editar</button>
-                                    
+                                    <button onclick="saveDraft(false)" oncli class="btn btn-secondary">Guardar borrador</button>
+                                    <button onclick="publish()" class="btn btn-success">Publicar</button>
+                                    <form id="publishExerciseForm" name="publishExerciseForm" method="post" action="{% url 'publishNotebook' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="exerciseId" name="exerciseId" value="{{exercise.id}}">
+                                        <input id="publishButton" type="submit" style="display: none"/>
+                                    </form>
                                 </div>
                             </div>
                             
@@ -169,6 +176,38 @@ Notebookv1
                                 </div>                                    
                             </div>                                                 
                         </div>
+<!--                         <div class="col-md-12" style="text-align:center">
+                            <h1>Evalbox</h1>
+                            <textarea id='code'>1+2</textarea>
+                            <h1>Iframe</h1>
+                            <iframe style="width: 1000px;height: 200px" sandbox='allow-scripts'
+            id='sandboxed'
+            src="{% url 'iframe_notebook' %}"></iframe>
+                            <button class="btn btn-primary" id='safe'>eval() in a sandboxed frame.</button>
+
+                            <br><br>
+                                <h4>Resultado del código</h4>
+                                <input name="resultado" class="form-control resultado_code_editor"  id="resultado" type="text" disabled="disabled">
+                        </div> -->
+
+                        <script>
+
+                          // Listen for response messages from the frames.
+                          window.addEventListener('message', function (e) {
+                            // Normally, you should verify that the origin of the message's sender
+                            // was the origin and source you expected. This is easily done for the
+                            // unsandboxed frame. The sandboxed frame, on the other hand is more
+                            // difficult. Sandboxed iframes which lack the 'allow-same-origin'
+                            // header have "null" rather than a valid origin. This means you still
+                            // have to be careful about accepting data via the messaging API you
+                            // create. Check that source, and validate those inputs!
+/*                            if ((e.origin === "null" && e.source === sandboxedFrame.contentWindow)
+                                || (e.origin === (window.location.protocol + "//" + window.location.host)
+                                    && e.source === unsandboxedFrame.contentWindow)) {*/
+                                document.getElementById(e.data[1]).value = String(e.data[0]);
+/*                            }*/
+                          });
+                        </script>
                     </div>
                 </div>                                        
             </div>
@@ -200,7 +239,7 @@ Notebookv1
         </script>
     {% elif box.type in "Code" %}
         <script>
-            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
         </script>
         {% for parameter in box.parameters %}
              <script>
@@ -277,7 +316,7 @@ Notebookv1
                             <select class="form-control" id="category" name="category" required>
                                 <option value="" selected="selected">Seleccione una asignatura</option>
                                 {% for s in categories %}
-                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                    <option value="{{ s.id }}">{{ s.course }}º {{ s.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -314,5 +353,7 @@ Notebookv1
     </div>
    </div>
  </div>
-
+    <script src="/static/js/jquery-validate/jquery.validate.js"></script>
+    <script src="/static/js/jquery-validate/additional-methods.js"></script>
+    <script src="/static/js/jquery-validation-messages.js"></script>
 {% endblock %}

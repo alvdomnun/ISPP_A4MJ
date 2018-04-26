@@ -1,0 +1,28 @@
+1 welcome page y contact page
+3 login
+5 register programmer
+7 // registro como escuela
+3 // editar perfil
+2 // listar todos los ejercicios
+2 // listar ejercicios propios de programador
+10 crear, modificar, borrar ejercicios programador
+3 // promover ejercicios como programador
+2 // ver beneficios de programador
+4 // listar todos los ejercicios como escuela
+6 // seleccionar ejercicios gratis en su licencia
+10 // comprar ejercicios como escuela
+6 gestionar profesores escuela
+7 gestionar alumnos como escuela
+5 // listar todos los ejercicios como profesor
+2 // listar todas asignaturas de profesor
+2 // listar asignaturas solo del profesor
+10 listar todos los ejercicios y ejecutarlos como profesor
+2 // listar asignaturas (suyas) como estudiante
+10 ver y hacer ejercicios estudiante
+2 // borrar ejercicios como administrador
+10 registrar escuelas
+5 editar, borrar escuelas
+10 crear asignaturas por defecto
+5 manejar licencias como admin
+1 // ordenacion de listas
+

@@ -1,21 +1,23 @@
-from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
-from exercises.forms import PromoteExerciseForm
-from django.shortcuts import render, get_object_or_404
 import datetime
+from _datetime import date
 from datetime import date, timedelta
+
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
+from django.http.request import HttpRequest
+from django.http.response import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404
+
+from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active, \
+    user_is_student
 from actors.models import School, Student
-from licenses.models import License
-from subjects.models import Subject
-from purchaseTickets.models import PurchaseTicket
 from elementPrices.models import ElementPrice
 from exercises.forms import BuyExerciseForm
-from django.contrib.auth.decorators import login_required
-from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active, \
-    user_is_student, user_school_license_active
+from exercises.forms import PromoteExerciseForm
 from exercises.models import Exercise
-from django.http.response import HttpResponseRedirect, HttpResponseForbidden
-from django.http.request import HttpRequest
-from _datetime import date
+from purchaseTickets.models import PurchaseTicket
+from subjects.models import Subject
+
 
 # Create your views here.
 
@@ -203,7 +205,14 @@ def promote_exercise(request, exercise_id):
 @user_is_programmer
 def list_exercisesP(request):
     #Filtro por NO draft y Orden de fecha de promocion
-    exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
+
+    try:
+
+        exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
+
+    except Exception as e:
+
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)
@@ -229,14 +238,15 @@ def list_exercisesP(request):
 @user_is_programmer
 def list_own_exercisesP(request):
 
-    try:
-        programmer = request.user
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    programmer = request.user
+
     # Comprobación de si son ejercicios propios
     ownList = True
-    #Filtro ejercicios propios
-    exercise_list =  Exercise.objects.filter(programmer__userAccount=programmer)
+    # Filtro ejercicios propios
+    try:
+        exercise_list = Exercise.objects.filter(programmer__userAccount=programmer)
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)
@@ -261,12 +271,14 @@ def list_own_exercisesP(request):
 @user_is_school
 def list_exercisesS(request):
 
-    try:
-        school = request.user.actor.school
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    school = request.user.actor.school
+
     # Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado
-    exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+    try:
+        exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
+
     # Comprobación de si son ejercicios propios
     ownList = False
     license = get_license_school(school)
@@ -294,12 +306,14 @@ def list_exercisesS(request):
 def list_own_exercisesS(request):
     # Comprobación de si son ejercicios propios
     ownList = True
-    try:
-        school = request.user.actor.school
-    except Exception as e:
-        return HttpResponseRedirect('/')
+
+    school = request.user.actor.school
+
     #Filtro ejercicios propios y NO draft
-    exercise_list =  Exercise.objects.filter(school=school).filter(draft=False)
+    try:
+        exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)
@@ -325,13 +339,14 @@ def list_own_exercisesS(request):
 def list_exercisesT(request):
     #Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado la escuela
 
-    try:
-        teacher = request.user
-        school = School.objects.get(teacher__userAccount=teacher)
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    teacher = request.user
+    school = School.objects.get(teacher__userAccount=teacher)
 
-    exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+    try:
+        exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
+
     # Comprobación de si son ejercicios propios
     ownList = False
     page = request.GET.get('page', 1)
@@ -356,15 +371,15 @@ def list_exercisesT(request):
 @user_is_teacher
 def list_school_exercisesT(request):
 
-    try:
-        teacher = request.user
-        # Escuela del teacher
-        school = School.objects.get(teacher__userAccount=teacher)
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    teacher = request.user
+    # Escuela del teacher
+    school = School.objects.get(teacher__userAccount=teacher)
 
-    # Filtro ejercicios propios
-    exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+    try:
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
+
     # Comprobación de si son ejercicios propios
     ownList = True
 
@@ -389,15 +404,17 @@ def list_school_exercisesT(request):
 @user_is_student
 def list_school_exercisesST(request):
     ownList = True
-    try:
-        user = request.user
-    except Exception as e:
-        return HttpResponseRedirect('/')
+    user = request.user
 
     student = get_object_or_404(Student, userAccount=user)
-    school = student.school_s
-    subjects = school.subject_set.get()
-    exercise_list = subjects.exercises.all()
+
+    # Escuela del student
+    school = School.objects.get(student__userAccount=student)
+    try:
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+
+    except Exception as e:
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)

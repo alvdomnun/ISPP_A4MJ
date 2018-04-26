@@ -1,0 +1,1370 @@
+[
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 4,
+    "fields": {
+        "name": "Matem\u00e1ticas - ESO",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 5,
+    "fields": {
+        "name": "Tecnolog\u00eda - ESO",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 6,
+    "fields": {
+        "name": "F\u00edsica - ESO",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 7,
+    "fields": {
+        "name": "Qu\u00edmica - ESO",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 9,
+    "fields": {
+        "name": "Matem\u00e1ticas - ESO",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 10,
+    "fields": {
+        "name": "Tecnolog\u00eda - ESO",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 11,
+    "fields": {
+        "name": "F\u00edsica - ESO",
+        "course": "3"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 12,
+    "fields": {
+        "name": "Matem\u00e1ticas - ESO",
+        "course": "3"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 13,
+    "fields": {
+        "name": "Qu\u00edmica - ESO",
+        "course": "3"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 14,
+    "fields": {
+        "name": "Tecnolog\u00eda - ESO",
+        "course": "3"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 15,
+    "fields": {
+        "name": "Matem\u00e1ticas - ESO",
+        "course": "4"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 16,
+    "fields": {
+        "name": "Tecnolog\u00eda - ESO",
+        "course": "4"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 17,
+    "fields": {
+        "name": "F\u00edsica - ESO",
+        "course": "4"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 18,
+    "fields": {
+        "name": "Qu\u00edmica - ESO",
+        "course": "4"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 19,
+    "fields": {
+        "name": "Econom\u00eda - ESO",
+        "course": "4"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 20,
+    "fields": {
+        "name": "Matem\u00e1ticas I - Bachillerato",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 21,
+    "fields": {
+        "name": "F\u00edsica - Bachillerato",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 22,
+    "fields": {
+        "name": "Qu\u00edmica - Bachillerato",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 23,
+    "fields": {
+        "name": "Dibujo T\u00e9cnico I - Bachillerato",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 24,
+    "fields": {
+        "name": "Tecnolog\u00eda - Bachillerato",
+        "course": "1"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 25,
+    "fields": {
+        "name": "Matem\u00e1ticas II - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 26,
+    "fields": {
+        "name": "F\u00edsica - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 27,
+    "fields": {
+        "name": "Qu\u00edmica - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 28,
+    "fields": {
+        "name": "Dibujo T\u00e9cnico II - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 29,
+    "fields": {
+        "name": "Tecnolog\u00eda - Bachillerato",
+        "course": "2"
+    }
+},
+{
+    "model": "defaultSubjects.defaultsubject",
+    "pk": 30,
+    "fields": {
+        "name": "Estad\u00edstica - Bachillerato",
+        "course": "2"
+    }
+},
+  {
+    "model": "licenses.licensetype",
+    "pk": 1,
+    "fields": {
+        "name": "BÁSICA",
+		"numUsers": 60,
+		"numFreeExercises": 20,
+		"price": 200.00
+    }
+},
+{
+    "model": "licenses.licensetype",
+    "pk": 2,
+    "fields": {
+        "name": "MEDIA",
+		"numUsers": 200,
+		"numFreeExercises": 50,
+		"price": 550.00
+    }
+},
+{
+    "model": "licenses.licensetype",
+    "pk": 3,
+    "fields": {
+        "name": "GRANDE",
+		"numUsers": 500,
+		"numFreeExercises": 75,
+		"price": 700.00
+    }
+},
+  {
+    "model": "provinces.province",
+    "pk": 1,
+    "fields": {
+        "name": "\u00c1lava"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 2,
+    "fields": {
+        "name": "Albacete"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 3,
+    "fields": {
+        "name": "Alicante"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 4,
+    "fields": {
+        "name": "Almer\u00eda"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 5,
+    "fields": {
+        "name": "\u00c1vila"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 6,
+    "fields": {
+        "name": "Badajoz"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 7,
+    "fields": {
+        "name": "Islas baleares"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 8,
+    "fields": {
+        "name": "Barcelona"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 9,
+    "fields": {
+        "name": "Burgos"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 10,
+    "fields": {
+        "name": "C\u00e1ceres"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 11,
+    "fields": {
+        "name": "C\u00e1diz"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 12,
+    "fields": {
+        "name": "Castell\u00f3n"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 13,
+    "fields": {
+        "name": "Ciudad Real"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 14,
+    "fields": {
+        "name": "C\u00f3rdoba"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 15,
+    "fields": {
+        "name": "A Coru\u00f1a"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 16,
+    "fields": {
+        "name": "Cuenca"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 17,
+    "fields": {
+        "name": "Girona"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 18,
+    "fields": {
+        "name": "Granada"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 19,
+    "fields": {
+        "name": "Guadalajara"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 20,
+    "fields": {
+        "name": "Guipuzcoa"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 21,
+    "fields": {
+        "name": "Huelva"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 22,
+    "fields": {
+        "name": "Huesca"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 23,
+    "fields": {
+        "name": "Jaen"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 24,
+    "fields": {
+        "name": "Le\u00f3n"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 25,
+    "fields": {
+        "name": "Lleida"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 26,
+    "fields": {
+        "name": "La Rioja"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 27,
+    "fields": {
+        "name": "Lugo"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 28,
+    "fields": {
+        "name": "Madrid"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 29,
+    "fields": {
+        "name": "M\u00e1laga"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 30,
+    "fields": {
+        "name": "Murcia"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 31,
+    "fields": {
+        "name": "Navarra"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 32,
+    "fields": {
+        "name": "Ourense"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 33,
+    "fields": {
+        "name": "Asturias"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 34,
+    "fields": {
+        "name": "Palencia"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 35,
+    "fields": {
+        "name": "Las Palmas"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 36,
+    "fields": {
+        "name": "Pontevedra"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 37,
+    "fields": {
+        "name": "Salamanca"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 38,
+    "fields": {
+        "name": "Santa Cruz de Tenerife"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 39,
+    "fields": {
+        "name": "Cantabria"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 40,
+    "fields": {
+        "name": "Segovia"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 41,
+    "fields": {
+        "name": "Sevilla"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 42,
+    "fields": {
+        "name": "Soria"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 43,
+    "fields": {
+        "name": "Tarragona"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 44,
+    "fields": {
+        "name": "Teruel"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 45,
+    "fields": {
+        "name": "Toledo"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 46,
+    "fields": {
+        "name": "Valencia"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 47,
+    "fields": {
+        "name": "Valladolid"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 48,
+    "fields": {
+        "name": "Vizcaya"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 49,
+    "fields": {
+        "name": "Zamora"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 50,
+    "fields": {
+        "name": "Zaragoza"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 51,
+    "fields": {
+        "name": "Ceuta"
+    }
+},
+{
+    "model": "provinces.province",
+    "pk": 52,
+    "fields": {
+        "name": "Melilla"
+    }
+},
+    {
+    "model": "elementPrices.elementprice",
+    "pk": 1,
+    "fields": {
+        "buyExerciseValue": "4.00",
+        "profitExerciseValue": "1.00",
+        "promoteExerciseValue": "1.00"
+    }
+}
+    ,{
+    "model": "exercises.exercise",
+    "pk": 12,
+    "fields": {
+        "title": "Tiro parab\u00f3lico",
+        "description": "Ejercicio de f\u00edsica para resolver el tiro parab\u00f3lico",
+        "sales": 0,
+        "level": "Medio",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 17,
+        "programmer": 1
+    }
+},
+{
+    "model": "exercises.exercise",
+    "pk": 13,
+    "fields": {
+        "title": "An\u00e1lisis matem\u00e1tico",
+        "description": "Continuidad de las funciones",
+        "sales": 0,
+        "level": "Dif\u00edcil",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 20,
+        "programmer": 1
+    }
+},
+{
+    "model": "exercises.exercise",
+    "pk": 14,
+    "fields": {
+        "title": "Circuito de corriente continua",
+        "description": "Ejercicio de f\u00edsica de corriente continua",
+        "sales": 0,
+        "level": "Dif\u00edcil",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 21,
+        "programmer": 1
+    }
+},
+{
+    "model": "exercises.exercise",
+    "pk": 15,
+    "fields": {
+        "title": "Qu\u00edmica inorg\u00e1nica",
+        "description": "Resoluci\u00f3n de compuestos y formulas inorg\u00e1nicas",
+        "sales": 0,
+        "level": "F\u00e1cil",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 18,
+        "programmer": 1
+    }
+},
+{
+    "model": "exercises.exercise",
+    "pk": 16,
+    "fields": {
+        "title": "Media y desviaci\u00f3n t\u00edpica",
+        "description": "Matem\u00e1ticas aplicada a la estad\u00edstica",
+        "sales": 0,
+        "level": "Medio",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 12,
+        "programmer": 1
+    }
+},
+{
+    "model": "exercises.exercise",
+    "pk": 17,
+    "fields": {
+        "title": "Per\u00edmetro y \u00e1rea",
+        "description": "Matem\u00e1ticas aplicadas a la geometr\u00eda",
+        "sales": 0,
+        "level": "Medio",
+        "promoted": false,
+        "startPromotionDate": null,
+        "endPromotionDate": null,
+        "draft": false,
+        "category": 4,
+        "programmer": 1
+    }
+}
+,{
+    "model": "boxes.box",
+    "pk": 24,
+    "fields": {
+        "order": 1,
+        "exercise": 12
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 25,
+    "fields": {
+        "order": 2,
+        "exercise": 12
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 26,
+    "fields": {
+        "order": 3,
+        "exercise": 12
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 27,
+    "fields": {
+        "order": 4,
+        "exercise": 12
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 28,
+    "fields": {
+        "order": 1,
+        "exercise": 13
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 29,
+    "fields": {
+        "order": 2,
+        "exercise": 13
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 30,
+    "fields": {
+        "order": 3,
+        "exercise": 13
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 31,
+    "fields": {
+        "order": 4,
+        "exercise": 13
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 32,
+    "fields": {
+        "order": 1,
+        "exercise": 14
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 33,
+    "fields": {
+        "order": 2,
+        "exercise": 14
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 34,
+    "fields": {
+        "order": 3,
+        "exercise": 14
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 35,
+    "fields": {
+        "order": 4,
+        "exercise": 14
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 36,
+    "fields": {
+        "order": 1,
+        "exercise": 15
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 37,
+    "fields": {
+        "order": 2,
+        "exercise": 15
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 38,
+    "fields": {
+        "order": 3,
+        "exercise": 15
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 39,
+    "fields": {
+        "order": 1,
+        "exercise": 16
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 40,
+    "fields": {
+        "order": 2,
+        "exercise": 16
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 41,
+    "fields": {
+        "order": 3,
+        "exercise": 16
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 42,
+    "fields": {
+        "order": 4,
+        "exercise": 16
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 43,
+    "fields": {
+        "order": 1,
+        "exercise": 17
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 44,
+    "fields": {
+        "order": 2,
+        "exercise": 17
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 45,
+    "fields": {
+        "order": 3,
+        "exercise": 17
+    }
+},
+{
+    "model": "boxes.box",
+    "pk": 46,
+    "fields": {
+        "order": 4,
+        "exercise": 17
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 25,
+    "fields": {
+        "content": "Desde una ventana de un edificio situado a 20m del suelo se lanza una pelota con una velocidad de 15m/s formando un \u00e1ngulo de 60\u00ba con la horizontal. Determinar:\n\n- Altura m\u00e1xima de la pelota\n- Alcance de la pelota"
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 26,
+    "fields": {
+        "content": "1) Descomponemos la velocidad inicial en sus componentes. Calcular y apuntar la componente horizontal de la pelota.\n\n2) Calcular y apuntar la componente vertical de la pelota.\n\n3) Obteniendo las ecuaciones del movimiento en los ejes x e y para la posici\u00f3n y la velocidad, calcular el momento en el que alcanza la altura m\u00e1xima. Introducir ese valor en el campo param1.\n\n4) Calcular la altura m\u00e1xima. Introducir ese valor en el campo param2\n\n5) Calcularemos el tiempo que tarda la pelota en llegar al suelo a partir de la ecuaci\u00f3n de la velocidad en el eje. Apuntar dicho valor.\n\n6) Calcular la distancia recorrida por la pelota. Introducir ese valor en el campo param3."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 29,
+    "fields": {
+        "content": "Sea la funci\u00f3n dada en la figura, calcula los valores de 'a' y 'b' de manera que f(x) sea continua en todo su dominio."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 30,
+    "fields": {
+        "content": "a)\tPara que la funci\u00f3n sea continua tiene que cumplirse que sea continua en los puntos cr\u00edticos de la misma, esto es, los valores que intervinen en las condiciones. Los llamaremos pc1 y pc2 Introducir los puntos cr\u00edticos en param1 y param2 respectivamente.\n\nb)\tPara calcular la continuidad en el extremo izquierdo, se calcula el l\u00edmite de f(pc1) cuando x tiende a x+ y el l\u00edmite de f(pc1) cuando x tiene a x-. Para que la funci\u00f3n sea continua en ese punto, ambas ecuaciones resultantes deben ser iguales.\n\nc)\tPara calcular la continuidad en el extremo derecho se realiza el mismo procedimiento, solo que esta vez se calcula el l\u00edmite de f(pc2) cuando x tiende a x+ y el l\u00edmite de f(pc2) cuando x tiene a x-. De nuevo se igualar\u00e1n ambos resultados.\n\nd)\tConocidas las ecuaciones que deben cumplirse para que la funci\u00f3n sea continua, solo nos queda calcular a y b mediante sustituci\u00f3n utilizando las dos ecuaciones que acabamos de calcular en b) y c). Introducir los valores en param3 y param 4 respectivamente."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 33,
+    "fields": {
+        "content": "Sea el circuito de corriente continua de la figura, calcular:\n\na)\tLa intensidad total del circuito IT que sale de la fuente de tensi\u00f3n.\nb)\tLa intensidad I1 que fluye a trav\u00e9s de la resistencia de 2 ohmios.\nc)\tLa intensidad I2 que fluye a trav\u00e9s de la resistencia de 8 ohmios.\nd)\tCalcula la potencia que suministra la fuente de tensi\u00f3n."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 34,
+    "fields": {
+        "content": "a)\tPara calcular la intensidad total \u201cIT\u201c del circuito que sale de la fuente de tensi\u00f3n se halla la resistencia equivalente del circuito. Introducir el valor en el campo param1\n\nb)\tPara obtener la intensidad I1 aplicamos la segunda ley de Kirchhoff o de malla. Introducir el valor en el campo param2\n\nc)\tPara obtener la intensidad I2 se aplica la primera ley de Kirchhoff o de nodo. Introducir el valor en el campo param3\n\nd)\tLa intensidad potencia que suministra la fuente la podemos calcular con las dos f\u00f3rmulas para obtener la potencia. Apuntar dicho valor."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 36,
+    "fields": {
+        "content": "A continuaci\u00f3n, se mostrar\u00e1n varios compuestos y varias f\u00f3rmulas qu\u00edmicas, para cada una de ellas se deber\u00e1 indicar su soluci\u00f3n seg\u00fan el tipo que sea.\n\nEjemplos:\n\n-\t\u00e1cido sulfh\u00eddrico tendr\u00eda como soluci\u00f3n H2S\n\n-\tH2S tendr\u00eda como soluci\u00f3n acido sulfhidrico"
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 37,
+    "fields": {
+        "content": "a)\ttriper\u00f3xido de diactinio\n\nb)\t\u00e1cido manganoso\n\nc)\tper\u00f3xido c\u00farico\n\nd)\t\u00f3xido paladioso\n\ne)\tHgOH\n\nf)\tH2WO4\n\ng)\tHMnO4\n\nh)\tHgO\n\nAparecer\u00e1 una caja de par\u00e1metro para ingresar el resultado."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 39,
+    "fields": {
+        "content": "Las alturas de los jugadores de un equipo de baloncesto vienen dadas en cent\u00edmetros por la tabla:\n\n \tXij            Fi\n[170, 175)\t1\n[175, 180)\t3\n[180, 185)\t4"
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 40,
+    "fields": {
+        "content": "Calcular:\n\n1. La media.\n\n2. La desviaci\u00f3n t\u00edpica "
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 41,
+    "fields": {
+        "content": "Resoluci\u00f3n:\na)\n   1\u00ba) Calculamos la media de cada fila, que ser\u00e1:\n        - (170 + 175)/2 multiplicado por el n\u00famero de veces que aparece, es decir f1=1\n             => 170=param1 ; 175=param2 ;   1 =param3\n        - [(175 + 180)/2]*3  =>  175=param4 ;    180=param5 ;   3 =param6\n        - [(180 + 185)/2]*4  =>  180=param7 ;    185=param8;    4 =param9\n\n   2\u00ba) Sumamos las 3 medias y lo dividimos por el n\u00famero total de muestras (Fi = f1+f2+f3)\n\nb)\n    1\u00ba) Calcular la media al cuadrado de cada fila y multiplicar por el numero de veces que aparece:\n\n       - [(170 + 175)/2]^2 * 1\n       - [(175 + 180)/2]^2 * 3\n       - [(180 + 185)/2]^2 * 4\n\n    2\u00ba) Sumamos las 3 medias al cuadrado calculadas en el apartado anterior y lo dividimos por el n\u00famero total de muestras Fi\n\n    3\u00ba) Cogemos el resultado anterior y le restamos la media del apartado a) al cuadrado\n\n    4\u00ba) Hacemos la ra\u00edz cuadrada del resultado"
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 44,
+    "fields": {
+        "content": "Hallar el per\u00edmetro y el \u00e1rea de la figura anterior (Romboide)."
+    }
+},
+{
+    "model": "boxes.text",
+    "pk": 45,
+    "fields": {
+        "content": "Resoluci\u00f3n:\n                    - Per\u00edmetro:\n                             Para calcularlo tenemos sumar todos los lados del romboide, esto es:\n                              AB + BC + CM + DM + AD (aunque no tenemos AD como dato al ser un romboide este lado\n                              es equivalente a BC)\n\n                    - \u00c1rea:\n                              Para resolverlo, tenemos que calular primero dos \u00e1reas por separado, la de un rect\u00e1ngulo y la de\n                              un tri\u00e1ngulo:\n                               - \u00c1rea tri\u00e1ngulo: (base x altura) /2, equivalente en nuesto problema a (CM x DM) /2\n                               - \u00c1rea rect\u00e1ngulo: base x altura, equivalente en nuestro problema a BC (\u00f3 AD) x CM"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 27,
+    "fields": {
+        "content": "var xMax = parseInt(document.getElementById(\"param3\").value);\nvar yMax = parseInt(document.getElementById(\"param2\").value);\nvar xYMax = 7.5*parseInt(document.getElementById(\"param1\").value);\nvar ctx = document.getElementById(\"myChart_idBox4\");\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: {\n        labels: [0, xYMax, xMax],\n        datasets: [{\n            label: 'Trayectoria de la pelota',\n            data: [20, yMax, 0],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox4"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 31,
+    "fields": {
+        "content": "var exder = parseInt(document.getElementById(\"param2\").value);\nvar exizq = parseInt(document.getElementById(\"param1\").value);\nvar a = parseInt(document.getElementById(\"param3\").value);\nvar b = parseInt(document.getElementById(\"param4\").value);\nvar ctx = document.getElementById(\"myChart_idBox4\");\n\nvar x_values_der = []\nvar x_values_izq = []\nvar x_values = []\n\nfor(i = -6; i < exizq; i=i+0.01){\n    x_1 = i\n    y_1 = (2*i)+1\n    x_values_izq.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exizq; i <= exder; i=i+0.01){\n    x_1 = i\n    y_1 = a*(i*i) + b*i\n    x_values.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\n    x_1 = i\n    y_1 = i - 4\n    x_values_der.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nvar data = {\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\n    datasets: [{\n        label: \"2x + 1\",\n        borderColor: \"#21618c\",\n        data: x_values_izq,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: \"ax^2 + bx\",\n        borderColor: \"#FF0000\",\n        data: x_values,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: \"x - 4\",\n        borderColor: \"#000000\",\n        data: x_values_der,\n        fill: false,\n        spanGaps: false\n    },\n    ]\n};\n\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: data,\n    options: {\n        elements: { point: { radius: 0 } },\n        scales: {\n            xAxes: [{\n                type: 'linear',\n                position: 'bottom'\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox4"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 35,
+    "fields": {
+        "content": "var xMax = parseInt(document.getElementById(\"param3\").value);\nvar IT = parseInt(document.getElementById(\"param1\").value);\nvar I1 = parseInt(document.getElementById(\"param2\").value);\nvar I2 = parseInt(document.getElementById(\"param3\").value);\nvar ctx = document.getElementById(\"myChart_idBox4\");\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['IT', 'I1', 'I2'],\n        datasets: [{\n            label: ['Intensidad total', 'Intesidad I1', 'Intesidad I2'],\n            data: [IT, I1, I2],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Intesididad total (IT), Intensidad 1 (I1) e Intensidad 2 (I2)'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox4"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 38,
+    "fields": {
+        "content": "var resp1 = String(document.getElementById(\"param1\").value);\nvar resp2 = String(document.getElementById(\"param2\").value);\nvar resp3 = String(document.getElementById(\"param3\").value);\nvar resp4 = String(document.getElementById(\"param4\").value);\nvar resp5 = String(document.getElementById(\"param5\").value);\nvar resp6 = String(document.getElementById(\"param6\").value);\nvar resp7 = String(document.getElementById(\"param7\").value);\nvar resp8 = String(document.getElementById(\"param8\").value);\nvar ctx = document.getElementById(\"myChart_idBox3\");\n\nresps = [resp1,resp2,resp3,resp4,resp5,resp6,resp7,resp8]\nresps_co = 0\nresps_inco = 0\n\nif (String(resp1) === \"Ac2(O2)3\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp2 === \"H2MnO3\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp3 == \"Cm2(O2)3\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp4 == \"PdO\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp5 == \"hidroxido de mercurio\" || resp5 == \"hidr\u00f3xido de mercurio\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp6 == \"\u00e1cido tetraoxowolfr\u00e1mico\" || resp6 == \"acido tetraoxowolframico\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp7 == \"\u00e1cido tetraoxomang\u00e1nico\" || resp7 == \"acido tetraoxomanganico\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp8 == \"\u00f3xido de mercurio\" || resp8 == \"oxido de mercurio\"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Respuestas correctas', 'Respuestas incorrectas'],\n        datasets: [{\n            data: [resps_co,resps_inco],\n            borderColor: [\"#239b56\", \"#FF0000\"],\n            backgroundColor: [\"#239b56\", \"#FF0000\"],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: ' '\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox3"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 42,
+    "fields": {
+        "content": "var x11 = parseInt(document.getElementById(\"param1\").value);\nvar x12 = parseInt(document.getElementById(\"param2\").value);\nvar f1 = parseInt(document.getElementById(\"param3\").value);\n\nvar x21 = parseInt(document.getElementById(\"param4\").value);\nvar x22 = parseInt(document.getElementById(\"param5\").value);\nvar f2 = parseInt(document.getElementById(\"param6\").value);\n\nvar x31 = parseInt(document.getElementById(\"param7\").value);\nvar x32 = parseInt(document.getElementById(\"param8\").value);\nvar f3 = parseInt(document.getElementById(\"param9\").value);\n\nvar ctx = document.getElementById(\"myChart_idBox4\");\n\nmedia1 = ((x11 + x12)/2)*f1\nmedia2 = ((x21 + x22)/2)*f2\nmedia3 = ((x31 + x32)/2)*f3\n\nmedia = (media1 + media2 + media3)/(f1+f2+f3)\n\ndesv1 = ((x11 + x12)/2)*((x11 + x12)/2)*f1\ndesv2 = ((x21 + x22)/2)*((x21 + x22)/2)*f2\ndesv3 = ((x31 + x32)/2)*((x31 + x32)/2)*f3\n\ndesviacion = Math.sqrt(((desv1+desv2+desv3)/(f1+f2+f3))- (media*media))\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Media','Desviaci\u00f3n t\u00edpica'],\n        datasets: [{\n            label: ['Media','Desviaci\u00f3n t\u00edpica' ],\n            data: [media,desviacion],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Media , Desviaci\u00f3n t\u00edpica'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox4"
+    }
+},
+{
+    "model": "boxes.code",
+    "pk": 46,
+    "fields": {
+        "content": "var AB = parseInt(document.getElementById(\"param1\").value);\nvar BC = parseInt(document.getElementById(\"param2\").value);\nvar CM = parseInt(document.getElementById(\"param3\").value);\nvar DM = parseInt(document.getElementById(\"param4\").value);\n\n\nvar ctx = document.getElementById(\"myChart_idBox4\");\n\n\nperimetro = AB + BC + CM + DM + BC\n\naRec = BC * CM\naTri = (CM * DM) / 2\n\narea = aRec + aTri\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Perimetro','Area'],\n        datasets: [{\n            label: ['Perimetro','Area' ],\n            data: [perimetro,area],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Perimetro , Area'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n\"\";\n",
+        "idGraphic": "myChart_idBox4"
+    }
+},
+{
+    "model": "boxes.picture",
+    "pk": 24,
+    "fields": {
+        "url": "http://drawingfit.com/wp-content/uploads/2018/01/drawing-of-a-soccer-ball-soccer-ball-drawing-pencil-art-drawing.png"
+    }
+},
+{
+    "model": "boxes.picture",
+    "pk": 28,
+    "fields": {
+        "url": "https://3.bp.blogspot.com/-czMO1cgT3KA/WNJIcLQriEI/AAAAAAAA0Nk/9S-ckA4jS9In9nAkyN1H1s7zhUlLAVtAwCPcB/s1600/Continuidad%2Bde%2Buna%2Bfunci%25C3%25B3n%2Bcon%2Bdos%2Bpar%25C3%25A1metros.png"
+    }
+},
+{
+    "model": "boxes.picture",
+    "pk": 32,
+    "fields": {
+        "url": "https://3.bp.blogspot.com/-tYRTzE6cSek/V107qpaOwwI/AAAAAAAABAg/OUvQKk-20-s6GYTjEDTmVrx6qxKro4v5gCLcB/s1600/Ejercicio%2B1.jpg"
+    }
+},
+{
+    "model": "boxes.picture",
+    "pk": 43,
+    "fields": {
+        "url": "https://www.vitutor.co.uk/geo/eso/images/84.gif"
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483111,
+    "fields": {
+        "value": "1",
+        "idName": "param1",
+        "name": "xYMax",
+        "code": 27
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483112,
+    "fields": {
+        "value": "15",
+        "idName": "param2",
+        "name": "yMax",
+        "code": 27
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483113,
+    "fields": {
+        "value": "15",
+        "idName": "param3",
+        "name": "xMax",
+        "code": 27
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483114,
+    "fields": {
+        "value": "-2",
+        "idName": "param1",
+        "name": "exIzq",
+        "code": 31
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483115,
+    "fields": {
+        "value": "4",
+        "idName": "param2",
+        "name": "exDer",
+        "code": 31
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483116,
+    "fields": {
+        "value": "-1/4",
+        "idName": "param3",
+        "name": "a",
+        "code": 31
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483117,
+    "fields": {
+        "value": "1",
+        "idName": "param4",
+        "name": "b",
+        "code": 31
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483118,
+    "fields": {
+        "value": "1",
+        "idName": "param1",
+        "name": "IT",
+        "code": 35
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483119,
+    "fields": {
+        "value": "15",
+        "idName": "param2",
+        "name": "I1",
+        "code": 35
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483120,
+    "fields": {
+        "value": "15",
+        "idName": "param3",
+        "name": "I2",
+        "code": 35
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483121,
+    "fields": {
+        "value": "Ac2(O2)3",
+        "idName": "param1",
+        "name": "Elemento 1",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483122,
+    "fields": {
+        "value": "H2MnO3",
+        "idName": "param2",
+        "name": "Elemento 2",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483123,
+    "fields": {
+        "value": "Cm2(O2)3",
+        "idName": "param3",
+        "name": "Elemento 3",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483124,
+    "fields": {
+        "value": "PdO",
+        "idName": "param4",
+        "name": "Elemento 4",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483125,
+    "fields": {
+        "value": "hidroxido de mercurio",
+        "idName": "param5",
+        "name": "Elemento 5",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483126,
+    "fields": {
+        "value": "\u00e1cido tetraoxowolfr\u00e1mico",
+        "idName": "param6",
+        "name": "Elemento 6",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483127,
+    "fields": {
+        "value": "\u00e1cido tetraoxomang\u00e1nico",
+        "idName": "param7",
+        "name": "Elemento 7",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483128,
+    "fields": {
+        "value": "\u00f3xido de mercurio",
+        "idName": "param8",
+        "name": "Elemento 8",
+        "code": 38
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483129,
+    "fields": {
+        "value": "170",
+        "idName": "param1",
+        "name": "x11",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483130,
+    "fields": {
+        "value": "175",
+        "idName": "param2",
+        "name": "x12",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483131,
+    "fields": {
+        "value": "1",
+        "idName": "param3",
+        "name": "f1",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483132,
+    "fields": {
+        "value": "175",
+        "idName": "param4",
+        "name": "x21",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483133,
+    "fields": {
+        "value": "180",
+        "idName": "param5",
+        "name": "x22",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483134,
+    "fields": {
+        "value": "3",
+        "idName": "param6",
+        "name": "f2",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483135,
+    "fields": {
+        "value": "180",
+        "idName": "param7",
+        "name": "x31",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483136,
+    "fields": {
+        "value": "185",
+        "idName": "param8",
+        "name": "x32",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483137,
+    "fields": {
+        "value": "4",
+        "idName": "param9",
+        "name": "f3",
+        "code": 42
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483138,
+    "fields": {
+        "value": "13",
+        "idName": "param1",
+        "name": "AB",
+        "code": 46
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483139,
+    "fields": {
+        "value": "11",
+        "idName": "param2",
+        "name": "BC",
+        "code": 46
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483140,
+    "fields": {
+        "value": "12",
+        "idName": "param3",
+        "name": "CM",
+        "code": 46
+    }
+},
+{
+    "model": "boxes.parameter",
+    "pk": 2147483141,
+    "fields": {
+        "value": "5",
+        "idName": "param4",
+        "name": "DM",
+        "code": 46
+    }
+}
+]

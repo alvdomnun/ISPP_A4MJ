@@ -220,7 +220,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
         setTimeout(
           function()
           {
-            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart);
+            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBoxBD,idIframe,idChart);
           }, 1000);
         haveChart = true;
     }
@@ -592,7 +592,7 @@ function addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIf
 	$('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart('+idBoxParameter+',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
                                    'Eliminar Gráfica'+
                                 '</button>';
 

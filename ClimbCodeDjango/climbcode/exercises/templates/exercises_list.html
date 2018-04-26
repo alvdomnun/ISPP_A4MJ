@@ -46,6 +46,7 @@
 }
     </style>
 
+<div class="container">
     <h1>Lista de ejercicios</h1>
 
     <div class="table">
@@ -72,9 +73,10 @@
                 {% endif %}
                 <th></th>
             </tr>
-            </thead>
+          </thead>
+          <tbody>
             {% for exercise in exercise_list %}
-            <tbody>
+
 
                     <tr>
                         {% if ownList == False %}
@@ -134,12 +136,12 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-                </table>
+
      {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
-
+</table>
     </div>
 
     {% if user.actor.programmer and ownList %}
@@ -172,4 +174,5 @@
         </ul>
     {% endif %}
 
+</div>
 {% endblock %}

@@ -43,8 +43,6 @@ def upload_students(request):
 
         data = file_obj.read().decode('utf-8')
 
-        print(data)
-
         rows = re.split('\n', data)
 
         stop = False

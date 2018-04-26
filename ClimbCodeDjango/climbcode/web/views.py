@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
 
 from actors.decorators import user_is_programmer
@@ -37,18 +38,21 @@ def sample_dashboard(request):
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookVistaV1(request):
 	template = loader.get_template('notebook/notebookVistaV1.html')
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1(request):
 	template = loader.get_template('web/notebookv1.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1aux(request):
 	template = loader.get_template('web/notebookv1aux.html')
@@ -61,30 +65,35 @@ def notebookv1_ejercicio_creado(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1_ejercicio_cc(request):
     template = loader.get_template('web/notebookv1_ejercicio_cc.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1_ejercicio_am(request):
     template = loader.get_template('web/notebookv1_ejercicio_am.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1_ejercicio_qin(request):
     template = loader.get_template('web/notebookv1_ejercicio_qin.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1_ejercicio_est(request):
     template = loader.get_template('web/notebookv1_ejercicio_est.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def notebookv1_ejercicio_geo(request):
     template = loader.get_template('web/notebookv1_ejercicio_geo.html')
@@ -275,6 +284,7 @@ def saveNotebook(request):
         }
         return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 @user_is_programmer
 def createNotebook(request):
     """
@@ -481,7 +491,7 @@ def isSchoolAdquiredExercise(exerciseParam,school):
     return exerciseAdquired
 
 # Visualización notebook para escuelas, profesores y alumnos
-
+@login_required(login_url='/login/')
 def showNotebook(request):
     print("Showing notebook")
     if request.method == 'GET':

@@ -747,8 +747,8 @@ def edit_pass_programmer(request):
     return render(request, 'programmers/editProgrammerPass.html', data)
 
 @login_required(login_url='/login/')
-@school_license_active
 @user_is_school
+@school_license_active
 def edit_profile_school(request):
     """
     Edición del perfil School

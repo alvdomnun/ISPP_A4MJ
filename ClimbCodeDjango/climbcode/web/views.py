@@ -464,10 +464,16 @@ def permisoViewRolesEscuelaNotebook(idNotebook,request):
         idSchool = request.user.actor.school.actor_ptr_id
         school = request.user.actor.school
         tienePermiso = isSchoolAdquiredExercise(exercise, school)
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
+    elif hasattr(request.user.actor, 'student'):
+        student = request.user.actor.student
+        idSchool = student.school_s_id
+        school = School.objects.get(actor_ptr_id=idSchool)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+    elif hasattr(request.user.actor, 'teacher'):
+        teacher = request.user.actor.teacher
+        idSchool = teacher.school_t_id
+        school = School.objects.get(actor_ptr_id=idSchool)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
     return tienePermiso
 
 def permisoViewRolProgramadorNotebook(idNotebook,request):
@@ -485,7 +491,7 @@ def isSchoolAdquiredExercise(exerciseParam,school):
     exerciseAdquired = False
     exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
     for exercise in exercise_list:
-        if exercise == exerciseParam:
+        if exercise.id == exerciseParam.id:
             exerciseAdquired = True
             break
     return exerciseAdquired
@@ -498,8 +504,8 @@ def showNotebook(request):
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        #if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
-        if True:
+        if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
+        #if True:
             if exercise is not None:
                 template = loader.get_template('notebook/show_notebook.html')
                 boxesText = Text.objects.filter(exercise=exercise)

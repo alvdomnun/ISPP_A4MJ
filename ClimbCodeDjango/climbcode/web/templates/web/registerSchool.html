@@ -82,14 +82,31 @@
                                    value="{{ form.address.value|default:"" }}" required/>
                         </div>
                     </div>
+                    {% if form.province.value > 0 %}
+                    S{{ form.province.value }}
+                    {% else %}
+                    No
+                    {% endif %}
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="province" class="control-label">Provincia</label>
                             <select class="form-control" id="province" name="province" required>
+                                <!-- Si viene de validaci&#243;n, pinta la anterior -->
+                                {% if form.province.value > 0 %}
+                                    {% for p in provinces %}
+                                        {% if p.id == form.province.value %}
+                                        <option value="{{ p.id }}" selected="selected">{{ p.name }}</option>
+                                        {% else %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                <!-- Si es no, sin selecci&#243;n por defecto -->
+                                {% else %}
                                 <option value="" selected="selected">Seleccione una provincia</option>
-                                {% for p in provinces %}
-                                    <option value="{{ p.id }}">{{ p.name }}</option>
-                                {% endfor %}
+                                    {% for p in provinces %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
                             </select>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">

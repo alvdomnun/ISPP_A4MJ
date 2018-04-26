@@ -12,20 +12,19 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls.base import reverse
-from django.views.decorators.csrf import csrf_exempt
 
 from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, \
-    user_school_license_active, user_is_teacher
+    user_is_teacher
 from actors.forms import EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, \
     EditStudentProfile, UploadFileForm, EditTeacherProfile, EditTeacherPass
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
-    EditSelfTeacherForm, EditSelfTeacherPassForm
+from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm
 from actors.forms import RenovateLicenseForm
 from actors.forms import RenovateLicensePaymentForm
 from actors.models import Teacher, School, Student
 from climbcode import settings
 from licenses.models import License
 from licenses.models import LicenseType
+
 
 @login_required(login_url='/login/')
 @user_is_school
@@ -1110,7 +1109,7 @@ def autorization_display(request):
 @user_is_school
 def students_upload_example(request):
 
-    import os, tempfile, zipfile
+    import os
     from wsgiref.util import FileWrapper
     from django.conf import settings
     import mimetypes
@@ -1130,7 +1129,7 @@ def students_upload_example(request):
 @user_is_school
 def teachers_upload_example(request):
 
-    import os, tempfile, zipfile
+    import os
     from wsgiref.util import FileWrapper
     from django.conf import settings
     import mimetypes

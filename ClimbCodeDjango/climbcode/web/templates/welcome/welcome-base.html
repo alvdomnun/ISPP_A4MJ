@@ -43,8 +43,10 @@
                             </div>
                         </li>
                     </ul> -->
-                    {% if user.actor.school %}
                     <ul class="navbar-nav mr-auto">
+
+                    {% if user.actor.school %}
+
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
                         </li>
@@ -57,9 +59,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_own_exercisesS' %}">Mis ejercicios</a>
                         </li>
-                    </ul>
+
                     {% elif user.actor.programmer %}
-                    <ul class="navbar-nav mr-auto">
+
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
                         </li>
@@ -80,25 +82,27 @@
                                 <label class="col-xs-2 col-md-3 form-control border"  >Saldo:  <input class="col-md-7 border-danger" style="border-width: 6px" type="text" align="center"   value="{{ user.actor.programmer.balance|default:"0.0" }} $" disabled/>
                                 </label>
                         {% endif %}
-                    </ul>
+                    
                     {% elif user.actor.teacher %}
-                        <ul class="navbar-nav mr-auto">
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
                             </li>
-                        </ul>
+
                     {% elif user.actor.student %}
-                        <ul class="navbar-nav mr-auto">
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
                             </li>
-                        </ul>
+
                     {% elif user.actor.administrator %}
 
                     {% endif %}
+
+                    </ul>
                     <!-- Inicio/Cierre de sesión -->
 			        {% include 'base/loginpartial.html' %}
                 </div>

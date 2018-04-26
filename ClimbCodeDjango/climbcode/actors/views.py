@@ -366,7 +366,7 @@ def delete_teacher(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        user = get_object_or_404(Teacher, pk=teacher.userAccount.id)
+        user = get_object_or_404(User, pk=teacher.userAccount.id)
         user.delete()
         return HttpResponseRedirect('/actors/teachers/list')
 

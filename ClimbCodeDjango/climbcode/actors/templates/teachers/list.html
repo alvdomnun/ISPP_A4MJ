@@ -56,6 +56,7 @@
         <input type="button" class="btn btn-default"
                onclick="location.href='/actors/teachers/register';"
                value="Crear profesor"/>
+        <a href="{% url 'upload_teachers' %}" class="btn btn-warning">Crear varios profesores</a>
     </div>
 
     {% if teacher_list.has_other_pages %}

@@ -10,12 +10,18 @@ urlpatterns = [
     path('teacher/edit', views.edit_self_teacher, name='edit_self_teacher'),
     path('teacher/edit/password', views.edit_self_teacher_pass, name='edit_self_teacher_pass'),
 
+    path('teachers/upload', views.upload_teachers, name='upload_teachers'),
+    path('teachers/upload/example', views.teachers_upload_example, name='teachers_upload_example'),
+
     path('students/list', views.list_students, name='list_students'),
     path('student/register', views.register_student, name='register_student'),
     path('students/edit/<int:pk>', views.edit_student, name='edit_student'),
     path('students/edit/delete/<int:pk>', views.delete_student, name='delete_student'),
     path('students/edit/profile', views.edit_profile_student, name='edit_profile_student'),
     path('students/edit/pass', views.edit_pass_student, name='edit_pass_student'),
+
+    path('students/upload', views.upload_students, name='upload_students'),
+    path('students/upload/example', views.students_upload_example, name='students_upload_example'),
 
     path('programmers/edit/profile', views.edit_profile_programmer, name='edit_profile_programmer'),
     path('programmers/edit/pass', views.edit_pass_programmer, name='edit_pass_programmer'),

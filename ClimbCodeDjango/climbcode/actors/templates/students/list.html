@@ -13,39 +13,39 @@
         <table class="table table-striped">
             {% if student_list %}
 
-            <thead>
-            <tr>
-                <td>Nombre</td>
-                <td>Apellidos</td>
-                <td>Email</td>
-                <td>DNI</td>
-                <td>Foto</td>
-                <td>Teléfono</td>
-                <td></td>
-            </tr>
-            </thead>
-            {% for student in student_list %}
-            <tbody>
+                <thead>
+                <tr>
+                    <td>Nombre</td>
+                    <td>Apellidos</td>
+                    <td>Email</td>
+                    <td>DNI</td>
+                    <td>Foto</td>
+                    <td>Teléfono</td>
+                    <td></td>
+                </tr>
+                </thead>
+                {% for student in student_list %}
+                    <tbody>
 
                     <tr>
                         <td>{{ student.userAccount.first_name }}</td>
                         <td>{{ student.userAccount.last_name }}</td>
                         <td>{{ student.userAccount.email }}</td>
                         <td>{{ student.dni }}</td>
-                        <td>{{ student.photo}}</td>
-                        {% if student.photo%}
-                            <td> <img src="{{ student.photo.url }}" width="150" border="1"/></td>
-                        {%  endif %}
-                        {% if not student.photo%}
-                            <td> </td>
-                        {%  endif %}
+                        {% if student.photo %}
+                            <td><img src="{{ student.photo.url }}" width="150" border="1"/></td>
+                        {% endif %}
+                        {% if not student.photo %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ student.phone }}</td>
                         <td>
                             <a class="btn btn-default" href="/actors/students/edit/{{ student.pk }}">Editar</a>
                             <a class="btn btn-danger" href="/actors/students/edit/delete/{{ student.pk }}">Borrar</a>
                         </td>
                     </tr>
                 {% endfor %}
-                </tbody>
+            </tbody>
                 </table>
                 </div>
             {% else %}
@@ -80,6 +80,7 @@
         <input type="button" class="btn btn-default"
                onclick="location.href='/actors/student/register';"
                value="Crear estudiante"/>
+        <a href="{% url 'upload_students' %}" class="btn btn-warning">Crear varios estudiantes</a>
         <a href="{% url 'autorization_display' %}" class="btn btn-info">Autorizaci&#243;n de registro</a>
     </div>
 {% endblock %}

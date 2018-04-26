@@ -752,7 +752,6 @@ def edit_pass_programmer(request):
 
 @login_required(login_url='/login/')
 @user_is_school
-@school_license_active
 def edit_profile_school(request):
     """
     Edición del perfil School
@@ -816,7 +815,6 @@ def edit_profile_school(request):
 
 @login_required(login_url='/login/')
 @user_is_school
-@school_license_active
 def edit_pass_school(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -857,7 +855,6 @@ def edit_pass_school(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@school_license_active
 def edit_profile_student(request):
     """
     Edición del perfil Student
@@ -916,7 +913,6 @@ def edit_profile_student(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@school_license_active
 def edit_pass_student(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)

@@ -166,7 +166,13 @@ Mostrar Ejercicio
 /*                            if ((e.origin === "null" && e.source === sandboxedFrame.contentWindow)
                                 || (e.origin === (window.location.protocol + "//" + window.location.host)
                                     && e.source === unsandboxedFrame.contentWindow)) {*/
-                                document.getElementById(e.data[1]).value = String(e.data[0]);
+                                var resultado = String(e.data[0]);
+                                if(resultado==null || resultado=='' || resultado=='undefined'){
+                                    resultado = "¡Código ejecutado!";
+                                }
+                                document.getElementById(e.data[1]).value = resultado;
+                                
+                                
 /*                            }*/
                           });
                         </script>

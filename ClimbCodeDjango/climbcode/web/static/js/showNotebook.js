@@ -72,7 +72,7 @@ function addNewCodeBox(idNotebookContent,idNotebookBD){
 	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'');
 }
 
-function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart){
 
 	numBox++;
 	var idBox = "idBox"+numBox;
@@ -91,6 +91,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 	var idAddParamButton = "id_add_parameter_button_"+numBox;
 	var idAddParamButtonParameter = "'id_add_parameter_button_"+numBox+"'";	
 	//Div Row Principal del contenido para concatenar la gráfica
+	var idAddGraphicButton = "id_add_graphic_button_"+numBox;
 	var idRowPrincipal = "id_code_box_row_"+idBox;
 	var idRowPrincipalParameter = "'id_code_box_row_"+idBox+"'";
 	//Div Col Add Delete Button Chart
@@ -166,6 +167,13 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
 
 	$('#'+idNotebookContent).append(htmlCodeBox);
 
+    if(idChart!=null && idChart!=''){
+        setTimeout(
+          function()
+          {
+            addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
+          }, 1000);
+    }
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
     var respuesta = [idDivParam,idDivParamButton];
     return respuesta;
@@ -284,6 +292,7 @@ function evalUserCodeAceIframe(idTextArea, idDivParamsCodeBox, idIframe, idInput
 	var invalidCode = rexExp.test(code);
 
 
+
     /*
     	Recuperamos los valores actuales de los parámetros de la caja de código
 		para mandarlos al iframe
@@ -356,16 +365,18 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 	}
 
     var htmlParameter 	= 	'<div id="'+idDivParam+'" class="col-xs-4 col-md-4" style="margin-top: 20px;">'+
-	    						'<form id="'+idFormParam+'">'+
-    							'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
-    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" disabled="disabled">'+
+	    						'<form method="POST" id="'+idFormParam+'">'+
+									'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBox+'">'+
+									'<input type="hidden" id="'+idHiddenIdPkParam+'" value="'+idParam+'">'+
+									'<input type="hidden" id="'+idHiddenIdNameParam+'" value="'+idNameParameter+'">'+
+
+								'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
+    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" required>'+
     							'<label for="'+idNameParameter+'" class="control-label">Valor</label>'+
-    							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text">'+
+    							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text" required>'+
+    							'<br>'+
     							'</form>'+
     						'</div>'
-
-
-
 
     $('#'+idParameterDiv).append(htmlParameter);
 
@@ -454,16 +465,7 @@ function addChart(idRowPrincipalParameter,idBoxParameter,idColChartButtons){
 
 }
 
-function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
-
-	var idChart = "myChart_"+idBoxParameter;
-
-	var idChartRow = idChart+'_row';
-
-	var element = $('#'+idChartRow);
-	if(element != null){
-		$('#'+idChartRow).remove();
-	}
+function addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox){
 
 	//TODO LLAMAR AL IFRAME PARA CARGAR LA GRÁFICA
 
@@ -475,15 +477,6 @@ function addChartIframe(idIframe,idBoxParameter,idColChartButtons){
 	//Botón eliminar gráfica
 
 	//Quitamos previamente el botón de aceptar
-
-	$('#'+idColChartButtons+' button:last-child').remove();
-
-
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChartIframe(\''+idIframe+'\',\''+idBoxParameter+'\',\''+idColChartButtons+'\');">'+
-                                   'Eliminar Gráfica'+
-                                '</button>';
-
-    $('#'+idColChartButtons).append(htmlDeleteChartButton);
 
     //Aumentar el tamaño del iframe para mostrar la gráfica
 

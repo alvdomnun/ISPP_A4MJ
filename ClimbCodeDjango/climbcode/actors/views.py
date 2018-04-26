@@ -366,7 +366,8 @@ def delete_teacher(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        teacher.delete()
+        user = get_object_or_404(Teacher, pk=teacher.userAccount.id)
+        user.delete()
         return HttpResponseRedirect('/actors/teachers/list')
 
     return render(request, 'teachers/delete.html', {'teacher':teacher})
@@ -408,7 +409,8 @@ def edit_teacher(request, pk):
             return HttpResponseRedirect('/actors/teachers/list')
 
     elif request.method == 'DELETE':
-        teacher.delete()
+        user = get_object_or_404(User, pk=teacher.userAccount.id)
+        user.delete()
     else:
         form = EditTeacherForm()
 
@@ -622,7 +624,8 @@ def edit_student(request, pk):
             return HttpResponseRedirect('/actors/students/list')
 
     elif request.method == 'DELETE':
-        student.delete()
+        user = get_object_or_404(User, pk=student.userAccount.id)
+        user.delete()
     else:
         form = EditStudentForm()
 
@@ -647,7 +650,8 @@ def delete_student(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        student.delete()
+        user = get_object_or_404(User, pk=student.userAccount.id)
+        user.delete()
         return HttpResponseRedirect('/actors/students/list')
     return render(request, 'students/delete.html', {'student':student})
 

@@ -3,7 +3,7 @@
 {% block title %}ClimbCode{% endblock %}
 
 {% block content %}
-    <div class="container-fluid bgimg-1 parallax" id="home">
+    <div class="container-fluid bgimg-1 parallax" id="home" style="margin-top: 65px;">
         <div class="card bg-primary text-white display-middle display-card">
             <div class="card-body">
                 ¿QUÉ ES CLIMBCODE?
@@ -38,10 +38,12 @@ Gracias a ClimbCode el usuario puede hacer esos ejercicios de toda la vida que e
             Gracias a esto, el/la alumno/a podrá visualizar los resultados de sus ejercicios mediante las gráficas que se pueden incluir en los mismos. Pueden contener además dibujos como ayuda a la hora de situarse en el ámbito del problema.
 </p>
         <br/>
+        {% if  user.is_authenticated %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
            style="font-weight: bold"
-            href="/web/notebookVistaV1">
+            href="{% url 'list_exercisesExample' %}">
             Ejemplo</a>
+        {% endif %}
         <br/>
     </div>
 
@@ -62,10 +64,12 @@ Para confeccionarlos, el programador hará uso de JavaScript tanto para crear el
 <br/><br/>Además, al crear ejercicios interactivos, el programador puede ponerlos a la venta en la plataforma, obteniendo un beneficio cada vez que un usuario compre su ejercicio. ¿A qué esperas para participar con nosotros y ganar con ello?
         </p>
         <br/>
-        <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
-            href="/register/programmer">
-            Registro programadores</a>
-        <br/>
+        {% if  user.is_authenticated == False  %}
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
+                href="/register/programmer">
+                Registro programadores</a>
+            <br/>
+        {% endif %}
     </div>
 
     <div class="container-fluid bgimg-4 parallax" id="escuelas-parallax">
@@ -85,45 +89,25 @@ Para confeccionarlos, el programador hará uso de JavaScript tanto para crear el
 
         </p>
         <br/>
+        {% if  user.is_authenticated == False  %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
             href="register/school">
             Registro escuelas</a>
         <br/>
+        {% endif %}
     </div>
 
      <div class="container" id="licencias">
         <h2>Licencias</h2>
         <p>Para la suscripción anual de escuelas, ponemos a su disposición diferentes tipos de licencias, cada una con sus características propias en cuanto a precio, número de usuarios y ejercicios interactivos gratuitos a disposición de cada escuela:
             <ul>
-                <li>Básico: 60 usuarios y 20 ejercicios gratuitos por 200€/año.</li>
-                <li>Mediano: 200 usuarios y 50 ejercicios gratuitos por 550€/año.</li>
-                <li>Grande: 500 usuarios y 75 ejercicios grauitos por 700€/año.</li>
+                <li><b>Básico</b>: 60 usuarios y 20 ejercicios gratuitos por 200€/año.</li>
+                <li><b>Mediano</b>: 200 usuarios y 50 ejercicios gratuitos por 550€/año.</li>
+                <li><b>Grande</b>: 500 usuarios y 75 ejercicios grauitos por 700€/año.</li>
             </ul>
         Cualquier duda respecto a las licencias u opciones de personalización sobre alguna a las características con objeto de adaptarlas mejor a las necesidades de la escuela, puede contactar con nosotros vía <u><b>alvdomnun@alum.us.es</b></u> o <u><b>aldonu1@gmail.com</b></u>.
         </p>
         <br/>
-    </div>
-
-    <div class="container" id="equipo">
-        <h2>El equipo</h2>
-        <p>ClimbCode está desarrollado por un equipo de siete personas. Estos somos nosotros:</p>
-        <ul>
-            <li><b>Alejandro Román Rodríguez:</b> Jefe de Proyecto</li>
-            <li><b>Álvaro Domínguez Núñez:</b> Jefe de Negocio</li>
-            <li>Desarrolladores Front-End:</li>
-            <ul>
-                <li><b>Miguel Ángel Baños Carretón</b></li>
-                <li><b>Alejandro Garrido Resina </b></li>
-            </ul>
-            <li>Desarrolladores Back-End:</li>
-            <ul>
-                <li><b>Andrés Fernández Alés </b></li>
-                <li><b>Álvaro Sánchez López </b> </li>
-                <li><b>Jesús Sosa Sánchez  </b> </li>
-            </ul>
-
-        </ul>
-    <p>Para contactar con nosotros sólo tienes que mandar un correo a <u><b>alvdomnun@alum.us.es</b></u> o <u><b>aldonu1@gmail.com</b></u>.<br/> <br/>¡Cualquier duda que tengas podemos resolverla por correo!</p>
     </div>
 
 {% endblock %}

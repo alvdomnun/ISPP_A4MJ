@@ -407,13 +407,14 @@ def list_school_exercisesST(request):
     user = request.user
 
     student = get_object_or_404(Student, userAccount=user)
-    school = student.school_s
 
+    # Escuela del student
+    school = School.objects.get(student__userAccount=student)
     try:
-        subjects = school.subject_set.get()
-        exercise_list = subjects.exercises.all()
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+
     except Exception as e:
-        exercise_list = subjects.exercises.none()
+        exercise_list = Exercise.objects.none()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(exercise_list, 6)
@@ -433,6 +434,33 @@ def list_school_exercisesST(request):
     return render(request, 'exercises_list.html', data)
 
 
+#MOSTRAR EJERCICIO DE EJEMPLO
+@login_required(login_url='/login/')
+def list_exercisesExample(request):
+    #Filtro por NO draft y Orden de fecha de promocion
+
+    try:
+        exercise_list = list( Exercise.objects.filter(example=True))
+    except Exception as e:
+
+        exercise_list = Exercise.objects.none()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+
+    #Comprobación de si son ejercicios propios
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'exercise_list': exercise_list,
+        'title': 'Listado de ejercicios'
+    }
+    return render(request, 'example_list.html', data)
 ###################################################     MÉTODOS     PRIVADOS        ##############################################################
 
 def school_repeat_exercise_purchase(exercise, school):

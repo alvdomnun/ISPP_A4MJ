@@ -129,7 +129,7 @@ Editar Ejercicio
                                 <div class="col-md-6 offset-md-0">
                                     <div class="form-group">
                                         <label for="category">Asignatura:</label>
-                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.name}}" disabled>
+                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:#BFC9CA;" value="{{exercise.category.course}}º {{exercise.category.name}}" disabled>
                                    </div>
                                 </div>
                             </div>
@@ -316,7 +316,7 @@ Editar Ejercicio
                             <select class="form-control" id="category" name="category" required>
                                 <option value="" selected="selected">Seleccione una asignatura</option>
                                 {% for s in categories %}
-                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                    <option value="{{ s.id }}">{{ s.course }}º {{ s.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>

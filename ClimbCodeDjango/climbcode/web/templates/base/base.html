@@ -43,8 +43,11 @@
 													</div>
 											</li>
 									</ul> -->
-									{% if user.actor.school %}
 									<ul class="navbar-nav mr-auto">
+									{% if user.actor.school %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
 											</li>
@@ -57,15 +60,15 @@
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_own_exercisesS' %}">Mis ejercicios</a>
 											</li>
-									</ul>
+
 									{% elif user.actor.programmer %}
-									<ul class="navbar-nav mr-auto">
+
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
 											</li>
 											<li class="nav-item">
-													<a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
-											</li>
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
 											</li>
@@ -73,25 +76,31 @@
 													<a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
 											</li>
 
-									</ul>
+
 									{% elif user.actor.teacher %}
-											<ul class="navbar-nav mr-auto">
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                </li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
 												</li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
 												</li>
-											</ul>
+
 									{% elif user.actor.student %}
-                                        <ul class="navbar-nav mr-auto">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
                                             </li>
-                                         </ul>
+
 									{% elif user.actor.administrator %}
 
 									{% endif %}
+
+									</ul>
 									<!-- Inicio/Cierre de sesión -->
 						{% include 'base/loginpartial.html' %}
 							</div>
@@ -190,6 +199,8 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-3">
 							<p class="column-title">Información</p>
+							<p class="footer-text">En ClimbCode unimos el software con la educación para hacer la enseñanza amena
+								y despertar el interés de los estudiantes, acercandolos así a las nuevas tecnologías</p>
 						</div>
 
 						<div class="col-sm-12 col-md-3">
@@ -231,6 +242,8 @@
 						<div class="col-sm-12 col-md-3">
 							<p class="column-title">Programación</p>
 							<p class="footer-text">Si te interesa aprender a programar puedes consultarnos acerca de cursos de programación, o ver estas fantásticas páginas:</p>
+							<a class="text-white" href="https://www.w3schools.com">W3Schools.com</a><br/>
+							<a class="text-white" href="https://www.udemy.com/">Udemy.com</a>
 						</div>
 					</div>
 				</div>

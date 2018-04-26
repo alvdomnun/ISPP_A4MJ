@@ -12,20 +12,19 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls.base import reverse
-from django.views.decorators.csrf import csrf_exempt
 
 from actors.decorators import user_is_programmer, user_is_student, user_is_school, school_license_active, \
-    user_school_license_active, user_is_teacher
+    user_is_teacher
 from actors.forms import EditProgrammerProfile, EditProgrammerPass, EditStudentPass, EditSchoolProfile, EditSchoolPass, \
-    EditStudentProfile, UploadFileForm
-from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm, \
-    EditSelfTeacherForm, EditSelfTeacherPassForm
+    EditStudentProfile, UploadFileForm, EditTeacherProfile, EditTeacherPass
+from actors.forms import EditTeacherForm, RegisterTeacherForm, EditStudentForm, RegisterStudentForm
 from actors.forms import RenovateLicenseForm
 from actors.forms import RenovateLicensePaymentForm
 from actors.models import Teacher, School, Student
 from climbcode import settings
 from licenses.models import License
 from licenses.models import LicenseType
+
 
 @login_required(login_url='/login/')
 @user_is_school
@@ -34,7 +33,6 @@ def upload_students(request):
 
     school = get_object_or_404(School, pk=request.user.id)
     license = get_license_school(school)
-
 
     if request.method == 'POST':
 
@@ -50,26 +48,27 @@ def upload_students(request):
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    cells = row.split(";")
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
 
-                    user = User()
+                        user = User()
 
-                    user.username = cells[0]
-                    user.password = cells[1]
-                    user.email = cells[2]
-                    user.first_name = cells[5]
-                    user.last_name = cells[6]
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
 
-                    student = Student()
+                        student = Student()
 
-                    student.phone = cells[4]
-                    student.dni = cells[3]
-                    student.userAccount = user
-                    student.school_s = school
+                        student.phone = cells[4]
+                        student.dni = cells[3]
+                        student.userAccount = user
+                        student.school_s = school
 
-                    if User.full_clean(user) or Student.full_clean(student, exclude=['userAccount']):
-                        stop = True
-                        break
+                        if User.full_clean(user, validate_unique=True) or Student.full_clean(student, exclude=['userAccount']):
+                            stop = True
+                            break
 
         except Exception as e:
             logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
@@ -79,35 +78,33 @@ def upload_students(request):
         if form.is_valid() and stop is False:
 
             try:
-
-                print(rows.__len__())
-
                 for index, row in enumerate(rows):
                     if index > 0:
-                        try:
-                                cells = row.split(";")
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
 
-                                username = cells[0]
-                                password = cells[1]
-                                email = cells[2]
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
 
-                                user = User.objects.create_user(username, email, password)
+                                    user = User.objects.create_user(username, email, password)
 
-                                user.first_name = cells[5]
-                                user.last_name = cells[6]
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
 
-                                user.save()
+                                    user.save()
 
-                                student = Student.objects.create(phone=cells[4], dni=cells[3],
-                                                                 userAccount=user, school_s=school)
+                                    student = Student.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_s=school)
 
-                                student.save()
+                                    student.save()
 
-                                license.numUsers = license.numUsers - 1
-                                license.save()
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
 
-                        except Exception as e:
-                            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
 
                 return HttpResponseRedirect('/actors/students/list')
 
@@ -148,26 +145,27 @@ def upload_teachers(request):
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    cells = row.split(";")
+                    if row != "" and row != ";;;;;;":
+                        cells = row.split(";")
 
-                    user = User()
+                        user = User()
 
-                    user.username = cells[0]
-                    user.password = cells[1]
-                    user.email = cells[2]
-                    user.first_name = cells[5]
-                    user.last_name = cells[6]
+                        user.username = cells[0]
+                        user.password = cells[1]
+                        user.email = cells[2]
+                        user.first_name = cells[5]
+                        user.last_name = cells[6]
 
-                    teacher = Teacher()
+                        teacher = Teacher()
 
-                    teacher.phone = cells[4]
-                    teacher.dni = cells[3]
-                    teacher.userAccount = user
-                    teacher.school_t = school
+                        teacher.phone = cells[4]
+                        teacher.dni = cells[3]
+                        teacher.userAccount = user
+                        teacher.school_t = school
 
-                    if User.full_clean(user) or Teacher.full_clean(teacher, exclude=['userAccount']):
-                        stop = True
-                        break
+                        if User.full_clean(user, validate_unique=True) or Teacher.full_clean(teacher, exclude=['userAccount']):
+                            stop = True
+                            break
 
         except Exception as e:
             logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
@@ -182,30 +180,31 @@ def upload_teachers(request):
 
                 for index, row in enumerate(rows):
                     if index > 0:
-                        try:
-                                cells = row.split(";")
+                        if row != "" and row != ";;;;;;":
+                            try:
+                                    cells = row.split(";")
 
-                                username = cells[0]
-                                password = cells[1]
-                                email = cells[2]
+                                    username = cells[0]
+                                    password = cells[1]
+                                    email = cells[2]
 
-                                user = User.objects.create_user(username, email, password)
+                                    user = User.objects.create_user(username, email, password)
 
-                                user.first_name = cells[5]
-                                user.last_name = cells[6]
+                                    user.first_name = cells[5]
+                                    user.last_name = cells[6]
 
-                                user.save()
+                                    user.save()
 
-                                teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
-                                                                 userAccount=user, school_t=school)
+                                    teacher = Teacher.objects.create(phone=cells[4], dni=cells[3],
+                                                                     userAccount=user, school_t=school)
 
-                                teacher.save()
+                                    teacher.save()
 
-                                license.numUsers = license.numUsers - 1
-                                license.save()
+                                    license.numUsers = license.numUsers - 1
+                                    license.save()
 
-                        except Exception as e:
-                            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+                            except Exception as e:
+                                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
 
                 return HttpResponseRedirect('/actors/teachers/list')
 
@@ -227,45 +226,54 @@ def upload_teachers(request):
 @login_required(login_url='/login/')
 @user_is_teacher
 def edit_self_teacher(request):
-    teacher_aux = request.user
-
-    try:
-        Teacher.objects.get(userAccount_id=teacher_aux.id)
-    except Exception as e:
-        return HttpResponseRedirect('/')
 
     assert isinstance(request, HttpRequest)
-    teacher = get_object_or_404(Teacher, pk=teacher_aux.id)
-    userAccount = get_object_or_404(User, pk=teacher_aux.id)
 
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    teacher = request.user.actor.teacher
+
+    # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = EditSelfTeacherForm(request.POST, request.FILES)
+        form = EditTeacherProfile(request.POST)
         if (form.is_valid()):
-            user = teacher.userAccount
+            # Actualiza el User (model Django) en BD
+            email = form.cleaned_data["email"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
 
-            userAccount.username = user.username
-            userAccount.password = user.password
-            userAccount.email = form.cleaned_data["email"]
-            userAccount.first_name = form.cleaned_data["first_name"]
-            userAccount.last_name = form.cleaned_data["last_name"]
-
+            userAccount = request.user
+            userAccount.email = email
+            userAccount.first_name = first_name
+            userAccount.last_name = last_name
             userAccount.save()
 
-            teacher.phone = form.cleaned_data["phone"]
-            teacher.photo = form.cleaned_data["photo"]
-            teacher.dni = form.cleaned_data["dni"]
+            # Actualiza el Student en BD
+            phone = form.cleaned_data["phone"]
+            photo = form.cleaned_data["photo"]
+            dni = form.cleaned_data["dni"]
 
+            teacher.phone = phone
+            teacher.photo = photo
+            teacher.dni = dni
             teacher.save()
 
             return HttpResponseRedirect('/')
 
+    # Si se accede al form vía GET o cualquier otro método
     else:
-        form = EditSelfTeacherForm()
+        dataForm = {'first_name': teacher.userAccount.first_name, 'last_name': teacher.userAccount.last_name,
+                    'email': teacher.userAccount.email,
+                    'phone': teacher.phone, 'dni': teacher.dni, 'photo': teacher.photo}
+        form = EditTeacherProfile(dataForm)
 
+    # Datos del modelo (vista)
     data = {
         'form': form,
         'teacher': teacher,
-        'title': 'Editar mi perfil'
+        'titulo': 'Editar Perfil'
     }
 
     return render(request, 'teachers/self_edit.html', data)
@@ -273,49 +281,38 @@ def edit_self_teacher(request):
 @login_required(login_url='/login/')
 @user_is_teacher
 def edit_self_teacher_pass(request):
-    teacher_aux = request.user
-
-    try:
-        Teacher.objects.get(userAccount_id=teacher_aux.id)
-    except Exception as e:
-        return HttpResponseRedirect('/')
-
     assert isinstance(request, HttpRequest)
-    teacher = get_object_or_404(Teacher, pk=teacher_aux.id)
-    userAccount = get_object_or_404(User, pk=teacher_aux.id)
 
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+
+    # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = EditSelfTeacherPassForm(request.POST, request.FILES, password=userAccount.password, user=userAccount)
+        form = EditTeacherPass(request.POST)
         if (form.is_valid()):
-            user = teacher.userAccount
+            # Se asegura que la Id que viene del formulario es la misma que la del usuario que realiza la acción
+            userAccountId = form.cleaned_data["userAccountId"]
+            userAccount = request.user
+            if (userAccountId != userAccount.id):
+                return HttpResponseForbidden()
 
-            userAccount.username = user.username
-            userAccount.email = user.email
-            userAccount.first_name = user.first_name
-            userAccount.last_name = user.last_name
-            actual_password = form.cleaned_data['actual_password']
-            new_password = form.cleaned_data['new_password']
-
-            if not userAccount.check_password(actual_password):
-                form.fields['password'].initial = 'False'
-
-            userAccount.set_password(new_password)
+            # Establece la nueva contraseña del usuario
+            password = form.cleaned_data["password"]
+            userAccount.set_password(password)
             userAccount.save()
 
-            teacher.phone = teacher.phone
-            teacher.photo = teacher.photo
-            teacher.dni = teacher.dni
+            return HttpResponseRedirect('/')
 
-            teacher.save()
-
-            return HttpResponseRedirect('/login')
+    # Si se accede al form vía GET o cualquier otro método
     else:
-        form = EditSelfTeacherPassForm(password=userAccount.password, user=userAccount)
+        form = EditTeacherPass()
 
+    # Datos del modelo (vista)
     data = {
         'form': form,
-        'teacher': teacher,
-        'title': 'Cambiar contraseña'
+        'userAccount': request.user,
+        'titulo': 'Cambiar credenciales',
     }
 
     return render(request, 'teachers/self_edit_pass.html', data)
@@ -330,7 +327,7 @@ def list_teachers(request):
 
     try:
 
-        teacher_list_aux = Teacher.objects.filter(school_t=school)
+        teacher_list_aux = Teacher.objects.filter(school_t=school).order_by()
 
     except Exception as e:
 
@@ -364,7 +361,8 @@ def delete_teacher(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        teacher.delete()
+        user = get_object_or_404(User, pk=teacher.userAccount.id)
+        user.delete()
         return HttpResponseRedirect('/actors/teachers/list')
 
     return render(request, 'teachers/delete.html', {'teacher':teacher})
@@ -406,7 +404,8 @@ def edit_teacher(request, pk):
             return HttpResponseRedirect('/actors/teachers/list')
 
     elif request.method == 'DELETE':
-        teacher.delete()
+        user = get_object_or_404(User, pk=teacher.userAccount.id)
+        user.delete()
     else:
         form = EditTeacherForm()
 
@@ -495,8 +494,8 @@ def register_teacher(request):
     return render(request, 'teachers/register.html', data)
 
 @login_required(login_url='/login/')
-@school_license_active
 @user_is_school
+@school_license_active
 def list_students(request):
     user = request.user
 
@@ -504,7 +503,7 @@ def list_students(request):
 
     try:
 
-        student_list_aux = Student.objects.filter(school_s=school)
+        student_list_aux = Student.objects.filter(school_s=school).order_by()
 
     except Exception as e:
 
@@ -620,7 +619,8 @@ def edit_student(request, pk):
             return HttpResponseRedirect('/actors/students/list')
 
     elif request.method == 'DELETE':
-        student.delete()
+        user = get_object_or_404(User, pk=student.userAccount.id)
+        user.delete()
     else:
         form = EditStudentForm()
 
@@ -645,7 +645,8 @@ def delete_student(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
-        student.delete()
+        user = get_object_or_404(User, pk=student.userAccount.id)
+        user.delete()
         return HttpResponseRedirect('/actors/students/list')
     return render(request, 'students/delete.html', {'student':student})
 
@@ -747,7 +748,6 @@ def edit_pass_programmer(request):
     return render(request, 'programmers/editProgrammerPass.html', data)
 
 @login_required(login_url='/login/')
-@school_license_active
 @user_is_school
 def edit_profile_school(request):
     """
@@ -812,7 +812,6 @@ def edit_profile_school(request):
 
 @login_required(login_url='/login/')
 @user_is_school
-@school_license_active
 def edit_pass_school(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -853,7 +852,6 @@ def edit_pass_school(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@school_license_active
 def edit_profile_student(request):
     """
     Edición del perfil Student
@@ -912,7 +910,6 @@ def edit_profile_student(request):
 
 @login_required(login_url='/login/')
 @user_is_student
-@school_license_active
 def edit_pass_student(request):
     """Edición de la clave del usuario """
     assert isinstance(request, HttpRequest)
@@ -1112,7 +1109,7 @@ def autorization_display(request):
 @user_is_school
 def students_upload_example(request):
 
-    import os, tempfile, zipfile
+    import os
     from wsgiref.util import FileWrapper
     from django.conf import settings
     import mimetypes
@@ -1132,7 +1129,7 @@ def students_upload_example(request):
 @user_is_school
 def teachers_upload_example(request):
 
-    import os, tempfile, zipfile
+    import os
     from wsgiref.util import FileWrapper
     from django.conf import settings
     import mimetypes

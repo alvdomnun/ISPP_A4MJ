@@ -1,4 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
+
+from actors.decorators import user_is_programmer
 from web.forms import RegisterSchoolPaymentForm
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
@@ -35,43 +38,65 @@ def sample_dashboard(request):
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookVistaV1(request):
 	template = loader.get_template('notebook/notebookVistaV1.html')
 	context = {}
 	return HttpResponse(template.render(context,request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1(request):
 	template = loader.get_template('web/notebookv1.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1aux(request):
 	template = loader.get_template('web/notebookv1aux.html')
 	context = {}
 	return HttpResponse(template.render(context, request))
+
 
 def notebookv1_ejercicio_creado(request):
     template = loader.get_template('web/notebookv1_ejercicio_creado.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_cc(request):
     template = loader.get_template('web/notebookv1_ejercicio_cc.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_am(request):
     template = loader.get_template('web/notebookv1_ejercicio_am.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_qin(request):
     template = loader.get_template('web/notebookv1_ejercicio_qin.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def notebookv1_ejercicio_est(request):
     template = loader.get_template('web/notebookv1_ejercicio_est.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+@user_is_programmer
+def notebookv1_ejercicio_geo(request):
+    template = loader.get_template('web/notebookv1_ejercicio_geo.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -259,6 +284,8 @@ def saveNotebook(request):
         }
         return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
+@user_is_programmer
 def createNotebook(request):
     """
     Muestra un formulario para crear un ejercicio y la crea si la petición es POST
@@ -435,10 +462,16 @@ def permisoViewRolesEscuelaNotebook(idNotebook,request):
         idSchool = request.user.actor.school.actor_ptr_id
         school = request.user.actor.school
         tienePermiso = isSchoolAdquiredExercise(exercise, school)
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
-    elif hasattr(request.user.actor, 'school'):
-        print("ES ESCUELA")
+    elif hasattr(request.user.actor, 'student'):
+        student = request.user.actor.student
+        idSchool = student.school_s_id
+        school = School.objects.get(actor_ptr_id=idSchool)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+    elif hasattr(request.user.actor, 'teacher'):
+        teacher = request.user.actor.teacher
+        idSchool = teacher.school_t_id
+        school = School.objects.get(actor_ptr_id=idSchool)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school)
     return tienePermiso
 
 def permisoViewRolProgramadorNotebook(idNotebook,request):
@@ -456,22 +489,21 @@ def isSchoolAdquiredExercise(exerciseParam,school):
     exerciseAdquired = False
     exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
     for exercise in exercise_list:
-        if exercise == exerciseParam:
+        if exercise.id == exerciseParam.id:
             exerciseAdquired = True
             break
     return exerciseAdquired
 
 # Visualización notebook para escuelas, profesores y alumnos
-
+@login_required(login_url='/login/')
 def showNotebook(request):
     print("Showing notebook")
     if request.method == 'GET':
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        #if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
-        if True:
-            print("El título del notebook recuperado es: "+exercise.title)
+        if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request) or exercise.example == True):
+        #if True:
             if exercise is not None:
                 template = loader.get_template('notebook/show_notebook.html')
                 boxesText = Text.objects.filter(exercise=exercise)

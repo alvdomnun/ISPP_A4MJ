@@ -3,8 +3,9 @@
 
 {% block content %}
     <style>
-        table td {
-            align-content: center
+        table th {
+            text-align: center;
+            vertical-align: middle;
         }
     .text {
   font-size:18px;
@@ -45,6 +46,7 @@
 }
     </style>
 
+<div class="container">
     <h1>Lista de ejercicios</h1>
 
     <div class="table">
@@ -54,26 +56,27 @@
             <thead>
             <tr>
             {% if ownList == False %}
-                <td></td>
+                <th></th>
             {% endif %}
-                <td>Título</td>
-                <td>Descripción</td>
-                <td>Asignatura</td>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Asignatura</th>
                 {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
-                    <td>Ventas</td>
+                    <th>Ventas</th>
                 {% endif %}
-                <td>Nivel</td>
+                <th>Nivel</th>
                 {% if user.actor.programmer and ownList %}
-                    <td align="center">¿Borrador?</td>
-                    <td align="center">¿Promocionado?</td>
-                    <td align="center">Fecha de comienzo</td>
-                    <td align="center">Fecha de fin</td>
+                    <th>¿Borrador?</th>
+                    <th>¿Promocionado?</th>
+                    <th>Fecha de comienzo</th>
+                    <th>Fecha de fin</th>
                 {% endif %}
-                <td></td>
+                <th></th>
             </tr>
-            </thead>
+          </thead>
+          <tbody>
             {% for exercise in exercise_list %}
-            <tbody>
+
 
                     <tr>
                         {% if ownList == False %}
@@ -118,8 +121,12 @@
                                 {% endif %}
                             {% endif %}
                             {% if ownList %}
-                                <a class="btn btn-default" href="">Mostrar</a>
+                                <a class="btn btn-default" href="/web/showNotebook?idNotebook= {{ exercise.id }} ">Mostrar</a>
                                 {% if user.actor.programmer %}
+                                    {% if exercise.draft == True %}
+                                        <a class="btn btn-default" href="/web/editNotebook?idNotebook= {{ exercise.id }} ">Editar</a>
+                                    {% endif %}
+
                                     {% if exercise.promoted == False and exercise.draft == False %}
                                         <a class="btn btn-default" href="{% url 'promote_exercise' exercise.id %}">Promocionar</a>
                                     {% endif %}
@@ -129,14 +136,21 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-                </table>
+
      {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
-
+</table>
     </div>
 
+    {% if user.actor.programmer and ownList %}
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/web/createNotebook';"
+               value="Crear ejercicio"/>
+    </div>
+    {% endif %}
 
     {% if exercise_list.has_other_pages %}
         <ul class="pagination">
@@ -160,4 +174,5 @@
         </ul>
     {% endif %}
 
+</div>
 {% endblock %}

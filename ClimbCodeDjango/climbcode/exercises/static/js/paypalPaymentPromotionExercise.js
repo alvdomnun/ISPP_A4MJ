@@ -22,7 +22,7 @@ paypal.Button.render({
     // PayPal Client IDs - replace with your own
     // Create a PayPal app: https://developer.paypal.com/developer/applications/create
     client: {
-        sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+        sandbox: 'AYJNcQvaEsYGDlQyjx8fOL43TFMeJd30o0R9bk9vIJOnO8dPiJwxhPGmgrSqQxiQb3v6mjPQKeO-Hzh5',
         production: '<insert production client id>'
     },
 
@@ -73,7 +73,7 @@ paypal.Button.render({
     // onError() is called when the an error occurs
     onError: function (data, actions) {
         //return window.alert('Payment Error!');
-
+        alert("Ha ocurrido un error externo a Climbcode. Paypal no está disponible en este momento. Contacte con nosotros mediante algunos de los correos situados en la forma de contacto. Disculpe las molestias.");
         // Desactiva el input del Formulario para controlar errores
         document.getElementById("payment").value = '0';
 

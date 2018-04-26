@@ -1,33 +1,48 @@
-{% extends 'base/base.html' %}
+﻿{% extends 'base/base.html' %}
+
+<!-- TITULO -->
+{% block title %}ClimbCode{% endblock %}
 
 <!-- CONTENIDO -->
 {% block content %}
 
+<div class="container">
+    <br />
     <h2>{{ titulo }}</h2>
-    {{ form.userAccount.first_name }}
+
     <div class="row">
 
         <div class="container-fluid">
             <br/>
             <div class="col-md-12">
 
-                <!-- Formulario Edición -->
-                <form id="editar" enctype="multipart/form-data" method="post" action="" class="form" role="form">
+                <!-- Formulario Cambio de contrase&#241;a -->
+                <form id="registro" method="post" action="{% url 'edit_self_teacher_pass' %}" class="form" role="form">
                     {% csrf_token %}
+                    <input type="hidden" name="userAccountId" value="{{ userAccount.id }}">
+
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
+                            <label for="userAccount" class="control-label">Usuario</label>
+                            <input class="form-control" id="userAccount" disabled value="{{ userAccount.get_full_name }}" />
+                        </div>
+                        <div class="col-xs-6 col-md-6 form-group">
                             <label for="actual_password" class="control-label">Contrase&#241;a actual</label>
-                            <input class="form-control" name="actual_password" id="actual_password" type="password" placeholder="Contrase&#241;a actual" required/>
-                        </div>
-                        <div class="col-xs-6 col-md-6 form-group">
-                            <label for="new_password" class="control-label">Nueva contrase&#241;a</label>
-                            <input class="form-control" name="new_password" id="new_password" type="password" placeholder="Nueva contrase&#241;a" required/>
-                        </div>
-                        <div class="col-xs-6 col-md-6 form-group">
-                            <label for="confirm_new_password" class="control-label">Confirmar nueva contrase&#241;a</label>
-                            <input class="form-control" name="confirm_new_password" id="confirm_new_password" type="password" placeholder="Confirmar nueva contrase&#241;a" required/>
+                            <input class="form-control" id="actual_password" name="actual_password" placeholder="Contrase&#241;a actual" type="password" required autofocus/>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="password" class="control-label">Nueva Contrase&#241;a</label>
+                            <input class="form-control" name="password" id="password" type="password" placeholder="Nueva Contrase&#241;a" required/>
+                        </div>
+                        <div class="col-xs-6 col-md-6 form-group">
+                            <label for="confirm_password" class="control-label">Confirmar nueva contrase&#241;a</label>
+                            <input class="form-control" name="confirm_password" id="confirm_password" type="password" placeholder="Confirmar nueva contrase&#241;a" required/>
+                        </div>
+                    </div>
+                    <hr/>
+                
                     <!-- Tratamiento de Errores -->
                     {% if form.errors %}
                         {% for field in form %}
@@ -46,15 +61,25 @@
                     <!-- Botones -->
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">
-                            <input type="submit" value="Actualizar" class="btn btn-primary"/>
-                            <input type="button" class="btn btn-default"
-                                   onclick="location.href='/actors/teacher/edit';" value="Cancelar"/>
+                            <input type="hidden" name="next" value="/" />
+                            <input type="submit" value="Guardar" class="btn btn-primary btn-block" />
+                            <input type="button" class="btn btn-default btn-block" onclick="location.href='/';" value="Cancelar" />
                         </div>
                     </div>
                 </form>
 
             </div>
         </div>
+
     </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    {% load staticfiles %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
 
 {% endblock %}

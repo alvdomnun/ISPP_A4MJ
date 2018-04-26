@@ -79,7 +79,7 @@ paypal.Button.render({
     // onError() is called when the an error occurs
     onError: function (data, actions) {
         //return window.alert('Payment Error!');
-
+        alert("Ha ocurrido un error externo a Climbcode. Paypal no está disponible en este momento. Contacte con nosotros mediante algunos de los correos situados en la forma de contacto. Disculpe las molestias.");
         // Desactiva el input del Formulario para controlar errores
         document.getElementById("payment").value = '0';
 

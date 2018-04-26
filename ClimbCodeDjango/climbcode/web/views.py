@@ -500,7 +500,6 @@ def showNotebook(request):
         exercise = Exercise.objects.get(id=idNotebook)
         #if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
         if True:
-            print("El título del notebook recuperado es: "+exercise.title)
             if exercise is not None:
                 template = loader.get_template('notebook/show_notebook.html')
                 boxesText = Text.objects.filter(exercise=exercise)

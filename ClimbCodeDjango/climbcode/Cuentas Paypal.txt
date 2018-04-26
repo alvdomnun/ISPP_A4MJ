@@ -1,4 +1,4 @@
 • Cuentas de Paypal entorno sandbox:
-	+ school@hotmail.com 		/ climbcodeISPP2018
-	+ programmer@hotmail.com	/ climbcodeISPP2018
-	+ climbcode@hotmail.com 	/ climbcodeISPP2018
+	+ schoolCC@hotmail.com 		/ climbcodeISPP2018
+	+ programmerCC@hotmail.com	/ climbcodeISPP2018
+	+ climbcodeCC@hotmail.com 	/ climbcodeISPP2018

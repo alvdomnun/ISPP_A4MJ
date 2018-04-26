@@ -38,10 +38,12 @@ Gracias a ClimbCode el usuario puede hacer esos ejercicios de toda la vida que e
             Gracias a esto, el/la alumno/a podrá visualizar los resultados de sus ejercicios mediante las gráficas que se pueden incluir en los mismos. Pueden contener además dibujos como ayuda a la hora de situarse en el ámbito del problema.
 </p>
         <br/>
+        {% if  user.is_authenticated %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
            style="font-weight: bold"
-            href="/web/notebookv1_ejercicio_creado">
+            href="{% url 'list_exercisesExample' %}">
             Ejemplo</a>
+        {% endif %}
         <br/>
     </div>
 

@@ -25,6 +25,7 @@ class Exercise(models.Model):
     startPromotionDate = models.DateField(null=True, blank=True)
     endPromotionDate = models.DateField(null=True, blank=True)
     draft = models.BooleanField(default=True)
+    example = models.BooleanField(default=False)
 
     # Relación con DefaultSubject = Categoría (las asignaturas que incluye el sistema por defecto)
     category = models.ForeignKey(DefaultSubject, on_delete=models.CASCADE, null=True)

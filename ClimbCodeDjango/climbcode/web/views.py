@@ -20,6 +20,7 @@ from exercises.models import Exercise
 from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
 import re
+import datetime as datetimeSchool
 
 # Create your views here.
 
@@ -461,18 +462,31 @@ def permisoViewRolesEscuelaNotebook(idNotebook,request):
         # Comprobar que la escuela ha adquirido el ejercicio
         idSchool = request.user.actor.school.actor_ptr_id
         school = request.user.actor.school
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     elif hasattr(request.user.actor, 'student'):
         student = request.user.actor.student
         idSchool = student.school_s_id
         school = School.objects.get(actor_ptr_id=idSchool)
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     elif hasattr(request.user.actor, 'teacher'):
         teacher = request.user.actor.teacher
         idSchool = teacher.school_t_id
         school = School.objects.get(actor_ptr_id=idSchool)
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     return tienePermiso
+
+
+def schoolActiveLicense(school):
+    # Fecha actual
+    today = datetimeSchool.date.today()
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte=today)
+
+    # Valida que la escuela tenga licencia activa
+    if (license.count() > 0):
+        return True
+    else:
+        return False
 
 def permisoViewRolProgramadorNotebook(idNotebook,request):
     tienePermiso = False
@@ -502,6 +516,9 @@ def showNotebook(request):
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
+
+        # Si se trata de una escuela, estudiante o profesor, hay que comprobar que la licencia no haya caducado
+
         if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request) or exercise.example == True):
         #if True:
             if exercise is not None:
@@ -543,8 +560,36 @@ def showNotebook(request):
                 }
                 return HttpResponse(template.render(context, request))
         else:
-            template = loader.get_template('notebook/notebook_no_permiso.html')
+            errorMessage = 'Permiso denegado'
+
+            if hasattr(request.user.actor, 'school'):
+                # Comprobar que la escuela ha adquirido el ejercicio
+                idSchool = request.user.actor.school.actor_ptr_id
+                school = request.user.actor.school
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+            elif hasattr(request.user.actor, 'student'):
+                student = request.user.actor.student
+                idSchool = student.school_s_id
+                school = School.objects.get(actor_ptr_id=idSchool)
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+            elif hasattr(request.user.actor, 'teacher'):
+                teacher = request.user.actor.teacher
+                idSchool = teacher.school_t_id
+                school = School.objects.get(actor_ptr_id=idSchool)
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+
+            template = loader.get_template('notebook/notebook_error_message.html')
             context = {
+                'errorMessage': errorMessage
             }
             return HttpResponse(template.render(context, request))
 

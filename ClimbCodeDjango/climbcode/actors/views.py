@@ -950,7 +950,6 @@ def edit_pass_student(request):
 
 @login_required(login_url='/login/')
 @user_is_school
-@school_license_active
 def detail_active_license(request):
     """ Obtiene la licencia activa de la escuela """
     assert isinstance(request, HttpRequest)

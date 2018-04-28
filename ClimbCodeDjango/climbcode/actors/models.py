@@ -116,7 +116,7 @@ class School(Actor):
     teachingType = models.CharField(verbose_name = 'Teaching Type', max_length = 20, choices = TeachingType, default = PUBLIC)
     identificationCode = models.CharField(verbose_name = 'CIF or Center Code', max_length = 9,validators = [RegexValidator(regex = r'^(\d{8,9})$',
            message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')],
-                                          null = True, help_text = 'Requerido. CIF para escuelas; Código de Centro para academías.')
+           null = True, help_text = 'Requerido. CIF para escuelas; Código de Centro para academías.')
     isPayed = models.BooleanField(verbose_name = 'Pagada', default = False)
 
     # Relación con los ejercicios comprados

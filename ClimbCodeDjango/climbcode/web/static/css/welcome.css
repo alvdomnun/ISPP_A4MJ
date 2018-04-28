@@ -56,3 +56,7 @@
 #home {
     margin-top: 65px;
 }
+
+p {
+    text-align: justify;
+}

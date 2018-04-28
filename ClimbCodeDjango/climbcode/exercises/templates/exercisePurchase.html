@@ -11,119 +11,181 @@
 <!-- CONTENIDO -->
 {% block content %}
 <div class="container">
-    <div class="row color-invoice">
+    <div class="row" style='padding-top:25px; padding-bottom:25px;'>
+
         <div class="col-md-12">
-            <!-- Presentación -->
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <h1>PROCESO DE COMPRA</h1>
-                    <br />
-                    <strong>ClimbCode</strong>
-                    <br />
-                    {{ date }}
-                </div>
-            </div>
-            <hr />
 
-            <!-- Detalles del comprador y del programador -->
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-7">
-                    <h3>Comprador:</h3>
-                    <h5>{{ school.userAccount.get_full_name }}</h5>
-                    <p>
-                        <strong>Centro:</strong> {{ school.centerName }}
-                        <br/>
-                        <strong>Dirección:</strong> {{ school.address }}, {{ school.postalCode }}, {{ school.province }}
-                    </p>
-                </div>
-                <div class="col-lg-5 col-md-5 col-sm-5">
-                    <h3>Programador:</h3>
-                    <h5>{{ exercise.programmer.userAccount.get_full_name }}</h5>
-                    <p>
-                        <strong>Contacto:</strong> {{ exercise.programmer.userAccount.email }}
-                        <br/>
-                    </p>
-                </div>
-            </div>
-            <hr />
+            <div id='mainContentWrapper'>
+                <div class="col-md-12">
+                    <h2 style="text-align: center;">Revisar y Completar Proceso de Compra</h2>
+                    <hr/>
 
-            <!-- Detalles del ejercicio -->
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <h3>{{ exercise.title }}</h3>
-                    <p>
-                        {{ exercise.description }}
-                    </p>
-                    <p>
-                        <strong>Número de ventas:</strong> {{ exercise.sales }}&emsp; | &emsp;<strong>Nivel:</strong> {{ exercise.level }}&emsp;
-                        | &emsp;<strong>Asignatura:</strong> {{ exercise.category.name }}&emsp; | &emsp;<strong>Curso:</strong> {{ exercise.category.course }}º
-                    </p>
-                </div>
-            </div>
-            <hr />
+                    <!-- TODO ALVARO: Cambiar cuando se implementa la vista de detalle del ejercicio -->
+                    <!--<a href="" class="btn btn-info" style="width: 100%;">Ver el ejercicio</a>-->
+                    <a href="{% url 'list_exercisesS' %}" class="btn btn-info" style="width: 100%;">Listado de Ejercicios</a>
+                    <hr/>
 
-            <!-- Detalles del precio -->
-            <div class="row">
-                <!-- Precio -->
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <h4>Precio: {{ prices.buyExerciseValue }} &euro;</h4>
-                </div>
-            </div>
-            <hr/>
+                    <div class="shopping_cart">
 
-            <!-- PROCESO DE COMPRA -->
-            {% if not repeatedPurchase %}
+                        <!-- EJERCICIO -->
+                        <div class="panel panel-default">
 
-                <!-- Botones o Warning de Ejercicio ya comprado -->
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <!-- Formulario: el botón determina si es compra gratuita o no -->
-                        <form id="purchaseForm" method="post" class="form" role="form">
-                            {% csrf_token %}
-                            <input type="hidden" id="exerciseId" name="exerciseId" value="{{ exercise.id }}">
-                            <input type="hidden" id="buyExerciseValue" value="{{ prices.buyExerciseValue }}">
-                            <input type="hidden" id="freePurchase" name="freePurchase" value="1">
-                            <input type="hidden" id="payment" name="payment" value="1">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                        Ejercicio    
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                        <div class="items">
+                                            <div class="col-md-12">
 
-                            <!-- Bot&#243;n Paypal -->
-                            <div id="paypal-button-container"></div>
-                            <br/>
-                            {% if license.numFreeExercises > 0 %}
-                            <button type="submit" class="btn btn-success btn-block">Obtener Gratis</button>
-                            {% endif %}
-                            <a href="{% url 'list_exercisesS' %}" class="btn btn-info btn-block">Cancelar</a>
-                        </form>
-                    </div>
-                </div>
-                <hr/>
+                                                <!-- Info del Ejercicio -->
+                                                <div class="jumbotron p-3 text-center" style="background-color:#daebeb;">
+                                                    <h2 class="display-4">{{ exercise.title }}</h2>
+                                                    <hr/>
+                                                    <p class="lead">
+                                                        {{ exercise.description }}
+                                                    </p>
+                                                    <p class="lead" style="font-size:small;">
+                                                        <strong>Número de ventas:</strong> {{ exercise.sales }}&emsp; | &emsp;<strong>Nivel:</strong> {{ exercise.level }}&emsp;
+                                                        | &emsp;<strong>Asignatura:</strong> {{ exercise.category.name }}&emsp; | &emsp;<strong>Curso:</strong> {{ exercise.category.course }}º
+                                                    </p>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
 
-                <!-- Letra pequeña de la compra -->
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <strong>Información: </strong>
-                        <ul>
-                            {% if license.numFreeExercises > 0 %}
-                            <li>Su licencia actual aún dispone de {{ license.numFreeExercises }} ejercicios gratuitos.</li>
-                            <li>Haga clic en 'Obtener gratis' y el ejercicio será añadido automáticamente a su repertorio.</li>
-                            {% else %}
-                            <li>Su licencia no dispone de ejercicios gratuitos.</li>
-                            {% endif %}
-                            <li>Para comprar con PayPal, haz clic en 'Pagar con Paypal'. A continuación, serás redirigido a la página de PayPal para proceder al pago.</li>
-                        </ul>
-                    </div>
-                </div>
+                        <!-- DATOS DE LA COMPRA -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        Datos de la compra
+                                    </a>
+                                </h4>
+                            </div>
 
-            <!-- WARNING SI EJERCICIO YA HA SIDO COMPRADO -->
-            {% else %}
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="alert alert-danger">
-                            <strong>Está intentando adquirir un ejercicio que ya ha comprado. Por favor, pulse <a href="/">aquí</a> para cancelar la operación.</strong>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <br/>
+                                    <!-- Info Comprador / Programador -->
+                                    <div class="row">
+                                        <div class="col-lg-7 col-md-7 col-sm-7">
+                                            <h5><strong>Comprador:</strong> <em>{{ school.userAccount.get_full_name }}</em></h5>
+                                            <p>
+                                                <em><strong>Centro:</strong> {{ school.centerName }}</em>
+                                                <br/>
+                                                <em><strong>Dirección:</strong> {{ school.address }}, {{ school.postalCode }}, {{ school.province }}</em>
+                                            </p>
+                                        </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-5" style="text-align:right;">
+                                        <h5><strong>Programador:</strong> <em>{{ exercise.programmer.userAccount.get_full_name }}</em></h5>
+                                        <p>
+                                            <em><strong>Contacto:</strong> {{ exercise.programmer.userAccount.email }}</em>
+                                            <br/>
+                                        </p>
+                                    </div>
+                                    </div>
+
+                                    <!-- Tabla Factura -->
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2">
+                                                    <button class="btn btn-danger btn-sm pull-right" href="#" title="" disabled></button>&nbsp;&nbsp;
+                                                    <b>Facturaci&#243;n</b>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Coste unitario</td>
+                                                <td style="text-align:right;"><b>{{ prices.buyExerciseValue }}  &euro;</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tasas aplicadas</td>
+                                                <td style="text-align:right;"><b>0,00  &euro;</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <hr/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Precio total</strong></td>
+                                                <td class="text-danger" style="text-align:right;"><h5><strong>{{ prices.buyExerciseValue }} Euros</strong></h5></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endif %}
+            </div>
+            
             <hr />
+
+            <!-- PROCESO DE COMPRA -->
+            <div>     
+                {% if not repeatedPurchase %}
+                    <!-- Letra pequeña de la compra -->
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12" style="font-size:small;">
+                            <strong>Información: </strong>
+                            <ul>
+                                {% if license.numFreeExercises > 0 %}
+                                <li>Su licencia actual aún dispone de {{ license.numFreeExercises }} ejercicios gratuitos.</li>
+                                <li>Haga clic en 'Obtener gratis' y el ejercicio será añadido automáticamente a su repertorio.</li>
+                                {% else %}
+                                <li>Su licencia no dispone de ejercicios gratuitos.</li>
+                                {% endif %}
+                                <li>Para comprar con PayPal, haz clic en 'Pagar con Paypal'. A continuación, serás redirigido a la página de PayPal para proceder al pago.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <!-- Botones o Warning de Ejercicio ya comprado -->
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <!-- Formulario: el botón determina si es compra gratuita o no -->
+                            <form id="purchaseForm" method="post" class="form" role="form">
+                                {% csrf_token %}
+                                <input type="hidden" id="exerciseId" name="exerciseId" value="{{ exercise.id }}">
+                                <input type="hidden" id="buyExerciseValue" value="{{ prices.buyExerciseValue }}">
+                                <input type="hidden" id="freePurchase" name="freePurchase" value="1">
+                                <input type="hidden" id="payment" name="payment" value="1">
+
+                                <!-- Bot&#243;n Paypal -->
+                                <div id="paypal-button-container"></div>
+                                <br/>
+                                {% if license.numFreeExercises > 0 %}
+                                <button type="submit" class="btn btn-success btn-block">Obtener Gratis</button>
+                                {% endif %}
+                                <a href="/" class="btn btn-info btn-block">Cancelar Proceso</a>
+                            </form>
+                        </div>
+                    </div>
+
+                <!-- WARNING SI EJERCICIO YA HA SIDO COMPRADO -->
+                {% else %}
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="alert alert-danger">
+                                <strong>Está intentando adquirir un ejercicio que ya ha comprado. Por favor, pulse <a href="/">aquí</a> para cancelar la operación.</strong>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
         </div>
     </div>
 </div>

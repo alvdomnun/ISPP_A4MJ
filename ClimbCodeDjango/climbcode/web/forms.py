@@ -81,8 +81,7 @@ class RegisterSchoolForm(forms.Form):
     province = forms.ModelChoiceField(queryset = Province.objects.all(), empty_label = None, label = 'Provincia')
     type = forms.ChoiceField(choices = School.SchoolType, label = 'Tipo Escuela')
     teachingType = forms.ChoiceField(choices = School.TeachingType, label = 'Enseñanza')
-    identificationCode = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^(\d{8,9})$',
-           message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')], label = 'Código de identificación')
+    identificationCode = forms.CharField(max_length = 9, label = 'Código de identificación')
     licenseType = forms.ModelChoiceField(queryset = LicenseType.objects.all(), empty_label = None, label = 'Licencia')
     numUsers = forms.IntegerField(required = False, label = 'Número de usuarios')
 
@@ -116,12 +115,12 @@ class RegisterSchoolForm(forms.Form):
             # Valida los patrones para cuando sea escuela o academia
             type = self.cleaned_data["type"]
             idCode = self.cleaned_data["identificationCode"]
-            if idCode is not None and type == 'High School':
+            if idCode is not None and type == 'Instituto':
                 if re.match(r'^(\d{8})$', idCode) is None:
-                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
-            elif idCode is not None and type == 'Academy':
-                if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
-                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
+                    raise forms.ValidationError('El código de identificación de un instituto se compone de 8 dígitos.')
+            elif idCode is not None and type == 'Academia':
+                if re.match(r'^(\d{9})$', idCode) is None:
+                    raise forms.ValidationError('El código de identificación de una academia se compone de 9 dígitos.')
 
             # Valida que el número de usuarios indicados no sea inferior al de la licencia dada
             licenseType = self.cleaned_data["licenseType"]

@@ -15,5 +15,7 @@ urlpatterns = [
     path('teacher/school_exercises', views.list_school_exercisesT, name='list_school_exercisesT'),
 
     path('student/school_exercises', views.list_school_exercisesST, name='list_school_exercisesST'),
+
+    path('web/exerciseExample', views.list_exercisesExample, name='list_exercisesExample'),
 ]
 

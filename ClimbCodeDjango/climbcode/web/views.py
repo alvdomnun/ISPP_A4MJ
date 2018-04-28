@@ -20,6 +20,7 @@ from exercises.models import Exercise
 from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
 import re
+import datetime as datetimeSchool
 
 # Create your views here.
 
@@ -346,13 +347,11 @@ def createNotebook(request):
     return HttpResponse(template.render(data, request))
 
 def editNotebook(request):
-    #TODO Controlar los ataques por GET
     print("Editing notebook")
     if request.method == 'GET':
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        # TODO MBC COMPROBAR PERMISO EDICION DEL ACTOR LOGADO
         if (permisoEditNotebook(idNotebook,request) and exercise.draft == True):
             print("Programmer is allowed to edit this notebook")
             print("Editing notebook with id: "+idNotebook)
@@ -463,18 +462,31 @@ def permisoViewRolesEscuelaNotebook(idNotebook,request):
         # Comprobar que la escuela ha adquirido el ejercicio
         idSchool = request.user.actor.school.actor_ptr_id
         school = request.user.actor.school
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     elif hasattr(request.user.actor, 'student'):
         student = request.user.actor.student
         idSchool = student.school_s_id
         school = School.objects.get(actor_ptr_id=idSchool)
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     elif hasattr(request.user.actor, 'teacher'):
         teacher = request.user.actor.teacher
         idSchool = teacher.school_t_id
         school = School.objects.get(actor_ptr_id=idSchool)
-        tienePermiso = isSchoolAdquiredExercise(exercise, school)
+        tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     return tienePermiso
+
+
+def schoolActiveLicense(school):
+    # Fecha actual
+    today = datetimeSchool.date.today()
+    # Obtiene la licencia de la escuela cuya fecha de finalización supere a la actual (es decir, aquella activa)
+    license = school.license_set.filter(endDate__gte=today)
+
+    # Valida que la escuela tenga licencia activa
+    if (license.count() > 0):
+        return True
+    else:
+        return False
 
 def permisoViewRolProgramadorNotebook(idNotebook,request):
     tienePermiso = False
@@ -504,7 +516,10 @@ def showNotebook(request):
         # Petición de edición de notebook existente
         idNotebook = request.GET.get('idNotebook')
         exercise = Exercise.objects.get(id=idNotebook)
-        if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request)):
+
+        # Si se trata de una escuela, estudiante o profesor, hay que comprobar que la licencia no haya caducado
+
+        if (permisoViewRolesEscuelaNotebook(idNotebook,request) and exercise.draft == False or permisoViewRolProgramadorNotebook(idNotebook,request) or exercise.example == True):
         #if True:
             if exercise is not None:
                 template = loader.get_template('notebook/show_notebook.html')
@@ -545,8 +560,36 @@ def showNotebook(request):
                 }
                 return HttpResponse(template.render(context, request))
         else:
-            template = loader.get_template('notebook/notebook_no_permiso.html')
+            errorMessage = 'Permiso denegado'
+
+            if hasattr(request.user.actor, 'school'):
+                # Comprobar que la escuela ha adquirido el ejercicio
+                idSchool = request.user.actor.school.actor_ptr_id
+                school = request.user.actor.school
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+            elif hasattr(request.user.actor, 'student'):
+                student = request.user.actor.student
+                idSchool = student.school_s_id
+                school = School.objects.get(actor_ptr_id=idSchool)
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+            elif hasattr(request.user.actor, 'teacher'):
+                teacher = request.user.actor.teacher
+                idSchool = teacher.school_t_id
+                school = School.objects.get(actor_ptr_id=idSchool)
+                if not isSchoolAdquiredExercise(exercise, school):
+                    errorMessage = 'La escuela no ha adquirido este ejercicio'
+                elif not schoolActiveLicense(school):
+                    errorMessage = 'La licencia de la escuela ha caducado'
+
+            template = loader.get_template('notebook/notebook_error_message.html')
             context = {
+                'errorMessage': errorMessage
             }
             return HttpResponse(template.render(context, request))
 
@@ -561,7 +604,8 @@ def editNotebookAjax(request):
     if request.method == 'POST':
         print("metodo post")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             title = request.POST.get('title')
             description = request.POST.get('description')
             level = request.POST.get('level')
@@ -584,7 +628,8 @@ def createUpdateTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             text = request.POST.get('text')
             idBox = request.POST.get('idBox')
@@ -592,7 +637,7 @@ def createUpdateTextBoxAjax(request):
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             #Bandera actualización box
             updateBox = False
             if idBox is not None and idBox>0:
@@ -614,13 +659,14 @@ def deleteTextBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             if idBox is not None and idBox>0:
                deleteTextBox(idNotebook,idBox)
 
@@ -635,7 +681,8 @@ def createUpdateImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             url = request.POST.get('url')
             idBox = request.POST.get('idBox')
@@ -643,7 +690,7 @@ def createUpdateImageBoxAjax(request):
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
 
             #Bandera actualización box
             updateBox = False
@@ -666,13 +713,14 @@ def deleteImageBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
             if idBox is not None and idBox>0:
                deleteImageBox(idNotebook,idBox)
 
@@ -687,7 +735,8 @@ def createUpdateCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             order = request.POST.get('boxOrder')
             contentCode = request.POST.get('contentCode')
             # Validar que el código no contiene funciones no permitidas
@@ -699,7 +748,7 @@ def createUpdateCodeBoxAjax(request):
                     idBox = None
                 else:
                     idBox = int(idBox)
-                #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ EDITANDO (SI YA EXISTE) PERTENECE AL PROGRAMADOR LOGADO
+                #TODO MBC VALIDAR CAMPOS
 
                 #Bandera actualización box
                 updateBox = False
@@ -723,13 +772,14 @@ def deleteCodeBoxAjax(request):
     if request.method == 'POST':
         print("post method")
         idNotebook = request.POST.get('idNotebook')
-        if permisoEditNotebook(idNotebook, request):
+        exercise = Exercise.objects.get(id=idNotebook)
+        if permisoEditNotebook(idNotebook, request) and exercise.draft == True:
             idBox = request.POST.get('idBox')
             if idBox == 'null':
                 idBox = None
             else:
                 idBox = int(idBox)
-            #TODO MBC VALIDAR CAMPOS, INCLUIDO VALIDAR QUE EL BOX QUE SE ESTÁ ELIMINANDO EXISTE Y PERTENECE AL PROGRAMADOR LOGADO
+            #TODO MBC VALIDAR CAMPOS
 
             if idBox is not None and idBox>0:
                deleteCodeBox(idNotebook,idBox)

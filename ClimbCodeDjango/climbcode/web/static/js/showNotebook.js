@@ -172,7 +172,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
           function()
           {
             addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddGraphicButton,idBox);
-          }, 1000);
+          }, 3500);
     }
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
     var respuesta = [idDivParam,idDivParamButton];
@@ -371,7 +371,7 @@ function addParameter(idParameterDiv,idButtonParameter,idBox,idParam,paramValue,
 									'<input type="hidden" id="'+idHiddenIdNameParam+'" value="'+idNameParameter+'">'+
 
 								'<label for="'+idNameParam+'" class="control-label">Nombre</label>'+
-    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" required>'+
+    							'<input value="'+nameParam+'" name="'+idNameParam+'" class="form-control" id="'+idNameParam+'" type="text" disabled="disabled">'+
     							'<label for="'+idNameParameter+'" class="control-label">Valor</label>'+
     							'<input value="'+paramValue+'" name="'+idNameParameter+'" class="form-control" id="'+idNameParameter+'" type="text" required>'+
     							'<br>'+

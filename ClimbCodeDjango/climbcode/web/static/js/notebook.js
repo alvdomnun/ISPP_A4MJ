@@ -220,8 +220,8 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
         setTimeout(
           function()
           {
-            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIframe,idChart);
-          }, 1000);
+            addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBoxBD,idIframe,idChart);
+          }, 3500);
         haveChart = true;
     }
 
@@ -307,7 +307,7 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
 										'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
 										'<input type="hidden" id="'+idHiddenIdBox+'" value="'+idBoxBD+'">'+
 										'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
-				                        '<input class="form-control col-md-5 offset-md-3" id="'+idUrlInput+'" type="text" placeholder="Establecer URL" required value="'+url+'">'+
+				                        '<input class="form-control col-md-5 offset-md-3" id="'+idUrlInput+'" name="'+idUrlInput+'" type="text" placeholder="Establecer URL" required value="'+url+'">'+
 										'<div class="col-md-12 offset-md-3" >'+
 				                         		'<button id="'+idFormBoxSubmitButton+'" type="submit" class="btn btn-info pull-right" style="margin-top:10px" type="button">Guardar</button>'+
 				                         		'<button class="btn btn-danger pull-right" style="margin-top:10px" onclick="deleteImageBox(\''+idHiddenIdNotebook+'\',\''+idHiddenIdBox+'\',\''+idBox+'\',\''+idFormBoxSubmitButton+'\',\''+idFormBox+'\')" type="button">Eliminar</button>'+
@@ -592,7 +592,7 @@ function addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBox,idIf
 	$('#'+idColChartButtons+' button:last-child').remove();
 
 
-	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart(\''+idBoxParameter+'\',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
+	var htmlDeleteChartButton = '<button type="submit" class="btn btn-primary" onclick="deleteChart('+idBoxParameter+',\''+idColChartButtons+'\',\''+idAddGraphicButton+'\',\''+idBox+'\',\''+idIframe+'\',\''+idChart+'\');">'+
                                    'Eliminar Gráfica'+
                                 '</button>';
 
@@ -1647,7 +1647,7 @@ function saveDraft(publishing){
               function() 
               {
                 $('#notificaciones-holder').hide();
-              }, 2000);
+              }, 5000);
 		}else{
 			/*
 			Si todo ha ido bien, mostrar una notificación indicando 

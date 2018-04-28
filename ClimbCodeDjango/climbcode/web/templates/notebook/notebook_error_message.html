@@ -1,4 +1,4 @@
-{% extends 'welcome/welcome-base.html' %}
+{% extends 'base/base.html' %}
 {% load staticfiles %}
 
 
@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block title %}
-Notebookv1
+Error
 {% endblock %}
 {% block content %}
 <br>
-    <h3 style="text-align: center">{{errorMesage}}</h3>
+    <h3 style="text-align: center">{{errorMessage}}</h3>
     
 {% endblock %}

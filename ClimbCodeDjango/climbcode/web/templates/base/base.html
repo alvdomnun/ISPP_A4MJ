@@ -45,7 +45,9 @@
 									</ul> -->
 									<ul class="navbar-nav mr-auto">
 									{% if user.actor.school %}
-
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
 											</li>
@@ -65,8 +67,8 @@
 													<a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
 											</li>
 											<li class="nav-item">
-													<a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
-											</li>
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
 											</li>
@@ -76,7 +78,9 @@
 
 
 									{% elif user.actor.teacher %}
-
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                </li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
 												</li>
@@ -85,7 +89,9 @@
 												</li>
 
 									{% elif user.actor.student %}
-
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
                                             </li>

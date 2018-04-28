@@ -47,8 +47,9 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width:50%;">Tipo de licencia</th>
+                            <th style="width:30%;">Tipo de licencia</th>
                             <th class="text-right">#</th>
+                            <th class="text-right">Fecha de Vigencia</th>
                             <th class="text-right">N&#186; Usuarios</th>
                             <th class="text-right">N&#186; Ejercicios Gratuitos</th>
                             <th class="text-right">Total</th>
@@ -58,11 +59,13 @@
                         <tr>
                             <td><em>{{ license.licenseType.name }}</em></td>
                             <td class="text-right">1</td>
+                            <td class="text-right">{{ license.endDate }}</td>
                             <td class="text-right">{{ license.numUsers }}</td>
                             <td class="text-right">{{ license.numFreeExercises }}</td>
                             <td class="text-right">{{ license.price }} &euro;</td>
                         </tr>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>

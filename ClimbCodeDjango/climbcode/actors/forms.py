@@ -235,18 +235,13 @@ class EditSchoolProfile(forms.Form):
            message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')],label = 'CIF o código del centro')
     postalCode = forms.CharField( max_length = 5, validators = [RegexValidator(regex = r'^(\d{5})$')], label='Código postal')
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super(EditSchoolProfile, self).__init__(*args, **kwargs)
-
-
     def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden
         if not self.errors:
 
             school_code = self.cleaned_data["identificationCode"]
-            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).exclude(pk=self.user.pk).count()
-            if (num_codigo > 0):
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).count()
+            if (num_codigo - 1 > 0):
                 raise forms.ValidationError(
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 

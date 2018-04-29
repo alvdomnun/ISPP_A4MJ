@@ -764,7 +764,7 @@ def edit_profile_school(request):
 
     # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = EditSchoolProfile(request.POST, user=school)
+        form = EditSchoolProfile(request.POST)
         if (form.is_valid()):
             # Actualiza el User (model Django) en BD
             email = form.cleaned_data["email"]
@@ -799,7 +799,7 @@ def edit_profile_school(request):
                     'email': school.userAccount.email,
                     'phone': school.phone, 'identificationCode': school.identificationCode, 'centerName': school.centerName,
                     'postalCode': school.postalCode,'address': school.address,}
-        form = EditSchoolProfile(dataForm, user=school)
+        form = EditSchoolProfile(dataForm)
 
     # Datos del modelo (vista)
     data = {

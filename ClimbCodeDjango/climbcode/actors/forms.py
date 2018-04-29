@@ -240,7 +240,7 @@ class EditSchoolProfile(forms.Form):
         if not self.errors:
 
             school_code = self.cleaned_data["identificationCode"]
-            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).count()
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).exclude(identificationCode=school_code).count()
             if (num_codigo > 0):
                 raise forms.ValidationError(
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")

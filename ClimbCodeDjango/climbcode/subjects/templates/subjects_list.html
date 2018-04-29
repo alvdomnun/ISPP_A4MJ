@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    <style>
+        table th,td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    .text {
+  font-size:18px;
+  font-family:helvetica;
+  font-weight:bold;
+  color:#003d99;
+  text-transform:uppercase;
+}</style>
+
+
+<div class="container">
+    <h1>Lista de asignaturas</h1>
+
+    <div class="table">
+        <table class="table table-striped">
+            {% if subject_list %}
+
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Curso</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for subject in subject_list %}
+
+                    <tr>
+                        <td>{{ subject.name }}</td>
+                        <td>{{ subject.course }}º</td>
+                        <td>
+                            <a class="btn btn-default" href="exercises/{{ subject.pk }}">Ver ejercicios</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+     {% else %}
+                <p></p>
+                <p>No existen asignaturas.</p>
+            {% endif %}
+</table>
+    </div>
+
+    {% if subject_list.has_other_pages %}
+        <ul class="pagination">
+            {% if subject_list.has_previous %}
+                <li><a href="?page={{ subject_list.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in subject_list.paginator.page_range %}
+                {% if subject_list.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if subject_list.has_next %}
+                <li><a href="?page={{ subject_list.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+</div>
+{% endblock %}

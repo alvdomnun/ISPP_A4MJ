@@ -15,8 +15,12 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.urls import path
+from subjects import views
 
 admin.autodiscover()
 
 urlpatterns = [
+    path('list', views.list_subjects, name='list_subjects'),
+    path('exercises/<int:pk>', views.list_subjectsExercises, name='list_subjectsExercises'),
 ]

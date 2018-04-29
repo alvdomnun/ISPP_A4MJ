@@ -246,7 +246,7 @@ class EditSchoolProfile(forms.Form):
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 
             # Valida los patrones para cuando sea escuela o academia
-            type = self.cleaned_data["type"]
+            type = School.objects.filter(identificationCode=school_code).get().type
             idCode = self.cleaned_data["identificationCode"]
             if idCode is not None and type == 'Instituto':
                 if re.match(r'^(\d{8})$', idCode) is None:

@@ -598,7 +598,7 @@ def edit_student(request, pk):
     userAccount = get_object_or_404(User, pk=student.userAccount_id)
 
     if (request.method == 'POST'):
-        form = EditStudentForm(request.POST, request.FILES, user=school)
+        form = EditStudentForm(request.POST, request.FILES)
         if (form.is_valid()):
             user = student.userAccount
 
@@ -622,7 +622,7 @@ def edit_student(request, pk):
         user = get_object_or_404(User, pk=student.userAccount.id)
         user.delete()
     else:
-        form = EditStudentForm(user=school)
+        form = EditStudentForm()
 
     data = {
         'form': form,
@@ -764,7 +764,7 @@ def edit_profile_school(request):
 
     # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = EditSchoolProfile(request.POST)
+        form = EditSchoolProfile(request.POST, user=school)
         if (form.is_valid()):
             # Actualiza el User (model Django) en BD
             email = form.cleaned_data["email"]
@@ -799,7 +799,7 @@ def edit_profile_school(request):
                     'email': school.userAccount.email,
                     'phone': school.phone, 'identificationCode': school.identificationCode, 'centerName': school.centerName,
                     'postalCode': school.postalCode,'address': school.address,}
-        form = EditSchoolProfile(dataForm)
+        form = EditSchoolProfile(dataForm, user=school)
 
     # Datos del modelo (vista)
     data = {

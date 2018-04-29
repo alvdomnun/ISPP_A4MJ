@@ -237,7 +237,7 @@ class EditSchoolProfile(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        super(RegisterStudentForm, self).__init__(*args, **kwargs)
+        super(EditSchoolProfile, self).__init__(*args, **kwargs)
 
     def clean(self):
         # Si no se han capturado otros errores, hace las validaciones por orden

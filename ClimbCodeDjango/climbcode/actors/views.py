@@ -598,7 +598,7 @@ def edit_student(request, pk):
     userAccount = get_object_or_404(User, pk=student.userAccount_id)
 
     if (request.method == 'POST'):
-        form = EditStudentForm(request.POST, request.FILES)
+        form = EditStudentForm(request.POST, request.FILES, user=school)
         if (form.is_valid()):
             user = student.userAccount
 
@@ -622,7 +622,7 @@ def edit_student(request, pk):
         user = get_object_or_404(User, pk=student.userAccount.id)
         user.delete()
     else:
-        form = EditStudentForm()
+        form = EditStudentForm(user=school)
 
     data = {
         'form': form,

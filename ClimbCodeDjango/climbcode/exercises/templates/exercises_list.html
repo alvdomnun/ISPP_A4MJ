@@ -47,8 +47,46 @@
     </style>
 
 <div class="container">
+
+    <br/>
     <h1>Lista de ejercicios</h1>
 
+    <!-- Buscador -->
+    {% if not ownList %}
+    <div class="input-group">
+        <form class="form-inline" action="{% url 'search_exercises' %}" method="get">
+            {% csrf_token %}
+            <div class="form-group">
+                <!-- Texto -->
+                <input type="text" class="form-control" placeholder="Buscador de ejercicios" name="q" maxlength="30">
+            </div> &nbsp; 
+            <div class="form-group">
+                <!-- Nivel -->
+                <select class="form-control" id="level" name="l">
+                    <option value="" selected="selected">Dificultad</option>
+                        {% for l in levels %}
+                            <option value="{{ l.0 }}">{{ l.0 }}</option>
+                        {% endfor %}
+                </select>
+            </div> &nbsp; 
+            <div class="form-group">
+                <!-- Asignatura -->
+                <select class="form-control" id="category" name="c">
+                    <option value="" selected="selected">Asignatura</option>
+                        {% for c in categories %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                        {% endfor %}
+                </select>
+            </div> &nbsp; 
+            <div class="form-group">
+                <button class="btn btn-info" type="submit">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    {% endif %}
+
+    <!-- Listado -->
     <div class="table">
         <table class="table table-striped">
             {% if exercise_list %}

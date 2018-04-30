@@ -54,6 +54,9 @@
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_students' %}">Mis Alumnos</a>
 											</li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_subjects' %}">Mis Asignaturas</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesS' %}">Ejercicios</a>
 											</li>
@@ -81,6 +84,9 @@
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
+                                                </li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
 												</li>
@@ -91,6 +97,9 @@
 									{% elif user.actor.student %}
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>

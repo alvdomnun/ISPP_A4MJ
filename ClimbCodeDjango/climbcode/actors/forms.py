@@ -235,6 +235,30 @@ class EditSchoolProfile(forms.Form):
            message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')],label = 'CIF o código del centro')
     postalCode = forms.CharField( max_length = 5, validators = [RegexValidator(regex = r'^(\d{5})$')], label='Código postal')
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(EditSchoolProfile, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        # Si no se han capturado otros errores, hace las validaciones por orden
+        if not self.errors:
+
+            school_code = self.cleaned_data["identificationCode"]
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).exclude(pk=self.user.pk).count()
+            if (num_codigo > 0):
+                raise forms.ValidationError(
+                    "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
+
+            # Valida los patrones para cuando sea escuela o academia
+            type = str(self.user.type)
+            idCode = self.cleaned_data["identificationCode"]
+            if idCode is not None and type == 'Instituto':
+                if re.match(r'^(\d{8})$', idCode) is None:
+                    raise forms.ValidationError('El código de identificación de un instituto se compone de 8 dígitos.')
+            elif idCode is not None and type == 'Academia':
+                if re.match(r'^(\d{9})$', idCode) is None:
+                    raise forms.ValidationError('El código de identificación de una academia se compone de 9 dígitos.')
+
 class EditSchoolPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
     userAccountId = forms.IntegerField()

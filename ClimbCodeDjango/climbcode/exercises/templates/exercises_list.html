@@ -115,7 +115,6 @@
           <tbody>
             {% for exercise in exercise_list %}
 
-
                     <tr>
                         {% if ownList == False %}
                             <td class="parpadea text">
@@ -126,9 +125,9 @@
                         {% endif %}
                         <td>{{ exercise.title }}</td>
                         <td>{{ exercise.description }}</td>
-                        <td>{{ exercise.category }}</td>
+                        <td align="center">{{ exercise.category }}</td>
                         {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
-                            <td>{{ exercise.sales }}</td>
+                            <td align="center">{{ exercise.sales }}</td>
                         {% endif %}
                         <td>{{ exercise.level }}</td>
                             {% if user.actor.programmer and ownList %}

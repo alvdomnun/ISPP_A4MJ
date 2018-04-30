@@ -237,6 +237,16 @@
 		"price": 700.00
     }
 },
+{
+    "model": "licenses.licensetype",
+    "pk": 4,
+    "fields": {
+        "name": "GRATUITA",
+		"numUsers": 0,
+		"numFreeExercises": 3,
+		"price": 0.00
+    }
+},
   {
     "model": "provinces.province",
     "pk": 1,

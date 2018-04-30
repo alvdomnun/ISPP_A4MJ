@@ -976,11 +976,11 @@ def detail_active_license(request):
 
         return render(request, 'schools/licenseDisplay.html', data)
 
-    # Si no hay licensia activa, formulario de renovación
+    # Si no hay licensia activa, formulario de renovación con todas menos la gratuita
     else:
         form = RenovateLicenseForm()
         license = None
-        licenseTypes = LicenseType.objects.all().order_by('price')
+        licenseTypes = LicenseType.objects.exclude(price = 0).order_by('price')
 
         # Datos del modelo (vista)
         data = {
@@ -1033,7 +1033,7 @@ def license_renovation(request):
         else:
             school = request.user.actor.school
             license = None
-            licenseTypes = LicenseType.objects.all().order_by('price')
+            licenseTypes = LicenseType.objects.exclude(price = 0).order_by('price')
 
             # Datos del modelo (vista)
             data = {

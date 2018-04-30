@@ -5,6 +5,8 @@ urlpatterns = [
     path(r'buy/<int:exercise_id>', views.buy_exercise, name='buy_exercise'),
     path(r'promote/<int:exercise_id>', views.promote_exercise, name='promote_exercise'),
 
+    path('search', views.search_exercises, name='search_exercises'),
+
     path('programmer/list', views.list_exercisesP, name='list_exercisesP'),
     path('programmer/own_list', views.list_own_exercisesP, name='list_own_exercisesP'),
 

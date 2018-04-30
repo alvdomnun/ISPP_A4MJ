@@ -178,7 +178,10 @@ def register_school(request):
             # Crear la licencia específica en funcion de la licencia tipo (licenseType) y si ha añadido usuarios extras
             licenseType = LicenseType.objects.filter(id = licenseType.id)[0]
             licenseNumUsers = form.cleaned_data["numUsers"]
-            licensePrice = getFinalPrice(licenseType, licenseNumUsers)
+            if (licenseNumUsers > 0):
+                licensePrice = getFinalPrice(licenseType, licenseNumUsers)
+            else:
+                licensePrice = licenseType.price
 
             # Escuela
             phone = form.cleaned_data["phone"]
@@ -214,10 +217,20 @@ def register_school(request):
             # Crea las fechas de la licencia
             today = date.today()
             endDate = date(today.year + 1, today.month, today.day)
+            # Licencia GRATUITA siempre tiene 0 usuarios
+            if (licenseType.price == 0):
+                licenseNumUsers = 0
             # Guarda la licencia asociándola a la escuela que se registra
             license = License.objects.create(numUsers = licenseNumUsers, price = licensePrice, numFreeExercises = licenseType.numFreeExercises,
                 endDate = endDate, licenseType = licenseType, school = school)
 
+            # Si es la licencia gratuita: activamos usuario y nos saltamos Paypal
+            if (licenseType.name == 'GRATUITA'):
+                user.is_active = True
+                user.save()
+                return HttpResponseRedirect('/login/')
+
+            # Si no es licencia grauita: paypal
             paymentData = {
                 'school': school,
                 'license': license,
@@ -229,7 +242,7 @@ def register_school(request):
         else:
             # Si la validación falla también cargo los datos necesarios
             provinces = Province.objects.all()
-            licenses = LicenseType.objects.all()
+            licenses = LicenseType.objects.all().order_by('price')
             types = form.fields['type'].choices
             teachingTypes = form.fields['teachingType'].choices
 

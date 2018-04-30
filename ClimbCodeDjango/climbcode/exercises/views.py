@@ -1,13 +1,13 @@
 import datetime
+from defaultSubjects.models import DefaultSubject
 from _datetime import date
 from datetime import date, timedelta
-
+from django.db.models.query_utils import Q
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.http.request import HttpRequest
 from django.http.response import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
-
 from actors.decorators import user_is_school, user_is_teacher, user_is_programmer, school_license_active, \
     user_is_student
 from actors.models import School, Student
@@ -227,6 +227,8 @@ def list_exercisesP(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de ejercicios'
@@ -259,6 +261,8 @@ def list_own_exercisesP(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de tus ejercicios'
@@ -293,6 +297,8 @@ def list_exercisesS(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'title': 'Listado de ejercicios',
         'ownList': ownList,
@@ -326,6 +332,8 @@ def list_own_exercisesS(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de ejercicios'
@@ -360,6 +368,8 @@ def list_exercisesT(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de ejercicios'
@@ -394,6 +404,8 @@ def list_school_exercisesT(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de ejercicios'
@@ -427,12 +439,86 @@ def list_school_exercisesST(request):
         exercise_list = paginator.page(paginator.num_pages)
 
     data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
         'title': 'Listado de ejercicios'
     }
     return render(request, 'exercises_list.html', data)
 
+@login_required(login_url='/login/')
+def search_exercises(request):
+    """ Lista los ejercicios del sistema cuyo título o descripción encajen con la cadena indicada """
+    assert isinstance(request, HttpRequest)
+
+    # Valida que el usuario no sea anónimo (esté registrado y logueado)
+    if not (request.user.is_authenticated):
+        return HttpResponseRedirect('/login/')
+    # Valida que el usuario sea escuela o programador o profesor
+    if not (hasattr(request.user.actor, 'school') or hasattr(request.user.actor, 'teacher') or hasattr(request.user.actor, 'programmer')):
+        return HttpResponseRedirect('/')
+
+    # Si es escuela
+    if (hasattr(request.user.actor, 'school')):
+        try:
+            exercise_list = Exercise.objects.filter(draft=False).exclude(school=request.user.actor.school).order_by('startPromotionDate')
+        except Exception as e:
+            exercise_list = Exercise.objects.none()
+
+    # Si es profesor
+    elif (hasattr(request.user.actor, 'teacher')):
+        school = School.objects.get(teacher__userAccount=request.user)
+        try:
+            exercise_list = Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate')
+        except Exception as e:
+            exercise_list = Exercise.objects.none()
+
+    # Si es programador
+    else:
+        exercise_list = Exercise.objects.filter(draft=False).order_by('startPromotionDate')
+        
+    # Aplica el buscador 
+    searcher = request.GET.get('q')
+    if (searcher) and (exercise_list.count() > 0): 
+        # Obtiene los ejercicios que coincidan con la cadena pasada
+        exercise_list = exercise_list.filter(Q(title__icontains=searcher) | Q(description__icontains=searcher))
+
+    # Aplica la dificultad
+    level = request.GET.get('l')
+    if (level) and (exercise_list.count() > 0): 
+        # Obtiene los ejercicios que coincidan con la dificultad pasada
+        exercise_list = exercise_list.filter(level=level)
+
+    # Aplica la asignatura
+    category = request.GET.get('c')
+    if (category) and (exercise_list.count() > 0): 
+        # Obtiene los ejercicios que coincidan con la asignatura pasada
+        exercise_list = exercise_list.filter(category=category)
+
+    # Datos para la vista
+    ownList = False
+    list(exercise_list)
+        
+    # Paginación
+    page = request.GET.get('page', 1)
+    paginator = Paginator(exercise_list, 6)
+    try:
+        exercise_list = paginator.page(page)
+    except PageNotAnInteger:
+        exercise_list = paginator.page(1)
+    except EmptyPage:
+        exercise_list = paginator.page(paginator.num_pages)
+
+    data = {
+        'levels': Exercise.LevelType,
+        'categories': DefaultSubject.objects.all(),
+        'exercise_list': exercise_list,
+        'ownList': ownList,
+        'title': 'Listado de ejercicios'
+    }
+
+    return render(request, 'exercises_list.html', data)
 
 #MOSTRAR EJERCICIO DE EJEMPLO
 @login_required(login_url='/login/')

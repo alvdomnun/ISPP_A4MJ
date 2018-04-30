@@ -10,7 +10,10 @@ function FillLicenseFields(license) {
 
     myLicense = license;
 
-    var unitPrice = (parseFloat(license.price) / license.users).toFixed(2);
+    // Calcula precio unitario si no es licencia grauita
+    if (myLicense.name !== "GRATUITA") {
+        var unitPrice = (parseFloat(license.price) / license.users).toFixed(2);
+    }    
 
     var htmlLicenseFields =
         '<input type="hidden" name="licenseType" value="' + parseInt(license.id) + '">' +
@@ -25,13 +28,27 @@ function FillLicenseFields(license) {
         '<div class="col-xs-6 col-md-6 form-group">' +
         '<label for="numExercises" class="control-label">Ejercicios gratuitos</label>' +
         '<input readonly class="form-control" type="text" placeholder="Esta licencia incluye ' + license.exercises + ' ejercicios gratuitos." />' +
-        '</div>' +
-        '<div class="col-xs-6 col-md-6 form-group">' +
-        '<label for="numUsers" class="control-label">Usuarios de base</label>' +
-        '<input required oninput="CalculatePriceField()" type="number" min="' + license.users + '" class="form-control" id="numUsers" name="numUsers" id="numUsers" value="'+ license.users +'" />' +
-        '<span class="unit-price-user">* El coste unitario de cada usuario extra es de ' + unitPrice +' &euro;.</span>' +
-        '</div>' +
         '</div>';
+
+    // Si es licencia GRATUITA
+    if (myLicense.name === "GRATUITA") {
+        htmlLicenseFields = htmlLicenseFields +
+            '<div class="col-xs-6 col-md-6 form-group">' +
+            '<label for="numUsers" class="control-label">Usuarios de base</label>' +
+            '<input readonly type="number" min="' + license.users + '" class="form-control" id="numUsers" name="numUsers" value="' + license.users + '" />' +
+            '</div>' +
+            '</div>';
+
+    // Si es alguna DE PAGO
+    } else {
+        htmlLicenseFields = htmlLicenseFields +
+            '<div class="col-xs-6 col-md-6 form-group">' +
+            '<label for="numUsers" class="control-label">Usuarios de base</label>' +
+            '<input required oninput="CalculatePriceField()" type="number" min="' + license.users + '" class="form-control" id="numUsers" name="numUsers" value="' + license.users + '" />' +
+            '<span class="unit-price-user">* El coste unitario de cada usuario extra es de ' + unitPrice + ' &euro;.</span>' +
+            '</div>' +
+            '</div>';
+    }
 
     $('#licensePersonalization').empty();
     $('#licensePersonalization').append(htmlLicenseFields);

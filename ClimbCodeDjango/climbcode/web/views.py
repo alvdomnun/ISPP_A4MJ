@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
+from django.contrib.auth import authenticate, login
 
 from actors.decorators import user_is_programmer
 from web.forms import RegisterSchoolPaymentForm
@@ -136,7 +137,12 @@ def register_programmer(request):
 
             programmer = Programmer.objects.create(phone = phone, photo = photo, dni = dni, userAccount = userAccount)
 
-            return HttpResponseRedirect('/login/')
+            user = User.objects.get(username=username)
+
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+
+            login(request, user)
+            return HttpResponseRedirect('/')
 
     # Si se accede al form vía GET o cualquier otro método
     else:
@@ -1028,7 +1034,12 @@ def paypalTransaction(request):
                 school.userAccount.is_active = True
                 school.userAccount.save()
 
-                return HttpResponseRedirect('/login/')
+                user = User.objects.get(username=school.userAccount.username)
+
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+
+                login(request, user)
+                return HttpResponseRedirect('/')
 
             # Si el pago no ha sido correcto (payment == 0), recarga la página para que vuelva a intentar el pago
             else:

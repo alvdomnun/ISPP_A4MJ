@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+
+
+
+{% endblock %}
+
+{% block title %}
+Notebookv1
+{% endblock %}
+{% block content %}
+<br>
+    <h3 style="text-align: center">El ejercicio ha sido publicado con éxito.</h3>
+<br>
+<div class="form-row text-center">
+    <div class="col-12">
+            <form>
+            <input class="btn btn-primary" type="button" value="Mis ejercicios" onclick="window.location.href='/exercises/programmer/own_list'" />
+            </form>
+        </div>
+</div>
+{% endblock %}

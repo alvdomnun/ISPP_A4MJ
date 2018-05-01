@@ -26,7 +26,7 @@ SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk','127.0.0.1']
+ALLOWED_HOSTS = ['178.62.10.40','159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk','127.0.0.1']
 
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',

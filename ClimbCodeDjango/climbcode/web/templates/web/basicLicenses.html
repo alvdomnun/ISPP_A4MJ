@@ -14,16 +14,22 @@
 
         <!-- Pinta cada licencia como una columna -->
         {% for license in licenseTypes %}
-            <div class="col-sm-3 mx-auto">
-                <div class="pricing-wrapper ">
-                    <div class="pricing-table">
+            <div class="col-sm-3 mx-auto custom-control custom-radio card-checkbox">
+              <label for="customControlValidation{{ license.id}}">
+                <input type="radio" class="custom-control-input"
+                  name="licenseSelect"
+                  id="customControlValidation{{ license.id }}" required="true"
+                  onchange="checkCustomCheckbox(this);
+                    CustomFillLicenseFields(this, { id:{{license.id}}, name:'{{license.name}}', users:{{license.numUsers}}, exercises:{{license.numFreeExercises}}, price:'{{license.price}}', });">
+                <div class="pricing-wrapper custom-control-label card-checkbox-wrapper">
+                    <div class="pricing-table card-checkbox-content">
                         <div class="price-wrap">
                             <span class="price">{{ license.price }} &euro;</span><small>/a&#241;o</small>
                         </div>
                         <hr />
                         <span class="type">
                             {{ license.name }}
-                        </span>           
+                        </span>
                         <hr />
                         <p class="description">
                             &#161; {{ license.numUsers }} cuentas de usuario !
@@ -31,12 +37,14 @@
                             &#161; {{ license.numFreeExercises }} ejercicios gratuitos !
                         </p>
                         <hr />
-                        <button type="button" id="selectedLicense{{license.id}}" class="btn btn-info" 
+                        <button type="button" id="selectedLicense{{license.id}}" class="btn btn-info"
                                 onclick="FillLicenseFields({ id:{{license.id}}, name:'{{license.name}}', users:{{license.numUsers}}, exercises:{{license.numFreeExercises}}, price:'{{license.price}}', });">
                             SELECCIONAR
                         </button>
+                      -->
                     </div>
                 </div>
+              </label>
             </div>
         {% endfor %}
     </div>

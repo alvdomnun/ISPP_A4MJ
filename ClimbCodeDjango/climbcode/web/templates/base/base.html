@@ -7,6 +7,7 @@
     {% load staticfiles %}
 	{% block extrastatic %}
 	{% endblock %}
+
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- {{ STATIC_URL }} no resuelve (vacio) -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
@@ -264,6 +265,8 @@
 	<script src="/static/js/jquery-validate/jquery.validate.js"></script>
     <script src="/static/js/jquery-validate/additional-methods.js"></script>
     <script src="/static/js/jquery-validation-messages.js"></script>
+    <link rel="stylesheet" href="{% static 'css/jquery.loadingModal.css' %}">
+    <script src="/static/js/jquery.loadingModal.js"></script>
 	{% block extrajs %}
 	{% endblock %}
 

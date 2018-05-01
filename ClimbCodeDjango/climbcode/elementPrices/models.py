@@ -12,7 +12,7 @@ class ElementPrice(models.Model):
     #Sin relaciones
 
     def __str__(self):
-        return self.buyExerciseValue + ' - ' + self.profitExerciseValue + ' - ' + self.promoteExerciseValue
+        return str(self.buyExerciseValue) + ' - ' + str(self.profitExerciseValue) + ' - ' + str(self.promoteExerciseValue)
 
     class Meta:
         verbose_name = "Precios"

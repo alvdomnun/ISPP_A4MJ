@@ -13,10 +13,11 @@
 
     <div class="container" id="info">
         <h2>Información</h2>
-        <p>Tal vez en vuestras clases, tanto profesores como alumnos, hagáis ejercicios para asentar lo que aprendéis o enseñáis a vuestros alumnos, pero, ¿qué pasaría si combinásemos la educación con el software para agilizar el hacer estos mismos ejercicios? La respuesta a esta pregunta es ClimbCode, una plataforma web que permite tanto a profesores como alumnos hacer ejercicios online de las asignaturas que cursan y enseñan.
+        <p>Tal vez en vuestras clases, tanto profesor@s como alumn@s, hagáis ejercicios para asentar lo que aprendéis o enseñáis pero, ¿qué pasaría si combinásemos la educación con el software para agilizar la realización de estos mismos ejercicios?. La respuesta a esta pregunta es ClimbCode, una plataforma web que permite tanto a profesor@s como alumn@s hacer ejercicios online sobre las asignaturas que cursen.
 
-            Gracias a ClimbCode el usuario puede hacer esos ejercicios de toda la vida que están en los libros, pero de una forma más amena e innovadora, simplemente a un clic de distancia. Con estos ejercicios interactivos, se puede complementar la educación de una manera novedosa, consiguiendo los mismos objetivos que con los ejercicios en papel, pero de una forma más entretenida.
-        </p>
+<br/><br/>
+Gracias a ClimbCode el usuario puede hacer esos ejercicios de toda la vida que están en los libros, pero de una forma más amena e innovadora, simplemente a un clic de distancia. Con estos ejercicios interactivos, se puede complementar la educación de una manera novedosa, consiguiendo los mismos objetivos que con los ejercicios en papel, pero de una forma más entretenida.
+</p>
         <br/>
     </div>
 
@@ -30,15 +31,19 @@
 
     <div class="container" id="ejercicios">
         <h2>Ejercicios</h2>
-        <p>Nuestros ejercicios son muy sencillos de ejecutar, puesto que a pesar de hacerse mediante software y programación, los profesores y alumnos no requieren conocimiento alguno de la materia para poder hacerlos y así mejorar su educación. Estos ejercicios contienen un enunciado y una explicación paso a paso, para que el alumno sea capaz de resolverlo simplemente añadiendo la respuesta de los mismos en los campos habilitados para ello.
-
-            Gracias a esto, el alumno además podrá ver gráficamente los resultados de sus ejercicios mediante las gráficas que pueden incluir los mismos, además de dibujos para ayudarle a situarse en el ámbito del problema.
-        </p>
+        <p>Interactuar con nuestra plataforma es muy fácil. Para diseñar y/o resolver ejercicios, no se requiere tener conocimientos previos sobre software o programación, cualquier usuario puede agregar nuevos ejercicios o resolver los ya existentes. Conseguimos con nuestro innovador método una mejor asimilación de conceptos, conocimientos y competencias.
+        <br/><br/>
+            Los ejercicios contienen un enunciado y una explicación paso a paso, para que el alumn@ los resuelva simplemente añadiendo la respuesta de los mismos en los campos habilitados para ello.
+         <br/><br/>
+            Gracias a esto, el/la alumno/a podrá visualizar los resultados de sus ejercicios mediante las gráficas que se pueden incluir en los mismos. Pueden contener además dibujos como ayuda a la hora de situarse en el ámbito del problema.
+</p>
         <br/>
+        {% if  user.is_authenticated %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
            style="font-weight: bold"
-            href="/web/notebookVistaV1">
+            href="{% url 'list_exercisesExample' %}">
             Ejemplo</a>
+        {% endif %}
         <br/>
     </div>
 
@@ -52,19 +57,19 @@
 
     <div class="container" id="programadores">
         <h2>Programadores</h2>
-        <p>Los programadores tienen un papel muy intuitivo en nuestro sistema: Ellos crean los ejercicios interactivos que están en nuestro sistema, los cuales a su vez son utilizados por alumnos y profesores en sus asignaturas.
-
-            Para crear un ejercicio, el programador sólo necesita registrarse, ya que nuestro sistema de creación de ejercicios interactivos online permite al usuario una gran personalización de los ejercicios que desee crear.
-
-            Para crear todos sus ejercicios, el programador hará uso de JavaScript tanto para crear el contenido y utilizar los parámetros de los ejercicios como para diseñar las gráficas que desee utilizar, todo ello con ayuda de nuestra interfaz basada en cuadros.
-
-            No solo eso, sino que además al crear ejercicios interactivos, el programador puede ponerlos a la venta en la plataforma, obteniendo un beneficio por cada vez que una escuela compre su ejercicio. ¿A qué esperas para participar con nosotros y ganar algo con ello?
+        <p>Los programadores tienen un papel muy intuitivo en nuestro sistema: Ellos crean los ejercicios interactivos en la plataforma que a su vez son utilizados por alumn@s y profesor@s en sus asignaturas.
+            <br/><br/>Para crear un ejercicio, el programador sólo necesita registrarse, ya que nuestro sistema de creación de ejercicios interactivos online permite al mismo una gran personalización de los mismos.
+            <br/><br/>
+Para confeccionarlos, el programador hará uso de JavaScript tanto para crear el contenido y utilizar los parámetros de los ejercicios, como para diseñar las gráficas que desee utilizar, todo ello con ayuda de nuestra sencilla interfaz basada en cuadros.
+<br/><br/>Además, al crear ejercicios interactivos, el programador puede ponerlos a la venta en la plataforma, obteniendo un beneficio cada vez que un usuario compre su ejercicio. ¿A qué esperas para participar con nosotros y ganar con ello?
         </p>
         <br/>
-        <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
-            href="/register/programmer">
-            Registro programadores</a>
-        <br/>
+        {% if  user.is_authenticated == False  %}
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
+                href="/register/programmer">
+                Registro programadores</a>
+            <br/>
+        {% endif %}
     </div>
 
     <div class="container-fluid bgimg-4 parallax" id="escuelas-parallax">
@@ -77,28 +82,30 @@
 
     <div class="container" id="escuelas">
         <h2>Escuelas</h2>
-        <p>Las escuelas pueden suscribirse a nuestra plataforma cada curso para poder acceder a todo su contenido. Con esto pueden hacer uso de nuestros ejercicios interactivos para apoyar sus asignaturas, de tal forma que pueden además ampliar la cantidad de ejercicios ofrecidos a éstas comprando los que deseen.
+        <p>Las escuelas y otros centros educativos pueden suscribirse anualmente a nuestra plataforma para poder acceder a todo su contenido. Con esto pueden hacer uso de nuestros ejercicios interactivos y apoyar con ellos sus asignaturas.
+            <br/><br/>Los centros educativos pueden adquirir los ejercicios que deseen, y ampliar de esta forma la cantidad de ejercicios ofrecidos a sus alumnos.
+            <br/><br/>Además, con la suscripción de cada curso las escuelas pueden registrar a profesor@s y alumn@s para que puedan acceder al contenido del que disponen y hacer uso de él. Ponemos a su disposición una batería inicial de ejercicios interactivos totalmente gratuitos que servirá como punto de partida para comenzar su aventura educativa.
+            <br/><br/>¿A qué esperas para complementar tu educación con ClimbCode?
 
-            Además, con la suscripción de cada curso las escuelas pueden registrar a sus profesores y alumnos, para que puedan acceder al contenido del que disponen y hacer uso de él, junto con una batería inicial de ejercicios interactivos totalmente gratuitos para empezar a funcionar.
-
-            ¿A qué esperas para complementar tu educación con ClimbCode?
         </p>
         <br/>
+        {% if  user.is_authenticated == False  %}
         <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
             href="register/school">
             Registro escuelas</a>
         <br/>
+        {% endif %}
     </div>
 
      <div class="container" id="licencias">
         <h2>Licencias</h2>
-        <p>Para la suscripción anual de nuestras escuelas, ponemos a su disposición una serie de diferentes tipos de licencia, cada una con sus características propias en cuanto a precio, número de usuarios y ejercicios interactivos gratuitos a disposición de cada escuela:
+        <p>Para la suscripción anual de escuelas, ponemos a su disposición diferentes tipos de licencias, cada una con sus características propias en cuanto a precio, número de usuarios y ejercicios interactivos gratuitos a disposición de cada escuela:
             <ul>
                 <li><b>Básico</b>: 60 usuarios y 20 ejercicios gratuitos por 200€/año.</li>
                 <li><b>Mediano</b>: 200 usuarios y 50 ejercicios gratuitos por 550€/año.</li>
                 <li><b>Grande</b>: 500 usuarios y 75 ejercicios grauitos por 700€/año.</li>
             </ul>
-        Cualquier duda respecto a las licencias, y si se desea adaptar alguna a las necesidades de la escuela, puede contactar con nosotros vía aldonu1@gmail.com o alvdomnun@alum.us.es.
+        Cualquier duda respecto a las licencias u opciones de personalización sobre alguna a las características con objeto de adaptarlas mejor a las necesidades de la escuela, puede contactar con nosotros vía <u><b>alvdomnun@alum.us.es</b></u> o <u><b>aldonu1@gmail.com</b></u>.
         </p>
         <br/>
     </div>

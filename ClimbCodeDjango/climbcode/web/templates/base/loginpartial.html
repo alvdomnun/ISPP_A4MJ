@@ -1,45 +1,48 @@
 <!-- USUARIOS AUTENTICADOS -->
 {% if user.is_authenticated %}
 
-<form id="logoutForm" action="/logout" method="post">
-    {% csrf_token %}
-    <ul class="navbar-nav ml-auto">
-        <li class="dropdown">
-            <a href="#" class="nav-link dropdown-toggle navbar-text flex-align-center" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {% if user.actor.photo %}
-                <div class="user-avatar">
-                  <img src="{{ user.actor.photo.url }}"/>
-                </div>
-              {% endif %}
-              <div style="margin-left: 1em;">
-                  &#161;Hola, {{ user.first_name }} ! &nbsp;<span class="caret"></span>
-              </div>
+    <form id="logoutForm" action="/logout" method="post">
+        {% csrf_token %}
+        <ul class="navbar-nav ml-auto">
+            <li class="dropdown">
+                <a href="#" class="nav-link dropdown-toggle navbar-text flex-align-center" id="navbarDropdownMenuLink"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if user.actor.photo.url %}
+                        <div class="user-avatar">
+                            <img src="{{ user.actor.photo.url }}"/>
+                        </div>
+                    {% endif %}
+                    <div style="margin-left: 1em;">
+                        &#161;Hola, {{ user.first_name }} ! &nbsp;<span class="caret"></span>
+                    </div>
 
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                {% if user.is_staff %}
-                <a class="dropdown-item" href="/admin/">Panel Administraci&#243;n</a>
-                <hr/>
-                {% elif user.actor.programmer %}
-                <a class="dropdown-item" href="{% url 'edit_profile_programmer' %}">Editar Perfil</a>
-                {% elif user.actor.teacher %}
-                <a class="dropdown-item" href="{% url 'edit_self_teacher' %}">Editar Perfil</a>
-                {% elif user.actor.student %}
-                <a class="dropdown-item" href="{% url 'edit_profile_student' %}">Editar Perfil</a>
-                {% elif user.actor.school %}
-                <a class="dropdown-item" href="{% url 'edit_profile_school' %}">Editar Perfil</a>
-                {% endif %}
-                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar Sesi&#243;n</a>
-            </div>
-        </li>
-    </ul>
-</form>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    {% if user.is_staff %}
+                        <a class="dropdown-item" href="/admin/">Panel Administraci&#243;n</a>
+                        <hr/>
+                    {% elif user.actor.programmer %}
+                        <a class="dropdown-item" href="{% url 'edit_profile_programmer' %}">Editar Perfil</a>
+                    {% elif user.actor.teacher %}
+                        <a class="dropdown-item" href="{% url 'edit_self_teacher' %}">Editar Perfil</a>
+                    {% elif user.actor.student %}
+                        <a class="dropdown-item" href="{% url 'edit_profile_student' %}">Editar Perfil</a>
+                    {% elif user.actor.school %}
+                        <a class="dropdown-item" href="{% url 'edit_profile_school' %}">Editar Perfil</a>
+                        <a class="dropdown-item" href="{% url 'display_license' %}">Mi Licencia</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Cerrar
+                        Sesi&#243;n</a>
+                </div>
+            </li>
+        </ul>
+    </form>
 
 {% else %}
 
-<!-- USUARIOS NO AUTENTICADOS -->
-<ul class="navbar-nav ml-auto">
-    <li><a href="{% url 'login' %}">Iniciar Sesi&#243;n</a></li>
-</ul>
+    <!-- USUARIOS NO AUTENTICADOS -->
+    <ul class="navbar-nav ml-auto">
+        <li><a href="{% url 'login' %}">Iniciar Sesi&#243;n</a></li>
+    </ul>
 
 {% endif %}

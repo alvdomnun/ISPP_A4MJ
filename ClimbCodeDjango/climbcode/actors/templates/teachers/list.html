@@ -15,13 +15,13 @@
 
                     <thead>
                     <tr>
-                        <td>Nombre</td>
-                        <td>Apellidos</td>
-                        <td>Email</td>
-                        <td>DNI</td>
-                        <td>Foto</td>
-                        <td>Teléfono</td>
-                        <td></td>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Foto</th>
+                        <th>Teléfono</th>
+                        <th></th>
                     </tr>
                     </thead>
             {% for teacher in teacher_list %}
@@ -56,6 +56,7 @@
         <input type="button" class="btn btn-default"
                onclick="location.href='/actors/teachers/register';"
                value="Crear profesor"/>
+        <a href="{% url 'upload_teachers' %}" class="btn btn-warning">Crear varios profesores</a>
     </div>
 
     {% if teacher_list.has_other_pages %}

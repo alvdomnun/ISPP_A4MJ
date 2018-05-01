@@ -1,12 +1,22 @@
 {% extends 'base/base.html' %}
 
+
 {% block content %}
     <style>
-        table td {
-            align-content: center
+        table th {
+            text-align: center;
+            vertical-align: middle;
         }
-    </style>
+    .text {
+  font-size:18px;
+  font-family:helvetica;
+  font-weight:bold;
+  color:#003d99;
+  text-transform:uppercase;
+}</style>
 
+
+<div class="container">
     <h1>Lista de ejercicios</h1>
 
     <div class="table">
@@ -15,32 +25,34 @@
 
             <thead>
             <tr>
-                <td>Título</td>
-                <td>Descripción</td>
-                <td>Nivel</td>
-                <td></td>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Asignatura</th>
+                <th>Nivel</th>
             </tr>
-            </thead>
+          </thead>
+          <tbody>
             {% for exercise in exercise_list %}
-            <tbody>
+
 
                     <tr>
                         <td>{{ exercise.title }}</td>
                         <td>{{ exercise.description }}</td>
+                        <td>{{ exercise.category }}</td>
                         <td>{{ exercise.level }}</td>
                         <td>
-                            <a class="btn btn-default" href="">Mostrar</a>
+                            <a class="btn btn-default" href="/web/showNotebook?idNotebook= {{ exercise.id }} ">Mostrar</a>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
-                </table>
-                </div>
-            {% else %}
+
+     {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
-
+</table>
+    </div>
 
     {% if exercise_list.has_other_pages %}
         <ul class="pagination">
@@ -64,4 +76,5 @@
         </ul>
     {% endif %}
 
+</div>
 {% endblock %}

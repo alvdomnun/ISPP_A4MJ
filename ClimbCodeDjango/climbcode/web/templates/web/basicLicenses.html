@@ -37,9 +37,7 @@
                             &#161; {{ license.numFreeExercises }} ejercicios gratuitos !
                         </p>
                         <hr />
-
-                        <!--
-                        <button type="button" id="selectedLicense" class="btn btn-info"
+                        <button type="button" id="selectedLicense{{license.id}}" class="btn btn-info"
                                 onclick="FillLicenseFields({ id:{{license.id}}, name:'{{license.name}}', users:{{license.numUsers}}, exercises:{{license.numFreeExercises}}, price:'{{license.price}}', });">
                             SELECCIONAR
                         </button>

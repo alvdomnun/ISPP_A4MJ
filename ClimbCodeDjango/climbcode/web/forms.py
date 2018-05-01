@@ -94,7 +94,17 @@ class RegisterSchoolForm(forms.Form):
             username = self.cleaned_data["username"]
             num_usuarios = User.objects.filter(username = username).count()
             if (num_usuarios > 0):
-                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+                # Busca el usuario por username
+                user = User.objects.filter(username = username)
+                # Si es programador o es una escuela ya activada, error de username ocupado
+                if (hasattr(user[0].actor, 'programmer')) or (hasattr(user[0].actor, 'school') and user[0].actor.school.isPayed):
+                    raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, elija otro para completar su registro.")
+
+            school_code = self.cleaned_data["identificationCode"]
+            num_codigo = School.objects.filter(identificationCode=school_code).exclude(isPayed=False).count()
+            if (num_codigo > 0):
+                raise forms.ValidationError(
+                    "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
@@ -105,12 +115,12 @@ class RegisterSchoolForm(forms.Form):
             # Valida los patrones para cuando sea escuela o academia
             type = self.cleaned_data["type"]
             idCode = self.cleaned_data["identificationCode"]
-            if idCode is not None and type == 'High School':
+            if idCode is not None and type == 'Instituto':
                 if re.match(r'^(\d{8})$', idCode) is None:
-                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
-            elif idCode is not None and type == 'Academy':
-                if re.match(r'^(\d{8})([A-Z])$', idCode) is None:
-                    raise forms.ValidationError('Introduzca un código de identificación válido para el tipo de escuela seleccionado.')
+                    raise forms.ValidationError('El código de identificación de un instituto se compone de 8 dígitos.')
+            elif idCode is not None and type == 'Academia':
+                if re.match(r'^(\d{9})$', idCode) is None:
+                    raise forms.ValidationError('El código de identificación de una academia se compone de 9 dígitos.')
 
             # Valida que el número de usuarios indicados no sea inferior al de la licencia dada
             licenseType = self.cleaned_data["licenseType"]

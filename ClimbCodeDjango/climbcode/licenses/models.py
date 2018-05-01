@@ -42,8 +42,7 @@ class LicenseAdminPanel(admin.ModelAdmin):
 class LicenseType(models.Model):
     #Atributos de la clase LicenseType: name, numUsers, numFreeExercises, price
 
-    name =models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.',default= 'BÁSICA',
-        validators = [RegexValidator(regex = r'^BÁSICA' or '^MEDIA' or r'^GRANDE' , message = 'El formato introducido es incorrecto. Posibles valores: BÁSICA, MEDIA, GRANDE.')])
+    name = models.CharField(max_length = 50, help_text = 'Requerido. 50 carácteres como máximo.', default= 'BÁSICA')
     numUsers = models.PositiveIntegerField(default=0)
     numFreeExercises = models.PositiveIntegerField(default=0)
     price = models.DecimalField(default = 0.0, max_digits = 9, decimal_places = 2)

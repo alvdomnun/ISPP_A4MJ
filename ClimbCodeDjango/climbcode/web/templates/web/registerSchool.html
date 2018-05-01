@@ -84,7 +84,7 @@
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="identificationCode" class="control-label">C&#243;digo de Identificaci&#243;n</label>
-                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="000000000"
+                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="C&#243;digo de 8 d&#237;gitos para institutos; 9 para academias"
                                    value="{{ form.identificationCode.value|default:"" }}" required/>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
@@ -103,10 +103,22 @@
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="province" class="control-label">Provincia</label>
                             <select class="form-control" id="province" name="province" required>
+                                <!-- Si viene de validaci&#243;n, pinta la anterior -->
+                                {% if form.province.value %}
+                                    {% for p in provinces %}
+                                        {% if p.id == form.province.value %}
+                                        <option value="{{ p.id }}" selected="selected">{{ p.name }}</option>
+                                        {% else %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                <!-- Si es no, sin selecci&#243;n por defecto -->
+                                {% else %}
                                 <option value="" selected="selected">Seleccione una provincia</option>
-                                {% for p in provinces %}
-                                    <option value="{{ p.id }}">{{ p.name }}</option>
-                                {% endfor %}
+                                    {% for p in provinces %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                    {% endfor %}
+                                {% endif %}
                             </select>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
@@ -119,19 +131,43 @@
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="type" class="control-label">Tipo de Escuela</label>
                             <select class="form-control" id="type" name="type" required>
+                                <!-- Si viene de validaci&#243;n, pinta la anterior -->
+                                {% if form.type.value %}
+                                    {% for t in schoolTypes %}
+                                        {% if t.0  == form.type.value %}
+                                        <option value="{{ t.0 }}" selected="selected">{{ t.0 }}</option>
+                                        {% else %}
+                                        <option value="{{ t.0 }}">{{ t.0 }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                <!-- Si es no, sin selecci&#243;n por defecto -->
+                                {% else %}
                                 <option value="" selected="selected">Seleccione un tipo</option>
-                                {% for t in schoolTypes %}
-                                    <option value="{{ t.0 }}">{{ t.0 }}</option>
-                                {% endfor %}
+                                    {% for t in schoolTypes %}
+                                        <option value="{{ t.0 }}">{{ t.0 }}</option>
+                                    {% endfor %}
+                                {% endif %}
                             </select>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="teachingType" class="control-label">Tipo de Ense&#241;anza</label>
                             <select class="form-control" id="teachingType" name="teachingType" required>
+                                <!-- Si viene de validaci&#243;n, pinta la anterior -->
+                                {% if form.teachingType.value %}
+                                    {% for tt in teachingTypes %}
+                                        {% if tt.0  == form.teachingType.value %}
+                                        <option value="{{ tt.0 }}" selected="selected">{{ tt.0 }}</option>
+                                        {% else %}
+                                        <option value="{{ tt.0 }}">{{ tt.0 }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                <!-- Si es no, sin selecci&#243;n por defecto -->
+                                {% else %}
                                 <option value="" selected="selected">Seleccione un tipo</option>
-                                {% for tt in teachingTypes %}
-                                    <option value="{{ tt.0 }}">{{ tt.0 }}</option>
-                                {% endfor %}
+                                    {% for tt in teachingTypes %}
+                                        <option value="{{ tt.0 }}">{{ tt.0 }}</option>
+                                    {% endfor %}
+                                {% endif %}
                             </select>
                         </div>
                     </div>

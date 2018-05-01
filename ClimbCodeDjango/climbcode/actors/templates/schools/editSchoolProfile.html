@@ -47,21 +47,21 @@
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="centerName" class="control-label">Nombre del centro</label>
-                            <input class="form-control" maxlength="50" name="centerName" id="centerName" type="text" placeholder="Nombre del centro" value="{{ form.centerName.value|default:"" }}" />
+                            <input class="form-control" maxlength="50" name="centerName" id="centerName" type="text" placeholder="Nombre del centro" value="{{ form.centerName.value|default:"" }}" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="identificationCode" class="control-label">CIF o código del centro</label>
-                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="CIF o código del centro." value="{{ form.identificationCode.value|default:"" }}" required/>
+                            <input type="text" maxlength="9" class="form-control" name="identificationCode" id="identificationCode" placeholder="C&#243;digo de 8 d&#237;gitos para institutos; 9 para academias" value="{{ form.identificationCode.value|default:"" }}" required/>
                         </div>
                          <div class="col-xs-6 col-md-6 form-group">
                             <label for="address" class="control-label">Dirección</label>
-                            <input class="form-control" maxlength="50" name="address" id="address" type="text" placeholder="Dirección" value="{{ form.address.value|default:"" }}" />
+                            <input class="form-control" maxlength="50" name="address" id="address" type="text" placeholder="Dirección" value="{{ form.address.value|default:"" }}" required/>
                         </div>
                          <div class="col-xs-6 col-md-6 form-group">
                             <label for="postalCode" class="control-label">Código postal</label>
-                            <input class="form-control" max_length ="5" name="postalCode" id="postalCode" type="text" placeholder="Código postal" value="{{ form.postalCode.value|default:"" }}" />
+                            <input class="form-control" max_length ="5" name="postalCode" id="postalCode" type="text" placeholder="Código postal" value="{{ form.postalCode.value|default:"" }}" required/>
                         </div>
                         <div class="col-xs-6 col-md-6 form-group">
                             <label for="phone" class="control-label">Tel&#233;fono</label>

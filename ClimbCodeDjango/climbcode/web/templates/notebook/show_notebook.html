@@ -1,0 +1,238 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block extrastatic %}
+    <style type="text/css" media="screen">
+            #editor {
+              margin-top: 15px;
+              width: auto;
+              height: 250px;
+            }
+
+#notificaciones-holder {
+width: 250px;
+min-height:0px;
+z-index: 1000;
+position: fixed;
+top: 60px;
+right: 10px;
+height: auto;
+display: none;
+text-align: center
+}
+
+.notificacion {
+padding: 10px;
+width: 100%;
+position: relative;
+margin-bottom: 10px;
+}
+
+.notificacion.error {
+background-color: red;
+}
+
+    </style>
+    <!-- <script src="/static/js/jquery-3.3.1.js"></script> -->
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/showNotebook.js"></script>
+    <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/Chart.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#form_exercise').on('submit', function(event){
+                event.preventDefault();
+                console.log("form submitted!");
+                editExerciseInfo();
+                $('#getCodeModal').modal('hide');
+            });            
+        });
+        function mostrarModal(){
+                $('#getCodeModal').modal('show');
+        }
+        function ocultarModal(){
+                $('#getCodeModal').modal('hide');
+        }
+    $(document).ready(function (e) {
+        $('#imageUploadForm').on('submit',(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                type:'POST',
+                url: $(this).attr('action'),
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                    console.log("success");
+                    console.log(data);
+                },
+                error: function(data){
+                    console.log("error");
+                    console.log(data);
+                }
+        });
+    }));
+
+    $("#ImageBrowse").on("change", function() {
+        $("#imageUploadForm").submit();
+    });
+    });
+
+    </script>
+{% endblock %}
+{% block title %}
+Mostrar Ejercicio
+{% endblock %}
+{% block content %}
+<div id="notificaciones-holder" class="alert alert-success" role="alert">
+    <div id="notification-text" class="notificacion success">
+    </div>
+</div>
+
+
+
+<div style="width:80%;margin-left: 10%">
+    <h1 style="text-align: center">Mostrar Notebook</h1>
+    <div class="row" style="background-color: #bbbabb">
+        <div class="col-md-12" style="height: auto;">
+            <div class="row">
+                <!-- CABECERA CON TITULO Y SUBTITULO, INPUTS DISABLED -->
+                <div class="col-md-12 custom-mt-1" >
+                        <div style="background-color: #ebebeb;width: auto;height: 200px;padding-top: 15px;padding-left:15px;padding-right:15px">
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="title_disabled">Título:</label>
+                                        <input class="form-control" type="text" id="title_disabled" name="title" style="background-color:white;" value="{{exercise.title}}" disabled>
+                                   </div>
+                                </div>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="description">Descripción:</label>
+                                        <input class="form-control" type="text" name="description" id="description_disabled" style="background-color:white;" value="{{exercise.description}}" disabled>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="level">Nivel:</label>
+                                        <input class="form-control" type="text" name="level" id="level_disabled" style="background-color:white;" value="{{exercise.level}}" disabled>
+                                   </div>
+                                </div>
+                                <div class="col-md-6 offset-md-0">
+                                    <div class="form-group">
+                                        <label for="category">Asignatura:</label>
+                                        <input class="form-control" type="text" name="category" id="category_disabled" style="background-color:white;" value="{{exercise.category.course}}º {{exercise.category.name}}" disabled>
+                                   </div>
+                                </div>
+                            </div>                            
+                        </div>
+                </div>
+                <!-- CAJA CONTENIDO NOTEBOOK -->
+                <div class="col-md-12 custom-mt-1 d-flex flex-column">
+                    <div id="notebook_content" class="body_column" style="background-color: #ebebeb;width: auto;min-height:  1000px;margin-bottom:20px">
+
+<!--                         <div class="col-md-12" style="text-align:center">
+                            <h1>Evalbox</h1>
+                            <textarea id='code'>1+2</textarea>
+                            <h1>Iframe</h1>
+                            <iframe style="width: 1000px;height: 200px" sandbox='allow-scripts'
+            id='sandboxed'
+            src="{% url 'iframe_notebook' %}"></iframe>
+                            <button class="btn btn-primary" id='safe'>eval() in a sandboxed frame.</button>
+
+                            <br><br>
+                                <h4>Resultado del código</h4>
+                                <input name="resultado" class="form-control resultado_code_editor"  id="resultado" type="text" disabled="disabled">
+                        </div> -->
+
+                        <script>
+
+                          // Listen for response messages from the frames.
+                          window.addEventListener('message', function (e) {
+                            // Normally, you should verify that the origin of the message's sender
+                            // was the origin and source you expected. This is easily done for the
+                            // unsandboxed frame. The sandboxed frame, on the other hand is more
+                            // difficult. Sandboxed iframes which lack the 'allow-same-origin'
+                            // header have "null" rather than a valid origin. This means you still
+                            // have to be careful about accepting data via the messaging API you
+                            // create. Check that source, and validate those inputs!
+/*                            if ((e.origin === "null" && e.source === sandboxedFrame.contentWindow)
+                                || (e.origin === (window.location.protocol + "//" + window.location.host)
+                                    && e.source === unsandboxedFrame.contentWindow)) {*/
+                                var resultado = String(e.data[0]);
+                                if(resultado==null || resultado=='' || resultado=='undefined'){
+                                    resultado = "¡Código ejecutado!";
+                                }
+                                document.getElementById(e.data[1]).value = resultado;
+                                
+                                
+/*                            }*/
+                          });
+                        </script>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Control siguiente order a asignar por JS
+    var maxOrder = 0;
+
+    //Control siguiente id param a asignar por JS
+    var maxNumParam = 0;
+</script>
+
+{% for box in boxesView %}
+    <script>
+        //Control siguiente order a asignar por JS
+        if({{box.order}} > maxOrder){
+            maxOrder = {{box.order}};
+            setMaxOrder(maxOrder);
+        }
+
+        
+    </script>
+    {% if box.type in "Text" %}
+        <script>
+            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% elif box.type in "Code" %}
+        <script>
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
+        </script>
+        {% for parameter in box.parameters %}
+             <script>
+            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
+
+            var idNameActual = "{{parameter.idName}}";
+            var numParamActualString = idNameActual.substring(5,idNameActual.length);
+            
+            //Pasar el num como String a Integer
+            var numParamActual = parseInt(numParamActualString);
+
+            if(numParamActual > maxNumParam){
+                maxNumParam = numParamActual;
+                setNumParam(maxNumParam);
+            }
+            </script>
+        {% endfor %}
+    {% elif box.type in "Picture" %}
+        <script>
+            addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+        </script>
+    {% endif %}
+
+{% endfor %}
+    <script src="/static/js/jquery-validate/jquery.validate.js"></script>
+    <script src="/static/js/jquery-validate/additional-methods.js"></script>
+    <script src="/static/js/jquery-validation-messages.js"></script>
+{% endblock %}

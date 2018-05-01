@@ -1,60 +1,156 @@
 {% extends 'base/base.html' %}
 
+
 {% block content %}
     <style>
-        table td {
-            align-content: center
+        table th {
+            text-align: center;
+            vertical-align: middle;
         }
+    .text {
+  font-size:18px;
+  font-family:helvetica;
+  font-weight:bold;
+  color:#003d99;
+  text-transform:uppercase;
+}
+.parpadea {
+
+  animation-name: parpadeo;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:parpadeo;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+}
+
+@-moz-keyframes parpadeo{
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+   100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {
+  0% { opacity: 1.0; }
+   50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
     </style>
 
 <div class="container">
+
+    <br/>
     <h1>Lista de ejercicios</h1>
-{% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+
+    <!-- Buscador -->
+    {% if not ownList %}
+    <div class="input-group">
+        <form class="form-inline" action="{% url 'search_exercises' %}" method="get">
+            {% csrf_token %}
+            <div class="form-group">
+                <!-- Texto -->
+                <input type="text" class="form-control" placeholder="Buscador de ejercicios" name="q" maxlength="30">
+            </div> &nbsp; 
+            <div class="form-group">
+                <!-- Nivel -->
+                <select class="form-control" id="level" name="l">
+                    <option value="" selected="selected">Dificultad</option>
+                        {% for l in levels %}
+                            <option value="{{ l.0 }}">{{ l.0 }}</option>
+                        {% endfor %}
+                </select>
+            </div> &nbsp; 
+            <div class="form-group">
+                <!-- Asignatura -->
+                <select class="form-control" id="category" name="c">
+                    <option value="" selected="selected">Asignatura</option>
+                        {% for c in categories %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                        {% endfor %}
+                </select>
+            </div> &nbsp; 
+            <div class="form-group">
+                <button class="btn btn-info" type="submit">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    {% endif %}
+
+    <!-- Listado -->
     <div class="table">
         <table class="table table-striped">
             {% if exercise_list %}
 
             <thead>
             <tr>
-                <td>Título</td>
-                <td>Descripción</td>
-                <td>Ventas</td>
-                <td>Nivel</td>
-                {% if user.actor.programmer %}
-                    <td align="center">¿Promocionado?</td>
-                    <td>Fecha de comienzo</td>
-                    <td>Fecha de fin</td>
+            {% if ownList == False %}
+                <th></th>
+            {% endif %}
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Asignatura</th>
+                {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+                    <th>Ventas</th>
                 {% endif %}
-                <td></td>
+                <th>Nivel</th>
+                {% if user.actor.programmer and ownList %}
+                    <th>¿Borrador?</th>
+                    <th>¿Promocionado?</th>
+                    <th>Fecha de comienzo</th>
+                    <th>Fecha de fin</th>
+                {% endif %}
+                <th></th>
             </tr>
           </thead>
           <tbody>
             {% for exercise in exercise_list %}
 
-
                     <tr>
+                        {% if ownList == False %}
+                            <td class="parpadea text">
+                            {% if exercise.promoted == True %}
+                                Promocionado
+                            {% endif %}
+                            </td>
+                        {% endif %}
                         <td>{{ exercise.title }}</td>
                         <td>{{ exercise.description }}</td>
-                        <td>{{ exercise.sales }}</td>
+                        <td align="center">{{ exercise.category }}</td>
+                        {% if user.actor.programmer or user.actor.school or user.actor.teacher %}
+                            <td align="center">{{ exercise.sales }}</td>
+                        {% endif %}
                         <td>{{ exercise.level }}</td>
-                        {% if user.actor.programmer %}
-                            {% if exercise.promoted == True %}
-                            <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
-                        {% else %}
-                            <td align="center"><input type="checkbox" disabled="disabled"></td>
-                        {% endif %}
-                        {% if exercise.promoted == True %}
-                            <td>{{ exercise.startPromotionDate }}</td>
-                            <td>{{ exercise.endPromotionDate }}</td>
-                        {% else %}
-                            <td></td>
-                            <td></td>
+                            {% if user.actor.programmer and ownList %}
+                                {% if exercise.draft == True %}
+                                    <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
+                                {% else %}
+                                    <td align="center"><input type="checkbox" disabled="disabled"></td>
+                                {% endif %}
 
-                        {% endif %}
+                                {% if exercise.promoted == True %}
+                                    <td align="center"><input type="checkbox" disabled="disabled" checked="checked"></td>
+                                {% else %}
+                                    <td align="center"><input type="checkbox" disabled="disabled"></td>
+                                {% endif %}
 
-
-                        {% endif %}
-
+                                {% if exercise.promoted == True %}
+                                    <td align="center">{{ exercise.startPromotionDate }}</td>
+                                    <td align="center">{{ exercise.endPromotionDate }}</td>
+                                {% else %}
+                                    <td align="center">--</td>
+                                    <td align="center">--</td>
+                                {% endif %}
+                            {% endif %}
                         <td>
                             {% if user.actor.school %}
                                 {% if not ownList %}
@@ -62,10 +158,14 @@
                                 {% endif %}
                             {% endif %}
                             {% if ownList %}
-                                <a class="btn btn-default" href="">Mostrar</a>
+                                <a class="btn btn-default" href="/web/showNotebook?idNotebook= {{ exercise.id }} ">Mostrar</a>
                                 {% if user.actor.programmer %}
-                                    {% if exercise.promoted == False %}
-                                        <a class="btn btn-default" href="">Promocionar</a>
+                                    {% if exercise.draft == True %}
+                                        <a class="btn btn-default" href="/web/editNotebook?idNotebook= {{ exercise.id }} ">Editar</a>
+                                    {% endif %}
+
+                                    {% if exercise.promoted == False and exercise.draft == False %}
+                                        <a class="btn btn-default" href="{% url 'promote_exercise' exercise.id %}">Promocionar</a>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
@@ -74,12 +174,20 @@
                 {% endfor %}
                 </tbody>
 
-            {% else %}
+     {% else %}
                 <p></p>
                 <p>No existen ejercicios.</p>
             {% endif %}
-          </table>
-          </div>
+</table>
+    </div>
+
+    {% if user.actor.programmer and ownList %}
+    <div class="create">
+        <input type="button" class="btn btn-default"
+               onclick="location.href='/web/createNotebook';"
+               value="Crear ejercicio"/>
+    </div>
+    {% endif %}
 
     {% if exercise_list.has_other_pages %}
         <ul class="pagination">
@@ -102,8 +210,6 @@
             {% endif %}
         </ul>
     {% endif %}
-
-{% endif %}
 
 </div>
 {% endblock %}

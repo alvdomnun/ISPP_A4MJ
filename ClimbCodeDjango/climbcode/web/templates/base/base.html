@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
@@ -43,50 +43,73 @@
 													</div>
 											</li>
 									</ul> -->
-									{% if user.actor.school %}
 									<ul class="navbar-nav mr-auto">
+									{% if user.actor.school %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
 											</li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_students' %}">Mis Alumnos</a>
 											</li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_subjects' %}">Mis Asignaturas</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesS' %}">Ejercicios</a>
 											</li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_own_exercisesS' %}">Mis ejercicios</a>
 											</li>
-									</ul>
+
 									{% elif user.actor.programmer %}
-									<ul class="navbar-nav mr-auto">
+
 											<li class="nav-item">
-													<a class="nav-link" href="{% url 'notebookv1' %}">Nuevo Ejercicio</a>
+													<a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
 											</li>
 											<li class="nav-item">
-													<a class="nav-link" href="/web/notebookv1_ejercicio_creado">Ver Ejemplo</a>
-											</li>
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
 											</li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
 											</li>
-									</ul>
+
+
 									{% elif user.actor.teacher %}
-											<ul class="navbar-nav mr-auto">
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
+                                                </li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesT' %}">Ejercicios</a>
 												</li>
 												<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_school_exercisesT' %}">Ejercicios de la escuela</a>
 												</li>
-											</ul>
+
 									{% elif user.actor.student %}
-											Student
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'list_school_exercisesST' %}">Ejercicios</a>
+                                            </li>
+
 									{% elif user.actor.administrator %}
 
 									{% endif %}
+
+									</ul>
 									<!-- Inicio/Cierre de sesión -->
 						{% include 'base/loginpartial.html' %}
 							</div>
@@ -232,14 +255,16 @@
 							<a class="text-white" href="https://www.udemy.com/">Udemy.com</a>
 						</div>
 					</div>
-				</div
+				</div>
 			</footer>
 {% endblock%}
 	<script src="/static/js/jquery-3.3.1.js"></script>
 	<script src="/static/js/functions.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+	<script src="/static/js/jquery-validate/jquery.validate.js"></script>
+    <script src="/static/js/jquery-validate/additional-methods.js"></script>
+    <script src="/static/js/jquery-validation-messages.js"></script>
 	{% block extrajs %}
 	{% endblock %}
 

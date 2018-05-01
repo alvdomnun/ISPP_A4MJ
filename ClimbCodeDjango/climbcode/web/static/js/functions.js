@@ -1,13 +1,5 @@
-
-//$('#selectedLicense').click(function () {
-//    console.log($('#selectedLicense').value)
-//});
-
-// Variable global para la licencia tipo
-var licenseType;
-
-$(document).ready(function() {
-  var radios = document.getElementsByName("licenseSelect");
+function checkCustomCheckbox(checkbox) {
+  var radios = document.getElementsByName(checkbox.name);
   for(i=0; i<radios.length; i++) {
     var checkboxElement = radios[i].parentElement.parentElement;
     if(radios[i].checked) {
@@ -16,9 +8,10 @@ $(document).ready(function() {
       checkboxElement.classList.remove("selected");
     }
   }
-});
+}
 
-function FillLicenseFields(license) {
+
+function CustomFillLicenseFields(checkbox, license) {
 
     myLicense = license;
 
@@ -47,26 +40,5 @@ function FillLicenseFields(license) {
 
     $('#licensePersonalization').empty();
     $('#licensePersonalization').append(htmlLicenseFields);
-
-}
-
-function CalculatePriceField() {
-
-    var numUsers = document.getElementById("numUsers").value;
-
-    var unitPrice = (parseFloat(myLicense.price) / myLicense.users).toFixed(2);
-    var finalPrice = parseFloat(myLicense.price) + ((numUsers - myLicense.users) * unitPrice);
-    finalPrice = finalPrice.toFixed(2);
-
-    var htmlPriceField =
-        '<div id="finalPrice" class="row">' +
-        '<div class="col-xs-12 col-md-12 form-group">' +
-        '<label for="finalPrice" class="control-label">Informaci&#243;n sobre el precio</label>' +
-        '<input disabled type="text" class="form-control" name="finalPrice" id="finalPrice" value="El coste final de la licencia para el n&#250;mero de usuarios seleccionado es de ' + finalPrice + ' &euro;/a&#241;o." />' +
-        '</div>' +
-        '</div>';
-
-    $('#finalPrice').remove();
-    $('#licensePersonalization').append(htmlPriceField);
 
 }

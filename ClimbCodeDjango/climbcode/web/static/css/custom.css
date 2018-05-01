@@ -296,6 +296,15 @@ h1, h2, h3 {
   background-color: #fff !important;
 }
 
+.form-control {
+    border: 2px solid #ced4da !important;
+}
+
+.form-control:focus {
+    border: 2px solid #5bc0de !important;
+    box-shadow: unset !important;
+}
+
 .user-avatar {
   width: 50px;
   height: 50px;
@@ -320,6 +329,7 @@ h1, h2, h3 {
 }
 
 .card-checkbox .card-checkbox-wrapper .card-checkbox-content{
+  width: 15em;
   border-radius: 5px;
   border: 2px solid #5bc0de;
   padding: 20px;
@@ -351,4 +361,8 @@ h1, h2, h3 {
 
 .card-checkbox.selected .card-checkbox-wrapper .card-checkbox-content .price-wrap {
   color: black;
+}
+
+label {
+  font-weight: bold;
 }

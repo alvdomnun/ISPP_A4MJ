@@ -220,7 +220,7 @@ Previsualizar Ejercicio
         </script>
         {% for parameter in box.parameters %}
             <script>
-            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
+            addParameterPreview(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
 
             var idNameActual = "{{parameter.idName}}";
             var numParamActualString = idNameActual.substring(5,idNameActual.length);

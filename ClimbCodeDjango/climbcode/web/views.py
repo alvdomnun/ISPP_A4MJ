@@ -678,31 +678,6 @@ def previewNotebook(request):
         else:
             errorMessage = 'Permiso denegado'
 
-            if hasattr(request.user.actor, 'school'):
-                # Comprobar que la escuela ha adquirido el ejercicio
-                idSchool = request.user.actor.school.actor_ptr_id
-                school = request.user.actor.school
-                if not isSchoolAdquiredExercise(exercise, school):
-                    errorMessage = 'La escuela no ha adquirido este ejercicio'
-                elif not schoolActiveLicense(school):
-                    errorMessage = 'La licencia de la escuela ha caducado'
-            elif hasattr(request.user.actor, 'student'):
-                student = request.user.actor.student
-                idSchool = student.school_s_id
-                school = School.objects.get(actor_ptr_id=idSchool)
-                if not isSchoolAdquiredExercise(exercise, school):
-                    errorMessage = 'La escuela no ha adquirido este ejercicio'
-                elif not schoolActiveLicense(school):
-                    errorMessage = 'La licencia de la escuela ha caducado'
-            elif hasattr(request.user.actor, 'teacher'):
-                teacher = request.user.actor.teacher
-                idSchool = teacher.school_t_id
-                school = School.objects.get(actor_ptr_id=idSchool)
-                if not isSchoolAdquiredExercise(exercise, school):
-                    errorMessage = 'La escuela no ha adquirido este ejercicio'
-                elif not schoolActiveLicense(school):
-                    errorMessage = 'La licencia de la escuela ha caducado'
-
             template = loader.get_template('notebook/notebook_error_message.html')
             context = {
                 'errorMessage': errorMessage

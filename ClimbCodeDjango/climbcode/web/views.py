@@ -449,7 +449,11 @@ def publishNotebook(request):
 
         if permisoEditNotebook(idExercise,request):
             publishExercise(idExercise)
-            return HttpResponseRedirect('/exercises/programmer/own_list')
+            template = loader.get_template('notebook/notebook_publicado_exito.html')
+            context = {
+            }
+            return HttpResponse(template.render(context, request))
+            #return HttpResponseRedirect('/exercises/programmer/own_list')
         else:
             template = loader.get_template('notebook/notebook_no_permiso.html')
             context = {

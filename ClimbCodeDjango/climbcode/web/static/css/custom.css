@@ -10,7 +10,7 @@ body {
   display: flex !important;
 }
 
-.navbar-brand {
+.navbar-brand, .nav-link.dropdown-toggle {
   height: 100%;
 }
 

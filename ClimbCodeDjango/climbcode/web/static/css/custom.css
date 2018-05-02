@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif !important;
     color: #161f29 !important;
-    background-color: #ebebeb !important;
+    background-color: #efefef !important;
 }
 
 .flex-align-center {
@@ -376,4 +376,105 @@ h1, h2, h3 {
 
   label {
     font-weight: bold;
+}
+
+table{
+  border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+}
+
+.table .thead-primary th {
+  color: white;
+  background-color: #1e88e5;
+}
+
+.table td, .table th{
+  text-align:center;
+  vertical-align: middle !important;
+}
+
+
+.table-curved {
+    border-radius: 5px;
+    border-left:0px;
+}
+.table-curved th {
+    border-top: none;
+}
+.table-curved th:first-child {
+    border-radius: 5px 0 0 0;
+}
+.table-curved th:last-child {
+    border-radius: 0 5px 0 0;
+}
+.table-curved th:only-child{
+    border-radius: 5px 5px 0 0;
+}
+.table-curved tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+}
+.table-curved tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+}
+
+.ui-button {
+  overflow: hidden;
+  background-color: #1E88E5;
+  color: #ffffff;
+  height: 30px;
+  padding: 0 14px;
+  border: 0 none;
+  border-radius: 5px;
+  -moz-box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.26), 0 1px 5px 0 rgba(0, 0, 0, 0.16);
+  -webkit-box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.26), 0 1px 5px 0 rgba(0, 0, 0, 0.16);
+  box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.26), 0 1px 5px 0 rgba(0, 0, 0, 0.16);
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.ui-button:hover{
+  background:#1fb3e5;
+  color: white;
+}
+.btn-icon-only {
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding-top: 3px !important;
+  /*
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  */
+}
+
+.btn-orange {
+  background-color: #ff6200;
+}
+
+.btn-orange:hover {
+  background-color:#ff8c1a;
+}
+
+.btn-yellow {
+  background-color: #e6e600;
 }

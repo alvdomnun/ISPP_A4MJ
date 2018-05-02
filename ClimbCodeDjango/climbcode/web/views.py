@@ -498,6 +498,17 @@ def permisoViewRolesEscuelaNotebook(idNotebook,request):
         tienePermiso = isSchoolAdquiredExercise(exercise, school) and schoolActiveLicense(school)
     return tienePermiso
 
+def permisoPreviewNotebook(idNotebook,request):
+    tienePermiso = False
+    # recuperar actor logado, debe ser programador
+    user = request.user
+    # recuperar notebook
+    exercise = Exercise.objects.get(id=idNotebook)
+    if hasattr(request.user.actor, 'school') or hasattr(request.user.actor, 'programmer') or hasattr(request.user.actor, 'teacher'):
+        if exercise.draft == False:
+            tienePermiso = True
+    return tienePermiso
+
 
 def schoolActiveLicense(school):
     # Fecha actual
@@ -617,7 +628,65 @@ def showNotebook(request):
             return HttpResponse(template.render(context, request))
 
 
+# Visualización notebook para escuelas, profesores y alumnos
+@login_required(login_url='/login/')
+def previewNotebook(request):
+    print("Showing notebook")
+    if request.method == 'GET':
+        # Petición de edición de notebook existente
+        idNotebook = request.GET.get('idNotebook')
+        exercise = Exercise.objects.get(id=idNotebook)
 
+        # Si se trata de una escuela, estudiante o profesor, hay que comprobar que la licencia no haya caducado
+
+        if (permisoPreviewNotebook(idNotebook,request) and exercise.draft == False):
+        #if True:
+            if exercise is not None:
+                template = loader.get_template('notebook/preview_notebook.html')
+                boxesText = Text.objects.filter(exercise=exercise)
+                boxesView = []
+                for box in boxesText:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    boxTextView = BoxView(box.id,box.exercise.id,box.order,'Text',contentEscape)
+                    boxesView.append(boxTextView)
+
+                boxesCode = Code.objects.filter(exercise=exercise)
+                for box in boxesCode:
+                    contentEscape = box.content.replace("\n", "\\n")
+                    paramtersCode = Parameter.objects.filter(code=box)
+                    parameters = []
+                    for parameter in paramtersCode:
+                        parameters.append(parameter)
+                    boxCodeView = BoxView(box.id,box.exercise.id,box.order,'Code',box.content.replace("\n", "\\n"),parameters,box.idGraphic)
+                    boxesView.append(boxCodeView)
+
+                boxesPicture = Picture.objects.filter(exercise=exercise)
+                for box in boxesPicture:
+                    boxPictureView = BoxView(box.id,box.exercise.id,box.order,'Picture',box.url)
+                    boxesView.append(boxPictureView)
+
+                boxesView.sort(key=lambda x: x.order, reverse=False)
+                form = ExerciseForm()
+
+                # Datos del modelo (vista)
+                categories = DefaultSubject.objects.all()
+                levels = form.fields['level'].choices
+
+                context = {
+                    'exercise':exercise,
+                    'boxesView':boxesView,
+                    'levels':levels,
+                    'categories':categories
+                }
+                return HttpResponse(template.render(context, request))
+        else:
+            errorMessage = 'Permiso denegado'
+
+            template = loader.get_template('notebook/notebook_error_message.html')
+            context = {
+                'errorMessage': errorMessage
+            }
+            return HttpResponse(template.render(context, request))
 
 ### Llamadas ajax
 

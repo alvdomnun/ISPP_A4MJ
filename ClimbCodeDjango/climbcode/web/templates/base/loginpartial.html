@@ -7,7 +7,7 @@
             <li class="dropdown">
                 <a href="#" class="nav-link dropdown-toggle navbar-text flex-align-center" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if user.actor.photo.url is not None %}
+                    {% if user.actor.photo.url %}
                         <div class="user-avatar">
                             <img src="{{ user.actor.photo.url }}"/>
                         </div>

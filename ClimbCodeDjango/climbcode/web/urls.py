@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^editNotebook$', views.editNotebook, name='editNotebook'),
     url(r'^publishNotebook$', views.publishNotebook, name='publishNotebook'),
     url(r'^showNotebook$', views.showNotebook, name='showNotebook'),
+    url(r'^previewNotebook$', views.previewNotebook, name='previewNotebook'),
+
     url(r'^editNotebookAjax$', views.editNotebookAjax, name='editNotebookAjax'),
     url(r'^createUpdateTextBoxAjax$', views.createUpdateTextBoxAjax, name='createUpdateTextBoxAjax'),
     url(r'^deleteTextBoxAjax$', views.deleteTextBoxAjax, name='deleteTextBoxAjax'),

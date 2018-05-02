@@ -6,12 +6,6 @@ body {
     font-family: 'Fira Sans', sans-serif;*/
 }
 
-.pricing-wrapper .pricing-table {
-    border: 1px solid #5bc0de;
-    padding: 20px;
-    margin-top: 30px;
-    background-color: #d0d0d0;
-}
 
 .pricing-wrapper .popular {
     color: #5bc0de;
@@ -21,10 +15,7 @@ body {
     border-top: 1px solid #5bc0de !important;
 }
 
-.pricing-wrapper .pricing-table .price-wrap {
-    background-color: #e9e9e9;
-    padding: 40px 20px 40px 20px;
-}
+
 
 .pricing-wrapper .type {
     font-weight: 900;

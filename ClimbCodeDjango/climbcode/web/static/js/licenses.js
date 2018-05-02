@@ -6,6 +6,18 @@
 // Variable global para la licencia tipo
 var licenseType;
 
+$(document).ready(function() {
+  var radios = document.getElementsByName("licenseSelect");
+  for(i=0; i<radios.length; i++) {
+    var checkboxElement = radios[i].parentElement.parentElement;
+    if(radios[i].checked) {
+      checkboxElement.classList.add("selected");
+    } else {
+      checkboxElement.classList.remove("selected");
+    }
+  }
+});
+
 function FillLicenseFields(license) {
 
     myLicense = license;
@@ -72,6 +84,6 @@ function CalculatePriceField() {
         '</div>';
 
     $('#finalPrice').remove();
-    $('#licensePersonalization').append(htmlPriceField);  
+    $('#licensePersonalization').append(htmlPriceField);
 
 }

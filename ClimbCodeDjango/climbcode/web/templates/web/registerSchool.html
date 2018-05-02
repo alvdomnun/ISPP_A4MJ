@@ -17,6 +17,22 @@
                 <form id="registro" method="post" action="{% url 'registerSchool' %}" class="form" role="form">
                     {% csrf_token %}
 
+                    <!-- Tratamiento de Errores -->
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                     <!-- Licencia -->
                     {% include 'web/basicLicenses.html' %}
 
@@ -24,6 +40,7 @@
 
                     <!-- Escuela -->
                     <h3>Rellena tus datos</h3>
+                    <br/>
 
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">
@@ -163,21 +180,7 @@
 
                     <hr/>
 
-                    <!-- Tratamiento de Errores -->
-                    {% if form.errors %}
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <div class="alert alert-danger">
-                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                        {% for error in form.non_field_errors %}
-                            <div class="alert alert-danger">
-                                <strong>{{ error|escape }}</strong>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+
                     <!-- Botones -->
                     <div class="row">
                         <div class="col-xs-12 col-md-12 form-group">

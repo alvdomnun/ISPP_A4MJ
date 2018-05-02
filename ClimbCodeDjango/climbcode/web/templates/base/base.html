@@ -7,6 +7,7 @@
     {% load staticfiles %}
 	{% block extrastatic %}
 	{% endblock %}
+
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- {{ STATIC_URL }} no resuelve (vacio) -->
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
@@ -259,11 +260,14 @@
 			</footer>
 {% endblock%}
 	<script src="/static/js/jquery-3.3.1.js"></script>
+	<script src="/static/js/functions.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="/static/js/jquery-validate/jquery.validate.js"></script>
     <script src="/static/js/jquery-validate/additional-methods.js"></script>
     <script src="/static/js/jquery-validation-messages.js"></script>
+    <link rel="stylesheet" href="{% static 'css/jquery.loadingModal.css' %}">
+    <script src="/static/js/jquery.loadingModal.js"></script>
 	{% block extrajs %}
 	{% endblock %}
 

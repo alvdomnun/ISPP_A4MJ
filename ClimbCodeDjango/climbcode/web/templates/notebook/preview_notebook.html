@@ -35,13 +35,22 @@ background-color: red;
 
     </style>
     <!-- <script src="/static/js/jquery-3.3.1.js"></script> -->
+    
     <script src="/static/js/jquery-3.3.1.js"></script>
     <script src="/static/js/showNotebook.js"></script>
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/Chart.min.js"></script>
 
+
+
     <script>
         $(document).ready(function(){
+            $('body').loadingModal({
+              text: 'Estamos cargando el ejercicio...',
+              color: '#ebf2fa',
+              animation: 'doubleBounce'
+            });
+            disableScroll();
             $('#form_exercise').on('submit', function(event){
                 event.preventDefault();
                 console.log("form submitted!");
@@ -86,7 +95,7 @@ background-color: red;
     </script>
 {% endblock %}
 {% block title %}
-Mostrar Ejercicio
+Previsualizar Ejercicio
 {% endblock %}
 {% block content %}
 <div id="notificaciones-holder" class="alert alert-success" role="alert">
@@ -97,7 +106,7 @@ Mostrar Ejercicio
 
 
 <div style="width:80%;margin-left: 10%">
-    <h1 style="text-align: center">Mostrar Ejercicio</h1>
+    <h1 style="text-align: center">Previsualizar Ejercicio</h1>
     <div class="row" style="background-color: #bbbabb">
         <div class="col-md-12" style="height: auto;">
             <div class="row">
@@ -211,11 +220,11 @@ Mostrar Ejercicio
         </script>
         {% for parameter in box.parameters %}
             <script>
-            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
+            addParameterPreview(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
 
             var idNameActual = "{{parameter.idName}}";
             var numParamActualString = idNameActual.substring(5,idNameActual.length);
-            
+
             //Pasar el num como String a Integer
             var numParamActual = parseInt(numParamActualString);
 
@@ -226,7 +235,14 @@ Mostrar Ejercicio
             </script>
         {% endfor %}
         <script>
-            evalUserCodeAceIframePreviewNotebook('{{box.content}}',respuesta[0],respuesta[3],respuesta[4]);
+        var idChart = '{{box.idGraphic}}';
+        if(idChart!=null && idChart!=''){
+        setTimeout(
+          function()
+          {
+            evalUserCodeAceIframePreviewNotebook(respuesta[2],respuesta[0],respuesta[3],respuesta[4]);
+          }, 4000);
+    }
         </script>
 
     {% elif box.type in "Picture" %}
@@ -234,7 +250,22 @@ Mostrar Ejercicio
             addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
     {% endif %}
+<script>
+setTimeout(
+  function()
+  {
+    // hide the loading modal
+    $('body').loadingModal('hide');
+    enableScroll();
+    setTimeout(
+      function()
+      {
+        // hide the loading modal
+        $('body').loadingModal('destroy');
+      }, 5500);
 
+  }, 6500);
+</script>
 {% endfor %}
     <script src="/static/js/jquery-validate/jquery.validate.js"></script>
     <script src="/static/js/jquery-validate/additional-methods.js"></script>

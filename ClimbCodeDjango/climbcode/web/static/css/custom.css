@@ -15,7 +15,7 @@ body {
 }
 
 .navbar {
-  height: 65px;
+  min-height: 65px;
   padding: 0 1em !important ;
 }
 
@@ -296,6 +296,15 @@ h1, h2, h3 {
   background-color: #fff !important;
 }
 
+.form-control {
+    border: 2px solid #ced4da !important;
+}
+
+.form-control:focus {
+    border: 2px solid #5bc0de !important;
+    box-shadow: unset !important;
+}
+
 .user-avatar {
   width: 50px;
   height: 50px;
@@ -313,4 +322,5 @@ h1, h2, h3 {
 
 .error{
     color: red;
+  }
 }

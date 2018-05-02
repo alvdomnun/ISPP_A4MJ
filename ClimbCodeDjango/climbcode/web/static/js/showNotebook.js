@@ -258,9 +258,6 @@ function addCodeBoxPreviewNotebook(idNotebookContent,idNotebookBD,order,idBoxBD,
 	                                                '</div>'+
 	                                        '</div>'+
 	                                        '<div id="'+idColChartButtons+'" class="col-md-4" style="margin-top: 20px;">'+
-	                                            '<button type="submit" class="btn btn-primary" onclick="evalUserCodeAceIframe('+idEditorParameter+',\''+idDivParam+'\',\''+idIframe+'\',\''+idInputResultado+'\');">'+
-	                                               'Ejecutar>>'+
-	                                            '</button>'+
 	                                            '<br><br>'+
 	                                            '<h4>Resultado del código</h4>'+
 	                                            '<input name="resultado_'+idEditor+'" class="form-control resultado_code_editor"  id="resultado_'+idEditor+'" type="text" disabled="disabled">'+

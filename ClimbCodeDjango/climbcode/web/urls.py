@@ -42,4 +42,7 @@ urlpatterns = [
 
     path('paypal', views.paypalTransaction, name='paypalTransaction'),
 
+    path('balance', views.show_balance, name='show_balance'),
+    path('payout', views.createPayout, name='createPayout'),
+
 ]

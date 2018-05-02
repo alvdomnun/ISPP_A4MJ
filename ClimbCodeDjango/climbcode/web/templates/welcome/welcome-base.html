@@ -79,14 +79,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
                         </li>
-                        {% if user.actor.programmer.balance > 0.0 %}
-                            <label class="col-xs-2 col-md-4 form-control border"  >Saldo:  <input class="col-md-7 border-success" style="border-width: 6px" type="text" align="center"   value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
-                            </label>
-
-                            {% else %}
-                                <label class="col-xs-2 col-md-3 form-control border"  >Saldo:  <input class="col-md-7 border-danger" style="border-width: 6px" type="text" align="center"   value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
-                                </label>
-                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'show_balance' %}">Mi saldo</a>
+                        </li>
                     
                     {% elif user.actor.teacher %}
                             <li class="nav-item">
@@ -114,6 +109,10 @@
                             </li>
 
                     {% elif user.actor.administrator %}
+
+                        <li class="nav-item">
+                                <a class="nav-link" href="{% url 'createPayout' %}">Realizar pagos</a>
+                        </li>
 
                     {% endif %}
 

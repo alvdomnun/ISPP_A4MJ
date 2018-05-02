@@ -79,6 +79,9 @@
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_own_exercisesP' %}">Mis ejercicios</a>
 											</li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'show_balance' %}">Mi saldo</a>
+                                            </li>
 
 
 									{% elif user.actor.teacher %}
@@ -107,6 +110,10 @@
                                             </li>
 
 									{% elif user.actor.administrator %}
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{% url 'createPayout' %}">Realizar pagos</a>
+                                         </li>
 
 									{% endif %}
 

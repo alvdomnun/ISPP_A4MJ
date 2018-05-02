@@ -22,6 +22,11 @@ from boxes.models import Box, Text, Code, Picture, Parameter
 from defaultSubjects.models import DefaultSubject
 import re
 import datetime as datetimeSchool
+import paypalrestsdk
+from paypalrestsdk import Payout, ResourceNotFound
+import random
+import string
+import logging
 
 # Create your views here.
 
@@ -1203,3 +1208,69 @@ def deleteCodeIdGraphic(idBox):
     codeBox.idGraphic = ''
     codeBox.save()
     return codeBox
+
+
+@login_required(login_url='/login/')
+@user_is_programmer
+def show_balance(request):
+    template = loader.get_template('web/saldo.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def createPayout(request):
+
+    ## Comprobación para que solo acceda admin o superuser
+
+
+
+    #Configuracion del entorno sandbox
+    sender_batch_id = ''.join(
+        random.choice(string.ascii_uppercase) for i in range(12))
+
+    paypalrestsdk.configure({
+        "mode": "sandbox",  # sandbox or live
+        "client_id": "AYJNcQvaEsYGDlQyjx8fOL43TFMeJd30o0R9bk9vIJOnO8dPiJwxhPGmgrSqQxiQb3v6mjPQKeO-Hzh5",
+        "client_secret": "ELgffaZPGDxGRBuMcbOzAPv8ikJG5kUPgWNKgOFnrAZnVlJK-KqGU3Dl1m0Kwj8wB-d_033z7KcBpOk0"
+    })
+
+    programmers = Programmer.objects.all().exclude(balance=0.0)
+
+
+    for programmer in programmers:
+        print(programmer)
+        print(programmer.balance)
+        payout = Payout({
+            "sender_batch_header": {
+                "sender_batch_id": sender_batch_id,
+                "email_subject": "You have a payment"
+            },
+            "items": [
+                {
+                    "recipient_type": "EMAIL",
+                    "amount": {
+                        "value": int(programmer.balance),
+                        "currency": "EUR"
+                    },
+                    "receiver": programmer.userAccount.email,
+                    "note": "Thank you.",
+                    "sender_item_id": "item_1"
+                }
+            ]
+        })
+
+        if payout.create():
+            programmer.balance = 0.0
+            programmer.save()
+            print("payout[%s] created successfully" %
+                  (payout.batch_header.payout_batch_id))
+        else:
+            print(payout.error)
+
+
+    #Datos de la vista
+    data = {
+
+        'title': 'Saldo'
+    }
+    return render(request, 'web/payout.html', data)

@@ -8,16 +8,19 @@
                 <a href="#" class="nav-link dropdown-toggle navbar-text flex-align-center" id="navbarDropdownMenuLink"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                    {% if user.actor.photo %}
+                    {% if user.actor.photo is not None %}
+                      {% if user.actor.photo.url is not None %}
                         <div class="user-avatar">
                             <img src="{{ user.actor.photo.url }}"/>
                         </div>
+                        {% endif %}
                     {% endif %}
                     <div style="margin-left: 1em;">
                         &#161;Hola, {{ user.first_name }} ! &nbsp;<span class="caret"></span>
                     </div>
 
                 </a>
+
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     {% if user.is_staff %}
                         <a class="dropdown-item" href="/admin/">Panel Administraci&#243;n</a>

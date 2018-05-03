@@ -18,10 +18,13 @@
 
 <div class="container">
     <h1>Lista de asignaturas</h1>
-
-    <div class="table">
+{% if subject_list %}
+    <div class="panel panel-default panel-table mb-3">
+      <div class="panel-heading">
+      </div>
+      <div class="panel-body">
         <table class="table table-striped table-curved table-hover table-bordered">
-            {% if subject_list %}
+
 
             <thead>
             <tr class="thead-primary">
@@ -52,28 +55,60 @@
             {% endif %}
 </table>
     </div>
+    <div class="panel-footer table-header-primary table-footer">
+      {% if subject_list.has_other_pages %}
+          <ul class="pagination">
+              {% if subject_list.has_previous %}
+                  <li>
+                    <a  class="ui-button ui-pagination ui-pagination-prev" href="?page={{ exercise_list.previous_page_number }}">
+                      <i class="fas fa-angle-double-left"></i>
+                    </a>
+                  </li>
+              {% else %}
+              <li>
+                <a  class="ui-button ui-pagination ui-pagination-prev ui-pagination-disabled" href="#">
+                  <i class="fas fa-angle-double-left"></i>
+                </a>
+              </li>
+              {% endif %}
+              {% for i in subject_list.paginator.page_range %}
+                  {% if subject_list.number == i %}
+                  <li>
+                    <a class="ui-button ui-pagination ui-pagination-current" href="#">
+                      <span>{{ i }}</span>
+                    </a>
+                  </li>
+                      <!--<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>-->
+                  {% else %}
+                  <li>
+                    <a class="ui-button ui-pagination ui-pagination-page" href="?page={{ exercise_list.previous_page_number }}">
+                      <span>{{ i }}</span>
+                    </a>
+                  </li>
+                      <!--<li><a href="?page={{ i }}">{{ i }}</a></li>-->
+                  {% endif %}
+              {% endfor %}
+              {% if subject_list.has_next %}
+              <li>
+                <a class="ui-button ui-pagination ui-pagination-next" href="?page={{ exercise_list.previous_page_number }}">
+                  <i class="fas fa-angle-double-right"></i>
+                </a>
+              </li>
+                  <!--<li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>-->
+              {% else %}
+              <li>
+                <a class="ui-button ui-pagination ui-pagination-next ui-pagination-disabled" href="?page={{ exercise_list.previous_page_number }}">
+                  <i class="fas fa-angle-double-right"></i>
+                </a>
+              </li>
+                  <!--<li class="disabled"><span>&raquo;</span></li>-->
+              {% endif %}
+          </ul>
+{% endif %}
+    </div>
+  </div>
 
-    {% if subject_list.has_other_pages %}
-        <ul class="pagination">
-            {% if subject_list.has_previous %}
-                <li><a href="?page={{ subject_list.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&laquo;</span></li>
-            {% endif %}
-            {% for i in subject_list.paginator.page_range %}
-                {% if subject_list.number == i %}
-                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
-                {% endif %}
-            {% endfor %}
-            {% if subject_list.has_next %}
-                <li><a href="?page={{ subject_list.next_page_number }}">&raquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&raquo;</span></li>
-            {% endif %}
-        </ul>
-    {% endif %}
+  {% endif %}
 
 </div>
 {% endblock %}

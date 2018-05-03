@@ -109,9 +109,13 @@
         {% endif %}
 
         <!-- Listado -->
-        <div class="table ">
+        {% if exercise_list %}
+        <div class="panel panel-default panel-table mb-3">
+          <div class="panel-heading">
+          </div>
+          <div class="panel-body">
             <table class="table table-striped table-curved table-hover table-bordered">
-                {% if exercise_list %}
+
 
                     <thead class="thead-primary">
                     <tr>
@@ -138,7 +142,8 @@
                             <th>Acciones</th>
                         {% endif %}
                     </tr>
-                    </thead>
+                  </thead>
+
                     <tbody>
                     {% for exercise in exercise_list %}
 
@@ -151,8 +156,13 @@
                                         {% endif %}
                                     </td>
                                 {% endif %}
-                                <td><a class="btn btn-default"
-                                       href="/web/previewNotebook?idNotebook={{ exercise.id }} ">Previsualizar</a></td>
+                                <td>
+                                  <a class="ui-button btn-icon-only btn-default" title="Previsualizar"
+                                           href="/web/previewNotebook?idNotebook={{ exercise.id }} ">
+                                           <i class="fas fa-search fa-fw"></i>
+                                           <!--Previsualizar-->
+                                  </a>
+                                </td>
                             {% endif %}
                             <td>{{ exercise.title }}</td>
                             <td>{{ exercise.description }}</td>
@@ -236,8 +246,60 @@
                     <p>No existen ejercicios.</p>
                 {% endif %}
             </table>
+          </div>
+          <div class="panel-footer table-header-primary table-footer">
+            {% if exercise_list.has_other_pages %}
+                <ul class="pagination">
+                    {% if exercise_list.has_previous %}
+                        <li>
+                          <a  class="ui-button ui-pagination ui-pagination-prev" href="?page={{ exercise_list.previous_page_number }}">
+                            <i class="fas fa-angle-double-left"></i>
+                          </a>
+                        </li>
+                    {% else %}
+                    <li>
+                      <a  class="ui-button ui-pagination ui-pagination-prev ui-pagination-disabled" href="#">
+                        <i class="fas fa-angle-double-left"></i>
+                      </a>
+                    </li>
+                    {% endif %}
+                    {% for i in exercise_list.paginator.page_range %}
+                        {% if exercise_list.number == i %}
+                        <li>
+                          <a class="ui-button ui-pagination ui-pagination-current" href="#">
+                            <span>{{ i }}</span>
+                          </a>
+                        </li>
+                            <!--<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>-->
+                        {% else %}
+                        <li>
+                          <a class="ui-button ui-pagination ui-pagination-page" href="?page={{ exercise_list.previous_page_number }}">
+                            <span>{{ i }}</span>
+                          </a>
+                        </li>
+                            <!--<li><a href="?page={{ i }}">{{ i }}</a></li>-->
+                        {% endif %}
+                    {% endfor %}
+                    {% if exercise_list.has_next %}
+                    <li>
+                      <a class="ui-button ui-pagination ui-pagination-next" href="?page={{ exercise_list.previous_page_number }}">
+                        <i class="fas fa-angle-double-right"></i>
+                      </a>
+                    </li>
+                        <!--<li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>-->
+                    {% else %}
+                    <li>
+                      <a class="ui-button ui-pagination ui-pagination-next ui-pagination-disabled" href="?page={{ exercise_list.previous_page_number }}">
+                        <i class="fas fa-angle-double-right"></i>
+                      </a>
+                    </li>
+                        <!--<li class="disabled"><span>&raquo;</span></li>-->
+                    {% endif %}
+                </ul>
+              <% endif %>
+          </div>
         </div>
-
+{% endif %}
         {% if user.actor.programmer and ownList %}
             <div class="create">
                 <input type="button" class="btn btn-default btn-primary"
@@ -246,27 +308,7 @@
             </div>
         {% endif %}
 
-        {% if exercise_list.has_other_pages %}
-            <ul class="pagination">
-                {% if exercise_list.has_previous %}
-                    <li><a href="?page={{ exercise_list.previous_page_number }}">&laquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&laquo;</span></li>
-                {% endif %}
-                {% for i in exercise_list.paginator.page_range %}
-                    {% if exercise_list.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                    {% else %}
-                        <li><a href="?page={{ i }}">{{ i }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if exercise_list.has_next %}
-                    <li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>
-                {% else %}
-                    <li class="disabled"><span>&raquo;</span></li>
-                {% endif %}
-            </ul>
-        {% endif %}
+
 
     </div>
 {% endblock %}

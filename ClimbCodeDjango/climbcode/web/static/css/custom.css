@@ -442,6 +442,10 @@ table{
   border-radius: 50%;
 }
 
+.ui-button a {
+  text-decoration: none;
+}
+
 .ui-button:hover{
   background:#1fb3e5;
   color: white;
@@ -470,6 +474,49 @@ table{
   */
 }
 
+.ui-pagination {
+  width: 30px;
+  height: 30px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+
+  width: 30px;
+  height: 30px;
+  padding: 0 !important;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding-top: 3px !important;
+}
+
+.ui-button.ui-pagination {
+  background: white;
+  color: #1e88e5;
+}
+
+.ui-button.ui-pagination:hover {
+  color: white;
+  background:#1fb3e5;
+}
+
+a.ui-pagination {
+  text-decoration: none !important;
+  outline: none;
+}
+
+.ui-pagination.ui-pagination-current {
+  background-color: #ff6200;
+  color: white;
+  cursor: default;
+}
+
+.ui-pagination.ui-pagination-disabled {
+  background: #bbbbbb;
+}
+
 .btn-orange {
   background-color: #ff6200;
 }
@@ -480,4 +527,30 @@ table{
 
 .btn-yellow {
   background-color: #e6e600;
+}
+
+
+.panel .panel-body .table {
+  margin-bottom: 0;
+}
+
+.table-header-primary {
+  color: white;
+  background: #1e88e5;
+  padding: .5em;
+}
+
+.table-footer {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-footer ul{
+  display: inline-block;
+}
+
+.table-footer li {
+  display: inline;
 }

@@ -10,10 +10,10 @@
     <h1>Lista de profesores</h1>
 
     <div class="table">
-        <table class="table table-striped">
+        <table class="table table-striped table-curved table-hover table-bordered">
             {% if teacher_list %}
 
-                    <thead>
+                    <thead class="thead-primary">
                     <tr>
                         <th>Nombre</th>
                         <th>Apellidos</th>
@@ -21,7 +21,7 @@
                         <th>DNI</th>
                         <th>Foto</th>
                         <th>Teléfono</th>
-                        <th></th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
             {% for teacher in teacher_list %}
@@ -40,8 +40,14 @@
                         {%  endif %}
                         <td>{{ teacher.phone }}</td>
                         <td>
-                            <a class="btn btn-default" href="/actors/teachers/edit/{{ teacher.pk }}">Editar</a>
-                            <a class="btn btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">Borrar</a>
+                            <a class="ui-button btn-icon-only btn-primary" title="Editar" href="/actors/teachers/edit/{{ teacher.pk }}">
+                              <!--Editar-->
+                              <i class="fas fa-edit fa-fw"></i>
+                            </a>
+                            <a class="ui-button btn-icon-only btn-danger" href="/actors/teachers/edit/delete/{{ teacher.pk }}">
+                              <i class="far fa-times-circle fa-lg"></i>
+                              <!--Borrar-->
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

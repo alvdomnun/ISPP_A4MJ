@@ -54,7 +54,11 @@
 }
 
 #home {
-    margin-top: 65px;
+  /*  margin-top: 65px;*/
+}
+
+#logoutForm {
+  margin-bottom: 0 !important;
 }
 
 p {

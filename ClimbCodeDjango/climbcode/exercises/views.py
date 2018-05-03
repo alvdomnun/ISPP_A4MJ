@@ -210,6 +210,9 @@ def list_exercisesP(request):
 
         exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
 
+        #Número de ejercicios promocionados, si es 0 no se muestra columna en el lsitado
+        exercise_promoted = Exercise.objects.filter(promoted=True)
+        numExercisesP = exercise_promoted.__len__()
     except Exception as e:
 
         exercise_list = Exercise.objects.none()
@@ -231,6 +234,7 @@ def list_exercisesP(request):
         'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
+        'numExercisesP': numExercisesP,
         'title': 'Listado de ejercicios'
     }
     return render(request, 'exercises_list.html', data)
@@ -280,6 +284,10 @@ def list_exercisesS(request):
     # Filtro por NO draft, Orden de fecha de promocion y excluye los que ya tiene comprado
     try:
         exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+
+        # Número de ejercicios promocionados, si es 0 no se muestra columna en el lsitado
+        exercise_promoted = Exercise.objects.filter(promoted=True)
+        numExercisesP = exercise_promoted.__len__()
     except Exception as e:
         exercise_list = Exercise.objects.none()
 
@@ -301,6 +309,7 @@ def list_exercisesS(request):
         'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'title': 'Listado de ejercicios',
+        'numExercisesP': numExercisesP,
         'ownList': ownList,
         'license':license
     }
@@ -352,6 +361,9 @@ def list_exercisesT(request):
 
     try:
         exercise_list = list(Exercise.objects.filter(draft=False).exclude(school=school).order_by('startPromotionDate'))
+        # Número de ejercicios promocionados, si es 0 no se muestra columna en el lsitado
+        exercise_promoted = Exercise.objects.filter(promoted=True)
+        numExercisesP = exercise_promoted.__len__()
     except Exception as e:
         exercise_list = Exercise.objects.none()
 
@@ -372,6 +384,7 @@ def list_exercisesT(request):
         'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
+        'numExercisesP': numExercisesP,
         'title': 'Listado de ejercicios'
     }
     return render(request, 'exercises_list.html', data)

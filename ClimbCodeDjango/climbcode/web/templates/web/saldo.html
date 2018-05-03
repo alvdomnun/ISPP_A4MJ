@@ -2,23 +2,30 @@
 
 
 {% block content %}
-    <style>
+    <div class="row">
 
-    </style>
+        <div class="container">
+            <br/>
+            <h1>Saldo actual</h1>
+            <br/>
 
+            <div class="col-xs-12 col-md-12 form-group">
+                            <span style="font-style: normal">
+                                El próximo pago se realizará el <b>{{ date }}</b>. En dicha fecha se le pagará la cantidad que tenga en ese momento en su saldo, volviendo a 0.0€ y comenzando de nuevo a acumularse hasta el siguiente pago, el cuál se realizará el <b>{{ date2 }}</b>.
+                            </span>
+            </div>
 
-<div class="container">
-    <h1>Saldo</h1>
+            <div class="saldo">
+                {% if user.actor.programmer.balance > 0.0 %}
+                    <input class="col-md-2 border-success" style="border-width: 6px" type="text"
+                           value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
 
-    {% if user.actor.programmer.balance > 0.0 %}
-        <input class="col-md-2 border-success" style="border-width: 6px" type="text"  value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
+                {% else %}
+                    <input class="col-md-2 border-danger" style="border-width: 6px" type="text"
+                           value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
 
-        {% else %}
-        <input class="col-md-2 border-danger" style="border-width: 6px" type="text" value="{{ user.actor.programmer.balance|default:"0.0" }} €" disabled/>
-
-    {% endif %}
-    </br></br>
-
-</div>
-        <p><b>*AVISO IMPORTANTE*</b>  Todos los pagos solicitados serán revisados y enviados el 25 de cada mes, si experimenta algún problema contacte con nosotros en <u>climbcode@gmail.com</u> </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

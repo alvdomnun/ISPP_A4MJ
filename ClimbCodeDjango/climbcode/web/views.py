@@ -1,33 +1,33 @@
+import datetime as datetimeSchool
+import random
+import re
+import string
+from datetime import datetime, date
+
+import paypalrestsdk
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, render_to_response
-from django.contrib.auth import authenticate, login
+from django.http import HttpRequest
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.http.response import HttpResponseRedirect, HttpResponseForbidden
+from django.shortcuts import render
+from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
+from paypalrestsdk import Payout
 
 from actors.decorators import user_is_programmer
-from web.forms import RegisterSchoolPaymentForm
-from django.http import HttpResponse
-from django.http.response import HttpResponseRedirect, HttpResponseForbidden
-from django.template import loader
-from django.http import HttpRequest
-from django.template import RequestContext
-from datetime import datetime, date
-from web.forms import RegisterProgrammerForm, RegisterSchoolForm, ExerciseForm
-from django.contrib.auth.models import User
 from actors.models import School, Programmer
+from boxes.models import Text, Code, Picture, Parameter
+from defaultSubjects.models import DefaultSubject
+from exercises.models import Exercise
 from licenses.models import LicenseType, License
 from provinces.models import Province
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from exercises.models import Exercise
-from boxes.models import Box, Text, Code, Picture, Parameter
-from defaultSubjects.models import DefaultSubject
-import re
-import datetime as datetimeSchool
-import paypalrestsdk
-from paypalrestsdk import Payout, ResourceNotFound
-import random
-import string
-import logging
+from web.forms import RegisterProgrammerForm, RegisterSchoolForm, ExerciseForm
+from web.forms import RegisterSchoolPaymentForm
+
 
 # Create your views here.
 
@@ -1214,8 +1214,43 @@ def deleteCodeIdGraphic(idBox):
 @login_required(login_url='/login/')
 @user_is_programmer
 def show_balance(request):
+    today = date.today()
+    month = today.month + 1
+    year = today.year
+
+    today2 = date.today()
+    month2 = today2.month + 2
+    year2 = today2.year
+
+    if month >= 12:
+        month = 1
+        year = year + 1
+
+    if month < 10:
+        month = str('0' + str(month))
+        year = str(year)
+    else:
+        month = str(month)
+        year = str(year)
+
+    if month2 >= 12:
+        month2 = 1
+        year2 = year2 + 1
+
+    if month2 < 10:
+        month2 = str('0' + str(month2))
+        year2 = str(year2)
+    else:
+        month2 = str(month2)
+        year2 = str(year2)
+
+
     template = loader.get_template('web/saldo.html')
-    context = {}
+
+    context = {
+        'date': str('25' + "/" + month + "/" + year),
+        'date2': str('25' + "/" + month2 + "/" + year2),
+    }
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')

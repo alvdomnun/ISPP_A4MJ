@@ -13,7 +13,7 @@
     <div class="panel panel-default panel-table mb-3">
       <div class="panel-heading">
       </div>
-      
+
       <div class="panel-body">
         <table class="table table-striped table-curved table-hover table-bordered">
 
@@ -111,16 +111,17 @@
               {% endif %}
             </div>
           </div>
-          {% endif %}
 
             {% else %}
+            <div class="container-fluid mt-4 mb-4">
                 <p></p>
                 <p>No existen profesores.</p>
+              </div>
             {% endif %}
 
 
-    <div class="create">
-        <input type="button" class="btn btn-default"
+    <div class="create ml-2">
+        <input type="button" class="btn btn-primary"
                onclick="location.href='/actors/teachers/register';"
                value="Crear profesor"/>
         <a href="{% url 'upload_teachers' %}" class="btn btn-warning">Crear varios profesores</a>

@@ -44,5 +44,6 @@ urlpatterns = [
 
     path('balance', views.show_balance, name='show_balance'),
     path('payout', views.createPayout, name='createPayout'),
+    path('payout_pay', views.createPayout_pay, name='createPayoutPay'),
 
 ]

@@ -208,7 +208,7 @@ def list_exercisesP(request):
 
     try:
 
-        exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
+        exercise_list = Exercise.objects.filter(draft=False).order_by('startPromotionDate')
 
         #Número de ejercicios promocionados, si es 0 no se muestra columna en el lsitado
         exercise_promoted = Exercise.objects.filter(promoted=True)

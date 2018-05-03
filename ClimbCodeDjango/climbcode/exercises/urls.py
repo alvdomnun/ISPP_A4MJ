@@ -18,6 +18,6 @@ urlpatterns = [
 
     path('student/school_exercises', views.list_school_exercisesST, name='list_school_exercisesST'),
 
-    path('web/exerciseExample', views.list_exercisesExample, name='list_exercisesExample'),
+
 ]
 

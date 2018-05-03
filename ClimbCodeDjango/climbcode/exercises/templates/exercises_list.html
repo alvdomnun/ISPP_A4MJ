@@ -95,6 +95,7 @@
             <tr>
             {% if ownList == False %}
                 <th></th>
+                <th></th>
             {% endif %}
                 <th>Título</th>
                 <th>Descripción</th>
@@ -122,6 +123,7 @@
                                 Promocionado
                             {% endif %}
                             </td>
+                            <td><a class="btn btn-default" href="/web/previewNotebook?idNotebook={{ exercise.id }} ">Previsualizar</a></td>
                         {% endif %}
                         <td>{{ exercise.title }}</td>
                         <td>{{ exercise.description }}</td>

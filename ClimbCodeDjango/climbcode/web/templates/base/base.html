@@ -47,7 +47,7 @@
 									<ul class="navbar-nav mr-auto">
 									{% if user.actor.school %}
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                                             </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
@@ -66,13 +66,12 @@
 											</li>
 
 									{% elif user.actor.programmer %}
-
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
+                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
 											</li>
-											<li class="nav-item">
-                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
-                                            </li>
 											<li class="nav-item">
 													<a class="nav-link" href="{% url 'list_exercisesP' %}">Ejercicios</a>
 											</li>
@@ -86,7 +85,7 @@
 
 									{% elif user.actor.teacher %}
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                    <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
@@ -100,7 +99,7 @@
 
 									{% elif user.actor.student %}
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                                <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>

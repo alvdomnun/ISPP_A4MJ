@@ -47,7 +47,7 @@
 
                     {% if user.actor.school %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                            <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_teachers' %}">Mis Profesores</a>
@@ -67,7 +67,7 @@
 
                     {% elif user.actor.programmer %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                            <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'createNotebook' %}">Nuevo Ejercicio</a>
@@ -85,7 +85,7 @@
                     
                     {% elif user.actor.teacher %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                <a class="nav-link" href="/web/showNotebook?idNotebook=12">Ver Ejemplo</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>
@@ -99,7 +99,7 @@
 
                     {% elif user.actor.student %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'list_exercisesExample' %}">Ver Ejemplo</a>
+                                <a class="nav-link" href="/web/showNotebook?idNotebook=12}">Ver Ejemplo</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'list_subjects' %}">Asignaturas</a>

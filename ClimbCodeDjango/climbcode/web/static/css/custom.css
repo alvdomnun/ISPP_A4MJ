@@ -554,3 +554,21 @@ a.ui-pagination {
 .table-footer li {
   display: inline;
 }
+
+.bordered-panel {
+    border: 3px solid #1e88e5;
+    border-radius: 5px;
+    background: white;
+    padding: 1em 1em;
+}
+
+
+.login-icon {
+  font-size: 6em;
+  color: #363636;
+}
+
+.login-icon-wrapper {
+  margin-bottom: 1em;
+  text-align: center;
+}

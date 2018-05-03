@@ -85,7 +85,7 @@
                               <!--<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>-->
                           {% else %}
                           <li>
-                            <a class="ui-button ui-pagination ui-pagination-page" href="?page={{ exercise_list.previous_page_number }}">
+                            <a class="ui-button ui-pagination ui-pagination-page" href="?page={{ i }}">
                               <span>{{ i }}</span>
                             </a>
                           </li>
@@ -94,7 +94,7 @@
                       {% endfor %}
                       {% if teacher_list.has_next %}
                       <li>
-                        <a class="ui-button ui-pagination ui-pagination-next" href="?page={{ exercise_list.previous_page_number }}">
+                        <a class="ui-button ui-pagination ui-pagination-next" href="?page={{ next_page_number }}">
                           <i class="fas fa-angle-double-right"></i>
                         </a>
                       </li>

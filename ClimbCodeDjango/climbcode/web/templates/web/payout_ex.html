@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+    <h1>Lista de programadores a pagar</h1>
+
+    {% if programmer_list %}
+
+        <div class="panel panel-default panel-table mb-3">
+            <div class="panel-heading">
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Teléfono</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for programmer in programmer_list %}
+                        <tr>
+                            <td>{{ programmer.userAccount.first_name }}</td>
+                            <td>{{ programmer.userAccount.last_name }}</td>
+                            <td>{{ programmer.userAccount.email }}</td>
+                            <td>{{ programmer.dni }}</td>
+                            <td>{{ programmer.phone }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel-footer table-header-primary table-footer">
+                {% if programmer_list.has_other_pages %}
+                    <ul class="pagination">
+                        {% if programmer_list.has_previous %}
+                            <li>
+                                <a class="ui-button ui-pagination ui-pagination-prev"
+                                   href="?page={{ exercise_list.previous_page_number }}">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="ui-button ui-pagination ui-pagination-prev ui-pagination-disabled" href="#">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% for i in programmer_list.paginator.page_range %}
+                            {% if programmer_list.number == i %}
+                                <li>
+                                    <a class="ui-button ui-pagination ui-pagination-current" href="#">
+                                        <span>{{ i }}</span>
+                                    </a>
+                                </li>
+                                <!--<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>-->
+                            {% else %}
+                                <li>
+                                    <a class="ui-button ui-pagination ui-pagination-page"
+                                       href="?page={{ exercise_list.previous_page_number }}">
+                                        <span>{{ i }}</span>
+                                    </a>
+                                </li>
+                                <!--<li><a href="?page={{ i }}">{{ i }}</a></li>-->
+                            {% endif %}
+                        {% endfor %}
+                        {% if programmer_list.has_next %}
+                            <li>
+                                <a class="ui-button ui-pagination ui-pagination-next"
+                                   href="?page={{ exercise_list.previous_page_number }}">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <!--<li><a href="?page={{ exercise_list.next_page_number }}">&raquo;</a></li>-->
+                        {% else %}
+                            <li>
+                                <a class="ui-button ui-pagination ui-pagination-next ui-pagination-disabled"
+                                   href="?page={{ exercise_list.previous_page_number }}">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                            <!--<li class="disabled"><span>&raquo;</span></li>-->
+                        {% endif %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <input class="col-md-3 border-success" style="border-width: 6px" type="text"
+               value="Número de programadores a pagar: {{ num_programmers }}" disabled/>
+        <br/><br/>
+        <input class="col-md-2 border-danger" style="border-width: 6px" type="text"
+               value="Total a pagar: {{ totalBalance }}€" disabled/>
+        <br/><br/>
+        <a href="{% url 'createPayoutPay' %}" class="btn btn-warning">Realizar pagos</a>
+
+    {% else %}
+        <p></p>
+        <p>En este momento no hay programadores con pagos pendientes.</p>
+    {% endif %}
+
+
+
+
+
+{% endblock %}
+

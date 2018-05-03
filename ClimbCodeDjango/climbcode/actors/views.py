@@ -47,7 +47,7 @@ def upload_students(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         stop = False
@@ -80,7 +80,7 @@ def upload_students(request):
         except Exception as e:
             logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/students/upload')
 
         if form.is_valid() and stop is False:
@@ -118,7 +118,7 @@ def upload_students(request):
 
             except Exception as e:
                 messages.error(request,
-                               'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                               'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
                 return HttpResponseRedirect('/actors/teachers/upload')
 
     else:
@@ -155,7 +155,7 @@ def upload_teachers(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         try:
@@ -186,7 +186,7 @@ def upload_teachers(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         if form.is_valid() and stop is False:
@@ -225,7 +225,7 @@ def upload_teachers(request):
 
             except Exception as e:
                 messages.error(request,
-                               'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como -CSV UTF-8 (delimitado por comas) (*.csv)-')
+                               'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
                 return HttpResponseRedirect('/actors/teachers/upload')
 
 

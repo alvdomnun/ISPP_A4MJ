@@ -95,7 +95,9 @@
             <thead class="thead-primary">
             <tr>
             {% if ownList == False %}
-                <th></th>
+                {% if numExercisesP > 0 %}
+                    <th></th>
+                {% endif %}
                 <th></th>
             {% endif %}
                 <th>Título</th>
@@ -111,7 +113,9 @@
                     <th>Fecha de comienzo</th>
                     <th>Fecha de fin</th>
                 {% endif %}
-                <th>Acciones</th>
+                {% if ownList or user.actor.school and not ownList %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
           </thead>
           <tbody>
@@ -119,11 +123,13 @@
 
                     <tr>
                         {% if ownList == False %}
-                            <td class="parpadea text">
-                            {% if exercise.promoted == True %}
-                                Promocionado
-                            {% endif %}
-                            </td>
+                            {% if numExercisesP > 0 %}
+                                <td class="parpadea text">
+                                {% if exercise.promoted == True %}
+                                    Promocionado
+                                {% endif %}
+                                </td>
+                             {% endif %}
                             <td><a class="btn btn-default" href="/web/previewNotebook?idNotebook={{ exercise.id }} ">Previsualizar</a></td>
                         {% endif %}
                         <td>{{ exercise.title }}</td>

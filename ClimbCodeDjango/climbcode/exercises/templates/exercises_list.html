@@ -242,10 +242,6 @@
                     {% endfor %}
                     </tbody>
 
-                {% else %}
-                    <p></p>
-                    <p>No existen ejercicios.</p>
-                {% endif %}
             </table>
           </div>
           <div class="panel-footer table-header-primary table-footer">
@@ -300,7 +296,11 @@
               {% endif %}
           </div>
         </div>
-{% endif %}
+
+                        {% else %}
+                            <p></p>
+                            <p>No existen ejercicios.</p>
+                        {% endif %}
 
         {% if user.actor.programmer and ownList %}
             <div class="create">

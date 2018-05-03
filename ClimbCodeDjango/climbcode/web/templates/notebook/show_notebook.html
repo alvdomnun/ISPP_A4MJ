@@ -42,6 +42,12 @@ background-color: red;
 
     <script>
         $(document).ready(function(){
+            $('body').loadingModal({
+              text: 'Estamos cargando el ejercicio...',
+              color: '#ebf2fa',
+              animation: 'doubleBounce'
+            });
+            disableScroll();
             $('#form_exercise').on('submit', function(event){
                 event.preventDefault();
                 console.log("form submitted!");
@@ -207,7 +213,7 @@ Mostrar Ejercicio
         </script>
     {% elif box.type in "Code" %}
         <script>
-            var respuesta = addCodeBoxPreviewNotebook('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
+            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
         </script>
         {% for parameter in box.parameters %}
             <script>
@@ -234,7 +240,22 @@ Mostrar Ejercicio
             addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
         </script>
     {% endif %}
+<script>
+setTimeout(
+  function()
+  {
+    // hide the loading modal
+    $('body').loadingModal('hide');
+    enableScroll();
+    setTimeout(
+      function()
+      {
+        // hide the loading modal
+        $('body').loadingModal('destroy');
+      }, 5500);
 
+  }, 6500);
+</script>
 {% endfor %}
     <script src="/static/js/jquery-validate/jquery.validate.js"></script>
     <script src="/static/js/jquery-validate/additional-methods.js"></script>

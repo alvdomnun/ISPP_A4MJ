@@ -1260,6 +1260,42 @@ def createPayout(request):
     if  hasattr(request.user.actor, 'school') or hasattr(request.user.actor, 'programmer') or hasattr(request.user.actor, 'student') or hasattr(request.user.actor, 'teacher'):
         raise PermissionDenied
 
+    #Listado de todos los programadores a pagar
+    programmers = Programmer.objects.all().exclude(balance=0.0)
+
+    #Número de programadores a pagar
+    num_programmers = programmers.__len__()
+
+    totalBalance = 0
+    programmer_list = programmers
+
+    for programmer in programmers:
+        try:
+
+            totalBalance += int(programmer.balance)
+
+        except Exception as e:
+            programmer_list = Programmer.objects.none()
+
+
+    #Datos de la vista
+    data = {
+
+        'title': 'Saldo',
+        'programmer_list':programmer_list,
+        'totalBalance':totalBalance,
+        'num_programmers':num_programmers
+
+    }
+    return render(request, 'web/payout_ex.html', data)
+
+@login_required(login_url='/login/')
+def createPayout_pay(request):
+
+    ## Comprobación para que solo acceda admin o superuser
+    if  hasattr(request.user.actor, 'school') or hasattr(request.user.actor, 'programmer') or hasattr(request.user.actor, 'student') or hasattr(request.user.actor, 'teacher'):
+        raise PermissionDenied
+
     #Configuración entorno sandbox
 
     paypalrestsdk.configure({

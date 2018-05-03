@@ -19,7 +19,7 @@ def list_subjects(request):
 
         # Filtro asignaturas propias de la escuela
         try:
-            subject_list = Subject.objects.filter(school=school)
+            subject_list = Subject.objects.filter(school=school).order_by('course')
         except Exception as e:
             subject_list = Subject.objects.none()
 
@@ -30,7 +30,7 @@ def list_subjects(request):
 
         #Filtra las asignaturas por la escuela
         try:
-            subject_list = Subject.objects.filter(school=school)
+            subject_list = Subject.objects.filter(school=school).order_by('course')
         except Exception as e:
             subject_list = Subject.objects.none()
 
@@ -42,7 +42,7 @@ def list_subjects(request):
 
         # Filtra las asignaturas por la escuela
         try:
-            subject_list = Subject.objects.filter(school=school)
+            subject_list = Subject.objects.filter(school=school).order_by('course')
         except Exception as e:
             subject_list = Subject.objects.none()
 
@@ -80,7 +80,7 @@ def list_subjectsExercises(request,pk):
             # Recupera la escuela
             school = request.user.actor.school
             #Ejercicios filtrados por la escuela, NO draft y por la asignatura
-            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject)
+            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject).order_by('title')
         except Exception as e:
             exercise_list = Exercise.objects.none()
 
@@ -97,7 +97,7 @@ def list_subjectsExercises(request,pk):
             school = School.objects.get(teacher__userAccount=teacher)
 
             # Ejercicios filtrados por la escuela del teacher, NO draft y por la asignatura
-            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject)
+            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject).order_by('title')
         except Exception as e:
             exercise_list = Exercise.objects.none()
 
@@ -113,7 +113,7 @@ def list_subjectsExercises(request,pk):
             school = School.objects.get(student__userAccount=student)
 
             # Ejercicios filtrados por la escuela del student, NO draft y por la asignatura
-            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject)
+            exercise_list = Exercise.objects.filter(school=school).filter(draft=False).filter(subject__exact=subject).order_by('title')
         except Exception as e:
             exercise_list = Exercise.objects.none()
     else:

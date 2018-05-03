@@ -208,7 +208,7 @@ def list_exercisesP(request):
 
     try:
 
-        exercise_list = list( Exercise.objects.filter(draft=False).order_by('startPromotionDate'))
+        exercise_list = Exercise.objects.filter(draft=False).order_by('startPromotionDate')
 
         #Número de ejercicios promocionados, si es 0 no se muestra columna en el lsitado
         exercise_promoted = Exercise.objects.filter(promoted=True)
@@ -250,7 +250,7 @@ def list_own_exercisesP(request):
     ownList = True
     # Filtro ejercicios propios
     try:
-        exercise_list = Exercise.objects.filter(programmer__userAccount=programmer)
+        exercise_list = Exercise.objects.filter(programmer__userAccount=programmer).order_by('startPromotionDate')
     except Exception as e:
         exercise_list = Exercise.objects.none()
 
@@ -326,7 +326,7 @@ def list_own_exercisesS(request):
 
     #Filtro ejercicios propios y NO draft
     try:
-        exercise_list = Exercise.objects.filter(school=school).filter(draft=False)
+        exercise_list = Exercise.objects.filter(school=school).filter(draft=False).order_by('startPromotionDate')
     except Exception as e:
         exercise_list = Exercise.objects.none()
 
@@ -399,7 +399,7 @@ def list_school_exercisesT(request):
     school = School.objects.get(teacher__userAccount=teacher)
 
     try:
-        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False).order_by('startPromotionDate')
     except Exception as e:
         exercise_list = Exercise.objects.none()
 
@@ -436,7 +436,7 @@ def list_school_exercisesST(request):
     # Escuela del student
     school = School.objects.get(student__userAccount=student)
     try:
-        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False)
+        exercise_list = Exercise.objects.filter(school__userAccount=school).filter(draft=False).order_by('startPromotionDate')
 
     except Exception as e:
         exercise_list = Exercise.objects.none()
@@ -515,7 +515,7 @@ def search_exercises(request):
         
     # Paginación
     page = request.GET.get('page', 1)
-    paginator = Paginator(exercise_list, 6)
+    paginator = Paginator(exercise_list.order_by('startPromotionDate'), 6)
     try:
         exercise_list = paginator.page(page)
     except PageNotAnInteger:

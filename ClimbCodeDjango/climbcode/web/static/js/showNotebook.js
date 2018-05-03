@@ -172,14 +172,6 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
           }, 3500);
     }
 
-    if(idChart!=null && idChart!=''){
-        setTimeout(
-          function()
-          {
-            evalUserCodeAceIframe(idEditorParameter,idDivParam,idIframe,idInputResultado);
-          }, 1500);
-    }
-
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
     var respuesta = [idDivParam,idDivParamButton];
     return respuesta;

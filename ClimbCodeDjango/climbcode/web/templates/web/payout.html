@@ -2,10 +2,49 @@
 
 
 {% block content %}
-    <style>
+    <h1>Lista de programadores pagados</h1>
+    <div class="table">
+        <table class="table table-striped">
+            {% if programmer_list %}
 
-    </style>
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th>DNI</th>
+                    <th>Teléfono</th>
+                </tr>
+                </thead>
+                {% for programmer in programmer_list %}
+                    <tbody>
 
-    <b>Pagos realizados exitosamente</b>
+                    <tr>
+                        <td>{{ programmer.userAccount.first_name }}</td>
+                        <td>{{ programmer.userAccount.last_name }}</td>
+                        <td>{{ programmer.userAccount.email }}</td>
+                        <td>{{ programmer.dni }}</td>
+                        <td>{{ programmer.phone }}</td>
+
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+                </table>
+                </div>
+                    <input class="col-md-3 border-success" style="border-width: 6px" type="text"  value="Pagos realizados exitosamente" disabled/>
+                    <br/><br/>
+                    <input class="col-md-3 border-success" style="border-width: 6px" type="text"  value="Número de programadores pagados: {{ num_programmers }}" disabled/>
+                    <br/><br/>
+                    <input class="col-md-2 border-danger" style="border-width: 6px" type="text" value="Total pagado: {{ totalBalance }}€" disabled/>
+
+            {% else %}
+                <p></p>
+                <p>No se han realizado pagos.</p>
+            {% endif %}
+
+
+
+
 
 {% endblock %}

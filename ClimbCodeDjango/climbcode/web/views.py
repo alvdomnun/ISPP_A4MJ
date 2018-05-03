@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, render_to_response
 from django.contrib.auth import authenticate, login
 
@@ -1221,12 +1222,10 @@ def show_balance(request):
 def createPayout(request):
 
     ## Comprobación para que solo acceda admin o superuser
+    if  hasattr(request.user.actor, 'school') or hasattr(request.user.actor, 'programmer') or hasattr(request.user.actor, 'student') or hasattr(request.user.actor, 'teacher'):
+        raise PermissionDenied
 
-
-
-    #Configuracion del entorno sandbox
-    sender_batch_id = ''.join(
-        random.choice(string.ascii_uppercase) for i in range(12))
+    #Configuración entorno sandbox
 
     paypalrestsdk.configure({
         "mode": "sandbox",  # sandbox or live
@@ -1234,12 +1233,22 @@ def createPayout(request):
         "client_secret": "ELgffaZPGDxGRBuMcbOzAPv8ikJG5kUPgWNKgOFnrAZnVlJK-KqGU3Dl1m0Kwj8wB-d_033z7KcBpOk0"
     })
 
+    #Listado de todos los programadores a pagar
     programmers = Programmer.objects.all().exclude(balance=0.0)
 
+    #Número de programadores a pagar
+    num_programmers = programmers.__len__()
 
+    totalBalance = 0
+    programmer_list = programmers
+
+    #Creamos un Payout por cada programador a pagar
     for programmer in programmers:
-        print(programmer)
-        print(programmer.balance)
+        # Configuracion para el envío de Payouts al entorno sandbox, 1 sender por payout
+        sender_batch_id = ''.join(
+            random.choice(string.ascii_uppercase) for i in range(12))
+
+        #Creación del Payout con su sender, cantidad a pagar del programador (int) y correo del programador a pagar
         payout = Payout({
             "sender_batch_header": {
                 "sender_batch_id": sender_batch_id,
@@ -1259,18 +1268,25 @@ def createPayout(request):
             ]
         })
 
-        if payout.create():
+        try:
+            payout.create()
+            #Calculamos el balance total que se va a pagar
+            totalBalance += int(programmer.balance)
+
+            #Actualizamos el saldo del programador
             programmer.balance = 0.0
             programmer.save()
-            print("payout[%s] created successfully" %
-                  (payout.batch_header.payout_batch_id))
-        else:
-            print(payout.error)
+        except Exception as e:
+            programmer_list = Programmer.objects.none()
 
 
     #Datos de la vista
     data = {
 
-        'title': 'Saldo'
+        'title': 'Saldo',
+        'programmer_list':programmer_list,
+        'totalBalance':totalBalance,
+        'num_programmers':num_programmers
+
     }
     return render(request, 'web/payout.html', data)

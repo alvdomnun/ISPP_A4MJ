@@ -26,6 +26,11 @@ from climbcode import settings
 
 admin.autodiscover()
 
+handler404 = 'web.views.error404'
+handler500 = 'web.views.error500'
+handler403 = 'web.views.error403'
+handler400 = 'web.views.error400'
+
 urlpatterns = [
     # Página de bienvenida
     url(r'^$', web.views.index, name='home'),

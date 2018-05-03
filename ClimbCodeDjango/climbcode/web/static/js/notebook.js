@@ -1067,7 +1067,7 @@ function createUpdateImageBox(idHiddenIdNotebook, idHiddenOrder, idUrlInput, idH
 
 	var isSavingdraft = savingDraft;
 
-	if(paramValue!=null && paramValue!=''){
+	if(url!=null && url!=''){
 		$.ajax({
 	        url : "/web/createUpdateImageBoxAjax", // the endpoint
 	        type : "POST", // http method

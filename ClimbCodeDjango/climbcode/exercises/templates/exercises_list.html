@@ -233,9 +233,10 @@
                                                 <i class="fas fa-star"></i>
                                                 <!--Promocionar-->
                                             </a>
-                                            </td>
+
                                         {% endif %}
                                     {% endif %}
+                                    </td>
                             {% endif %}
                         </tr>
                     {% endfor %}
@@ -296,10 +297,11 @@
                         <!--<li class="disabled"><span>&raquo;</span></li>-->
                     {% endif %}
                 </ul>
-              <% endif %>
+              {% endif %}
           </div>
         </div>
 {% endif %}
+
         {% if user.actor.programmer and ownList %}
             <div class="create">
                 <input type="button" class="btn btn-default btn-primary"

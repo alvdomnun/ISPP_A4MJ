@@ -14,7 +14,7 @@
             <div class="col-md-12">
 
                 <!-- FORMULARIO -->
-                <form id="registro" method="post" action="{% url 'registerSchool' %}" class="form" role="form">
+                <form id="registro" enctype="multipart/form-data" method="post" action="{% url 'registerSchool' %}" class="form" role="form">
                     {% csrf_token %}
 
                     <!-- Tratamiento de Errores -->

@@ -15,7 +15,7 @@
             <div class="col-md-12">
 
                 <!-- Formulario Registro -->
-                <form id="registro" method="post" action="{% url 'registerProgrammer' %}" class="form" role="form">
+                <form id="registro" method="post" enctype="multipart/form-data" action="{% url 'registerProgrammer' %}" class="form" role="form">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-xs-6 col-md-6 form-group">

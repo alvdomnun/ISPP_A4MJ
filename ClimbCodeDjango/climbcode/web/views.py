@@ -199,7 +199,7 @@ def register_school(request):
 
     # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = RegisterSchoolForm(request.POST)
+        form = RegisterSchoolForm(request.POST, request.FILES)
         if (form.is_valid()):
             # Objeto User (model Django)
             username = form.cleaned_data["username"]

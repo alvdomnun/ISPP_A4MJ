@@ -31,6 +31,30 @@ from web.forms import RegisterSchoolPaymentForm
 
 # Create your views here.
 
+def error400(request):
+    data = {
+        'user': request.user,
+    }
+    return render(request, '400.html', data)
+
+def error403(request):
+    data = {
+        'user': request.user,
+    }
+    return render(request, '403.html', data)
+
+def error404(request):
+    data = {
+        'user': request.user,
+    }
+    return render(request, '404.html', data)
+
+def error500(request):
+    data = {
+        'user': request.user,
+    }
+    return render(request, '500.html', data)
+
 def index(request):
 	template = loader.get_template('welcome/index.html')
 	context = {}

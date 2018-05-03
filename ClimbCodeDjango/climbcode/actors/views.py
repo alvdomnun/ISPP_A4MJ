@@ -327,14 +327,14 @@ def list_teachers(request):
 
     try:
 
-        teacher_list_aux = Teacher.objects.filter(school_t=school).order_by()
+        teacher_list_aux = Teacher.objects.filter(school_t=school)
 
     except Exception as e:
 
         teacher_list_aux = Teacher.objects.none()
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(teacher_list_aux, 6)
+    paginator = Paginator(teacher_list_aux.order_by('userAccount__first_name'), 6)
 
     try:
         teacher_list = paginator.page(page)
@@ -511,7 +511,7 @@ def list_students(request):
 
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(student_list_aux, 6)
+    paginator = Paginator(student_list_aux.order_by('userAccount__first_name'), 6)
 
     try:
         student_list_aux = paginator.page(page)

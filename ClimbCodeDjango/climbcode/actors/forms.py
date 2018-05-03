@@ -234,6 +234,7 @@ class EditSchoolProfile(forms.Form):
     identificationCode = forms.CharField( max_length = 9, validators = [RegexValidator(regex = r'^(\d{8,9})$',
            message = 'El código de identificación debe estar compuesto de 8 dígitos o 9 dígitos.')],label = 'CIF o código del centro')
     postalCode = forms.CharField( max_length = 5, validators = [RegexValidator(regex = r'^(\d{5})$')], label='Código postal')
+    photo = forms.ImageField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

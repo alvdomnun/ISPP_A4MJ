@@ -144,7 +144,7 @@ def register_programmer(request):
 
     # Si se ha enviado el Form
     if (request.method == 'POST'):
-        form = RegisterProgrammerForm(request.POST)
+        form = RegisterProgrammerForm(request.POST, request.FILES)
         if (form.is_valid()):
             # Guarda el User (model Django) en BD
             username = form.cleaned_data["username"]

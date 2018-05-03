@@ -17,7 +17,7 @@
 
 
 <div class="container">
-    <h1>Lista de asignaturas</h1>
+    <h1 class="mt-4">Lista de asignaturas</h1>
 {% if subject_list %}
     <div class="panel panel-default panel-table mb-3">
       <div class="panel-heading">
@@ -49,10 +49,6 @@
                 {% endfor %}
                 </tbody>
 
-     {% else %}
-                <p></p>
-                <p>No existen asignaturas.</p>
-            {% endif %}
 </table>
     </div>
     <div class="panel-footer table-header-primary table-footer">
@@ -108,7 +104,10 @@
     </div>
   </div>
 
-  {% endif %}
+       {% else %}
+                  <p></p>
+                  <p>No existen asignaturas.</p>
+              {% endif %}
 
 </div>
 {% endblock %}

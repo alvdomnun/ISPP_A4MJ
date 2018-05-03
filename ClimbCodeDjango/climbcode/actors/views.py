@@ -35,13 +35,20 @@ def upload_students(request):
 
     if request.method == 'POST':
 
-        form = UploadFileForm(request.POST, request.FILES, user=request.user)
+        try:
 
-        file_obj = request.FILES.get('file').file
+            form = UploadFileForm(request.POST, request.FILES, user=request.user)
 
-        data = file_obj.read().decode('utf-8')
+            file_obj = request.FILES.get('file').file
 
-        rows = re.split('\n', data)
+            data = file_obj.read().decode('utf-8')
+
+            rows = re.split('\n', data)
+
+        except Exception as e:
+            messages.error(request,
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+            return HttpResponseRedirect('/actors/teachers/upload')
 
         stop = False
         try:
@@ -110,8 +117,9 @@ def upload_students(request):
                 return HttpResponseRedirect('/actors/students/list')
 
             except Exception as e:
-
-                logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
+                messages.error(request,
+                               'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+                return HttpResponseRedirect('/actors/teachers/upload')
 
     else:
         form = UploadFileForm(user=request.user)
@@ -133,15 +141,23 @@ def upload_teachers(request):
 
     if request.method == 'POST':
 
-        form = UploadFileForm(request.POST, request.FILES, user=request.user)
+        try :
 
-        file_obj = request.FILES.get('file').file
+            form = UploadFileForm(request.POST, request.FILES, user=request.user)
 
-        data = file_obj.read().decode('utf-8')
+            file_obj = request.FILES.get('file').file
 
-        rows = re.split('\n', data)
+            data = file_obj.read().decode('utf-8')
 
-        stop = False
+            rows = re.split('\n', data)
+
+            stop = False
+
+        except Exception as e:
+            messages.error(request,
+                           'Compruebe que los datos del fichero cumplan todas las restricciones y pruebe de nuevo, de igual manera recuerde utilizar el mismo archivo de ejemplo')
+            return HttpResponseRedirect('/actors/teachers/upload')
+
         try:
             for index, row in enumerate(rows):
                 if index > 0:
@@ -176,8 +192,6 @@ def upload_teachers(request):
         if form.is_valid() and stop is False:
 
             try:
-
-                print(rows.__len__())
 
                 for index, row in enumerate(rows):
                     if index > 0:

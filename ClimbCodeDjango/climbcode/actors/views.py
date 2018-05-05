@@ -1136,6 +1136,7 @@ def license_renovation_paypal(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def autorization_display(request):
     file_path = os.path.join(settings.STATICFILES_DIRS[0], 'Autorization.pdf')
     documentReader = open(file_path, "rb").read()
@@ -1145,6 +1146,7 @@ def autorization_display(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def students_upload_example(request):
     import os
     from wsgiref.util import FileWrapper
@@ -1164,6 +1166,7 @@ def students_upload_example(request):
 
 @login_required(login_url='/login/')
 @user_is_school
+@school_license_active
 def teachers_upload_example(request):
     import os
     from wsgiref.util import FileWrapper
@@ -1180,7 +1183,43 @@ def teachers_upload_example(request):
 
     return response
 
+@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
+def teachers_upload_restrictions(request):
+    import os
+    from wsgiref.util import FileWrapper
+    from django.conf import settings
+    import mimetypes
 
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'RestriccionesProfesores.pdf')
+    download_name = "RestriccionesProfesores.pdf"
+    wrapper = FileWrapper(open(file_path, "rb"))
+    content_type = mimetypes.guess_type(file_path)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(file_path)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+
+    return response
+
+@login_required(login_url='/login/')
+@user_is_school
+@school_license_active
+def students_upload_restrictions(request):
+    import os
+    from wsgiref.util import FileWrapper
+    from django.conf import settings
+    import mimetypes
+
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'RestriccionesAlumnos.pdf')
+    download_name = "RestriccionesAlumnos.pdf"
+    wrapper = FileWrapper(open(file_path, "rb"))
+    content_type = mimetypes.guess_type(file_path)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(file_path)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+
+    return response
 ####################################################    PRIVATE     METHODS     #################################################################
 
 def getFinalPrice(license, numUsers):

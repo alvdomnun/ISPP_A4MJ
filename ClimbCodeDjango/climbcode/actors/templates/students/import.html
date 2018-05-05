@@ -7,25 +7,35 @@
             <br/>
             <h2>Subir archivo .csv para añadir varios alumnos</h2>
             <br/>
+            <div style="border-style: solid; border-color: darkred; border-width: thick">
+                <br/>
 
-            <div class="col-xs-12 col-md-12 form-group">
+                <div class="col-xs-12 col-md-12 form-group">
                             <span>
-                                Suba un archivo .csv desde su ordenador personal con los datos de los alumnos siguiendo el ejemplo que se le ofrece <a
-                                    href="{% url 'students_upload_example' %}">aquí.</a>
+                                <b>Suba un archivo .csv desde su ordenador personal con los datos de los alumnos siguiendo el ejemplo que se le ofrece <a
+                                        style="text-decoration: underline"
+                                        href="{% url 'students_upload_example' %}">aquí</a>.</b>
                             </span>
-            </div>
-            <div class="col-xs-12 col-md-12 form-group">
+                </div>
+                <div class="col-xs-12 col-md-12 form-group">
+                        <span>
+                                <b>Si desea conocer las restricciones que se aplican a la creación de alumnos, consulte <a
+                                        style="text-decoration: underline"
+                                        href="{% url 'students_upload_restrictions' %}">este</a> fichero.</b>
+                        </span>
+                </div>
+                <div class="col-xs-12 col-md-12 form-group">
                     <span>
                                 Recuerde que todos los datos deben ser válidos y que no podrá añadir más estudiantes de los que su licencia le permite actualmente.
                             </span>
-            </div>
+                </div>
 
-            <div class="col-xs-12 col-md-12 form-group">
+                <div class="col-xs-12 col-md-12 form-group">
                     <span>
                         Para evitar errores, cree su propio archivo desde Microsoft Excel o una aplicación similar, esto es, no utilice el archivo de ejemplo, únicamente siga el mismo formato, y cuando finalice de añadir los datos, asegúrese de guardarlo como <b>"CSV UTF-8 (delimitado por comas) (*.csv)"</b> o similares si utiliza otra aplicación.
                             </span>
+                </div>
             </div>
-
             <div class="col-md-12">
 
                 <div class="container-fluid">

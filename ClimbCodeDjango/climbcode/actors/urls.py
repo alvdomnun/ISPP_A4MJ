@@ -32,4 +32,7 @@ urlpatterns = [
     path('schools/license/renovation', views.license_renovation, name='license_renovation'),
     path('schools/license/renovation/paypal', views.license_renovation_paypal, name='license_renovation_paypal'),
     path('schools/autorization/display', views.autorization_display, name='autorization_display'),
+
+    path('students/upload/restrictions', views.students_upload_restrictions, name='students_upload_restrictions'),
+    path('teachers/upload/restrictions', views.teachers_upload_restrictions, name='teachers_upload_restrictions'),
 ]

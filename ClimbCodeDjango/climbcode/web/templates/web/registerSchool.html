@@ -104,13 +104,10 @@
                             <label for="province" class="control-label">Provincia</label>
                             <select class="form-control" id="province" name="province" required>
                                 <!-- Si viene de validaci&#243;n, pinta la anterior -->
-                                {% if form.province.value %}
+                                {% if provinceSelected != None %}
+                                    <option value="{{ provinceSelected.id }}" selected="selected">{{ provinceSelected.name }}</option>
                                     {% for p in provinces %}
-                                        {% if p.id == form.province.value %}
-                                        <option value="{{ p.id }}" selected="selected">{{ p.name }}</option>
-                                        {% else %}
                                         <option value="{{ p.id }}">{{ p.name }}</option>
-                                        {% endif %}
                                     {% endfor %}
                                 <!-- Si es no, sin selecci&#243;n por defecto -->
                                 {% else %}

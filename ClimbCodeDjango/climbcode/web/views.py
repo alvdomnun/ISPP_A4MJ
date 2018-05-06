@@ -264,6 +264,8 @@ def register_school(request):
             if (licenseType.name == 'GRATUITA'):
                 user.is_active = True
                 user.save()
+                school.isPayed = True
+                school.save()
                 return HttpResponseRedirect('/login/')
 
             # Si no es licencia grauita: paypal
@@ -282,12 +284,19 @@ def register_school(request):
             types = form.fields['type'].choices
             teachingTypes = form.fields['teachingType'].choices
 
+            # Busca la provincia específica
+            try:
+                provinceSelected = form.cleaned_data["province"]
+            except:
+                provinceSelected = None
+
     # Si se accede al form vía GET o cualquier otro método
     else:
         form = RegisterSchoolForm()
 
         # Datos del modelo (vista)
         provinces = Province.objects.all()
+        provinceSelected = None
         licenses = LicenseType.objects.all().order_by('price')
         types = form.fields['type'].choices
         teachingTypes = form.fields['teachingType'].choices
@@ -295,6 +304,7 @@ def register_school(request):
     data = {
         'form': form,
         'provinces': provinces,
+        'provinceSelected': provinceSelected,
         'licenseTypes': licenses,
         'schoolTypes': types,
         'teachingTypes': teachingTypes,
@@ -1136,6 +1146,8 @@ def paypalTransaction(request):
             if (payment == 1):
                 school.userAccount.is_active = True
                 school.userAccount.save()
+                school.isPayed = True
+                school.save()
 
                 user = User.objects.get(username=school.userAccount.username)
 

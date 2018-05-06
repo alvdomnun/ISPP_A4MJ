@@ -26,7 +26,7 @@ SECRET_KEY = '-v))azfkfi5bkisq3*l#t-p6#)xs$^dv^8#4xg*u1gno2jyzna'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.cabesa.tk','cabesa.tk','178.62.10.40','159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk','127.0.0.1']
+ALLOWED_HOSTS = ['159.89.103.249','climbcode.tk','www.climbcode.tk','.climbcode.tk','127.0.0.1']
 
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
@@ -103,6 +103,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -152,13 +153,3 @@ STATIC_ROOT = '../static'
 MEDIA_ROOT = '../media'
 
 CSRF_USE_SESSIONS = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_HTTPONLY = True
-
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
-
-os.environ['wsgi.url_scheme'] = 'https'

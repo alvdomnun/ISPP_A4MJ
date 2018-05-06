@@ -146,7 +146,7 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = '../static'
 
-MEDIA_ROOT = '~/root/media'
+MEDIA_ROOT = '/root/media'
 
 CSRF_USE_SESSIONS = True
 SESSION_COOKIE_SECURE = True

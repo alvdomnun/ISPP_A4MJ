@@ -76,7 +76,6 @@
         {% if not ownList %}
             <div class="input-group">
                 <form class="form-inline" action="{% url 'search_exercises' %}" method="get">
-                    {% csrf_token %}
                     <div class="form-group">
                         <!-- Texto -->
                         <input type="text" class="form-control" placeholder="Buscador de ejercicios" name="q"
@@ -85,7 +84,7 @@
                     <div class="form-group">
                         <!-- Nivel -->
                         <select class="form-control" id="level" name="l">
-                            <option value="" selected="selected">Dificultad</option>
+                            <option value="" selected="selected">Nivel</option>
                             {% for l in levels %}
                                 <option value="{{ l.0 }}">{{ l.0 }}</option>
                             {% endfor %}
@@ -120,7 +119,7 @@
                     <thead class="thead-primary">
                     <tr>
                         {% if ownList == False %}
-                            {% if numExercisesP > 0 %}
+                            {% if numExercisesP > 0 or isSearch == True %}
                                 <th></th>
                             {% endif %}
                             <th></th>
@@ -149,7 +148,7 @@
 
                         <tr>
                             {% if ownList == False %}
-                                {% if numExercisesP > 0 %}
+                                {% if numExercisesP > 0 or isSearch == True %}
                                     <td class="parpadea text">
                                         {% if exercise.promoted == True %}
                                             Promocionado

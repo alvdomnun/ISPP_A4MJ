@@ -511,6 +511,7 @@ def search_exercises(request):
 
     # Datos para la vista
     ownList = False
+    isSearch = True
     list(exercise_list)
         
     # Paginación
@@ -528,6 +529,7 @@ def search_exercises(request):
         'categories': DefaultSubject.objects.all(),
         'exercise_list': exercise_list,
         'ownList': ownList,
+        'isSearch': isSearch,
         'title': 'Listado de ejercicios'
     }
 

@@ -344,13 +344,6 @@ function updateImg(idImgParameter,idUrlInputParameter){
 }
 
 
-function evalUserCodeAce(idEditor){
-    var editor = ace.edit(idEditor);
-    var s = editor.getValue();
-    var resultado = eval(s);
-    document.getElementById("resultado_"+idEditor).value = String(resultado);
-}
-
 function setParametersIframe(idDivParamsCodeBox, idIframe){
 	//En primer lugar, se borran todos los parámetros anteriores del iframe
 
@@ -405,8 +398,8 @@ function evalUserCodeAceIframe(idEditor, idDivParamsCodeBox, idIframe, idInputRe
     		eval(
 	*/
 
-	var rexExp = new RegExp("(?:^|\W)(eval)|(alert)|(window.)|(location.)|(ajax)(?:$|\W)");
-	var invalidCode = rexExp.test(code);
+    var rexExp = new RegExp("(?:^|\W)(.*?eval\\()|(.*?alert\\()|(.*?window.)|(.*?location.)|(.*?ajax)(?:$|\W)","mg");
+    var invalidCode = rexExp.test(code);
 
 
     /*
@@ -839,7 +832,7 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
     var isSavingdraft = savingDraft;
 
     //Validar que el código no contiene funciones no permitidas
-    var rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+    var rexExp = new RegExp("(?:^|\W)(.*?eval\\()|(.*?alert\\()|(.*?window.)|(.*?location.)|(.*?ajax)(?:$|\W)","mg");
 	var invalidCode = rexExp.test(contentCode);
 	if(!invalidCode){
 
@@ -909,7 +902,7 @@ function createUpdateCodeBox(idHiddenIdNotebook, idHiddenOrder, idHiddenIdBox, i
 		        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
 
 		        $('#notification-text').text('Error al editar');
-		        rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+		        rexExp = new RegExp("(?:^|\W)(.*?eval\\()|(.*?alert\\()|(.*?window.)|(.*?location.)|(.*?ajax)(?:$|\W)","mg");
 				invalidCode = rexExp.test(contentCode);
 				document.getElementById("notificaciones-holder").className = "alert-danger";
 

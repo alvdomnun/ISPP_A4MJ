@@ -65,7 +65,7 @@
 
 				if(messageType == 'evalCode'){
 					var code = e.data[1];
-					var rexExp = new RegExp("(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)");
+					var rexExp = new RegExp("(?:^|\W)(.*?eval\\()|(.*?alert\\()|(.*?window.)|(.*?location.)|(.*?ajax)(?:$|\W)","mg");
 					var invalidCode = rexExp.test(code);
 					if(!invalidCode){
 						try {							

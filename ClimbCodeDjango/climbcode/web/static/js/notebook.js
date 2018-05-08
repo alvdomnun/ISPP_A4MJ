@@ -21,10 +21,10 @@ function prueba(){
 }
 
 function addNewTextBox(idNotebookContent,idNotebookBD){
-	addTextBox(idNotebookContent,idNotebookBD,null,null,'');
+	addTextBox(idNotebookContent,idNotebookBD,null,null,'',true);
 }
 
-function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
+function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,scrollTo){
 
 	var vistaEdicion = true;
 
@@ -87,6 +87,13 @@ function addTextBox(idNotebookContent,idNotebookBD,order,idBoxBD,content){
     addBoxFormButton(idFormBoxSubmitButton);
     addBoxForm(idFormBox);
 
+    //Scroll al box añadido
+    if(scrollTo){
+	    $('html, body').animate({
+	           'scrollTop':   $('#'+idBox).offset().top
+	         }, 1000);
+	}
+
 }
 
 function auto_grow(element) {
@@ -95,10 +102,10 @@ function auto_grow(element) {
 }
 
 function addNewCodeBox(idNotebookContent,idNotebookBD){
-	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'',null);
+	return addCodeBox(idNotebookContent,idNotebookBD,null,null,'',null,true);
 }
 
-function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart){
+function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart,scrollTo){
 
 	numBox++;
 	var idBox = "idBox"+numBox;
@@ -163,9 +170,14 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
 	                                            '<div id="'+idEditor+'">'+content+
 	                                            '</div>'+
 	                                        '</div>'+
-
+	                                        '<div class="offset-md-11 col-md-1" style="margin-top:10px">'+
+	                                        '<a  class="ui-button btn-icon-only btn-default btn-blue ayuda-notebook" title="Ayuda"'+
+	                                        'href="#">'+
+                                                '<i class="far fa-question-circle"></i>'+
+                                            '</a>'+
+	                                        '</div>'+
 	                                        /* FIN ACE EDITOR */
-	                                        '<div class="col-md-12" style="margin-top: 20px;">'+
+	                                        '<div class="col-md-12">'+
 	                                        '<form method="POST" id="'+idFormBox+'">'+
 												'<input type="hidden" id="'+idHiddenIdNotebook+'" value="'+idNotebookBD+'">'+
 												'<input type="hidden" id="'+idHiddenOrder+'" value="'+order+'">'+
@@ -257,6 +269,20 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
     addBoxFormButton(idFormBoxSubmitButton);
     addBoxForm(idFormBox);
 
+    //Scroll al box añadido
+    if(scrollTo){
+	    $('html, body').animate({
+	           'scrollTop':   $('#'+idBox).offset().top
+	         }, 1000);
+	}
+
+	//Se añade el comportamiento onclick del botón de ayuda
+    $('.ayuda-notebook').on('click', function () {
+        if(confirm('Si tienes problemas con la herramienta de código, puedes ver nuestro tutorial. ¿Ver tutorial?')){
+        	window.open('https://www.youtube.com/watch?v=oavMtUWDBTM');
+        }
+    });
+
     //Se devuelven los IDs de los divs necesarios para mostrar los parámetros
     var respuesta = [idDivParam,idDivParamButton];
     return respuesta;
@@ -264,10 +290,10 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
 }
 
 function addNewImageBox(idNotebookContent,idNotebookBD){
-	addImageBox(idNotebookContent,idNotebookBD,null,null,'');
+	addImageBox(idNotebookContent,idNotebookBD,null,null,'',true);
 }
 
-function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
+function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url,scrollTo){
 	numBox++;
 	//Box id
 	var idBox = "idBox"+numBox;
@@ -331,6 +357,13 @@ function addImageBox(idNotebookContent,idNotebookBD,order,idBoxBD,url){
     //Añadimos el id del formulario al array de formularios para guardado borrador y publicar
     addBoxFormButton(idFormBoxSubmitButton);
     addBoxForm(idFormBox);
+
+    //Scroll al box añadido
+    if(scrollTo){
+	    $('html, body').animate({
+	           'scrollTop':   $('#'+idBox).offset().top
+	         }, 1000);
+	}
 }
 
 function deleteElement(idElement){

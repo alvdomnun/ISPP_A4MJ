@@ -262,6 +262,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
         console.log("form submitted!");
         //MANDAR COMO PARÁMETRO TODO INPUT QUE SEA NECESARIO RECUPERAR EN EL MÉTODO
         var form = $('#'+idFormBox);
+        haveChart = false;
         createUpdateCodeBox(idHiddenIdNotebook,idHiddenOrder,idHiddenIdBox,idEditor,idAddParamButton,idDivParam,idDivParamButton,idRowPrincipalParameter,idBoxParameter,idColChartButtonsParameter,idAddGraphicButton,idIframe,haveChart);
     });
 

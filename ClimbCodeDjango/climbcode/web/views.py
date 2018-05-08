@@ -806,7 +806,7 @@ def createUpdateCodeBoxAjax(request):
             order = request.POST.get('boxOrder')
             contentCode = request.POST.get('contentCode')
             # Validar que el código no contiene funciones no permitidas
-            regExp = re.compile('(?:^|\W)(eval\\()|(alert\\()|(window.)|(location.)|(ajax)(?:$|\W)')
+            regExp = re.compile('(?:^|\W)(.*?eval\\()|(.*?alert\\()|(.*?window.)|(.*?location.)|(.*?ajax)(?:$|\W)')
 
             if not regExp.search(contentCode):
                 idBox = request.POST.get('idBox')

@@ -233,7 +233,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
           function()
           {
             addChart(idBoxParameter,idColChartButtons,idAddGraphicButton,idBoxBD,idIframe,idChart);
-          }, 3500);
+          }, 4500);
         haveChart = true;
     }
 

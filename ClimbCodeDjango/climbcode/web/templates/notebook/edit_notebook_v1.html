@@ -41,7 +41,14 @@ background-color: red;
 
     
     <script>
+
         $(document).ready(function(){
+            $('body').loadingModal({
+              text: 'Estamos cargando el ejercicio...',
+              color: '#ebf2fa',
+              animation: 'doubleBounce'
+            });
+            disableScroll();
             $('#form_exercise').on('submit', function(event){
                 event.preventDefault();
                 console.log("form submitted!");
@@ -163,7 +170,7 @@ Editar Ejercicio
                                             </button>
                                         </div>
                                         <div class="col-md-2"  style="margin-top: 20px;margin-bottom: 20px">
-                                            <button type="submit" class="btn btn-primary" onclick="addNewCodeBox('notebook_content',{{exercise.id}});">
+                                            <button type="submit" class="btn btn-primary" onclick="addNewCodeBox('notebook_content',{{exercise.id}},true);">
                                                Código
                                             </button>
                                         </div>
@@ -226,50 +233,81 @@ Editar Ejercicio
     //Control siguiente id param a asignar por JS
     var maxNumParam = 0;
 </script>
-
-{% for box in boxesView %}
-    <script>
-        //Control siguiente order a asignar por JS
-        if({{box.order}} > maxOrder){
-            maxOrder = {{box.order}};
-            setMaxOrder(maxOrder);
-        }
-
-        
-    </script>
-    {% if box.type in "Text" %}
+{% if boxesView %}
+    {% for box in boxesView %}
         <script>
-            addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
-        </script>
-    {% elif box.type in "Code" %}
-        <script>
-            var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
-        </script>
-        {% for parameter in box.parameters %}
-             <script>
-            addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
-
-            var idNameActual = "{{parameter.idName}}";
-            var numParamActualString = idNameActual.substring(5,idNameActual.length);
-            
-            //Pasar el num como String a Integer
-            var numParamActual = parseInt(numParamActualString);
-
-            if(numParamActual > maxNumParam){
-                maxNumParam = numParamActual;
-                setNumParam(maxNumParam);
+            //Control siguiente order a asignar por JS
+            if({{box.order}} > maxOrder){
+                maxOrder = {{box.order}};
+                setMaxOrder(maxOrder);
             }
-            </script>
-        {% endfor %}
-    {% elif box.type in "Picture" %}
-        <script>
-            addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+
+            
         </script>
-    {% endif %}
+        {% if box.type in "Text" %}
+            <script>
+                addTextBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            </script>
+        {% elif box.type in "Code" %}
+            <script>
+                var respuesta = addCodeBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}','{{box.idGraphic}}');
+            </script>
+            {% for parameter in box.parameters %}
+                 <script>
+                addParameter(respuesta[0],respuesta[1],{{box.id}},{{parameter.id}},'{{parameter.value}}','{{parameter.idName}}','{{parameter.name}}');
 
+                var idNameActual = "{{parameter.idName}}";
+                var numParamActualString = idNameActual.substring(5,idNameActual.length);
+                
+                //Pasar el num como String a Integer
+                var numParamActual = parseInt(numParamActualString);
 
-{% endfor %}
+                if(numParamActual > maxNumParam){
+                    maxNumParam = numParamActual;
+                    setNumParam(maxNumParam);
+                }
+                </script>
+            {% endfor %}
+        {% elif box.type in "Picture" %}
+            <script>
+                addImageBox('notebook_content',{{box.idExercise}},{{box.order}},{{box.id}},'{{box.content}}');
+            </script>
+        {% endif %}
+    <script>
+        setTimeout(
+          function()
+          {
+            // hide the loading modal
+            $('body').loadingModal('hide');
+            enableScroll();
+            setTimeout(
+              function()
+              {
+                // hide the loading modal
+                $('body').loadingModal('destroy');
+              }, 5500);
 
+          }, 6500);
+    </script>
+    {% endfor %}
+{% else %}
+    <script>
+    setTimeout(
+      function()
+      {
+        // hide the loading modal
+        $('body').loadingModal('hide');
+        enableScroll();
+        setTimeout(
+          function()
+          {
+            // hide the loading modal
+            $('body').loadingModal('destroy');
+          }, 5500);
+
+      }, 2000);
+    </script>
+{% endif %}
 
 <!-- MODAL -->
 

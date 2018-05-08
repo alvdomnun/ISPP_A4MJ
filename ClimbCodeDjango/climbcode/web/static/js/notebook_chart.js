@@ -1,10 +1,15 @@
-function addChartIframeJS(idChart){
+function addChartIframeJS(idChart,mostrarIdChart){
 
 	$('#chart').empty();
 
 	var htmlChart = '<div class="col-md-12" style="height="300">'+
-						'<div class="row">'+
-		                    '<div class="col-md-12">'+
+						'<div class="row">';
+		if(mostrarIdChart){
+			htmlChart+=		'<div class="col-md-12">'+
+								'<b><p style="text-align:center">chart id: '+idChart+'</p></b>'+
+							'</div>';
+		}
+		    htmlChart+=     '<div class="col-md-12">'+
 		                        '<canvas class="notebook-chart" id="'+idChart+'" width="auto" height="300"></canvas>'+
 		                    '</div>'+
 		                '</div>'+

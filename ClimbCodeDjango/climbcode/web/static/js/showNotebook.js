@@ -678,7 +678,7 @@ function addChartIframe(idIframe,idBoxParameter,idColChartButtons,idChart,idAddG
 	//TODO LLAMAR AL IFRAME PARA CARGAR LA GRÁFICA
 
 	var sandboxedFrame = document.getElementById(idIframe);
-    data = ['addChart', idChart];
+    data = ['addChart', idChart, false];
 
     sandboxedFrame.contentWindow.postMessage(data, '*');
 

@@ -86,7 +86,8 @@
 					resetParams();
 				}else if(messageType == 'addChart'){
 					var idChart = e.data[1];
-					addChartIframeJS(idChart);
+					var mostrarIdChart = e.data[2];
+					addChartIframeJS(idChart,mostrarIdChart);
 				}else if(messageType == 'deleteChart'){
 					$('#chart').empty();
 				}

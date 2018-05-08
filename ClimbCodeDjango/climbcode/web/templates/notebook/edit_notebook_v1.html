@@ -39,9 +39,7 @@ background-color: red;
     <script src="/static/js/ace-editor/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/Chart.min.js"></script>
 
-    
     <script>
-
         $(document).ready(function(){
             $('body').loadingModal({
               text: 'Estamos cargando el ejercicio...',
@@ -62,33 +60,6 @@ background-color: red;
         function ocultarModal(){
                 $('#getCodeModal').modal('hide');
         }
-    $(document).ready(function (e) {
-        $('#imageUploadForm').on('submit',(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-
-            $.ajax({
-                type:'POST',
-                url: $(this).attr('action'),
-                data:formData,
-                cache:false,
-                contentType: false,
-                processData: false,
-                success:function(data){
-                    console.log("success");
-                    console.log(data);
-                },
-                error: function(data){
-                    console.log("error");
-                    console.log(data);
-                }
-        });
-    }));
-
-    $("#ImageBrowse").on("change", function() {
-        $("#imageUploadForm").submit();
-    });
-    });
 
     </script>
 {% endblock %}

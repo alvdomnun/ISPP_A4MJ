@@ -280,7 +280,7 @@ function addCodeBox(idNotebookContent,idNotebookBD,order,idBoxBD,content,idChart
 	//Se añade el comportamiento onclick del botón de ayuda
     $('.ayuda-notebook').on('click', function () {
         if(confirm('Si tienes problemas con la herramienta de código, puedes ver nuestro tutorial. ¿Ver tutorial?')){
-        	window.open('https://www.youtube.com/channel/UCjzrV4KVRlHzApjl4gdHfCg');
+        	window.open('https://www.youtube.com/watch?v=g2X_5j1Z63k');
         }
     });
 

@@ -55,7 +55,10 @@ def upload_students(request):
             for index, row in enumerate(rows):
                 if index > 0:
                     if row != "" and row != ";;;;;;":
-                        cells = row.split(";")
+                        if row.__contains__(","):
+                            cells = row.split(",")
+                        else:
+                            cells = row.split(";")
 
                         user = User()
 
@@ -90,7 +93,10 @@ def upload_students(request):
                     if index > 0:
                         if row != "" and row != ";;;;;;":
                             try:
-                                cells = row.split(";")
+                                if row.__contains__(","):
+                                    cells = row.split(",")
+                                else:
+                                    cells = row.split(";")
 
                                 username = cells[0]
                                 password = cells[1]
@@ -162,7 +168,10 @@ def upload_teachers(request):
             for index, row in enumerate(rows):
                 if index > 0:
                     if row != "" and row != ";;;;;;":
-                        cells = row.split(";")
+                        if row.__contains__(","):
+                            cells = row.split(",")
+                        else:
+                            cells = row.split(";")
 
                         user = User()
 
@@ -197,7 +206,10 @@ def upload_teachers(request):
                     if index > 0:
                         if row != "" and row != ";;;;;;":
                             try:
-                                cells = row.split(";")
+                                if row.__contains__(","):
+                                    cells = row.split(",")
+                                else:
+                                    cells = row.split(";")
 
                                 username = cells[0]
                                 password = cells[1]

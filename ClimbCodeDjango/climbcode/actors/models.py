@@ -6,7 +6,8 @@ from subjects.models import Subject
 from provinces.models import Province
 from exercises.models import Exercise
 import re
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+
 
 # Create your models here.
 
@@ -72,6 +73,12 @@ class Programmer(Actor):
 
     def __str__(self):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
+
+    def full_clean(self, exclude=None, validate_unique=True):
+        if not validate(self.dni):
+            raise ValidationError({
+                NON_FIELD_ERRORS: ['El DNI tiene un formato incorrecto', ],
+            })
 
     class Meta:
         verbose_name = "Programador"
@@ -155,6 +162,12 @@ class Teacher(Actor):
     def __str__(self):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
+    def full_clean(self, exclude=None, validate_unique=True):
+        if not validate(self.dni):
+            raise ValidationError({
+                NON_FIELD_ERRORS: ['El DNI tiene un formato incorrecto', ],
+            })
+
     class Meta:
         verbose_name = "Profesor"
         verbose_name_plural = "Profesores"
@@ -169,6 +182,7 @@ class TeacherAdminPanel(admin.ModelAdmin):
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()
 
+from django import forms
 
 class Student(Actor):
     """
@@ -183,6 +197,12 @@ class Student(Actor):
     def __str__(self):
         return self.userAccount.get_full_name() + ' (' + self.userAccount.get_username() + ')'
 
+    def full_clean(self, exclude=None, validate_unique=True):
+        if not validate(self.dni):
+            raise ValidationError({
+                NON_FIELD_ERRORS: ['El DNI tiene un formato incorrecto', ],
+            })
+
     class Meta:
         verbose_name = "Alumno"
         verbose_name_plural = "Alumnos"
@@ -196,3 +216,39 @@ class StudentAdminPanel(admin.ModelAdmin):
     def get_full_name(self, obj):
         return obj.userAccount.get_full_name()
 
+
+from stdnum.exceptions import *
+from stdnum.util import clean
+
+def compact(number):
+    """Convert the number to the minimal representation. This strips the
+    number of any valid separators and removes surrounding whitespace."""
+    return clean(number, ' -').upper().strip()
+
+
+def calc_check_digit(number):
+    """Calculate the check digit. The number passed should not have the
+    check digit included."""
+    return 'TRWAGMYFPDXBNJZSQVHLCKE'[int(number) % 23]
+
+
+def validate(number):
+    """Check if the number provided is a valid DNI number. This checks the
+    length, formatting and check digit."""
+    number = compact(number)
+    if not number[:-1].isdigit():
+        raise InvalidFormat()
+    if len(number) != 9:
+        raise InvalidLength()
+    if calc_check_digit(number[:-1]) != number[-1]:
+        raise InvalidChecksum()
+    return number
+
+
+def is_valid(number):
+    """Check if the number provided is a valid DNI number. This checks the
+    length, formatting and check digit."""
+    try:
+        return bool(validate(number))
+    except ValidationError:
+        return False

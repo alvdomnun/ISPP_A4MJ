@@ -1,13 +1,15 @@
 import re
 
 from django import forms
+from stdnum.exceptions import ValidationError
+
 from licenses.models import License
 from licenses.models import LicenseType
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.forms.utils import ErrorList
-from actors.models import Teacher, School
+from actors.models import Teacher, School, validate
 from _datetime import date
 import datetime
 
@@ -58,6 +60,14 @@ class EditTeacherForm(forms.Form):
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
 
+    def clean(self):
+        if not self.errors:
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
+
 class EditStudentForm(forms.Form):
     # Atributos de información personal
     username = forms.HiddenInput
@@ -73,6 +83,14 @@ class EditStudentForm(forms.Form):
     photo = forms.ImageField(required=False)
     dni = forms.CharField(max_length=9, validators=[RegexValidator(regex=r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')],
                           label='D.N.I.')
+
+    def clean(self):
+        if not self.errors:
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
 
 class RegisterTeacherForm(forms.Form):
     # Atributos de información personal
@@ -118,6 +136,12 @@ class RegisterTeacherForm(forms.Form):
             if (num_usuarios > 0):
                 raise forms.ValidationError(
                     "El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
+
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
@@ -169,6 +193,12 @@ class RegisterStudentForm(forms.Form):
                 raise forms.ValidationError(
                     "El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
 
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
+
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
             confirm_password = self.cleaned_data["confirm_password"]
@@ -189,6 +219,14 @@ class EditProgrammerProfile(forms.Form):
                 message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
+
+    def clean(self):
+        if not self.errors:
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
 
 class EditProgrammerPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
@@ -260,6 +298,12 @@ class EditSchoolProfile(forms.Form):
                 if re.match(r'^(\d{9})$', idCode) is None:
                     raise forms.ValidationError('El código de identificación de una academia se compone de 9 dígitos.')
 
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
+
 class EditSchoolPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
     userAccountId = forms.IntegerField()
@@ -303,6 +347,14 @@ class EditStudentProfile(forms.Form):
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
 
+    def clean(self):
+        if not self.errors:
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
+
 class EditStudentPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
     userAccountId = forms.IntegerField()
@@ -344,6 +396,14 @@ class EditTeacherProfile(forms.Form):
                 message = 'El teléfono debe estar compuesto de 9 dígitos.')], label = 'Teléfono')
     photo = forms.ImageField(required = False)
     dni = forms.CharField(max_length = 9, validators = [RegexValidator(regex = r'^([0-9]{8})([TRWAGMYFPDXBNJZSQVHLCKE])$')], label = 'D.N.I.')
+
+    def clean(self):
+        if not self.errors:
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
 
 class EditTeacherPass(forms.Form):
     userAccountId = forms.IntegerField()

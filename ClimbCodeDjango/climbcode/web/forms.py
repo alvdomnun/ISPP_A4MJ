@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core import validators
 from django.core.validators import RegexValidator
 from provinces.models import Province
-from actors.models import School
+from actors.models import School, validate
 from licenses.models import LicenseType
 import re
 from django.forms import ModelForm
@@ -53,11 +53,18 @@ class RegisterProgrammerForm(forms.Form):
             if (num_usuarios > 0):
                     raise forms.ValidationError("El nombre de usuario ya está ocupado. Por favor, eliga otro para completar su registro.")
 
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
+
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
             confirm_password = self.cleaned_data["confirm_password"]
             if (password != confirm_password):
                     raise forms.ValidationError("Las contraseñas introducidas no coinciden. Por favor, asegúrese de confirmarla correctamente.")
+
 
       
 class RegisterSchoolForm(forms.Form):
@@ -105,6 +112,12 @@ class RegisterSchoolForm(forms.Form):
             if (num_codigo > 0):
                 raise forms.ValidationError(
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
+
+            dni = self.cleaned_data["dni"]
+            try:
+                validate(dni)
+            except Exception as e:
+                raise forms.ValidationError("El formato del DNI no es correcto")
 
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]

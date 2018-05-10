@@ -298,12 +298,6 @@ class EditSchoolProfile(forms.Form):
                 if re.match(r'^(\d{9})$', idCode) is None:
                     raise forms.ValidationError('El código de identificación de una academia se compone de 9 dígitos.')
 
-            dni = self.cleaned_data["dni"]
-            try:
-                validate(dni)
-            except Exception as e:
-                raise forms.ValidationError("El formato del DNI no es correcto")
-
 class EditSchoolPass(forms.Form):
     """ Formulario de edición de las contraseñas del usuario """
     userAccountId = forms.IntegerField()

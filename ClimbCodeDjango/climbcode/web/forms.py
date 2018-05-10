@@ -113,12 +113,6 @@ class RegisterSchoolForm(forms.Form):
                 raise forms.ValidationError(
                     "El código de identificación que ha ingresado ya está siendo utilizado por otro instituto o academia")
 
-            dni = self.cleaned_data["dni"]
-            try:
-                validate(dni)
-            except Exception as e:
-                raise forms.ValidationError("El formato del DNI no es correcto")
-
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
             confirm_password = self.cleaned_data["confirm_password"]

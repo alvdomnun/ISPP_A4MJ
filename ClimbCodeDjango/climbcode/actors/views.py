@@ -47,17 +47,17 @@ def upload_students(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                           'Ha fallado la lectura del fichero. Compruebe que la estructura sea la misma que la del ejemplo que se le ofrece y pruebe de nuevo. Asímismo, asegúrese de guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)" y que los separadores sean bien "," o ";"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         stop = False
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    if row != "" and row != ";;;;;;":
-                        if row.__contains__(","):
+                    if row != "" and row != ";;;;;;" and row != ",,,,,,":
+                        if row.__contains__(",") and row.count(",") == 6:
                             cells = row.split(",")
-                        else:
+                        elif row.__contains__(";") and row.count(";") == 6:
                             cells = row.split(";")
 
                         user = User()
@@ -81,9 +81,8 @@ def upload_students(request):
                             break
 
         except Exception as e:
-            logging.getLogger("error_logger").error("Unable to upload file. " + repr(e))
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                           'El fichero contiene un error en la línea ' + str(index) + '. Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/students/upload')
 
         if form.is_valid() and stop is False:
@@ -91,11 +90,11 @@ def upload_students(request):
             try:
                 for index, row in enumerate(rows):
                     if index > 0:
-                        if row != "" and row != ";;;;;;":
+                        if row != "" and row != ";;;;;;" and row != ",,,,,,":
                             try:
-                                if row.__contains__(","):
+                                if row.__contains__(",") and row.count(",") == 6:
                                     cells = row.split(",")
-                                else:
+                                elif row.__contains__(";") and row.count(";") == 6:
                                     cells = row.split(";")
 
                                 username = cells[0]
@@ -124,8 +123,9 @@ def upload_students(request):
 
             except Exception as e:
                 messages.error(request,
-                               'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
-                return HttpResponseRedirect('/actors/teachers/upload')
+                               'El fichero contiene un error en la línea ' + str(
+                                   index) + '. Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                return HttpResponseRedirect('/actors/students/upload')
 
     else:
         form = UploadFileForm(user=request.user)
@@ -161,16 +161,16 @@ def upload_teachers(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                           'Ha fallado la lectura del fichero. Compruebe que la estructura sea la misma que la del ejemplo que se le ofrece y pruebe de nuevo. Asímismo, asegúrese de guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)" y que los separadores sean bien "," o ";"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         try:
             for index, row in enumerate(rows):
                 if index > 0:
-                    if row != "" and row != ";;;;;;":
-                        if row.__contains__(","):
+                    if row != "" and row != ";;;;;;" and row != ",,,,,,":
+                        if row.__contains__(",") and row.count(",") == 6:
                             cells = row.split(",")
-                        else:
+                        elif row.__contains__(";") and row.count(";") == 6:
                             cells = row.split(";")
 
                         user = User()
@@ -195,7 +195,8 @@ def upload_teachers(request):
 
         except Exception as e:
             messages.error(request,
-                           'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                           'El fichero contiene un error en la línea ' + str(
+                               index) + '. Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
             return HttpResponseRedirect('/actors/teachers/upload')
 
         if form.is_valid() and stop is False:
@@ -204,11 +205,11 @@ def upload_teachers(request):
 
                 for index, row in enumerate(rows):
                     if index > 0:
-                        if row != "" and row != ";;;;;;":
+                        if row != "" and row != ";;;;;;" and row != ",,,,,,":
                             try:
-                                if row.__contains__(","):
+                                if row.__contains__(",") and row.count(",") == 6:
                                     cells = row.split(",")
-                                else:
+                                elif row.__contains__(";") and row.count(";") == 6:
                                     cells = row.split(";")
 
                                 username = cells[0]
@@ -237,7 +238,8 @@ def upload_teachers(request):
 
             except Exception as e:
                 messages.error(request,
-                               'Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
+                               'El fichero contiene un error en la línea ' + str(
+                                   index) + '. Compruebe que los datos del fichero cumplan todas las restricciones, además de que el fichero no contenga usuarios ya registrados, y pruebe de nuevo. De igual manera recuerde guardar el archivo como "CSV UTF-8 (delimitado por comas) (*.csv)"')
                 return HttpResponseRedirect('/actors/teachers/upload')
 
 

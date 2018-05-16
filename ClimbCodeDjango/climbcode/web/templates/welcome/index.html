@@ -11,11 +11,22 @@
         </div>
     </div>
 
+     <div align="center" class="iframe-video">
+        <iframe  frameborder="0" allowfullscreen width="75%" height="450" src="https://www.youtube.com/embed/YOtx6iJxzzc"></iframe>
+    </div>
+    <br/>
+
     <div class="container" id="info">
         <h2>Información</h2>
-        Tal vez en vuestras clases, tanto profesor@s como alumn@s, hagáis ejercicios para asentar lo que aprendéis o enseñáis, pero, ¿qué pasaría si combinásemos la educación con el software para agilizar el hacer estos mismos ejercicios? La respuesta a esta pregunta es InteracTeach, una plataforma web que permite tanto a profesor@s como alumn@s hacer ejercicios online de las asignaturas que cursan y enseñan.
-<br/><br/>Gracias a InteracTeach el usuario puede hacer esos ejercicios de toda la vida que están en los libros, pero de una forma más amena e innovadora, simplemente a un clic de distancia. Con estos ejercicios interactivos, se puede complementar la educación de una manera novedosa, consiguiendo los mismos objetivos que con los ejercicios en papel y de una forma más entretenida.
-</p>
+        Tal vez en vuestras clases, tanto profesor@s como alumn@s, hagáis ejercicios para asentar lo que aprendéis o
+        enseñáis, pero, ¿qué pasaría si combinásemos la educación con el software para agilizar el hacer estos mismos
+        ejercicios? La respuesta a esta pregunta es InteracTeach, una plataforma web que permite tanto a profesor@s como
+        alumn@s hacer ejercicios online de las asignaturas que cursan y enseñan.
+        <br/><br/>Gracias a InteracTeach el usuario puede hacer esos ejercicios de toda la vida que están en los libros,
+        pero de una forma más amena e innovadora, simplemente a un clic de distancia. Con estos ejercicios interactivos,
+        se puede complementar la educación de una manera novedosa, consiguiendo los mismos objetivos que con los
+        ejercicios en papel y de una forma más entretenida.
+        </p>
         <br/>
     </div>
 
@@ -29,15 +40,20 @@
 
     <div class="container" id="ejercicios">
         <h2>Ejercicios</h2>
-        <p>Nuestros ejercicios son muy sencillos de ejecutar, puesto que a pesar de hacerse mediante software y programación, los profesor@s y alumn@s no requieren conocimiento alguno de la materia para poder hacerlos y así mejorar su educación. Estos ejercicios contienen un enunciado y una explicación paso a paso, para que el alumn@ los resuelva simplemente añadiendo la respuesta de los mismos en los campos habilitados para ello.
-<br/><br/>Gracias a esto, el alumn@ además podrá visualizar los resultados de sus ejercicios mediante las gráficas que pueden incluir los mismos, además de dibujos para ayudarle a situarse en el ámbito del problema.
-</p>
+        <p>Nuestros ejercicios son muy sencillos de ejecutar, puesto que a pesar de hacerse mediante software y
+            programación, los profesor@s y alumn@s no requieren conocimiento alguno de la materia para poder hacerlos y
+            así mejorar su educación. Estos ejercicios contienen un enunciado y una explicación paso a paso, para que el
+            alumn@ los resuelva simplemente añadiendo la respuesta de los mismos en los campos habilitados para ello.
+            <br/><br/>Gracias a esto, el alumn@ además podrá visualizar los resultados de sus ejercicios mediante las
+            gráficas que pueden incluir los mismos, además de dibujos para ayudarle a situarse en el ámbito del
+            problema.
+        </p>
         <br/>
         {% if  user.is_authenticated %}
-        <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
-           style="font-weight: bold"
-            href="/web/showNotebook?idNotebook=12">
-            Ejemplo</a>
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
+               style="font-weight: bold"
+               href="/web/showNotebook?idNotebook=12">
+                Ejemplo</a>
         {% endif %}
         <br/>
     </div>
@@ -52,16 +68,25 @@
 
     <div class="container" id="programadores">
         <h2>Programadores</h2>
-        <p>Los programadores tienen un papel muy intuitivo en nuestro sistema: Ellos crean los ejercicios interactivos que están en nuestro sistema, los cuales a su vez son utilizados por alumn@s y profesor@s en sus asignaturas.
-<br/><br/>Para crear un ejercicio, el programador sólo necesita registrarse, ya que nuestro sistema de creación de ejercicios interactivos online permite al usuario una gran personalización de los que desee crear.
-<br/><br/>Para crear todos sus ejercicios, el programador hará uso de JavaScript tanto para crear el contenido y utilizar los parámetros de los ejercicios como para diseñar las gráficas que desee utilizar, todo ello con ayuda de nuestra interfaz basada en cuadros.
-<br/><br/>No solo eso, sino que además al crear ejercicios interactivos, el programador puede ponerlos a la venta en la plataforma, obteniendo un beneficio por cada vez que una escuela compre su ejercicio. ¿A qué esperas para participar con nosotros y ganar con ello?
+        <p>Los programadores tienen un papel muy intuitivo en nuestro sistema: Ellos crean los ejercicios interactivos
+            que están en nuestro sistema, los cuales a su vez son utilizados por alumn@s y profesor@s en sus
+            asignaturas.
+            <br/><br/>Para crear un ejercicio, el programador sólo necesita registrarse, ya que nuestro sistema de
+            creación de ejercicios interactivos online permite al usuario una gran personalización de los que desee
+            crear.
+            <br/><br/>Para crear todos sus ejercicios, el programador hará uso de JavaScript tanto para crear el
+            contenido y utilizar los parámetros de los ejercicios como para diseñar las gráficas que desee utilizar,
+            todo ello con ayuda de nuestra interfaz basada en cuadros.
+            <br/><br/>No solo eso, sino que además al crear ejercicios interactivos, el programador puede ponerlos a la
+            venta en la plataforma, obteniendo un beneficio por cada vez que una escuela compre su ejercicio. ¿A qué
+            esperas para participar con nosotros y ganar con ello?
         <li><b>Ejercicio</b>: 3€ por cada venta de un ejercicio.</li>
         </p>
         <br/>
-        {% if  user.is_authenticated == False  %}
-            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
-                href="/register/programmer">
+        {% if  user.is_authenticated == False %}
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
+               style="font-weight: bold"
+               href="/register/programmer">
                 Registro programadores</a>
             <br/>
         {% endif %}
@@ -77,30 +102,40 @@
 
     <div class="container" id="escuelas">
         <h2>Escuelas</h2>
-        <p>Las escuelas y otros centros educativos pueden suscribirse a nuestra plataforma cada curso para poder acceder a todo su contenido. Con esto pueden hacer uso de nuestros ejercicios interactivos para apoyar sus asignaturas, de tal forma que pueden además ampliar la cantidad de ejercicios ofrecidos a éstas comprando los que deseen.
-<br/><br/>Además, con la suscripción de cada curso las escuelas pueden registrar a sus profesor@s y alumn@s, para que puedan acceder al contenido del que disponen y hacer uso de él, junto con una batería inicial de ejercicios interactivos totalmente gratuitos para empezar a funcionar.
-<br/><br/>¿A qué esperas para complementar tu educación con InteracTeach?
+        <p>Las escuelas y otros centros educativos pueden suscribirse a nuestra plataforma cada curso para poder acceder
+            a todo su contenido. Con esto pueden hacer uso de nuestros ejercicios interactivos para apoyar sus
+            asignaturas, de tal forma que pueden además ampliar la cantidad de ejercicios ofrecidos a éstas comprando
+            los que deseen.
+            <br/><br/>Además, con la suscripción de cada curso las escuelas pueden registrar a sus profesor@s y alumn@s,
+            para que puedan acceder al contenido del que disponen y hacer uso de él, junto con una batería inicial de
+            ejercicios interactivos totalmente gratuitos para empezar a funcionar.
+            <br/><br/>¿A qué esperas para complementar tu educación con InteracTeach?
 
 
         </p>
         <br/>
-        {% if  user.is_authenticated == False  %}
-        <a class="btn btn-accent text-white d-flex justify-content-center align-content-center" style="font-weight: bold"
-            href="register/school">
-            Registro escuelas</a>
-        <br/>
+        {% if  user.is_authenticated == False %}
+            <a class="btn btn-accent text-white d-flex justify-content-center align-content-center"
+               style="font-weight: bold"
+               href="register/school">
+                Registro escuelas</a>
+            <br/>
         {% endif %}
     </div>
 
-     <div class="container" id="licencias">
+    <div class="container" id="licencias">
         <h2>Licencias</h2>
-        <p>Para la suscripción anual de nuestras escuelas, ponemos a su disposición una serie de diferentes tipos de licencia, cada una con sus características propias en cuanto a precio, número de usuarios y ejercicios interactivos gratuitos a disposición de cada escuela:
-            <ul>
-                <li><b>Básico</b>: 60 usuarios y 20 ejercicios gratuitos por 200€/año.</li>
-                <li><b>Mediano</b>: 200 usuarios y 50 ejercicios gratuitos por 550€/año.</li>
-                <li><b>Grande</b>: 500 usuarios y 75 ejercicios gratuitos por 700€/año.</li>
-            </ul>
-        Cualquier duda respecto a las licencias u opciones de personalización sobre alguna a las características con objeto de adaptarlas mejor a las necesidades de la escuela, puede contactar con nosotros vía <u><b>interacteach@gmail.com</b></u> o <u><b>aldonu1@gmail.com</b></u>.
+        <p>Para la suscripción anual de nuestras escuelas, ponemos a su disposición una serie de diferentes tipos de
+            licencia, cada una con sus características propias en cuanto a precio, número de usuarios y ejercicios
+            interactivos gratuitos a disposición de cada escuela:
+        <ul>
+            <li><b>Básico</b>: 60 usuarios y 20 ejercicios gratuitos por 200€/año.</li>
+            <li><b>Mediano</b>: 200 usuarios y 50 ejercicios gratuitos por 550€/año.</li>
+            <li><b>Grande</b>: 500 usuarios y 75 ejercicios gratuitos por 700€/año.</li>
+        </ul>
+        Cualquier duda respecto a las licencias u opciones de personalización sobre alguna a las características con
+        objeto de adaptarlas mejor a las necesidades de la escuela, puede contactar con nosotros vía <u><b>interacteach@gmail.com</b></u>
+        o <u><b>aldonu1@gmail.com</b></u>.
         </p>
         <br/>
     </div>

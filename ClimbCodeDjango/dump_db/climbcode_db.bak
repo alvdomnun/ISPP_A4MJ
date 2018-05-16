@@ -1,0 +1,2849 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.12
+-- Dumped by pg_dump version 9.5.12
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: actors_actor; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_actor (
+    phone character varying(9) NOT NULL,
+    photo character varying(100),
+    "userAccount_id" integer NOT NULL
+);
+
+
+ALTER TABLE public.actors_actor OWNER TO climbcode;
+
+--
+-- Name: actors_administrator; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_administrator (
+    actor_ptr_id integer NOT NULL,
+    dni character varying(9)
+);
+
+
+ALTER TABLE public.actors_administrator OWNER TO climbcode;
+
+--
+-- Name: actors_programmer; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_programmer (
+    actor_ptr_id integer NOT NULL,
+    balance numeric(9,2) NOT NULL,
+    dni character varying(9)
+);
+
+
+ALTER TABLE public.actors_programmer OWNER TO climbcode;
+
+--
+-- Name: actors_school; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_school (
+    actor_ptr_id integer NOT NULL,
+    "centerName" character varying(50),
+    address character varying(50) NOT NULL,
+    "postalCode" character varying(5) NOT NULL,
+    type character varying(11) NOT NULL,
+    "teachingType" character varying(20) NOT NULL,
+    "identificationCode" character varying(9),
+    province_id integer,
+    "isPayed" boolean NOT NULL
+);
+
+
+ALTER TABLE public.actors_school OWNER TO climbcode;
+
+--
+-- Name: actors_student; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_student (
+    actor_ptr_id integer NOT NULL,
+    dni character varying(9),
+    school_s_id integer
+);
+
+
+ALTER TABLE public.actors_student OWNER TO climbcode;
+
+--
+-- Name: actors_teacher; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.actors_teacher (
+    actor_ptr_id integer NOT NULL,
+    dni character varying(9),
+    school_t_id integer
+);
+
+
+ALTER TABLE public.actors_teacher OWNER TO climbcode;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO climbcode;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_group_id_seq OWNED BY public.auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO climbcode;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_group_permissions_id_seq OWNED BY public.auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO climbcode;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_permission_id_seq OWNED BY public.auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(150) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(150) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO climbcode;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO climbcode;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_user_groups_id_seq OWNED BY public.auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_user_id_seq OWNED BY public.auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO climbcode;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO climbcode;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.auth_user_user_permissions_id_seq OWNED BY public.auth_user_user_permissions.id;
+
+
+--
+-- Name: boxes_box; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.boxes_box (
+    id integer NOT NULL,
+    "order" integer NOT NULL,
+    exercise_id integer,
+    CONSTRAINT boxes_box_order_check CHECK (("order" >= 0))
+);
+
+
+ALTER TABLE public.boxes_box OWNER TO climbcode;
+
+--
+-- Name: boxes_box_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.boxes_box_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.boxes_box_id_seq OWNER TO climbcode;
+
+--
+-- Name: boxes_box_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.boxes_box_id_seq OWNED BY public.boxes_box.id;
+
+
+--
+-- Name: boxes_code; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.boxes_code (
+    box_ptr_id integer NOT NULL,
+    content text NOT NULL,
+    "idGraphic" text NOT NULL
+);
+
+
+ALTER TABLE public.boxes_code OWNER TO climbcode;
+
+--
+-- Name: boxes_parameter_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.boxes_parameter_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.boxes_parameter_id_seq OWNER TO climbcode;
+
+--
+-- Name: boxes_parameter; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.boxes_parameter (
+    id integer DEFAULT nextval('public.boxes_parameter_id_seq'::regclass) NOT NULL,
+    code_id integer,
+    "idName" text NOT NULL,
+    name text NOT NULL,
+    value text NOT NULL
+);
+
+
+ALTER TABLE public.boxes_parameter OWNER TO climbcode;
+
+--
+-- Name: boxes_picture; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.boxes_picture (
+    box_ptr_id integer NOT NULL,
+    url text NOT NULL
+);
+
+
+ALTER TABLE public.boxes_picture OWNER TO climbcode;
+
+--
+-- Name: boxes_text; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.boxes_text (
+    box_ptr_id integer NOT NULL,
+    content text NOT NULL
+);
+
+
+ALTER TABLE public.boxes_text OWNER TO climbcode;
+
+--
+-- Name: defaultSubjects_defaultsubject; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public."defaultSubjects_defaultsubject" (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    course character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public."defaultSubjects_defaultsubject" OWNER TO climbcode;
+
+--
+-- Name: defaultSubjects_defaultsubject_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public."defaultSubjects_defaultsubject_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."defaultSubjects_defaultsubject_id_seq" OWNER TO climbcode;
+
+--
+-- Name: defaultSubjects_defaultsubject_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public."defaultSubjects_defaultsubject_id_seq" OWNED BY public."defaultSubjects_defaultsubject".id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO climbcode;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO climbcode;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.django_admin_log_id_seq OWNED BY public.django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO climbcode;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO climbcode;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.django_content_type_id_seq OWNED BY public.django_content_type.id;
+
+
+--
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_migrations OWNER TO climbcode;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_migrations_id_seq OWNER TO climbcode;
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.django_migrations_id_seq OWNED BY public.django_migrations.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO climbcode;
+
+--
+-- Name: elementPrices_elementprice; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public."elementPrices_elementprice" (
+    id integer NOT NULL,
+    "buyExerciseValue" numeric(9,2) NOT NULL,
+    "profitExerciseValue" numeric(9,2) NOT NULL,
+    "promoteExerciseValue" numeric(9,2) NOT NULL
+);
+
+
+ALTER TABLE public."elementPrices_elementprice" OWNER TO climbcode;
+
+--
+-- Name: elementPrices_elementprice_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public."elementPrices_elementprice_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."elementPrices_elementprice_id_seq" OWNER TO climbcode;
+
+--
+-- Name: elementPrices_elementprice_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public."elementPrices_elementprice_id_seq" OWNED BY public."elementPrices_elementprice".id;
+
+
+--
+-- Name: exercises_exercise; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.exercises_exercise (
+    id integer NOT NULL,
+    title character varying(50) NOT NULL,
+    description text NOT NULL,
+    sales integer NOT NULL,
+    level character varying(10) NOT NULL,
+    promoted boolean NOT NULL,
+    "startPromotionDate" date,
+    "endPromotionDate" date,
+    draft boolean NOT NULL,
+    category_id integer,
+    programmer_id integer,
+    example boolean NOT NULL,
+    CONSTRAINT exercises_exercise_sales_check CHECK ((sales >= 0))
+);
+
+
+ALTER TABLE public.exercises_exercise OWNER TO climbcode;
+
+--
+-- Name: exercises_exercise_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.exercises_exercise_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.exercises_exercise_id_seq OWNER TO climbcode;
+
+--
+-- Name: exercises_exercise_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.exercises_exercise_id_seq OWNED BY public.exercises_exercise.id;
+
+
+--
+-- Name: licenses_license; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.licenses_license (
+    id integer NOT NULL,
+    "numUsers" integer NOT NULL,
+    "numFreeExercises" integer NOT NULL,
+    price numeric(9,2) NOT NULL,
+    "startDate" date,
+    "endDate" date,
+    "licenseType_id" integer,
+    school_id integer,
+    CONSTRAINT "licenses_license_numFreeExercises_check" CHECK (("numFreeExercises" >= 0)),
+    CONSTRAINT "licenses_license_numUsers_check" CHECK (("numUsers" >= 0))
+);
+
+
+ALTER TABLE public.licenses_license OWNER TO climbcode;
+
+--
+-- Name: licenses_license_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.licenses_license_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.licenses_license_id_seq OWNER TO climbcode;
+
+--
+-- Name: licenses_license_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.licenses_license_id_seq OWNED BY public.licenses_license.id;
+
+
+--
+-- Name: licenses_licensetype; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.licenses_licensetype (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    "numUsers" integer NOT NULL,
+    "numFreeExercises" integer NOT NULL,
+    price numeric(9,2) NOT NULL,
+    CONSTRAINT "licenses_licensetype_numFreeExercises_check" CHECK (("numFreeExercises" >= 0)),
+    CONSTRAINT "licenses_licensetype_numUsers_check" CHECK (("numUsers" >= 0))
+);
+
+
+ALTER TABLE public.licenses_licensetype OWNER TO climbcode;
+
+--
+-- Name: licenses_licensetype_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.licenses_licensetype_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.licenses_licensetype_id_seq OWNER TO climbcode;
+
+--
+-- Name: licenses_licensetype_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.licenses_licensetype_id_seq OWNED BY public.licenses_licensetype.id;
+
+
+--
+-- Name: provinces_province; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.provinces_province (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.provinces_province OWNER TO climbcode;
+
+--
+-- Name: provinces_province_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.provinces_province_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.provinces_province_id_seq OWNER TO climbcode;
+
+--
+-- Name: provinces_province_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.provinces_province_id_seq OWNED BY public.provinces_province.id;
+
+
+--
+-- Name: purchaseTickets_purchaseticket; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public."purchaseTickets_purchaseticket" (
+    id integer NOT NULL,
+    date date NOT NULL,
+    price numeric(9,2) NOT NULL,
+    "paymentMethod" character varying(20) NOT NULL,
+    exercise_id integer,
+    school_id integer
+);
+
+
+ALTER TABLE public."purchaseTickets_purchaseticket" OWNER TO climbcode;
+
+--
+-- Name: purchaseTickets_purchaseticket_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public."purchaseTickets_purchaseticket_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."purchaseTickets_purchaseticket_id_seq" OWNER TO climbcode;
+
+--
+-- Name: purchaseTickets_purchaseticket_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public."purchaseTickets_purchaseticket_id_seq" OWNED BY public."purchaseTickets_purchaseticket".id;
+
+
+--
+-- Name: subjects_subject; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.subjects_subject (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    course character varying(50) NOT NULL,
+    school_id integer NOT NULL
+);
+
+
+ALTER TABLE public.subjects_subject OWNER TO climbcode;
+
+--
+-- Name: subjects_subject_exercises; Type: TABLE; Schema: public; Owner: climbcode
+--
+
+CREATE TABLE public.subjects_subject_exercises (
+    id integer NOT NULL,
+    subject_id integer NOT NULL,
+    exercise_id integer NOT NULL
+);
+
+
+ALTER TABLE public.subjects_subject_exercises OWNER TO climbcode;
+
+--
+-- Name: subjects_subject_exercises_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.subjects_subject_exercises_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.subjects_subject_exercises_id_seq OWNER TO climbcode;
+
+--
+-- Name: subjects_subject_exercises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.subjects_subject_exercises_id_seq OWNED BY public.subjects_subject_exercises.id;
+
+
+--
+-- Name: subjects_subject_id_seq; Type: SEQUENCE; Schema: public; Owner: climbcode
+--
+
+CREATE SEQUENCE public.subjects_subject_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.subjects_subject_id_seq OWNER TO climbcode;
+
+--
+-- Name: subjects_subject_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: climbcode
+--
+
+ALTER SEQUENCE public.subjects_subject_id_seq OWNED BY public.subjects_subject.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group ALTER COLUMN id SET DEFAULT nextval('public.auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_permission ALTER COLUMN id SET DEFAULT nextval('public.auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user ALTER COLUMN id SET DEFAULT nextval('public.auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_groups ALTER COLUMN id SET DEFAULT nextval('public.auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('public.auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_box ALTER COLUMN id SET DEFAULT nextval('public.boxes_box_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."defaultSubjects_defaultsubject" ALTER COLUMN id SET DEFAULT nextval('public."defaultSubjects_defaultsubject_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_admin_log ALTER COLUMN id SET DEFAULT nextval('public.django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_content_type ALTER COLUMN id SET DEFAULT nextval('public.django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_migrations ALTER COLUMN id SET DEFAULT nextval('public.django_migrations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."elementPrices_elementprice" ALTER COLUMN id SET DEFAULT nextval('public."elementPrices_elementprice_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.exercises_exercise ALTER COLUMN id SET DEFAULT nextval('public.exercises_exercise_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_license ALTER COLUMN id SET DEFAULT nextval('public.licenses_license_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_licensetype ALTER COLUMN id SET DEFAULT nextval('public.licenses_licensetype_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.provinces_province ALTER COLUMN id SET DEFAULT nextval('public.provinces_province_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."purchaseTickets_purchaseticket" ALTER COLUMN id SET DEFAULT nextval('public."purchaseTickets_purchaseticket_id_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject ALTER COLUMN id SET DEFAULT nextval('public.subjects_subject_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject_exercises ALTER COLUMN id SET DEFAULT nextval('public.subjects_subject_exercises_id_seq'::regclass);
+
+
+--
+-- Data for Name: actors_actor; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_actor (phone, photo, "userAccount_id") FROM stdin;
+698745128		3
+123456789	uploads/DPqG0N2VoAAtTGi.jpg	10
+654334131		1
+695383892		32
+695383892		31
+646579873		15
+608080322	uploads/DN9LnUMWkAA3bVu_BO9wmx3.jpg	2
+689124778	uploads/ayyelgusano.jpg	14
+666666666		33
+698885558		16
+628329015		34
+659878457		35
+608080322	uploads/DN9LnUMWkAA3bVu_DHCWvF9.jpg	11
+695807503		8
+689457874		4
+695383892	uploads/foto.jpg	9
+654874123		12
+622564504		36
+954687970		7
+654121878		13
+123456789		37
+123456789		38
+123456789		39
+123456789		40
+312321321		41
+680409340	uploads/Ismael.jpg	42
+\.
+
+
+--
+-- Data for Name: actors_administrator; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_administrator (actor_ptr_id, dni) FROM stdin;
+3	71005537Y
+2	71049103X
+\.
+
+
+--
+-- Data for Name: actors_programmer; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_programmer (actor_ptr_id, balance, dni) FROM stdin;
+11	0.00	71049103X
+8	0.00	77811683S
+4	0.00	14365310E
+1	15.00	44889246P
+15	3.00	62310206D
+14	3.00	51379482N
+33	0.00	00000000T
+16	3.00	77869082Y
+34	0.00	20061641Y
+35	0.00	28434552C
+9	0.00	77864314E
+36	0.00	00000000T
+41	0.00	28394757S
+42	0.00	34038195N
+\.
+
+
+--
+-- Data for Name: actors_school; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_school (actor_ptr_id, "centerName", address, "postalCode", type, "teachingType", "identificationCode", province_id, "isPayed") FROM stdin;
+12	CEIP José Ramón Sanchez	Prolongación Reyes Católicos s/n	41500	Instituto	Público	41000119	41	t
+7	I.E.S Gustavo Adolfo Bécquer	Calle López de Gomara 25, Triana, Sevilla	41010	Instituto	Público	88775204	41	t
+13	CEIP Profesor Tierno Galván	C/ San Lucas, 64	41710	Instituto	Público	41601981	41	t
+10	CEIP Europa	C/ Milano s/n	41089	Instituto	Público	41000636	41	t
+\.
+
+
+--
+-- Data for Name: actors_student; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_student (actor_ptr_id, dni, school_s_id) FROM stdin;
+31	77864314E	12
+37	00000000T	10
+38	00000000T	10
+39	21312312T	10
+40	00000000T	10
+\.
+
+
+--
+-- Data for Name: actors_teacher; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.actors_teacher (actor_ptr_id, dni, school_t_id) FROM stdin;
+32	77864314E	12
+\.
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can add permission	2	add_permission
+5	Can change permission	2	change_permission
+6	Can delete permission	2	delete_permission
+7	Can add group	3	add_group
+8	Can change group	3	change_group
+9	Can delete group	3	delete_group
+10	Can add user	4	add_user
+11	Can change user	4	change_user
+12	Can delete user	4	delete_user
+13	Can add content type	5	add_contenttype
+14	Can change content type	5	change_contenttype
+15	Can delete content type	5	delete_contenttype
+16	Can add session	6	add_session
+17	Can change session	6	change_session
+18	Can delete session	6	delete_session
+19	Can add Actor	7	add_actor
+20	Can change Actor	7	change_actor
+21	Can delete Actor	7	delete_actor
+22	Can add Administrador	8	add_administrator
+23	Can change Administrador	8	change_administrator
+24	Can delete Administrador	8	delete_administrator
+25	Can add Profesor	9	add_teacher
+26	Can change Profesor	9	change_teacher
+27	Can delete Profesor	9	delete_teacher
+28	Can add Alumno	10	add_student
+29	Can change Alumno	10	change_student
+30	Can delete Alumno	10	delete_student
+31	Can add Escuela	11	add_school
+32	Can change Escuela	11	change_school
+33	Can delete Escuela	11	delete_school
+34	Can add Programador	12	add_programmer
+35	Can change Programador	12	change_programmer
+36	Can delete Programador	12	delete_programmer
+37	Can add Asignatura	13	add_subject
+38	Can change Asignatura	13	change_subject
+39	Can delete Asignatura	13	delete_subject
+40	Can add Precios	14	add_elementprice
+41	Can change Precios	14	change_elementprice
+42	Can delete Precios	14	delete_elementprice
+43	Can add Provincia	15	add_province
+44	Can change Provincia	15	change_province
+45	Can delete Provincia	15	delete_province
+46	Can add Asignatura Genérica	16	add_defaultsubject
+47	Can change Asignatura Genérica	16	change_defaultsubject
+48	Can delete Asignatura Genérica	16	delete_defaultsubject
+49	Can add Ejercicio	17	add_exercise
+50	Can change Ejercicio	17	change_exercise
+51	Can delete Ejercicio	17	delete_exercise
+52	Can add Licencia Tipo	18	add_licensetype
+53	Can change Licencia Tipo	18	change_licensetype
+54	Can delete Licencia Tipo	18	delete_licensetype
+55	Can add Licencia	19	add_license
+56	Can change Licencia	19	change_license
+57	Can delete Licencia	19	delete_license
+58	Can add Parámetro	20	add_parameter
+59	Can change Parámetro	20	change_parameter
+60	Can delete Parámetro	20	delete_parameter
+61	Can add box	21	add_box
+62	Can change box	21	change_box
+63	Can delete box	21	delete_box
+64	Can add Ilustración	22	add_picture
+65	Can change Ilustración	22	change_picture
+66	Can delete Ilustración	22	delete_picture
+67	Can add Texto	23	add_text
+68	Can change Texto	23	change_text
+69	Can delete Texto	23	delete_text
+70	Can add Código	24	add_code
+71	Can change Código	24	change_code
+72	Can delete Código	24	delete_code
+73	Can add Ticket de Compra	25	add_purchaseticket
+74	Can change Ticket de Compra	25	change_purchaseticket
+75	Can delete Ticket de Compra	25	delete_purchaseticket
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 75, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+6	pbkdf2_sha256$100000$wHKdcO8CJGUH$pmx0IJXQa0qM0/8kOMyoqe4ZaMCKaxLEk2n7oTINt3s=	2018-05-03 23:59:42.837773+00	f	ands101	Alexis	Guillén Jimenez	alex.96@hotmail.com	f	t	2018-05-03 23:59:10.094347+00
+10	pbkdf2_sha256$100000$lTgxrGUgppfg$wqoDliJ5RzeZCAHNkArkJGOoVObZ3Pn/2iJbsTVaj6w=	2018-05-10 00:42:46.498601+00	f	sefergi	Sergio	Fernández Jiménez	sefergi20@gmail.com	f	t	2018-05-04 11:11:25+00
+4	pbkdf2_sha256$100000$DQLQrIFLpsQo$enCvrKDoBY9mtikMsl3sY6+O7ss4tYUiq1ML2Sd2+n8=	2018-05-09 09:40:42.951751+00	f	adrian	Adrían	Cabezuelo Expósito	adriance69@gmail.com	f	t	2018-05-03 20:22:03+00
+7	pbkdf2_sha256$100000$uNbMrZmtlM5o$/KtQmb04aapgBsiZ/gAehMzjEemKfGDwBtnRwbLFGtc=	2018-05-04 06:56:08.377228+00	f	victontreras	Víctor	Contreras Delgado	victor_contreras@climbcode.com	f	t	2018-05-04 06:55:08.000537+00
+5	pbkdf2_sha256$100000$z9gsD5CPPIng$smq87XPs/AXNDQytxwsS8cTpg1b2Slpd7bCcGYRpHAo=	2018-05-04 23:59:18.644164+00	f	programador1	Programador1Nombre	Programador1Apellidos	programador1@email.com	f	t	2018-05-03 20:41:50.402487+00
+8	pbkdf2_sha256$100000$89V1FrS2IUwB$MLfec4y2ve/I+aTsUo2SWqtacCj5KmRGiMU+xGwt1AU=	2018-05-04 07:00:42.953131+00	f	alvsanlop2	Álvaro	Sánchez López	alvaro@climbcode.com	f	t	2018-05-04 07:00:42.819437+00
+11	pbkdf2_sha256$100000$UVspFNSOyKpU$SY72dJXbj7n7j1cpt9MrQZw7cEnyUqa9aPz7oP0B00g=	\N	f	andferale1	Andrés	Fernández Alés	andferale@alum.us.es	f	t	2018-05-04 11:16:09+00
+17	pbkdf2_sha256$100000$zHUNCZc1Pd1t$9nUtIyz8EnIjBDsV8F/JvvxLFTTcOOG/rCf1hxjvJcc=	2018-05-05 00:09:48.232532+00	f	dsadsadsad	sdad	dsad	dsad@da.com	f	t	2018-05-05 00:09:48.112662+00
+12	pbkdf2_sha256$100000$ydiQ1hlpV1u9$U1Ax+dq68pZ2DsiIcUrzwrTvQfe1Mq/xCA34kCjGx+4=	2018-05-08 15:40:39.315681+00	f	jedobor	Jesús	Dominguez Borge	borsusje@gmail.com	f	t	2018-05-04 14:13:53+00
+37	pbkdf2_sha256$100000$EedmEOslXOuN$CvgpOkKFbVH/SrypEU+pfuLKrggHs4YVtwaTT7jePxw=	\N	f	juanfegu	Juan	Fernández Gutierrez	juan@email.com	f	t	2018-05-10 00:43:01.363162+00
+13	pbkdf2_sha256$100000$zvkcD45X8mxB$0Bgxs5mZlAichjPXFgN++gKPkHDbfJ3hsIdPty3XuXY=	\N	f	marialca	María	Alcalá	marialcala@gmail.com	f	t	2018-05-04 14:18:50+00
+19	pbkdf2_sha256$100000$v0fC9cRhyjzX$bSwX6UF4UH2jIi0FAQjelExZJKAu00OkFlZGoPj2PBY=	\N	f	dsadsad	dsad	dsadsa	dasda@dadsa.com	f	f	2018-05-05 00:18:37.181931+00
+38	pbkdf2_sha256$100000$xrMLOE5cBHz1$anaJpRxIbG+0y8DghygT/91bwV25DrFzzLkgpX6dnmw=	\N	f	mariamudi	Maria	Muñoz Díaz	maria@email.com	f	t	2018-05-10 00:43:01.529985+00
+34	pbkdf2_sha256$100000$ZaNRoqK2VAEq$G3MTK7yOleqpuFp0QbqGss4vyBgWw2/g0t+qsRf1enE=	2018-05-08 16:45:15.075575+00	f	aldonu	Álvaro	Domínguez Núñez	aldonu1@gmail.com	f	t	2018-05-08 16:27:32.387412+00
+33	pbkdf2_sha256$100000$SaaYUPGLVfH3$oCDugsQvs8HchSMg131x83u74nQOd9QXq7q7Lq9GpvM=	2018-05-08 12:56:23.556424+00	f	programadorMigue	programador1	programador1	programador1@programador1.com	f	t	2018-05-08 12:56:08.696036+00
+2	pbkdf2_sha256$100000$MTS7Fv1oMa01$WezXPXqxv/ILmkGJBl8P3rDmNziy/UxUv7HbiyYWQ8Y=	2018-05-04 15:43:23.64913+00	t	andferale	Andrés	Fernández Alés	andferale@alum.us.es	t	t	2018-05-03 20:09:32+00
+15	pbkdf2_sha256$100000$sgIFMw1EZ2R9$C+ykx7s3JBswnr3m3GHoo0U+1bYDJ5PbNhSip7xYw1c=	2018-05-07 23:15:09.689848+00	f	nicol	Nicolás	Tomas Torres	nicolastomastorres@gmail.com	f	t	2018-05-04 14:25:36+00
+9	pbkdf2_sha256$100000$ztBLS86rfaKE$boWfIDiDwVVKl5y65cD37BpGVca4/C0EquBQ/AiXi78=	2018-05-09 14:18:45.278295+00	f	jesus	Jesús	Sosa	jesosa94@gmail.com	f	t	2018-05-04 11:08:32.002499+00
+35	pbkdf2_sha256$100000$HRzMDg9vykX6$aoBVOdb4CAAWzMeyg1eq9vcdMBOGdr9IiK9hqjW7hGM=	2018-05-08 18:04:05.863676+00	f	AlejandroR	Alejandro	Roma	AlejandroR@gmail.com	f	t	2018-05-08 18:04:05.661538+00
+32	pbkdf2_sha256$100000$Wsuk3nz9VZ6K$oIzTNUHRnhzBUbOQqNnUS1yCx3T5HrGo/TFLdK1gWdM=	2018-05-07 10:25:35.324006+00	f	profesor				f	t	2018-05-07 10:24:38.653412+00
+39	pbkdf2_sha256$100000$HZdI55iyfvmc$6vpe5SOwdeKf1J9BCQE/2oPQhcw5SquX/KeGDMZzWoY=	\N	f	juanfegu2	Juan	Fernández Gutierrez	juan@email.com	f	t	2018-05-10 00:43:50.361056+00
+40	pbkdf2_sha256$100000$QFqrSd9iIDKV$SmK+gEygQZx54LYgcQch0wOG0belbWt6YcSn6h38LWc=	\N	f	mariamudi2	Maria	Muñoz Díaz	maria@email.com	f	t	2018-05-10 00:43:50.503087+00
+16	pbkdf2_sha256$100000$HFVM6gEpx61I$j8LF4OsEeRTc9BRby4ShhDtKgTEc4T82s4M6UUJBhHs=	2018-05-08 20:22:12.008735+00	f	ernestodtv	Ernesto	de Tovar	ernestodtv@gmail.com	f	t	2018-05-04 16:05:38.660016+00
+42	pbkdf2_sha256$100000$5J5XSPSSTcdO$KinJsQaOlhddwR6ux+RVvCaZsLAv+WMEhpMKtBDIWdU=	2018-05-10 10:33:47.398747+00	f	Idombor	Ismael	Domínguez Borge	idombor@hotmail.com	f	t	2018-05-10 10:33:47.224264+00
+31	pbkdf2_sha256$100000$GZgvUwBloeX2$LikKBwg4bt4BEg0rXw28+ibYKXP3YL6S3dcd6u6MGQg=	2018-05-07 10:46:19.136218+00	f	estudiante	Pepito	González	pepito@gmail.com	f	t	2018-05-07 09:42:09.270775+00
+14	pbkdf2_sha256$100000$tVz8tnd5oPMk$92YL1oyoliHKq1kmUoR0amuh/IwBT4VwWGdY14B/ZSA=	2018-05-09 19:57:24.659855+00	f	dapome	David	Posada Mena	davidposadamena@gmail.com	f	t	2018-05-04 14:23:43+00
+41	pbkdf2_sha256$100000$JtZm1s6AAZ7b$x3MoTxUFhIqNId1hTjoSgCLsUsvk9sGQO8RGjzmSTkY=	2018-05-10 00:46:25.918683+00	f	dsad3213213	dsad	dasdsad	ddsad@dasd.com	f	t	2018-05-10 00:46:25.75626+00
+36	pbkdf2_sha256$100000$G1s7Yqpxu4nV$IzyhZTqWWywMdjJYe+ppesguGZeliEVDpfrteksbKdw=	2018-05-09 19:59:43.592895+00	f	sundbox	David	Díaz	sundbox@gmail.com	f	t	2018-05-09 19:59:43.372306+00
+1	pbkdf2_sha256$100000$4hoydo4ckDiG$DpEOfZOVoQ5ZiaN9o0EocUo+wr6wiLwN2e10DlfOtJU=	2018-05-13 17:21:43.285203+00	t	admin	Climbcode	Climbcode	climbcode@gmail.com	t	t	2018-05-03 19:57:07+00
+3	pbkdf2_sha256$100000$rVGoDXemj7yT$sT8aW9SC8FNlgeUAKtS14q2JOUS5m9M7CMK3HcibtD8=	2018-05-10 01:50:17.546345+00	f	administrador	ClimbCode			f	t	2018-05-03 20:14:15+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_user_id_seq', 42, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: boxes_box; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.boxes_box (id, "order", exercise_id) FROM stdin;
+72	1	34
+84	1	42
+65	2	31
+66	3	31
+67	1	31
+85	2	42
+86	3	42
+78	1	23
+79	3	38
+98	2	45
+96	1	45
+97	3	45
+90	1	43
+83	3	40
+75	1	35
+73	2	34
+80	1	41
+91	6	42
+47	3	18
+48	4	18
+64	1	30
+62	2	30
+63	3	30
+74	1	22
+92	2	37
+77	1	37
+87	4	42
+88	5	42
+81	2	40
+24	1	12
+25	2	12
+26	3	12
+27	4	12
+28	1	13
+29	2	13
+30	3	13
+31	4	13
+32	1	14
+33	2	14
+34	3	14
+35	4	14
+36	1	15
+37	2	15
+38	3	15
+39	1	16
+40	2	16
+41	3	16
+42	4	16
+43	1	17
+44	2	17
+45	3	17
+46	4	17
+\.
+
+
+--
+-- Name: boxes_box_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.boxes_box_id_seq', 98, true);
+
+
+--
+-- Data for Name: boxes_code; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.boxes_code (box_ptr_id, content, "idGraphic") FROM stdin;
+62	var num1 = parseInt(document.getElementById("param1").value);\nvar num2 = parseInt(document.getElementById("param2").value);\n\nfunction suma(num1, num2){\n\treturn num1+num2;\n}\n\nsuma(num1, num2);\n	
+91	//Escribe tu ejercicio con JavaScript\nfunction suma(){\n    var x = 1;\n    var y = 1;\n    var suma = x+y;\n\treturn suma\n}\n\nsuma();\n	
+74	var exder = parseInt(document.getElementById("param2").value);\nvar exizq = parseInt(document.getElementById("param1").value);\nvar a = parseInt(document.getElementById("param3").value);\nvar b = parseInt(document.getElementById("param4").value);\nvar ctx = document.getElementById("myChart_idBox1");\n\nvar x_values_der = []\nvar x_values_izq = []\nvar x_values = []\n\nfor(i = -6; i < exizq; i=i+0.01){\n    x_1 = i\n    y_1 = (2*i)+1\n    x_values_izq.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exizq; i <= exder; i=i+0.01){\n    x_1 = i\n    y_1 = a*(i*i) + b*i\n    x_values.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\n    x_1 = i\n    y_1 = i - 4\n    x_values_der.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nvar data = {\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\n    datasets: [{\n        label: "2x + 1",\n        borderColor: "#21618c",\n        data: x_values_izq,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "ax^2 + bx",\n        borderColor: "#FF0000",\n        data: x_values,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "x - 4",\n        borderColor: "#000000",\n        data: x_values_der,\n        fill: false,\n        spanGaps: false\n    },\n    ]\n};\n\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: data,\n    options: {\n        elements: { point: { radius: 0 } },\n        scales: {\n            xAxes: [{\n                type: 'linear',\n                position: 'bottom'\n            }]\n        }\n    }\n});\n"";\n\n	myChart_idBox1
+72	var exder = parseInt(document.getElementById("param2").value);\r\nvar exizq = parseInt(document.getElementById("param1").value);\r\nvar a = parseInt(document.getElementById("param3").value);\r\nvar b = parseInt(document.getElementById("param4").value);\r\nvar ctx = document.getElementById("myChart_idBox4");\r\n\r\nvar x_values_der = []\r\nvar x_values_izq = []\r\nvar x_values = []\r\n\r\nfor(i = -6; i < exizq; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = (2*i)+1\r\n    x_values_izq.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exizq; i <= exder; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = a*(i*i) + b*i\r\n    x_values.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = i - 4\r\n    x_values_der.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nvar data = {\r\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\r\n    datasets: [{\r\n        label: "2x + 1",\r\n        borderColor: "#21618c",\r\n        data: x_values_izq,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "ax^2 + bx",\r\n        borderColor: "#FF0000",\r\n        data: x_values,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "x - 4",\r\n        borderColor: "#000000",\r\n        data: x_values_der,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    ]\r\n};\r\n\r\nvar myChart = new Chart(ctx, {\r\n    type: 'line',\r\n    data: data,\r\n    options: {\r\n        elements: { point: { radius: 0 } },\r\n        scales: {\r\n            xAxes: [{\r\n                type: 'linear',\r\n                position: 'bottom'\r\n            }]\r\n        }\r\n    }\r\n});\r\n"";	myChart_idBox4
+92	//Escribe tu ejercicio con JavaScript\nfunction saludo(){\n\treturn "Hola Mundo";\n}\n\nsaludo();\n	myChart_idBox2
+75	//Escribe tu ejercicio con JavaScript\nfunction saludo(){\n\treturn "Hola Mundo";\n}\n\nsaludo();\n	myChart_idBox1
+65	var num = parseInt(document.getElementById("param1").value);\n\nif (num < 0){\n    "Un número negativo no tiene raíz!";\n} else {\n    Math.sqrt(num);\n}\n	
+46	var AB = parseInt(document.getElementById("param1").value);\nvar BC = parseInt(document.getElementById("param2").value);\nvar CM = parseInt(document.getElementById("param3").value);\nvar DM = parseInt(document.getElementById("param4").value);\n\n\nvar ctx = document.getElementById("myChart_idBox4");\n\n\nperimetro = AB + BC + CM + DM + BC\n\naRec = BC * CM\naTri = (CM * DM) / 2\n\narea = aRec + aTri\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Perimetro','Area'],\n        datasets: [{\n            label: ['Perimetro','Area' ],\n            data: [perimetro,area],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Perimetro , Area'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox4
+48	//Escribe tu ejercicio con JavaScript\nfunction saludo(){\n\treturn "Hola Mundo";\n}\n\nsaludo();\n	
+87	var exder = parseInt(document.getElementById("param2").value);\r\nvar exizq = parseInt(document.getElementById("param1").value);\r\nvar a = parseInt(document.getElementById("param3").value);\r\nvar b = parseInt(document.getElementById("param4").value);\r\nvar ctx = document.getElementById("myChart_idBox4");\r\n\r\nvar x_values_der = []\r\nvar x_values_izq = []\r\nvar x_values = []\r\n\r\nfor(i = -6; i < exizq; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = (2*i)+1\r\n    x_values_izq.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exizq; i <= exder; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = a*(i*i) + b*i\r\n    x_values.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = i - 4\r\n    x_values_der.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nvar data = {\r\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\r\n    datasets: [{\r\n        label: "2x + 1",\r\n        borderColor: "#21618c",\r\n        data: x_values_izq,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "ax^2 + bx",\r\n        borderColor: "#FF0000",\r\n        data: x_values,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "x - 4",\r\n        borderColor: "#000000",\r\n        data: x_values_der,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    ]\r\n};\r\n\r\nvar myChart = new Chart(ctx, {\r\n    type: 'line',\r\n    data: data,\r\n    options: {\r\n        elements: { point: { radius: 0 } },\r\n        scales: {\r\n            xAxes: [{\r\n                type: 'linear',\r\n                position: 'bottom'\r\n            }]\r\n        }\r\n    }\r\n});\r\n"";	
+27	var xMax = parseInt(document.getElementById("param3").value);\nvar yMax = parseInt(document.getElementById("param2").value);\nvar xYMax = 7.5*parseInt(document.getElementById("param1").value);\nvar ctx = document.getElementById("myChart_idBox4");\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: {\n        labels: [0, xYMax, xMax],\n        datasets: [{\n            label: 'Trayectoria de la pelota',\n            data: [20, yMax, 0],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox4
+78	2*x*x+13*x+1\n	myChart_idBox1
+31	var exder = parseInt(document.getElementById("param2").value);\nvar exizq = parseInt(document.getElementById("param1").value);\nvar a = parseInt(document.getElementById("param3").value);\nvar b = parseInt(document.getElementById("param4").value);\nvar ctx = document.getElementById("myChart_idBox4");\n\nvar x_values_der = []\nvar x_values_izq = []\nvar x_values = []\n\nfor(i = -6; i < exizq; i=i+0.01){\n    x_1 = i\n    y_1 = (2*i)+1\n    x_values_izq.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exizq; i <= exder; i=i+0.01){\n    x_1 = i\n    y_1 = a*(i*i) + b*i\n    x_values.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\n    x_1 = i\n    y_1 = i - 4\n    x_values_der.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nvar data = {\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\n    datasets: [{\n        label: "2x + 1",\n        borderColor: "#21618c",\n        data: x_values_izq,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "ax^2 + bx",\n        borderColor: "#FF0000",\n        data: x_values,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "x - 4",\n        borderColor: "#000000",\n        data: x_values_der,\n        fill: false,\n        spanGaps: false\n    },\n    ]\n};\n\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: data,\n    options: {\n        elements: { point: { radius: 0 } },\n        scales: {\n            xAxes: [{\n                type: 'linear',\n                position: 'bottom'\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox4
+38	var resp1 = String(document.getElementById("param1").value);\nvar resp2 = String(document.getElementById("param2").value);\nvar resp3 = String(document.getElementById("param3").value);\nvar resp4 = String(document.getElementById("param4").value);\nvar resp5 = String(document.getElementById("param5").value);\nvar resp6 = String(document.getElementById("param6").value);\nvar resp7 = String(document.getElementById("param7").value);\nvar resp8 = String(document.getElementById("param8").value);\nvar ctx = document.getElementById("myChart_idBox3");\n\nresps = [resp1,resp2,resp3,resp4,resp5,resp6,resp7,resp8]\nresps_co = 0\nresps_inco = 0\n\nif (String(resp1) === "Ac2(O2)3"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp2 === "H2MnO3"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp3 == "Cm2(O2)3"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp4 == "PdO"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp5 == "hidroxido de mercurio" || resp5 == "hidróxido de mercurio"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp6 == "ácido tetraoxowolfrámico" || resp6 == "acido tetraoxowolframico"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp7 == "ácido tetraoxomangánico" || resp7 == "acido tetraoxomanganico"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nif (resp8 == "óxido de mercurio" || resp8 == "oxido de mercurio"){\n    resps_co += 1\n} else {\n    resps_inco += 1\n}\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Respuestas correctas', 'Respuestas incorrectas'],\n        datasets: [{\n            data: [resps_co,resps_inco],\n            borderColor: ["#239b56", "#FF0000"],\n            backgroundColor: ["#239b56", "#FF0000"],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: ' '\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox3
+97	//Escribe tu ejercicio con JavaScript\nvar x = parseInt(document.getElementById("param3").value);\nvar y = parseInt(document.getElementById("param4").value);\n\nvar ctx = document.getElementById("myChart_idBox3");\n\nsuma =  x + y\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Suma'],\n        datasets: [{\n            label: ['Suma'],\n            data: [suma],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Suma'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox3
+90	//Escribe tu ejercicio con JavaScript\nfunction saludo(){\n\treturn "Hola Mundo";\n}\n\nsaludo();\n	
+80	param1.value+param2.value;\n	myChart_idBox1
+35	var xMax = parseInt(document.getElementById("param3").value);\nvar IT = parseInt(document.getElementById("param1").value);\nvar I1 = parseInt(document.getElementById("param2").value);\nvar I2 = parseInt(document.getElementById("param3").value);\nvar ctx = document.getElementById("myChart_idBox4");\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['IT', 'I1', 'I2'],\n        datasets: [{\n            label: ['Intensidad total', 'Intesidad I1', 'Intesidad I2'],\n            data: [IT, I1, I2],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Intesididad total (IT), Intensidad 1 (I1) e Intensidad 2 (I2)'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox4
+73	var exder = parseInt(document.getElementById("param2").value);\nvar exizq = parseInt(document.getElementById("param1").value);\nvar a = parseInt(document.getElementById("param3").value);\nvar b = parseInt(document.getElementById("param4").value);\nvar ctx = document.getElementById("myChart_idBox1");\n\nvar x_values_der = []\nvar x_values_izq = []\nvar x_values = []\n\nfor(i = -6; i < exizq; i=i+0.01){\n    x_1 = i\n    y_1 = (2*i)+1\n    x_values_izq.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exizq; i <= exder; i=i+0.01){\n    x_1 = i\n    y_1 = a*(i*i) + b*i\n    x_values.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\n    x_1 = i\n    y_1 = i - 4\n    x_values_der.push({\n        x: x_1,\n        y: y_1\n    })\n}\n\nvar data = {\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\n    datasets: [{\n        label: "2x + 1",\n        borderColor: "#21618c",\n        data: x_values_izq,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "ax^2 + bx",\n        borderColor: "#FF0000",\n        data: x_values,\n        fill: false,\n        spanGaps: false\n    },\n    {\n        label: "x - 4",\n        borderColor: "#000000",\n        data: x_values_der,\n        fill: false,\n        spanGaps: false\n    },\n    ]\n};\n\nvar myChart = new Chart(ctx, {\n    type: 'line',\n    data: data,\n    options: {\n        elements: { point: { radius: 0 } },\n        scales: {\n            xAxes: [{\n                type: 'linear',\n                position: 'bottom'\n            }]\n        }\n    }\n});\n"";\n\n	
+83	//Escribe tu ejercicio con JavaScript\nfunction saludo(){\n\treturn "Hola Mundo";\n}\n\nsaludo();\n	
+88	var exder = parseInt(document.getElementById("param2").value);\r\nvar exizq = parseInt(document.getElementById("param1").value);\r\nvar a = parseInt(document.getElementById("param3").value);\r\nvar b = parseInt(document.getElementById("param4").value);\r\nvar ctx = document.getElementById("myChart_idBox4");\r\n\r\nvar x_values_der = []\r\nvar x_values_izq = []\r\nvar x_values = []\r\n\r\nfor(i = -6; i < exizq; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = (2*i)+1\r\n    x_values_izq.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exizq; i <= exder; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = a*(i*i) + b*i\r\n    x_values.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nfor(i = exder + 0.01; i < exder + 2; i=i+0.01){\r\n    x_1 = i\r\n    y_1 = i - 4\r\n    x_values_der.push({\r\n        x: x_1,\r\n        y: y_1\r\n    })\r\n}\r\n\r\nvar data = {\r\n\tlabels: [-6,-5,-4,-3,-2,-1,01,2,3,4,5,6],\r\n    datasets: [{\r\n        label: "2x + 1",\r\n        borderColor: "#21618c",\r\n        data: x_values_izq,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "ax^2 + bx",\r\n        borderColor: "#FF0000",\r\n        data: x_values,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    {\r\n        label: "x - 4",\r\n        borderColor: "#000000",\r\n        data: x_values_der,\r\n        fill: false,\r\n        spanGaps: false\r\n    },\r\n    ]\r\n};\r\n\r\nvar myChart = new Chart(ctx, {\r\n    type: 'line',\r\n    data: data,\r\n    options: {\r\n        elements: { point: { radius: 0 } },\r\n        scales: {\r\n            xAxes: [{\r\n                type: 'linear',\r\n                position: 'bottom'\r\n            }]\r\n        }\r\n    }\r\n});\r\n"";	
+42	var x11 = parseInt(document.getElementById("param1").value);\nvar x12 = parseInt(document.getElementById("param2").value);\nvar f1 = parseInt(document.getElementById("param3").value);\n\nvar x21 = parseInt(document.getElementById("param4").value);\nvar x22 = parseInt(document.getElementById("param5").value);\nvar f2 = parseInt(document.getElementById("param6").value);\n\nvar x31 = parseInt(document.getElementById("param7").value);\nvar x32 = parseInt(document.getElementById("param8").value);\nvar f3 = parseInt(document.getElementById("param9").value);\n\nvar ctx = document.getElementById("myChart_idBox4");\n\nmedia1 = ((x11 + x12)/2)*f1\nmedia2 = ((x21 + x22)/2)*f2\nmedia3 = ((x31 + x32)/2)*f3\n\nmedia = (media1 + media2 + media3)/(f1+f2+f3)\n\ndesv1 = ((x11 + x12)/2)*((x11 + x12)/2)*f1\ndesv2 = ((x21 + x22)/2)*((x21 + x22)/2)*f2\ndesv3 = ((x31 + x32)/2)*((x31 + x32)/2)*f3\n\ndesviacion = Math.sqrt(((desv1+desv2+desv3)/(f1+f2+f3))- (media*media))\n\nvar myChart = new Chart(ctx, {\n    type: 'bar',\n    data: {\n        labels: ['Media','Desviación típica'],\n        datasets: [{\n            label: ['Media','Desviación típica' ],\n            data: [media,desviacion],\n            borderColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            backgroundColor: [\n                'rgba(255,99,132,1)',\n                'rgba(54, 162, 235, 1)',\n                'rgba(255, 206, 86, 1)'\n            ],\n            borderWidth: 1\n        }]\n    },\n    options: {\n        legend: { display: false },\n        title: {\n            display: true,\n            text: 'Media , Desviación típica'\n        },\n        maintainAspectRatio: false,\n        scales: {\n            yAxes: [{\n                ticks: {\n                    beginAtZero:true\n                }\n            }]\n        }\n    }\n});\n"";\n	myChart_idBox4
+\.
+
+
+--
+-- Data for Name: boxes_parameter; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.boxes_parameter (id, code_id, "idName", name, value) FROM stdin;
+2147483111	27	param1	xYMax	1
+2147483112	27	param2	yMax	15
+1	48	param1	Eje X	100
+2	48	param2	Eje Y	200
+3	48	param3	Z	100
+2147483113	27	param3	xMax	15
+2147483114	31	param1	exIzq	-2
+2147483115	31	param2	exDer	4
+2147483116	31	param3	a	-1/4
+2147483117	31	param4	b	1
+2147483118	35	param1	IT	1
+25	72	param1	x	1
+26	72	param2	y	2
+27	72	param3	a	3
+28	72	param4	b	4
+2147483119	35	param2	I1	15
+2147483120	35	param3	I2	15
+2147483121	38	param1	Elemento 1	Ac2(O2)3
+2147483122	38	param2	Elemento 2	H2MnO3
+2147483123	38	param3	Elemento 3	Cm2(O2)3
+13	62	param1	Número 1	10
+14	62	param2	Número 2	20
+2147483124	38	param4	Elemento 4	PdO
+2147483125	38	param5	Elemento 5	hidroxido de mercurio
+2147483126	38	param6	Elemento 6	ácido tetraoxowolfrámico
+2147483127	38	param7	Elemento 7	ácido tetraoxomangánico
+2147483128	38	param8	Elemento 8	óxido de mercurio
+2147483129	42	param1	x11	170
+15	65	param1	numero para la raíz	2
+2147483130	42	param2	x12	175
+2147483131	42	param3	f1	1
+2147483132	42	param4	x21	175
+2147483133	42	param5	x22	180
+2147483134	42	param6	f2	3
+2147483135	42	param7	x31	180
+2147483136	42	param8	x32	185
+2147483137	42	param9	f3	4
+33	74	param1	a	1
+34	74	param2	b	2
+35	74	param3	c	3
+36	74	param4	d	4
+32	73	param4	g	4
+29	73	param1	a	1
+2147483138	46	param1	AB	13
+2147483139	46	param2	BC	11
+2147483140	46	param3	CM	12
+2147483141	46	param4	DM	5
+47	83	param2	das	20
+42	83	param1	ewq	x*x
+52	97	param3	x	10
+53	97	param4	y	20
+31	73	param3	c	3
+30	73	param2	b	2
+41	80	param1	Prueba	x*x
+40	80	param2	Prueba2	20
+38	78	param1	F	2*x*x+13*x+1
+39	78	param2	L	20
+48	92	param1	Función	x*x
+49	92	param2	Longitud	20
+\.
+
+
+--
+-- Name: boxes_parameter_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.boxes_parameter_id_seq', 53, true);
+
+
+--
+-- Data for Name: boxes_picture; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.boxes_picture (box_ptr_id, url) FROM stdin;
+84	http://www.lavanguardia.com/r/GODO/LV/p5/WebSite/2018/05/08/Recortada/20180507-636612928523798540_20180507123029-krnE-U443403602457sJF-992x558@LaVanguardia-Web.jpg
+63	https://www.webdelpeque.com/wp-content/uploads/2017/10/Identificar-las-partes-de-una-suma-2.png
+66	https://image.freepik.com/free-icon/square-root-mathematical-symbol_318-59510.jpg
+96	data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATYAAACjCAMAAAA3vsLfAAAAwFBMVEUeHh7////sGjoRicoAAAAWFhYPDw/t7e0bGxt3d3cYGBhPT08LCwsaGhoTHh0AHh30GjuysrKiHC7FGzRkHSWGhoaRHCw/Pz8IHh3Hx8dbW1vAwMBjY2MxMTEqKiofEQCYmJhEREQeGBL09PR0dHRsbGyTk5Ph4eEfEwKnp6cZHh4XYo3k5OQRiMgeFgzQ0NAYWH0cNkYVbqAbQVkTerIaTW0eJSlJHiKVHC16HSkVcaQeJCiKiooaT3ATf7ouLi5UJGVWAAAFpklEQVR4nO2Z2XraOBiG7UEyAkw7zAyl7FvYQkOSZulMQ+n939VYq2UsJYETOzzfe2RkIawXLb9+BwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADvZrZLmLGiH+NDMRu/PNxtt9tf9+sdzL2T2fjpsaK42T6vi36ej8H6/lCx2Y4x4N5mfFc54vA8K/qhSs94e2wtmanw9gbr3FgT4w3T9FVm9y5rlcrPcdFPVmrGB7e2ygOmqZ/Zg8da5YDh5mf96NNWucfy5sdrrbLdFf1spcU/RyuVR8xSHztn9CG5wWjzsXOEugasbT5e1Vb0w5WX17Td5AM3Kmha1/XcXbskiAWZIkk9Jhz7Fs2TFrOjasXOhNkvv7ZDLn/EGoKO8Cavp5G5S2VJwzIRtwWNY28x6exb/W6/1e6QWBc28tRNq0EzW21YqDfmOVpxvh9rY/VQ0CfJaJnK63BK1V2ykQVzYr4QLWTRLcm0Q0n7W6ipLokwz4IwB2+KzMXlSjXRHMpb+zgokvWNV9vT8SRlVD5yi2vrqK7p/piCauqI3KqyDrWaIY1qVs6Cf8OljTdFqumPBqm2drHaXlncckubU1u4l/0xilJtaZ2WNdxIO6dnQ97WFrZFGyXRxl581vKHBLe2UCw7cc3uq4S0TB1iliJiKqYsondok8tBSbQFa89wc+yjHm18qWNqCbK1sSgVsNS9pNO8nb1vks4z2qrcfVm0+TJHjryRR1s4iOyBZbTF+zBfSFZayaQ37S1XoZ7BWlu/1jbUIlub2FlKo429uHaFO8eB1KetSmjDZSjdLhO1clPQe2syREkSfRGy0HuK1rYnsYFvsZa2cELKoy2YPee9uax5tSXdsQxpbXSgPpuRkkC6euCoxS7+PZIRmda2JE2FrGFrC3txebQFbPbzaF17cCY/vNrCjXWttSlDt2oLGAo7RFViTb4eGqwtYcJGGuEtoy0c0fJoS9a3BztbuZ258+F+bTbVbIB1pUzxICPQk7nLd5HhxJAsYvktQTaU1bYiZdIWzMb328dkrt4cvj8xX8LIpc0aZ9WurU0dGuaE9NVFMniiK1l1aZ8zpMY3tGl5rahM2hInu/EueGHrtf/Ni0tb49Z0s9e3eqsjkg2hvbSjkZqxtfhUbS39/+zLoe36q4dPuaoubYOR7mWf2KMtVmeBIWVqv+A7ph5t+5O19U3kUgpt1z/+/eLmv5w3pzai/v55nNGmennLF3xVo0cDPfJaJ0/SJKYuk7ZP//zp4e/Px3Wd2iIlaJHRZgK5OSfUPWdqf+DhPxu1a7Va91jbMvVh76R9EvfKpe0PN+/URmlHddzWpvaBLEmEpqfahHuLokhtHLY2wjTiR9PRRpaXpE12J2K2Nl0zSxKD6CUvrBF+bGAubdnsbqrNxMqXoY0PIb41WtrIxKXNyjompho8J35VPda2afQMg2ZGG7NiuAvQRhvi6GRrM/mQDElUaw6lvKap5dwSEkhGW0DTGPsCtAVU9CHVpuOMzbAjGKrVnMcgxD6InajNStZdgjZJqk0v/CMqD+V1XcAzjVaOybBwHa4c2tIvX6A2nYrsmjyv3glE53P53W4Qu9OUeW3mH/mo2qZ5bfKcZU6hPH1p7ikPIhsUU3ui9huEJ0e82uaZv6Cp03IfR1vAaoIk3E+CVXltva+kA1GyiOiVuLhKrel7NfmKlREy2HRX31bdzYIQLb6Wh/LEpvlN2dJUfJ42gyI5SVsQCUQPmLy23/JSWaSrRUH+nuksTTNt2cYzHP2moJ5tqBhO0wYU0HYW0HYW0HYW0HYW0HYW0HYW0HYW0HYW0HYW0HYW0HYWp7zwA4brH395+PK16GcrM9efPcAaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlIv/AUkqhDYCBxH5AAAAAElFTkSuQmCC
+24	https://www.tenvinilo.com/vinilos-decorativos/img/preview/vinilo-infantil-pelota-futbol-color-1399.png
+28	https://3.bp.blogspot.com/-czMO1cgT3KA/WNJIcLQriEI/AAAAAAAA0Nk/9S-ckA4jS9In9nAkyN1H1s7zhUlLAVtAwCPcB/s1600/Continuidad%2Bde%2Buna%2Bfunci%25C3%25B3n%2Bcon%2Bdos%2Bpar%25C3%25A1metros.png
+32	https://3.bp.blogspot.com/-tYRTzE6cSek/V107qpaOwwI/AAAAAAAABAg/OUvQKk-20-s6GYTjEDTmVrx6qxKro4v5gCLcB/s1600/Ejercicio%2B1.jpg
+43	https://www.vitutor.co.uk/geo/eso/images/84.gif
+\.
+
+
+--
+-- Data for Name: boxes_text; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.boxes_text (box_ptr_id, content) FROM stdin;
+25	Desde una ventana de un edificio situado a 20m del suelo se lanza una pelota con una velocidad de 15m/s formando un ángulo de 60º con la horizontal. Determinar:\n\n- Altura máxima de la pelota\n- Alcance de la pelota
+98	Enunciado del problema
+26	1) Descomponemos la velocidad inicial en sus componentes. Calcular y apuntar la componente horizontal de la pelota.\n\n2) Calcular y apuntar la componente vertical de la pelota.\n\n3) Obteniendo las ecuaciones del movimiento en los ejes x e y para la posición y la velocidad, calcular el momento en el que alcanza la altura máxima. Introducir ese valor en el campo param1.\n\n4) Calcular la altura máxima. Introducir ese valor en el campo param2\n\n5) Calcularemos el tiempo que tarda la pelota en llegar al suelo a partir de la ecuación de la velocidad en el eje. Apuntar dicho valor.\n\n6) Calcular la distancia recorrida por la pelota. Introducir ese valor en el campo param3.
+29	Sea la función dada en la figura, calcula los valores de 'a' y 'b' de manera que f(x) sea continua en todo su dominio.
+30	a)\tPara que la función sea continua tiene que cumplirse que sea continua en los puntos críticos de la misma, esto es, los valores que intervinen en las condiciones. Los llamaremos pc1 y pc2 Introducir los puntos críticos en param1 y param2 respectivamente.\n\nb)\tPara calcular la continuidad en el extremo izquierdo, se calcula el límite de f(pc1) cuando x tiende a x+ y el límite de f(pc1) cuando x tiene a x-. Para que la función sea continua en ese punto, ambas ecuaciones resultantes deben ser iguales.\n\nc)\tPara calcular la continuidad en el extremo derecho se realiza el mismo procedimiento, solo que esta vez se calcula el límite de f(pc2) cuando x tiende a x+ y el límite de f(pc2) cuando x tiene a x-. De nuevo se igualarán ambos resultados.\n\nd)\tConocidas las ecuaciones que deben cumplirse para que la función sea continua, solo nos queda calcular a y b mediante sustitución utilizando las dos ecuaciones que acabamos de calcular en b) y c). Introducir los valores en param3 y param 4 respectivamente.
+33	Sea el circuito de corriente continua de la figura, calcular:\n\na)\tLa intensidad total del circuito IT que sale de la fuente de tensión.\nb)\tLa intensidad I1 que fluye a través de la resistencia de 2 ohmios.\nc)\tLa intensidad I2 que fluye a través de la resistencia de 8 ohmios.\nd)\tCalcula la potencia que suministra la fuente de tensión.
+34	a)\tPara calcular la intensidad total “IT“ del circuito que sale de la fuente de tensión se halla la resistencia equivalente del circuito. Introducir el valor en el campo param1\n\nb)\tPara obtener la intensidad I1 aplicamos la segunda ley de Kirchhoff o de malla. Introducir el valor en el campo param2\n\nc)\tPara obtener la intensidad I2 se aplica la primera ley de Kirchhoff o de nodo. Introducir el valor en el campo param3\n\nd)\tLa intensidad potencia que suministra la fuente la podemos calcular con las dos fórmulas para obtener la potencia. Apuntar dicho valor.
+36	A continuación, se mostrarán varios compuestos y varias fórmulas químicas, para cada una de ellas se deberá indicar su solución según el tipo que sea.\n\nEjemplos:\n\n-\tácido sulfhídrico tendría como solución H2S\n\n-\tH2S tendría como solución acido sulfhidrico
+37	a)\ttriperóxido de diactinio\n\nb)\tácido manganoso\n\nc)\tperóxido cúrico\n\nd)\tóxido paladioso\n\ne)\tHgOH\n\nf)\tH2WO4\n\ng)\tHMnO4\n\nh)\tHgO\n\nAparecerá una caja de parámetro para ingresar el resultado.
+39	Las alturas de los jugadores de un equipo de baloncesto vienen dadas en centímetros por la tabla:\n\n \tXij            Fi\n[170, 175)\t1\n[175, 180)\t3\n[180, 185)\t4
+40	Calcular:\n\n1. La media.\n\n2. La desviación típica 
+47	Representar gráficamente la siguiente función lineal.
+79	prueba
+77	Escribe una función f(x), como 2*x*x+13*x+1, y una longitud de la gráfica (por ejemplo, 20 implica que se vean 20 negativos y 20 positivos)
+41	Resolución:\na)\n   1º) Calculamos la media de cada fila, que será:\n        - (170 + 175)/2 multiplicado por el número de veces que aparece, es decir f1=1\n             => 170=param1 ; 175=param2 ;   1 =param3\n        - [(175 + 180)/2]*3  =>  175=param4 ;    180=param5 ;   3 =param6\n        - [(180 + 185)/2]*4  =>  180=param7 ;    185=param8;    4 =param9\n\n   2º) Sumamos las 3 medias y lo dividimos por el número total de muestras (Fi = f1+f2+f3)\n\nb)\n    1º) Calcular la media al cuadrado de cada fila y multiplicar por el numero de veces que aparece:\n\n       - [(170 + 175)/2]^2 * 1\n       - [(175 + 180)/2]^2 * 3\n       - [(180 + 185)/2]^2 * 4\n\n    2º) Sumamos las 3 medias al cuadrado calculadas en el apartado anterior y lo dividimos por el número total de muestras Fi\n\n    3º) Cogemos el resultado anterior y le restamos la media del apartado a) al cuadrado\n\n    4º) Hacemos la raíz cuadrada del resultado
+44	Hallar el perímetro y el área de la figura anterior (Romboide).
+45	Resolución:\n                    - Perímetro:\n                             Para calcularlo tenemos sumar todos los lados del romboide, esto es:\n                              AB + BC + CM + DM + AD (aunque no tenemos AD como dato al ser un romboide este lado\n                              es equivalente a BC)\n\n                    - Área:\n                              Para resolverlo, tenemos que calular primero dos áreas por separado, la de un rectángulo y la de\n                              un triángulo:\n                               - Área triángulo: (base x altura) /2, equivalente en nuesto problema a (CM x DM) /2\n                               - Área rectángulo: base x altura, equivalente en nuestro problema a BC (ó AD) x CM
+64	Prueba a cambiar los números y ver su resultado.
+67	Ingresa un número para conocer su raíz.
+81	Test
+85	texto 1
+86	texto 2
+\.
+
+
+--
+-- Data for Name: defaultSubjects_defaultsubject; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public."defaultSubjects_defaultsubject" (id, name, course) FROM stdin;
+4	Matemáticas - ESO	1
+5	Tecnología - ESO	1
+6	Física - ESO	2
+7	Química - ESO	2
+9	Matemáticas - ESO	2
+10	Tecnología - ESO	2
+11	Física - ESO	3
+12	Matemáticas - ESO	3
+13	Química - ESO	3
+14	Tecnología - ESO	3
+15	Matemáticas - ESO	4
+16	Tecnología - ESO	4
+17	Física - ESO	4
+18	Química - ESO	4
+19	Economía - ESO	4
+20	Matemáticas I - Bachillerato	1
+21	Física - Bachillerato	1
+22	Química - Bachillerato	1
+23	Dibujo Técnico I - Bachillerato	1
+24	Tecnología - Bachillerato	1
+25	Matemáticas II - Bachillerato	2
+26	Física - Bachillerato	2
+27	Química - Bachillerato	2
+28	Dibujo Técnico II - Bachillerato	2
+29	Tecnología - Bachillerato	2
+30	Estadística - Bachillerato	2
+\.
+
+
+--
+-- Name: defaultSubjects_defaultsubject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public."defaultSubjects_defaultsubject_id_seq"', 30, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
+1	2018-05-03 19:57:41.308777+00	1	 (admin)	1	[{"added": {}}]	12	1
+2	2018-05-03 20:09:32.410824+00	2	admin1	1	[{"added": {}}]	4	1
+3	2018-05-03 20:09:48.90286+00	2	 (admin1)	1	[{"added": {}}]	8	1
+4	2018-05-03 20:14:15.862238+00	3	administrador	1	[{"added": {}}]	4	1
+5	2018-05-03 20:14:29.594798+00	3	 (administrador)	1	[{"added": {}}]	8	1
+6	2018-05-03 20:17:36.721672+00	3	administrador	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	1
+7	2018-05-03 20:21:05.119456+00	1	admin	2	[{"changed": {"fields": ["first_name", "email"]}}]	4	1
+8	2018-05-03 20:22:03.804991+00	4	adrian	1	[{"added": {}}]	4	1
+9	2018-05-03 20:23:22.084308+00	4	 (adrian)	1	[{"added": {}}]	12	1
+10	2018-05-03 20:23:33.650914+00	1	Climbcode (admin)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+11	2018-05-03 20:26:40.554429+00	4	adrian	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	1
+12	2018-05-03 20:27:37.369082+00	1	Climbcode (admin)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+13	2018-05-03 20:41:01.315504+00	3	administrador	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	1
+14	2018-05-03 21:38:33.817476+00	2	admin1	2	[{"changed": {"fields": ["first_name", "last_name", "email", "is_staff", "is_superuser"]}}]	4	1
+15	2018-05-04 00:00:14.526969+00	6	dsad (ands101)	3		11	2
+16	2018-05-04 11:11:25.384123+00	10	sefergi	1	[{"added": {}}]	4	2
+17	2018-05-04 11:12:33.8254+00	10	sefergi	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+18	2018-05-04 11:13:14.156498+00	10	CEIP Europa (sefergi)	1	[{"added": {}}]	11	2
+19	2018-05-04 11:13:59.723637+00	3	200 - 20 - 550	1	[{"added": {}}]	19	2
+20	2018-05-04 11:14:09.004618+00	3	200 - 50 - 550.00	2	[{"changed": {"fields": ["numFreeExercises"]}}]	19	2
+21	2018-05-04 11:14:36.871289+00	49	( 1 ) Live-Search on a table	3		22	1
+22	2018-05-04 11:14:40.390455+00	5	Programador1Nombre Programador1Apellidos (programador1)	3		12	2
+23	2018-05-04 11:14:57.310957+00	21	Live-Search on a table - 0 - Fácil ( False - False )	3		17	1
+24	2018-05-04 11:14:57.313374+00	20	asd - 0 - Fácil ( False - True )	3		17	1
+25	2018-05-04 11:14:57.314833+00	19	asd - 0 - Fácil ( False - True )	3		17	1
+26	2018-05-04 11:15:00.315381+00	2	andferale	2	[{"changed": {"fields": ["username"]}}]	4	2
+27	2018-05-04 11:15:06.627637+00	2	Andrés Fernández Alés (andferale)	2	[{"changed": {"fields": ["photo"]}}]	8	2
+28	2018-05-04 11:16:09.660208+00	11	andferale1	1	[{"added": {}}]	4	2
+29	2018-05-04 11:16:34.1768+00	11	andferale1	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+30	2018-05-04 11:16:40.703348+00	11	Andrés Fernández Alés (andferale1)	1	[{"added": {}}]	12	2
+31	2018-05-04 11:32:53.621762+00	11	Andrés Fernández Alés (andferale1)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+32	2018-05-04 11:33:01.793199+00	9	Jesús Sosa (jesus)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+33	2018-05-04 11:33:08.305835+00	8	Álvaro Sánchez López (alvsanlop2)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+34	2018-05-04 11:33:14.579873+00	4	Adrían Cabezuelo Expósito (adrian)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+35	2018-05-04 11:33:21.1975+00	1	Climbcode (admin)	2	[{"changed": {"fields": ["balance"]}}]	12	1
+36	2018-05-04 14:13:53.943446+00	12	jedobor	1	[{"added": {}}]	4	2
+37	2018-05-04 14:14:29.882666+00	12	jedobor	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+38	2018-05-04 14:16:54.644006+00	12	CEIP José Ramón Sanchez (jedobor)	1	[{"added": {}}]	11	2
+39	2018-05-04 14:16:59.905251+00	10	CEIP Europa (sefergi)	2	[{"changed": {"fields": ["isPayed"]}}]	11	2
+40	2018-05-04 14:17:04.582324+00	7	I.E.S Gustavo Adolfo Bécquer (victontreras)	2	[{"changed": {"fields": ["isPayed"]}}]	11	2
+41	2018-05-04 14:17:46.394665+00	4	60 - 20 - 200	1	[{"added": {}}]	19	2
+42	2018-05-04 14:18:50.827747+00	13	marialca	1	[{"added": {}}]	4	2
+43	2018-05-04 14:19:17.913115+00	13	marialca	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+44	2018-05-04 14:21:19.85578+00	13	CEIP Profesor Tierno Galván (marialca)	1	[{"added": {}}]	11	2
+45	2018-05-04 14:21:51.345863+00	5	500 - 75 - 700	1	[{"added": {}}]	19	2
+46	2018-05-04 14:23:11.954237+00	10	CEIP Europa (sefergi)	2	[{"changed": {"fields": ["identificationCode"]}}]	11	2
+47	2018-05-04 14:23:44.042081+00	14	dapome	1	[{"added": {}}]	4	2
+48	2018-05-04 14:24:06.840039+00	14	 (dapome)	1	[{"added": {}}]	12	2
+49	2018-05-04 14:24:26.307308+00	14	dapome	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+50	2018-05-04 14:24:27.783289+00	14	David Posada Mena (dapome)	2	[]	12	2
+51	2018-05-04 14:25:36.315421+00	15	nicol	1	[{"added": {}}]	4	2
+52	2018-05-04 14:25:53.032149+00	15	nicol	2	[{"changed": {"fields": ["first_name", "last_name", "email"]}}]	4	2
+53	2018-05-04 14:25:59.889279+00	15	Nicolás Tomas Torres (nicol)	1	[{"added": {}}]	12	2
+54	2018-05-05 00:21:10.543567+00	19	dsada (dsadsad)	3		11	1
+55	2018-05-05 00:44:07.271899+00	3	191 - 46 - 550.00	2	[{"changed": {"fields": ["endDate"]}}]	19	1
+56	2018-05-05 00:45:53.101962+00	3	191 - 46 - 550.00	2	[{"changed": {"fields": ["endDate"]}}]	19	1
+57	2018-05-05 00:46:23.504254+00	3	189 - 46 - 550.00	2	[{"changed": {"fields": ["endDate"]}}]	19	1
+58	2018-05-05 00:56:33.90176+00	3	189 - 46 - 550.00	2	[{"changed": {"fields": ["endDate"]}}]	19	1
+59	2018-05-05 12:24:22.645687+00	13	Análisis matemático - 1 - Difícil ( False - False )	2	[{"changed": {"fields": ["promoted", "startPromotionDate", "endPromotionDate"]}}]	17	1
+60	2018-05-05 12:26:10.860871+00	13	Análisis matemático - 1 - Difícil ( True - False )	2	[{"changed": {"fields": ["promoted", "startPromotionDate", "endPromotionDate"]}}]	17	1
+61	2018-05-05 20:20:57.292389+00	17	sdad dsad (dsadsadsad)	3		12	1
+62	2018-05-06 15:34:50.065438+00	13	Análisis matemático - 1 - Difícil ( False - False )	2	[{"changed": {"fields": ["promoted", "startPromotionDate", "endPromotionDate"]}}]	17	1
+63	2018-05-06 15:38:01.026875+00	13	Análisis matemático - 1 - Difícil ( True - False )	2	[{"changed": {"fields": ["promoted", "startPromotionDate", "endPromotionDate"]}}]	17	1
+64	2018-05-07 00:00:49.899384+00	1	Climbcode (admin)	2	[{"changed": {"fields": ["dni"]}}]	12	1
+65	2018-05-07 00:01:05.011916+00	1	admin	2	[{"changed": {"fields": ["last_name"]}}]	4	1
+66	2018-05-07 09:17:21.681416+00	25	test-imagen - 0 - Fácil ( False - True )	3		17	1
+67	2018-05-07 09:17:49.994487+00	24	( 1 ) Tiro parabólico	2	[{"changed": {"fields": ["url"]}}]	22	1
+68	2018-05-07 09:42:09.430317+00	31	estudiante	1	[{"added": {}}]	4	1
+69	2018-05-07 09:42:15.200705+00	31	 (estudiante)	1	[{"added": {}}]	10	1
+70	2018-05-07 10:24:38.837218+00	32	profesor	1	[{"added": {}}]	4	1
+71	2018-05-07 10:24:43.044247+00	32	 (profesor)	1	[{"added": {}}]	9	1
+72	2018-05-07 22:58:00.289962+00	26	Resta de dos ejercicios - 0 - Fácil ( False - False )	3		17	1
+73	2018-05-07 23:10:30.312262+00	29	CABESA - 0 - Fácil ( False - False )	3		17	1
+74	2018-05-07 23:10:30.315382+00	28	Suma de números - 0 - Medio ( False - False )	3		17	1
+75	2018-05-07 23:11:39.702482+00	27	Suma de dos números - 0 - Fácil ( False - False )	3		17	1
+76	2018-05-07 23:11:39.709895+00	25	Resta de números - 0 - Fácil ( False - False )	3		17	1
+77	2018-05-07 23:11:39.711574+00	24	Suma de números - 0 - Fácil ( False - False )	3		17	1
+78	2018-05-07 23:28:09.801032+00	16	ernestodtv	2	[{"changed": {"fields": ["password"]}}]	4	1
+79	2018-05-07 23:54:53.063023+00	13	Análisis matemático - 0 - Difícil ( False - True )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+80	2018-05-07 23:55:24.306607+00	13	Análisis matemático - 0 - Difícil ( False - False )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+81	2018-05-08 04:26:12.829258+00	72	( 1 ) test	2	[{"changed": {"fields": ["content", "idGraphic"]}}]	24	1
+82	2018-05-08 04:28:18.290464+00	71	( 1 ) Live-Search on a table	3		24	1
+83	2018-05-08 15:36:43.675885+00	33	Gráfica de una función - 0 - Medio ( True - True )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+84	2018-05-08 15:42:12.154582+00	33	Gráfica de una función - 1 - Medio ( True - True )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+85	2018-05-08 15:46:36.04455+00	33	Gráfica de una función - 1 - Medio ( True - False )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+86	2018-05-08 15:46:58.656291+00	69	( 2 ) Gráfica de una función	2	[{"changed": {"fields": ["content"]}}]	24	1
+87	2018-05-08 15:47:50.581069+00	33	Gráfica de una función - 1 - Medio ( True - False )	3		17	1
+88	2018-05-08 15:59:30.540085+00	36	Gráfica de una función - 0 - Fácil ( True - False )	3		17	1
+89	2018-05-08 21:45:27.265712+00	13	Análisis matemático - 0 - Difícil ( False - True )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+90	2018-05-08 21:47:08.406223+00	13	Análisis matemático - 0 - Difícil ( False - False )	2	[{"changed": {"fields": ["draft"]}}]	17	1
+91	2018-05-09 15:45:36.888259+00	13	Análisis matemático - 0 - Difícil ( True - False )	2	[{"changed": {"fields": ["promoted", "startPromotionDate", "endPromotionDate"]}}]	17	1
+92	2018-05-09 18:54:35.848644+00	44	Matemáticas - 0 - Fácil ( False - True )	3		17	1
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 92, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.django_content_type (id, app_label, model) FROM stdin;
+1	admin	logentry
+2	auth	permission
+3	auth	group
+4	auth	user
+5	contenttypes	contenttype
+6	sessions	session
+7	actors	actor
+8	actors	administrator
+9	actors	teacher
+10	actors	student
+11	actors	school
+12	actors	programmer
+13	subjects	subject
+14	elementPrices	elementprice
+15	provinces	province
+16	defaultSubjects	defaultsubject
+17	exercises	exercise
+18	licenses	licensetype
+19	licenses	license
+20	boxes	parameter
+21	boxes	box
+22	boxes	picture
+23	boxes	text
+24	boxes	code
+25	purchaseTickets	purchaseticket
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 25, true);
+
+
+--
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.django_migrations (id, app, name, applied) FROM stdin;
+1	defaultSubjects	0001_initial	2018-05-03 19:57:04.854398+00
+2	contenttypes	0001_initial	2018-05-03 19:57:04.870237+00
+3	contenttypes	0002_remove_content_type_name	2018-05-03 19:57:04.884725+00
+4	auth	0001_initial	2018-05-03 19:57:04.979014+00
+5	auth	0002_alter_permission_name_max_length	2018-05-03 19:57:04.994117+00
+6	auth	0003_alter_user_email_max_length	2018-05-03 19:57:05.006793+00
+7	auth	0004_alter_user_username_opts	2018-05-03 19:57:05.019229+00
+8	auth	0005_alter_user_last_login_null	2018-05-03 19:57:05.032874+00
+9	auth	0006_require_contenttypes_0002	2018-05-03 19:57:05.036076+00
+10	auth	0007_alter_validators_add_error_messages	2018-05-03 19:57:05.04693+00
+11	auth	0008_alter_user_username_max_length	2018-05-03 19:57:05.061825+00
+12	auth	0009_alter_user_last_name_max_length	2018-05-03 19:57:05.076481+00
+13	actors	0001_initial	2018-05-03 19:57:05.194328+00
+14	exercises	0001_initial	2018-05-03 19:57:05.228727+00
+15	subjects	0001_initial	2018-05-03 19:57:05.26971+00
+16	purchaseTickets	0001_initial	2018-05-03 19:57:05.306033+00
+17	provinces	0001_initial	2018-05-03 19:57:05.319388+00
+18	actors	0002_auto_20180411_1537	2018-05-03 19:57:05.483101+00
+19	actors	0003_auto_20180503_2157	2018-05-03 19:57:05.685086+00
+20	admin	0001_initial	2018-05-03 19:57:05.726168+00
+21	admin	0002_logentry_remove_auto_add	2018-05-03 19:57:05.739147+00
+22	boxes	0001_initial	2018-05-03 19:57:05.838866+00
+23	boxes	0002_auto_20180503_2157	2018-05-03 19:57:05.976812+00
+24	elementPrices	0001_initial	2018-05-03 19:57:05.987328+00
+25	exercises	0002_auto_20180503_2157	2018-05-03 19:57:06.020739+00
+26	licenses	0001_initial	2018-05-03 19:57:06.096013+00
+27	licenses	0002_auto_20180503_2157	2018-05-03 19:57:06.107568+00
+28	sessions	0001_initial	2018-05-03 19:57:06.126159+00
+29	actors	0002_auto_20180503_2157	2018-05-03 19:57:17.341662+00
+30	actors	0003_auto_20180503_2201	2018-05-03 20:01:27.241935+00
+31	boxes	0002_auto_20180503_2201	2018-05-03 20:01:27.245016+00
+32	exercises	0002_auto_20180503_2201	2018-05-03 20:01:27.24744+00
+33	licenses	0002_auto_20180503_2201	2018-05-03 20:01:27.250036+00
+34	actors	0002_auto_20180503_2201	2018-05-03 20:01:29.28288+00
+35	actors	0003_auto_20180506_2330	2018-05-06 21:30:15.391854+00
+36	boxes	0002_auto_20180506_2330	2018-05-06 21:30:15.395728+00
+37	exercises	0002_auto_20180506_2330	2018-05-06 21:30:15.399287+00
+38	licenses	0002_auto_20180506_2330	2018-05-06 21:30:15.402669+00
+39	actors	0002_auto_20180506_2330	2018-05-06 21:30:18.065779+00
+40	actors	0002_auto_20180508_0049	2018-05-07 22:49:10.833559+00
+41	actors	0003_auto_20180508_1547	2018-05-08 13:47:28.437106+00
+42	boxes	0002_auto_20180508_1547	2018-05-08 13:47:28.442725+00
+43	exercises	0002_auto_20180508_1547	2018-05-08 13:47:28.445762+00
+44	licenses	0002_auto_20180508_1547	2018-05-08 13:47:28.448827+00
+45	actors	0002_auto_20180508_1547	2018-05-08 13:47:31.25777+00
+46	actors	0003_auto_20180509_1318	2018-05-09 11:18:26.179536+00
+47	boxes	0002_auto_20180509_1318	2018-05-09 11:18:26.185997+00
+48	exercises	0002_auto_20180509_1318	2018-05-09 11:18:26.194678+00
+49	licenses	0002_auto_20180509_1318	2018-05-09 11:18:26.198872+00
+50	actors	0002_auto_20180509_1318	2018-05-09 11:18:29.12957+00
+51	actors	0003_auto_20180509_2139	2018-05-09 19:39:58.54867+00
+52	boxes	0002_auto_20180509_2139	2018-05-09 19:39:58.557767+00
+53	exercises	0002_auto_20180509_2139	2018-05-09 19:39:58.582523+00
+54	licenses	0002_auto_20180509_2139	2018-05-09 19:39:58.587878+00
+55	actors	0002_auto_20180509_2140	2018-05-09 19:40:01.800304+00
+56	actors	0003_auto_20180510_0242	2018-05-10 00:42:25.722217+00
+57	boxes	0002_auto_20180510_0242	2018-05-10 00:42:25.726649+00
+58	exercises	0002_auto_20180510_0242	2018-05-10 00:42:25.72982+00
+59	licenses	0002_auto_20180510_0242	2018-05-10 00:42:25.732244+00
+60	actors	0002_auto_20180510_0242	2018-05-10 00:42:28.172954+00
+61	actors	0003_auto_20180510_0346	2018-05-10 01:46:18.338914+00
+62	boxes	0002_auto_20180510_0346	2018-05-10 01:46:18.345329+00
+63	exercises	0002_auto_20180510_0346	2018-05-10 01:46:18.348951+00
+64	licenses	0002_auto_20180510_0346	2018-05-10 01:46:18.352299+00
+65	actors	0002_auto_20180510_0346	2018-05-10 01:46:20.849399+00
+\.
+
+
+--
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 65, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
+sq38hvkptc27hs05asz93y9k1lsg3wfh	MjM3OTJjYzUwOGQ5NjVhMDdiNzdkZjc1OWRiY2I1MWFkODc5MWI1Nzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfY3NyZnRva2VuIjoiYUpxY3M1aUlFc01xcVhJenM1V0ttWG9BV1dnMDZRR1FZV1EwV1BGcmdNa1JBeWxGMktTaUFxaXpWeWx6SWkyVSIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-28 17:37:30.211004+00
+0n1iadn2igge1qzrk1c90lfn3qlcxf1h	YTVjOWRkMzYwOWZmYjZhNzYxNjdhZjE3MjlhODA4YWMyMmY0NzU5Zjp7Il9jc3JmdG9rZW4iOiJ2R2pEMDFjd3FsNklQNGFpMFhmbDlqSGp5VnVuZGQ4UXNLeTZGY2NhU25VRldFd0RtTXFsSUUyTWpQeU9LbkxZIn0=	2018-05-23 13:14:48.735669+00
+3qq89gvhs3o0mtx6ziufts1co032qwyk	NTljNGU5Yzg5YTVhOThiMzk5NzRlMDdlMTBkNjdkMmQxMjM3OWVjNDp7Il9jc3JmdG9rZW4iOiJyR0pzQ2Zpd0lmQTVXdGVlWXBiR0pUd3lJdEtkT29rQjVob0VmVkZjZXZpNUlhMnJSTFVWZGpFeFd6cWdCbTdMIn0=	2018-05-22 16:48:19.335576+00
+0xyfbswgg3k7i5n46wejrcfb4uzibxei	YTVkNWU1YTFjMmNlN2I5YzU4YjY2YWQzNGIzNzBiMDI4YzFkZTU0Nzp7Il9jc3JmdG9rZW4iOiJWWmxGSHVKc3FKWklBT1V3NUluVVNNRktPbG1LN25JZHJuZHF0VjhjYk5pT1ZCcnVoUnZxRW55QnVYQkplcE1JIn0=	2018-05-18 16:07:49.154606+00
+szy6lon4e6cpem17im4ixti27e3vpfr9	MmU2Mjg4NTYxYTM2M2VjZmNhMmU1ODZjNDM2MmU5NDE4ZTc5MDBjNjp7Il9jc3JmdG9rZW4iOiJuT0RaOThqWjFEVjc1NHV1R0lSSDdUbk9YckFpVVQ5aWlmRHB1ZXF4RjNyRkJIUlZRNVdOZ0tJY2xudTBUSmVaIn0=	2018-05-18 16:08:06.776531+00
+cgp3xys8ykhv1fkbjwt06zgflmz4m8h7	YmU3ZjJlOWY4YTc0MWZhZDVkOTI1MDkzOWVmYTNlNThmOWVhMDU5NTp7Il9jc3JmdG9rZW4iOiJqNko5MEpTbkIyRVRjbzVuN3lGeGNFM0szTVpCZG50R25WVm5lR2trWW1ob3VVS2k3aGE0N2xINGhLM0lxbXd3In0=	2018-05-25 13:28:53.981256+00
+cw5ppemnqcf85yticbcrdgl1qadoq49p	MzE0Y2FlOTVkNjcxMTZiYTk2Y2FiMmRkMjZmYzRmZGRiODczYjE1Njp7Il9jc3JmdG9rZW4iOiJWcHF1Um9oN21lWVZaRFlMVTFwOTh6Q2VSYWFPZ01mODZkMGhBV0g4ZmlUYm9FT2lsN3JycVRkeFY4b0RhaTF2In0=	2018-05-24 16:10:18.460996+00
+gag24862xqjyn17z1773jjqc4hhuilku	YjljNjkxY2M2MDg4MTUyZGVjMjRhMTNmNGI2ZmYyOWZkNDNhYjY2Zjp7Il9jc3JmdG9rZW4iOiJjRVBLQUJzMk1ndDVGaXp4aVczV3l6czFjSHVSR1VhYkFhWmhzR3MzR3BkM0xzZ3F6Y0dTRGFvWTh1endZM1hzIn0=	2018-05-24 16:41:10.391946+00
+97u6rae0ecqw7f4yry5ul1ducjavhte6	ZDFjZThlMGY4ZWE1MjcyNGMxNGJhYzE4Y2Y1ZGFkMWU0OGUxYzk3Njp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjM1IiwiX2NzcmZ0b2tlbiI6IkNIZ0JTelNmSEdhdkJDakVkc25vU2R1akRNb09lRkw0MDBzTEJzVDJNZ2VLRzljRDdDYWxiU3JMTFJXS0t4akoiLCJfYXV0aF91c2VyX2hhc2giOiJhYjA2ZWJhMGU2NDYxYTE4MWU3Njk4NjQ4NGY3YTIxMWM2YjkxZmYxIn0=	2018-05-22 18:07:06.136391+00
+oeddhiawskbm18a0dky13v0uwuwwc2ux	NTNjODE4OTk0NjM1YTM4YTVlNzdjZmIwMjdhMDhlM2U4YTkyNTY4Mjp7Il9jc3JmdG9rZW4iOiJtdTFpV09nbnNNVjNPc003MDNnQXBNRWVsRE9mSnZPQlZjRXNNQ1c1VmQ2Y2xISk94eTZsNkk2OFk4aWJiN0VtIn0=	2018-05-18 16:26:10.32691+00
+uz5mbvwudxctxl4ui3z7j4kaw55vic74	OWU5MmFlMWRjMzA3ODRmNTYwNzEzMmZlY2NhMzU4YWE0M2FkMDY0ZDp7Il9hdXRoX3VzZXJfaWQiOiIxNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiZDNjMzE4NmUwNzkzYTFjNWIyZmMzMzQ0MTllMWEwOTkxMjdkNTFlYyIsIl9jc3JmdG9rZW4iOiJrM2VWRFpJRGhha2Rxdm1PRU0wZWQ3V0VnZUl1VWp5ZUVKbVh4V0xpMUt6eEFpZkNmRHF0UXZqcEt6NDZuZ1ZYIn0=	2018-05-18 16:28:32.887378+00
+80pkenti6q781lj1qcxdgeq9p9j2jwxn	NzA0NzhhMWRhMGI4MTU5NmVjOTgzZjU2OGRjZmRiYTQ5MzhhNWEzZjp7Il9jc3JmdG9rZW4iOiJ1VzB5VGVmU3lVWXhFVWJNQ2YxNlUwRG42SUNnS1VpYUlqRnZTOTdwdUdKYmk0a2FCblBZNkZObHF5UFNubzZzIn0=	2018-05-18 16:56:12.479502+00
+93gi28uapjq1jklt4dhibcs1kmgjw760	MzlhZTM5MmQ0NzhkOWM1NDY3YjExNjA4MDc1NTkyYWZlZWZiNTJiMTp7Il9jc3JmdG9rZW4iOiJLNkNMOG96WHB4eTRkNVpnVHdvRGxIUkN4S3RNTGZWTEhUc2VZNGFDN1Q5bnhpQ1FkU1FIcGtMdmxud2RBeXpGIn0=	2018-05-27 16:04:21.690685+00
+b5mgyptv7i3f6by23faw3w58rcfwmscj	MDY4NmE4OGMwNTM5YTI2ZjRhNjU2OGNhYjRmNGIzYjk5ODU5NzdiOTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjgiLCJfY3NyZnRva2VuIjoiZGtBQzAwcVlKVFBOVm1YUXhKQWtFRjd1QlJIM0pCU0dvdHFOaWwyNks4ZUMzVGU2OHVvRUU2dHo3UHByVWs1NiIsIl9hdXRoX3VzZXJfaGFzaCI6IjkyN2ZkNjMwOTE3MmY5MGFkYjExMWRmMWMwMzdhN2I3MTZjNjA1OWEifQ==	2018-05-18 07:05:17.968654+00
+axmlekltahzeqahm9sz5i32pfh6528wp	NDhiNDE5MmYyZjJkMDczY2YxYmUxNWM4ZThmZjVkY2JjNTQ1NGQ1NTp7Il9jc3JmdG9rZW4iOiJmcm9VVjNyb2FTUUpneXg1bWxKak1GVDBZYmQwaFgxMnZ0RkdVNm9sSUFUdG14Z01aN2QzQUwwQmtMa1l4OTEzIn0=	2018-05-17 20:12:40.955162+00
+njs52z0u7744m7b5zf91z1f095hukmjk	MTY5YTg3N2NkYzZjNjNhOGUwMDdkMzQwNWRmNjY3MDlhNGQ1OGI4Mzp7Il9jc3JmdG9rZW4iOiJBN0w4UFdGZzRlQUpWUk9RRjJCM2x1V2RYVlAzSkxHMVljU3o0RXhoUW1SNTdWRXBsaVZ1SEtPRkxkYjNaM1lsIn0=	2018-05-18 06:06:32.584492+00
+mab6hq6az8ss5i8dtu1hga6ks7twm11j	MjcwM2I4MDExMmQyMGZlZDFhNmU3NmJjZTdhMTM4ZmI2YzMzYzQ0NDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiZWI1MzAxZDE2M2NkNDA4M2QyMjQ2YjJlM2MwMTFkYjAyMDNlMmQxNSIsIl9jc3JmdG9rZW4iOiJ3TWw3aUNwdXhmWTY1QkJhVWtjQUp2VlJnSmNQYUkxSDJQRHozNWRyU3FkWXNWaHJZSkNYczF1clBRQXpWc3k2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==	2018-05-22 04:46:53.964977+00
+nekon2ym96z35hms602jb7vctmrbcd8d	YjA5MTRlMThiZTEzZTU0ZTI1NzJhNzMyZTJlYWE3YzkzNGE1ODExYzp7Il9jc3JmdG9rZW4iOiJpaFBEREIyVDhJcHc2RFYyejNWT3E4N000NWtHRnU5TXptWGgxZ3prbllvOGxKMU8zNnpvUEJnUnNjSzhRM05WIn0=	2018-05-18 16:04:37.270139+00
+0td69dnte891qik4dm7nkfunlp0j9os8	NTBhYTlkMjlmODM1YWE3MjQxMDg1ZjllMDg1NjdjYjlkMzlhZDFkMDp7Il9jc3JmdG9rZW4iOiJ6bW9sMER6RWozTG5FaHpOZkwxT0x3VXJVQUlVeWNSRjNTQWtCQ05EaEVTOFdneTdkb2l1c1JPZXZCeURqMXdEIn0=	2018-05-18 16:04:57.025004+00
+wlp5uqgyg52b8w4c0xx47jdwa9fwp0u2	ZWQ3YjYwMzk4NTgyYWNlZmRiOWRhODliYjZhZGJkNjliMjcyMTM4NDp7Il9jc3JmdG9rZW4iOiJmcWw3MVk1MzlUUTYyY0Y3cUxYVTlwNEx4SDRLSlRNb0FjVDN0QUpSWWk3R1dLdURzOFlmMmZsQllsYTRZQ29JIn0=	2018-05-17 20:03:07.295726+00
+jqfvyp451utm7eq7z6lzvwg07h7ivs2t	NTdmZWE2ZWI2YjllZDNiYmQ3MzEzNzA1Y2NjM2M5NDA4NjU5NTk5ZDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfY3NyZnRva2VuIjoiUHlLcFNMank1d1pRaGZrOUZSbWlSSzlIQW5TWks3YWZYTVowTDB5emxxNTNRT2pFT3Q1ODRYY2NhSkRPNmRpRCIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-22 06:22:22.253496+00
+tczsyl68pqvtd7enrj9vly626or6kooq	YjYwNWRhYTc1YWI2MzhiN2RjMjc3ZGZkMmIxZGU1ZjhmMjkyMmMxNzp7Il9jc3JmdG9rZW4iOiJBeTZmOGpIYWNRM0dtaFF3Z1gyblI3WURjaXl3c3N6bkxCQk1UODRGdVdxbDZ2cndrQzRKSTdQcjloRUNxdEdRIn0=	2018-05-18 16:05:27.001802+00
+2um96h2yxhpg4re961t5n3nbzta8iq7h	ZDQzZjYxMjQ3MjhiZWUxMGU1YmFlYjYzZmY2YTg2NzQ3ODgyOWY3ZDp7Il9jc3JmdG9rZW4iOiJMbkJhNlptYW1tUWJyaXZQM2FBTkJ1Vkh3MWNQOXd0Zmc0aWxZSzh2bjdoSlE2ZTFGYlZKcmNoVHNSVzFZdmFWIn0=	2018-05-18 16:05:43.53582+00
+lzg8b26ih8m1ztr0ov6fe3qa1lnoq3kr	OTY5Y2Q0NzY5ZThiYjYxNGQ2MWFjNTA0MWMxYzdiZmFkZTQyMzViMjp7Il9jc3JmdG9rZW4iOiIxVU5FTVJrbmM5VGNUdHcyUTlna0VuWHJOZUs3a1BhZlJOcTZhZ05zdWRkSGRraHNFbENmU3RGS1lsM1NxbFpFIn0=	2018-05-21 11:55:23.897593+00
+23grqprs3ictahvi1wwpqpnk0gz2zksq	Yjk4Y2ExY2M1Njg1ZmI1OWRmMzk1ODU2NzZjYjc4OGYyNWJhZDEzYjp7Il9jc3JmdG9rZW4iOiJLNXpQUmczbk51bVR0VThoTjB5aE9JdDJkSmR2emNVWmJtd3EySWI2c1V0QmYzWkl0ak1UNFAxa1VhRmFJckFuIn0=	2018-05-18 16:05:58.787914+00
+lmyt2khepi2sqhic7w8xxx5io91xdo0p	YjU3MGExNWVhNjQ4MTM3ZmM4NzY3YWI0MWY4NTNjNGE5NTAyNDYzODp7Il9hdXRoX3VzZXJfaWQiOiIzMyIsIl9hdXRoX3VzZXJfaGFzaCI6IjEzYTcwYjRkNWRiZmQ4OWFjOTJkMWUzMWZhY2JmMzFkZGI3MGQyMGEiLCJfY3NyZnRva2VuIjoibE1ET3c4YTVmbHFhOVdVeWpGdlZ0M2JmaXJsaWZzTmdNUWFRSXJHVExIY3lWUHYwdGdIbWNnV1JkUHF1UzdGTiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=	2018-05-22 12:57:32.476716+00
+fsbw28yr668ntczokapy255zvx7ocdc0	NmQ1NWI0OWMwOTJlZDM5YjA0MTFiOTI2NGRlZTUzOTAzZGE5NzE4Njp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfY3NyZnRva2VuIjoiQVNyZGVYRE5ON21XWnE4dVhYSUp3NHREd0pIZk9IQmRyNHBvVTZnNWVmeU9MVWNVZ1pLMDBINmRUek9OUE5BVCIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-22 13:29:30.246894+00
+8iv8af5rfuslnlghyxfv3qjggeuby3r2	NDExZGIxZGY5NTU2Y2E2ODFmZTg2ZTA1Mzc3YTM4NTU3NWI1Mzc3Zjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfY3NyZnRva2VuIjoid0VPZUN3MEZ0SXc3SmswVlhWNDkwTVhkZnJMMG1TdVhaZ0ZlbEM5SWlIMDlQR1J6bVNpV3RmRGJyQ3lFTGl5UyIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-28 16:16:12.957704+00
+2bmjbtli2yvlntwtteug84n83cgjzy9d	OGQ5OTFjZDgzNGQ0MTlkYTc2YTJjN2I2MzNmZGNmYTUwMDkzYWEwYjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjQyIiwiX2NzcmZ0b2tlbiI6ImE2dVEwR2JLbEJVdk1DYlk3cFpEaU5WSEo4TTJTTERMTm9QWWpKa0drVEJ1eXdqZllXMFY1Rjd0R25Ha0padzIiLCJfYXV0aF91c2VyX2hhc2giOiIwMmUxYTMzZmQyZmNjNjA3Mzk2ZTU4YTMwMzkyYWM2NDY3ZWMwMmI5In0=	2018-05-24 10:40:14.460311+00
+fh3c1m95ezo3ye9idr6l8qs5my7m7vdw	MTQ5NWUxY2VmYzQzNDkwNWQxYTE2YWYxNzNiOGQ5ZjZiNDlhYTdmZTp7Il9jc3JmdG9rZW4iOiJsMHFQUHN0WmtMYXJWTTl5YUh6cmhuU3MwNjlmS2xhSEN5dzdKaXVsVUZqOXhDcTVsSUhuNG9iYUhteTQ3dHFDIiwiX2F1dGhfdXNlcl9oYXNoIjoiZWI1MzAxZDE2M2NkNDA4M2QyMjQ2YjJlM2MwMTFkYjAyMDNlMmQxNSIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQifQ==	2018-05-22 16:06:22.25128+00
+l1liz7n4p95l8t1482b9bht305hk1yo8	NTE1MzVmMjUyNjhkYWJiNDdlZDJlNTQ4NzYwNmMzYzU3YTBkYTU3Njp7Il9jc3JmdG9rZW4iOiJjVFpLMTR6S1dPcmNPOExmZ1FxRkwwOXpGQ3ljN1pwYVlCUVpJd25JY0h3c1dkNHhkZkhuaktNTjdxV1RJVm5NIn0=	2018-05-25 15:36:28.313027+00
+w4y33fonkh86yvnoj85miv5tq7iwv0q1	YWI3ZDljZjQyNjA3ZGMxNjQ4YTdjZDlmM2I3MTRkMzRkNTA2ODBhMDp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfY3NyZnRva2VuIjoiTzdycTlXZEtXcjAwcjBObUx6d245cE1CemZjVjYyM0p6RzdNS1FaeWFxRzdUSXkwWTdqN0dacTNyaFdYU0JNUCIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-29 16:14:19.655099+00
+bv51t2m1qslcrs4wwlh1y3gfn35h38x4	OTc4OTJhMDJlMGU0MDc0YjIyZGMwYzdlY2U5ZmVkMDNkM2IwODQ0Zjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjM0IiwiX2NzcmZ0b2tlbiI6IjJVSDZMRDloYkNETDY2SGhLNElPMHNLTWdPY2tiRmxxU0xLc2t0dE9CaXMzM0k4b0dQYnlwWWcxVlFWRzlzOW0iLCJfYXV0aF91c2VyX2hhc2giOiIxYmVjOTRiN2QwOTAyNjFjYmUyYjE5NGFjNDZjZGY2NWI2NWI4ZmExIn0=	2018-05-22 16:46:26.549548+00
+7ac8k0bwe04ia1o8fa7lly6f05i2h1d3	ZmZmYTRhY2I2MTZiM2U2NWExNTZhMjUzOGZlZTMzNzY5MjM5OTJjZjp7Il9jc3JmdG9rZW4iOiJDRm1xRTZlcmVnM1I0OFoxV0xRUXUxOGdZY1Yyb1ZoS3FjRXdqMkdlUzh2enplOE54ZlVBVFBRbTNlZmpreGtwIn0=	2018-05-24 16:40:33.116719+00
+l1pco5eldchlp7kyl6jpepkf90w7z0cy	ODc0NzRlNDliM2M5MzVmNWQ0OTNmZGI5NjMyMWJjNTk0YWQxY2VhMDp7Il9hdXRoX3VzZXJfaGFzaCI6Ijg2NmI5ZTAzYjY1M2Y4ZmRmN2IxN2Q4NDVkM2E2ZmEyNDRiNzFhNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9jc3JmdG9rZW4iOiJaRXIzRU1mNXc4UDFrOXM3R2ZCT2swVVJSTGJDSHJOYklRQXpUMjNnMEtqb1hXRnRMdWxFVG1BdnRqd05zS1h4IiwiX2F1dGhfdXNlcl9pZCI6IjM2In0=	2018-05-23 19:59:49.317375+00
+027qb1clil1l3xyi55ngvbn15g1nemo0	ZTEzNjkyYzRlZTE5ZmMxNDMyOWQ4ZWY1NmU2YjFmOWFiMzBhNTYzMTp7Il9jc3JmdG9rZW4iOiJrOWo0dVo5dXJyZlFoVXBOV3Z0NFNuQWVIckU4QVZzZ3d2dllqRTdBMjVIQk5pQXRBS0F0djdWdEtkbDc1c0dBIn0=	2018-05-24 16:41:20.730489+00
+slzsumlc309hs4qpxn6ieojz45ed7peu	ZWY0MmJmYTU3YTVjMjI4YzI4YTk3YThjZTk1MjVjNjM4OWI4YjA0Yjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjQiLCJfY3NyZnRva2VuIjoiV0FmcEIxNzFnWkZlSWJpYWF0NGwwQVJpc0g1ZnRNTWlnaHo1cnJXZVZobzhndHRvS0F1WWJuS1h3NG1GV0Z4VSIsIl9hdXRoX3VzZXJfaGFzaCI6IjdhODc1MDRjZDMwNzhhOGEzMjJmN2JlOTAxOThiMDI1NGFhYzBmY2IifQ==	2018-05-22 16:46:54.862034+00
+n1susy04tw94xly7yjeosyq6thfoibim	OGE0MTIxMmVhZThiMDYxNTQxMDQ0YmI4MjcwMjdmN2E2N2NiNWNkYTp7Il9jc3JmdG9rZW4iOiJGN1ZpaWIzZ2NhVXpoMlhiSTJDZVplQ0FTVTRDQ0twQkJxOEpycU1TYThZaG04TnVtaFFiNjI5SzhlZzlaa01WIn0=	2018-05-27 16:04:21.800012+00
+wqqo3hj30lbwe6gtm4iyix1kfnz939lt	YmU2MzExNzU5NjA1NDk1ZjNkZTgyZmY4NWQ4N2YzMDQ0MjY0MDA4Yzp7Il9jc3JmdG9rZW4iOiJ4OW1vaUFkbUd0NmxZekdEY3gzR0psV0xLeThaT0tPV1g4ZnY3amZLN0d5T0c1U0lCc0d6N2hVYmZUMnNQY25oIn0=	2018-05-27 16:37:52.111608+00
+kv3egewo4pwry098uhe3u11n70y30q93	YmMyN2E2YmQ2YmI1Y2RmMzNjYTE2MjJjZmFlYmJiNjExZjRhNjJjYTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfY3NyZnRva2VuIjoicXVuanFacENoOUplSHVXeUVCRzU1UUthUGp3eVRabTBNc29Wc2V2ZzRtV0tEemFSQTdNMDJsNVJOYTF0cXNRVSIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-27 17:00:51.642601+00
+5ibx1eotak02uroxuvpzhbky1z8cx9u6	ZjVkNTYyNzYxY2VhOWM5N2UwZDE3NTgwMmFmNDQ0MDQ3MDFkMWM5Yjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfY3NyZnRva2VuIjoiMGNlNkplUnJwSTBINWRiOEhmSEo2YWY3T1lubHhyVjh6WUZBT3k4b0JjMVhDZTh0em9YeE5HVUtIb3NvcmJ0WSIsIl9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUifQ==	2018-05-27 17:11:37.795459+00
+d4spt0nh3nhheh6k9lez755r1e1s4d9z	ZGI2MTMwMzNlODIxZmRjODEyNzk0NDM1N2MxNGVmMzRhYmEzZWZhYjp7Il9hdXRoX3VzZXJfaGFzaCI6ImViNTMwMWQxNjNjZDQwODNkMjI0NmIyZTNjMDExZGIwMjAzZTJkMTUiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2NzcmZ0b2tlbiI6Im1RV29iT3RFZmxZbmszbjFVSUlhV3VkVEFBalRTVURrSDZzZGJjbnZjOG5kQWJlNEhnbXIxeDJuWWZjNTM4SVoifQ==	2018-05-23 15:45:37.070428+00
+\.
+
+
+--
+-- Data for Name: elementPrices_elementprice; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public."elementPrices_elementprice" (id, "buyExerciseValue", "profitExerciseValue", "promoteExerciseValue") FROM stdin;
+1	4.00	1.00	1.00
+\.
+
+
+--
+-- Name: elementPrices_elementprice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public."elementPrices_elementprice_id_seq"', 1, true);
+
+
+--
+-- Data for Name: exercises_exercise; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.exercises_exercise (id, title, description, sales, level, promoted, "startPromotionDate", "endPromotionDate", draft, category_id, programmer_id, example) FROM stdin;
+32	dfasd	dsad	0	Fácil	f	\N	\N	t	22	15	f
+31	Raíz de un número	Raíz de un número	1	Fácil	f	\N	\N	f	4	15	f
+18	Ejercicio Matemáticas	Ejercicio Matemáticas en desarrollo.	0	Fácil	f	\N	\N	t	4	8	f
+30	Simple suma de dos números	Sencilla suma de dos números	1	Fácil	f	\N	\N	f	4	14	f
+22	Live-Search on a table	asd	0	Medio	f	\N	\N	t	21	1	f
+23	Nuevo ejercicio	nuevo ejercicio	0	Medio	f	\N	\N	t	4	16	f
+34	test	asd	0	Fácil	f	\N	\N	t	21	1	f
+35	hshsh	hshsh	0	Fácil	f	\N	\N	t	11	1	f
+45	Matemáticas	Ejercicio de matemáticas	0	Fácil	f	\N	\N	f	4	9	f
+12	Tiro parabólico	Ejercicio de física para resolver el tiro parabólico	0	Medio	f	\N	\N	f	17	1	t
+13	Análisis matemático	Continuidad de las funciones	0	Difícil	f	\N	\N	f	20	1	f
+14	Circuito de corriente continua	Ejercicio de física de corriente continua	0	Difícil	f	\N	\N	f	21	1	f
+15	Química inorgánica	Resolución de compuestos y formulas inorgánicas	0	Fácil	f	\N	\N	f	18	1	f
+16	Media y desviación típica	Matemáticas aplicada a la estadística	0	Medio	f	\N	\N	f	12	1	f
+17	Perímetro y área	Matemáticas aplicadas a la geometría	0	Medio	f	\N	\N	f	4	1	f
+37	Mostrar gráfica de una función	Muestra la gráfica de una función f(x) que desees	0	Fácil	f	\N	\N	t	4	16	f
+38	Prueba	dsa	0	Fácil	f	\N	\N	t	4	16	f
+39	gvhb	bvhbb	0	Medio	f	\N	\N	t	16	16	f
+40	Test	huh	0	Fácil	f	\N	\N	t	4	14	f
+41	Ejercicio de prueba de código	Ejercicio de prueba de código	0	Medio	f	\N	\N	t	16	34	f
+42	test	test-desc	0	Fácil	f	\N	\N	t	15	4	f
+43	Ejercicio	Ejercicio	0	Fácil	f	\N	\N	t	15	35	f
+\.
+
+
+--
+-- Name: exercises_exercise_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.exercises_exercise_id_seq', 45, true);
+
+
+--
+-- Data for Name: licenses_license; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.licenses_license (id, "numUsers", "numFreeExercises", price, "startDate", "endDate", "licenseType_id", school_id) FROM stdin;
+2	65	20	216.65	2018-05-04	2019-05-04	1	7
+5	500	75	700.00	2018-05-04	2019-05-04	3	13
+4	60	18	200.00	2018-05-08	2019-05-04	1	12
+3	185	44	550.00	2018-05-10	2019-05-04	2	10
+\.
+
+
+--
+-- Name: licenses_license_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.licenses_license_id_seq', 7, true);
+
+
+--
+-- Data for Name: licenses_licensetype; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.licenses_licensetype (id, name, "numUsers", "numFreeExercises", price) FROM stdin;
+1	BÁSICA	60	20	200.00
+2	MEDIA	200	50	550.00
+3	GRANDE	500	75	700.00
+4	GRATUITA	0	3	0.00
+\.
+
+
+--
+-- Name: licenses_licensetype_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.licenses_licensetype_id_seq', 4, true);
+
+
+--
+-- Data for Name: provinces_province; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.provinces_province (id, name) FROM stdin;
+1	Álava
+2	Albacete
+3	Alicante
+4	Almería
+5	Ávila
+6	Badajoz
+7	Islas baleares
+8	Barcelona
+9	Burgos
+10	Cáceres
+11	Cádiz
+12	Castellón
+13	Ciudad Real
+14	Córdoba
+15	A Coruña
+16	Cuenca
+17	Girona
+18	Granada
+19	Guadalajara
+20	Guipuzcoa
+21	Huelva
+22	Huesca
+23	Jaen
+24	León
+25	Lleida
+26	La Rioja
+27	Lugo
+28	Madrid
+29	Málaga
+30	Murcia
+31	Navarra
+32	Ourense
+33	Asturias
+34	Palencia
+35	Las Palmas
+36	Pontevedra
+37	Salamanca
+38	Santa Cruz de Tenerife
+39	Cantabria
+40	Segovia
+41	Sevilla
+42	Soria
+43	Tarragona
+44	Teruel
+45	Toledo
+46	Valencia
+47	Valladolid
+48	Vizcaya
+49	Zamora
+50	Zaragoza
+51	Ceuta
+52	Melilla
+\.
+
+
+--
+-- Name: provinces_province_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.provinces_province_id_seq', 52, true);
+
+
+--
+-- Data for Name: purchaseTickets_purchaseticket; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public."purchaseTickets_purchaseticket" (id, date, price, "paymentMethod", exercise_id, school_id) FROM stdin;
+1	2018-05-04	0.00	Free	12	10
+2	2018-05-05	0.00	Free	14	12
+3	2018-05-05	0.00	Free	13	10
+4	2018-05-05	0.00	Free	15	10
+5	2018-05-05	0.00	Free	16	10
+6	2018-05-08	0.00	Free	31	10
+7	2018-05-08	0.00	Free	30	10
+8	2018-05-08	0.00	Free	\N	12
+\.
+
+
+--
+-- Name: purchaseTickets_purchaseticket_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public."purchaseTickets_purchaseticket_id_seq"', 8, true);
+
+
+--
+-- Data for Name: subjects_subject; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.subjects_subject (id, name, course, school_id) FROM stdin;
+1	Física - ESO	4	10
+2	Física - Bachillerato	1	12
+3	Matemáticas I - Bachillerato	1	10
+4	Química - ESO	4	10
+5	Matemáticas - ESO	3	10
+6	Matemáticas - ESO	1	10
+7	Matemáticas - ESO	3	12
+\.
+
+
+--
+-- Data for Name: subjects_subject_exercises; Type: TABLE DATA; Schema: public; Owner: climbcode
+--
+
+COPY public.subjects_subject_exercises (id, subject_id, exercise_id) FROM stdin;
+1	1	12
+2	2	14
+3	3	13
+4	4	15
+5	5	16
+6	6	31
+7	6	30
+\.
+
+
+--
+-- Name: subjects_subject_exercises_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.subjects_subject_exercises_id_seq', 8, true);
+
+
+--
+-- Name: subjects_subject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: climbcode
+--
+
+SELECT pg_catalog.setval('public.subjects_subject_id_seq', 7, true);
+
+
+--
+-- Name: actors_actor_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_actor
+    ADD CONSTRAINT actors_actor_pkey PRIMARY KEY ("userAccount_id");
+
+
+--
+-- Name: actors_administrator_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_administrator
+    ADD CONSTRAINT actors_administrator_pkey PRIMARY KEY (actor_ptr_id);
+
+
+--
+-- Name: actors_programmer_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_programmer
+    ADD CONSTRAINT actors_programmer_pkey PRIMARY KEY (actor_ptr_id);
+
+
+--
+-- Name: actors_school_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_school
+    ADD CONSTRAINT actors_school_pkey PRIMARY KEY (actor_ptr_id);
+
+
+--
+-- Name: actors_student_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_student
+    ADD CONSTRAINT actors_student_pkey PRIMARY KEY (actor_ptr_id);
+
+
+--
+-- Name: actors_teacher_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_teacher
+    ADD CONSTRAINT actors_teacher_pkey PRIMARY KEY (actor_ptr_id);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: boxes_box_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_box
+    ADD CONSTRAINT boxes_box_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: boxes_code_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_code
+    ADD CONSTRAINT boxes_code_pkey PRIMARY KEY (box_ptr_id);
+
+
+--
+-- Name: boxes_parameter_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_parameter
+    ADD CONSTRAINT boxes_parameter_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: boxes_picture_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_picture
+    ADD CONSTRAINT boxes_picture_pkey PRIMARY KEY (box_ptr_id);
+
+
+--
+-- Name: boxes_text_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_text
+    ADD CONSTRAINT boxes_text_pkey PRIMARY KEY (box_ptr_id);
+
+
+--
+-- Name: defaultSubjects_defaultsubject_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."defaultSubjects_defaultsubject"
+    ADD CONSTRAINT "defaultSubjects_defaultsubject_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: elementPrices_elementprice_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."elementPrices_elementprice"
+    ADD CONSTRAINT "elementPrices_elementprice_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: exercises_exercise_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.exercises_exercise
+    ADD CONSTRAINT exercises_exercise_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: licenses_license_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_license
+    ADD CONSTRAINT licenses_license_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: licenses_licensetype_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_licensetype
+    ADD CONSTRAINT licenses_licensetype_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: provinces_province_name_key; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.provinces_province
+    ADD CONSTRAINT provinces_province_name_key UNIQUE (name);
+
+
+--
+-- Name: provinces_province_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.provinces_province
+    ADD CONSTRAINT provinces_province_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: purchaseTickets_purchaseticket_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."purchaseTickets_purchaseticket"
+    ADD CONSTRAINT "purchaseTickets_purchaseticket_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: subjects_subject_exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject_exercises
+    ADD CONSTRAINT subjects_subject_exercises_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: subjects_subject_exercises_subject_id_exercise_id_69e9f711_uniq; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject_exercises
+    ADD CONSTRAINT subjects_subject_exercises_subject_id_exercise_id_69e9f711_uniq UNIQUE (subject_id, exercise_id);
+
+
+--
+-- Name: subjects_subject_pkey; Type: CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject
+    ADD CONSTRAINT subjects_subject_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: actors_school_province_id_5120a03a; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX actors_school_province_id_5120a03a ON public.actors_school USING btree (province_id);
+
+
+--
+-- Name: actors_student_school_s_id_2404afa4; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX actors_student_school_s_id_2404afa4 ON public.actors_student USING btree (school_s_id);
+
+
+--
+-- Name: actors_teacher_school_t_id_da7374a2; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX actors_teacher_school_t_id_da7374a2 ON public.actors_teacher USING btree (school_t_id);
+
+
+--
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: boxes_box_exercise_id_64fb8854; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX boxes_box_exercise_id_64fb8854 ON public.boxes_box USING btree (exercise_id);
+
+
+--
+-- Name: boxes_parameter_code_id_719e0e8c; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX boxes_parameter_code_id_719e0e8c ON public.boxes_parameter USING btree (code_id);
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: exercises_exercise_category_id_1dc10060; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX exercises_exercise_category_id_1dc10060 ON public.exercises_exercise USING btree (category_id);
+
+
+--
+-- Name: exercises_exercise_programmer_id_ead44b1d; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX exercises_exercise_programmer_id_ead44b1d ON public.exercises_exercise USING btree (programmer_id);
+
+
+--
+-- Name: licenses_license_licenseType_id_e07472d7; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX "licenses_license_licenseType_id_e07472d7" ON public.licenses_license USING btree ("licenseType_id");
+
+
+--
+-- Name: licenses_license_school_id_3ae561d0; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX licenses_license_school_id_3ae561d0 ON public.licenses_license USING btree (school_id);
+
+
+--
+-- Name: provinces_province_name_0c6ab160_like; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX provinces_province_name_0c6ab160_like ON public.provinces_province USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: purchaseTickets_purchaseticket_exercise_id_ea6bd84c; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX "purchaseTickets_purchaseticket_exercise_id_ea6bd84c" ON public."purchaseTickets_purchaseticket" USING btree (exercise_id);
+
+
+--
+-- Name: purchaseTickets_purchaseticket_school_id_a1da79f3; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX "purchaseTickets_purchaseticket_school_id_a1da79f3" ON public."purchaseTickets_purchaseticket" USING btree (school_id);
+
+
+--
+-- Name: subjects_subject_exercises_exercise_id_e50e91dc; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX subjects_subject_exercises_exercise_id_e50e91dc ON public.subjects_subject_exercises USING btree (exercise_id);
+
+
+--
+-- Name: subjects_subject_exercises_subject_id_397a6e44; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX subjects_subject_exercises_subject_id_397a6e44 ON public.subjects_subject_exercises USING btree (subject_id);
+
+
+--
+-- Name: subjects_subject_school_id_12ea9f72; Type: INDEX; Schema: public; Owner: climbcode
+--
+
+CREATE INDEX subjects_subject_school_id_12ea9f72 ON public.subjects_subject USING btree (school_id);
+
+
+--
+-- Name: actors_actor_userAccount_id_8f254442_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_actor
+    ADD CONSTRAINT "actors_actor_userAccount_id_8f254442_fk_auth_user_id" FOREIGN KEY ("userAccount_id") REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_administrator_actor_ptr_id_1f3b500c_fk_actors_ac; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_administrator
+    ADD CONSTRAINT actors_administrator_actor_ptr_id_1f3b500c_fk_actors_ac FOREIGN KEY (actor_ptr_id) REFERENCES public.actors_actor("userAccount_id") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_programmer_actor_ptr_id_e586eb24_fk_actors_ac; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_programmer
+    ADD CONSTRAINT actors_programmer_actor_ptr_id_e586eb24_fk_actors_ac FOREIGN KEY (actor_ptr_id) REFERENCES public.actors_actor("userAccount_id") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_school_actor_ptr_id_d8066f85_fk_actors_ac; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_school
+    ADD CONSTRAINT actors_school_actor_ptr_id_d8066f85_fk_actors_ac FOREIGN KEY (actor_ptr_id) REFERENCES public.actors_actor("userAccount_id") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_school_province_id_5120a03a_fk_provinces_province_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_school
+    ADD CONSTRAINT actors_school_province_id_5120a03a_fk_provinces_province_id FOREIGN KEY (province_id) REFERENCES public.provinces_province(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_student_actor_ptr_id_f2dc013f_fk_actors_ac; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_student
+    ADD CONSTRAINT actors_student_actor_ptr_id_f2dc013f_fk_actors_ac FOREIGN KEY (actor_ptr_id) REFERENCES public.actors_actor("userAccount_id") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_student_school_s_id_2404afa4_fk_actors_sc; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_student
+    ADD CONSTRAINT actors_student_school_s_id_2404afa4_fk_actors_sc FOREIGN KEY (school_s_id) REFERENCES public.actors_school(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_teacher_actor_ptr_id_f46d95dd_fk_actors_ac; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_teacher
+    ADD CONSTRAINT actors_teacher_actor_ptr_id_f46d95dd_fk_actors_ac FOREIGN KEY (actor_ptr_id) REFERENCES public.actors_actor("userAccount_id") DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: actors_teacher_school_t_id_da7374a2_fk_actors_sc; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.actors_teacher
+    ADD CONSTRAINT actors_teacher_school_t_id_da7374a2_fk_actors_sc FOREIGN KEY (school_t_id) REFERENCES public.actors_school(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissio_permission_id_84c5c92e_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_2f476e4b_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES public.auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm FOREIGN KEY (permission_id) REFERENCES public.auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: boxes_box_exercise_id_64fb8854_fk_exercises_exercise_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_box
+    ADD CONSTRAINT boxes_box_exercise_id_64fb8854_fk_exercises_exercise_id FOREIGN KEY (exercise_id) REFERENCES public.exercises_exercise(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: boxes_code_box_ptr_id_295201a5_fk_boxes_box_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_code
+    ADD CONSTRAINT boxes_code_box_ptr_id_295201a5_fk_boxes_box_id FOREIGN KEY (box_ptr_id) REFERENCES public.boxes_box(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: boxes_parameter_code_id_719e0e8c_fk_boxes_code_box_ptr_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_parameter
+    ADD CONSTRAINT boxes_parameter_code_id_719e0e8c_fk_boxes_code_box_ptr_id FOREIGN KEY (code_id) REFERENCES public.boxes_code(box_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: boxes_picture_box_ptr_id_d241a8c6_fk_boxes_box_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_picture
+    ADD CONSTRAINT boxes_picture_box_ptr_id_d241a8c6_fk_boxes_box_id FOREIGN KEY (box_ptr_id) REFERENCES public.boxes_box(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: boxes_text_box_ptr_id_4420f864_fk_boxes_box_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.boxes_text
+    ADD CONSTRAINT boxes_text_box_ptr_id_4420f864_fk_boxes_box_id FOREIGN KEY (box_ptr_id) REFERENCES public.boxes_box(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_content_type_id_c4bce8eb_fk_django_co FOREIGN KEY (content_type_id) REFERENCES public.django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: exercises_exercise_category_id_1dc10060_fk_defaultSu; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.exercises_exercise
+    ADD CONSTRAINT "exercises_exercise_category_id_1dc10060_fk_defaultSu" FOREIGN KEY (category_id) REFERENCES public."defaultSubjects_defaultsubject"(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: exercises_exercise_programmer_id_ead44b1d_fk_actors_pr; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.exercises_exercise
+    ADD CONSTRAINT exercises_exercise_programmer_id_ead44b1d_fk_actors_pr FOREIGN KEY (programmer_id) REFERENCES public.actors_programmer(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: licenses_license_licenseType_id_e07472d7_fk_licenses_; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_license
+    ADD CONSTRAINT "licenses_license_licenseType_id_e07472d7_fk_licenses_" FOREIGN KEY ("licenseType_id") REFERENCES public.licenses_licensetype(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: licenses_license_school_id_3ae561d0_fk_actors_sc; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.licenses_license
+    ADD CONSTRAINT licenses_license_school_id_3ae561d0_fk_actors_sc FOREIGN KEY (school_id) REFERENCES public.actors_school(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: purchaseTickets_purc_exercise_id_ea6bd84c_fk_exercises; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."purchaseTickets_purchaseticket"
+    ADD CONSTRAINT "purchaseTickets_purc_exercise_id_ea6bd84c_fk_exercises" FOREIGN KEY (exercise_id) REFERENCES public.exercises_exercise(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: purchaseTickets_purc_school_id_a1da79f3_fk_actors_sc; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public."purchaseTickets_purchaseticket"
+    ADD CONSTRAINT "purchaseTickets_purc_school_id_a1da79f3_fk_actors_sc" FOREIGN KEY (school_id) REFERENCES public.actors_school(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: subjects_subject_exe_exercise_id_e50e91dc_fk_exercises; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject_exercises
+    ADD CONSTRAINT subjects_subject_exe_exercise_id_e50e91dc_fk_exercises FOREIGN KEY (exercise_id) REFERENCES public.exercises_exercise(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: subjects_subject_exe_subject_id_397a6e44_fk_subjects_; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject_exercises
+    ADD CONSTRAINT subjects_subject_exe_subject_id_397a6e44_fk_subjects_ FOREIGN KEY (subject_id) REFERENCES public.subjects_subject(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: subjects_subject_school_id_12ea9f72_fk_actors_sc; Type: FK CONSTRAINT; Schema: public; Owner: climbcode
+--
+
+ALTER TABLE ONLY public.subjects_subject
+    ADD CONSTRAINT subjects_subject_school_id_12ea9f72_fk_actors_sc FOREIGN KEY (school_id) REFERENCES public.actors_school(actor_ptr_id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

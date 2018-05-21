@@ -59,6 +59,10 @@ class RegisterProgrammerForm(forms.Form):
             except Exception as e:
                 raise forms.ValidationError("El formato del DNI no es correcto")
 
+            image = self.cleaned_data.get('photo', False)
+            if image._size > 1*1024*1024:
+                raise forms.ValidationError("La imagen ocupa demasiado, como máximo puede ocupar 1 mb")
+
             # Valida que la contraseña se haya confirmado correctamente
             password = self.cleaned_data["password"]
             confirm_password = self.cleaned_data["confirm_password"]
